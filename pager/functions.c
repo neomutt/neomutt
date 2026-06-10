@@ -313,7 +313,7 @@ void pager_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 
   struct PagerModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_PAGER);
   ASSERT(mod_data);
-  mod_data->menu_pager = md;
+  mod_data->md_pager = md;
 }
 
 /**
@@ -1069,7 +1069,7 @@ static int op_help(struct PagerFunctionData *fdata, const struct KeyEvent *event
     mutt_error(_("Help is currently being shown"));
     return FR_ERROR;
   }
-  mutt_help(fdata->mod_data->menu_pager);
+  mutt_help(fdata->mod_data->md_pager);
   pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   return FR_SUCCESS;
 }
@@ -1269,5 +1269,5 @@ struct MenuDefinition *pager_get_menu_definition(void)
   struct PagerModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
   ASSERT(mod_data);
 
-  return mod_data->menu_pager;
+  return mod_data->md_pager;
 }

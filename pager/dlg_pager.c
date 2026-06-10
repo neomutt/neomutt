@@ -312,7 +312,7 @@ int dlg_pager(struct PagerView *pview)
   ASSERT(mod_data);
 
   pview->win_pager->help_data = pager_resolve_help_mapping(pview->mode, mailbox_type);
-  pview->win_pager->help_md = mod_data->menu_pager;
+  pview->win_pager->help_md = mod_data->md_pager;
 
   //---------- initialize redraw pdata  -----------------------------------------
   pview->win_pager->size = MUTT_WIN_SIZE_MAXIMISE;
@@ -489,7 +489,7 @@ int dlg_pager(struct PagerView *pview)
     // One of such functions is `mutt_enter_command()`
     // Some OP codes are not handled by pager, they cause pager to quit returning
     // OP code to index. Index handles the operation and then restarts pager
-    struct KeyEvent event = km_dokey(mod_data->menu_pager, GETCH_NONE);
+    struct KeyEvent event = km_dokey(mod_data->md_pager, GETCH_NONE);
     op = event.op;
 
     // km_dokey() can block, so recheck the timer.
@@ -515,7 +515,7 @@ int dlg_pager(struct PagerView *pview)
 
     if (op == OP_NULL)
     {
-      km_error_key(mod_data->menu_pager);
+      km_error_key(mod_data->md_pager);
       continue;
     }
 

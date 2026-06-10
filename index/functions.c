@@ -342,7 +342,20 @@ void index_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 
   struct IndexModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_INDEX);
   ASSERT(mod_data);
-  mod_data->menu_index = md;
+  mod_data->md_index = md;
+  mod_data->sm_index = sm_index;
+}
+
+/**
+ * index_get_submenu - Get the Index SubMenu
+ * @retval ptr Index SubMenu
+ */
+struct SubMenu *index_get_submenu(void)
+{
+  struct IndexModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
+  ASSERT(mod_data);
+
+  return mod_data->sm_index;
 }
 
 /**
@@ -2642,7 +2655,7 @@ static int op_mark_msg(struct IndexFunctionData *fdata, const struct KeyEvent *e
 
       /* L10N: "message hotkey" is the key bindings menu description of a
          macro created by <mark-message>. */
-      km_bind(fdata->mod_data->menu_index, str, OP_MACRO, macro, _("message hotkey"), NULL);
+      km_bind(fdata->mod_data->md_index, str, OP_MACRO, macro, _("message hotkey"), NULL);
 
       /* L10N: This is echoed after <mark-message> creates a new hotkey
          macro.  %s is the hotkey string ($mark_macro_prefix followed
@@ -3916,8 +3929,8 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_FORGET_PASSPHRASE,                op_forget_passphrase,        CHECK_NONE },
   { OP_FORWARD_MESSAGE,                  op_forward_message,          CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_FORWARD_TO_GROUP,                 op_post,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_GET_CHILDREN,                     op_get_children,             CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
-  { OP_GET_MESSAGE,                      op_get_message,              CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_READONLY },
+  { OP_GET_CHILDREN,                     op_get_children,             CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_GET_MESSAGE,                      op_get_message,              CHECK_ATTACH | CHECK_IN_MAILBOX },
   { OP_GET_PARENT,                       op_get_message,              CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_GENERIC_SELECT_ENTRY,             op_display_message,          CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_GROUP_CHAT_REPLY,                 op_group_reply,              CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
@@ -4085,5 +4098,5 @@ struct MenuDefinition *index_get_menu_definition(void)
   struct IndexModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
   ASSERT(mod_data);
 
-  return mod_data->menu_index;
+  return mod_data->md_index;
 }
