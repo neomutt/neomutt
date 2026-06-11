@@ -70,12 +70,12 @@ static const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "toggle-quoted",                 OP_PAGER_HIDE_QUOTED },
 
   // Deprecated
-  { "bottom",                        OP_LAST_ENTRY,        MFF_DEPRECATED },
-  { "buffy-list",                    OP_MAILBOX_LIST,      MFF_DEPRECATED },
-  { "error-history",                 OP_SHOW_LOG_MESSAGES, MFF_DEPRECATED },
-  { "mark-as-new",                   OP_TOGGLE_NEW,        MFF_DEPRECATED },
-  { "tag-message",                   OP_TAG,               MFF_DEPRECATED },
-  { "top",                           OP_FIRST_ENTRY,       MFF_DEPRECATED },
+  { "bottom",                        OP_SELECT_LAST_ENTRY,  MFF_DEPRECATED },
+  { "buffy-list",                    OP_MAILBOX_LIST,       MFF_DEPRECATED },
+  { "error-history",                 OP_SHOW_LOG_MESSAGES,  MFF_DEPRECATED },
+  { "mark-as-new",                   OP_TOGGLE_NEW,         MFF_DEPRECATED },
+  { "tag-message",                   OP_TAG,                MFF_DEPRECATED },
+  { "top",                           OP_SELECT_FIRST_ENTRY, MFF_DEPRECATED },
   { NULL, 0 },
 };
 
@@ -86,18 +86,18 @@ static const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { OP_EXIT,                               "q" },
   { OP_MAIN_NEXT_UNDELETED,                "<right>" },
   { OP_MAIN_PREV_UNDELETED,                "<left>" },
+  { OP_PAGER_HIDE_QUOTED,                  "T" },
+  { OP_PAGER_SKIP_HEADERS,                 "H" },
+  { OP_PAGER_SKIP_QUOTED,                  "S" },
+  { OP_QUIT,                               "Q" },
+  { OP_SEARCH_TOGGLE,                      "\\" },             // <Backslash>
+  { OP_SELECT_FIRST_ENTRY,                 "^" },
   { OP_VIEW_NEXT_LINE,                     "<keypadenter>" },
   { OP_VIEW_NEXT_LINE,                     "\n" },             // <Enter>
   { OP_VIEW_NEXT_LINE,                     "\r" },             // <Return>
   { OP_VIEW_NEXT_PAGE,                     " " },              // <Space>
-  { OP_PAGER_HIDE_QUOTED,                  "T" },
-  { OP_PAGER_SKIP_HEADERS,                 "H" },
-  { OP_PAGER_SKIP_QUOTED,                  "S" },
-  { OP_FIRST_ENTRY,                        "^" },
   { OP_VIEW_PREVIOUS_LINE,                 "<backspace>" },
   { OP_VIEW_PREVIOUS_PAGE,                 "-" },
-  { OP_QUIT,                               "Q" },
-  { OP_SEARCH_TOGGLE,                      "\\" },             // <Backslash>
   { 0, NULL },
 };
 // clang-format on
@@ -995,34 +995,34 @@ static int op_ignore(struct PagerFunctionData *fdata, const struct KeyEvent *eve
 static const struct PagerFunction PagerFunctions[] = {
   // clang-format off
   { OP_EXIT,                   op_exit },
-  { OP_FIRST_ENTRY,            op_first_entry },
-  { OP_VIEW_HALF_DOWN,         op_pager_half_down },
-  { OP_VIEW_HALF_UP,           op_pager_half_up },
   { OP_HELP,                   op_help },
-  { OP_LAST_ENTRY,             op_last_entry },
-  { OP_VIEW_NEXT_LINE,         op_pager_next_line },
-  { OP_VIEW_NEXT_PAGE,         op_pager_next_page },
   { OP_PAGER_HIDE_QUOTED,      op_pager_hide_quoted },
   { OP_PAGER_SKIP_HEADERS,     op_pager_skip_headers },
   { OP_PAGER_SKIP_QUOTED,      op_pager_skip_quoted },
-  { OP_VIEW_PREVIOUS_LINE,     op_pager_prev_line },
-  { OP_VIEW_PREVIOUS_PAGE,     op_pager_prev_page },
   { OP_SAVE,                   op_save },
   { OP_SEARCH,                 op_pager_search },
   { OP_SEARCH_NEXT,            op_pager_search_next },
   { OP_SEARCH_PREVIOUS,        op_pager_search_next },
   { OP_SEARCH_REVERSE,         op_pager_search },
   { OP_SEARCH_TOGGLE,          op_search_toggle },
+  { OP_SELECT_FIRST_ENTRY,     op_first_entry },
+  { OP_SELECT_LAST_ENTRY,      op_last_entry },
   { OP_VIEW_ATTACHMENTS,       op_view_attachments },
+  { OP_VIEW_HALF_DOWN,         op_pager_half_down },
+  { OP_VIEW_HALF_UP,           op_pager_half_up },
+  { OP_VIEW_NEXT_LINE,         op_pager_next_line },
+  { OP_VIEW_NEXT_PAGE,         op_pager_next_page },
+  { OP_VIEW_PREVIOUS_LINE,     op_pager_prev_line },
+  { OP_VIEW_PREVIOUS_PAGE,     op_pager_prev_page },
 
   // OpGeneric - Ignore
+  { OP_GENERIC_SELECT_ENTRY,     op_ignore },
+  { OP_SELECT_BOTTOM_OF_PAGE,    op_ignore },
+  { OP_SELECT_MIDDLE_OF_PAGE,    op_ignore },
+  { OP_SELECT_TOP_OF_PAGE,       op_ignore },
+  { OP_VIEW_SELECTION_TO_BOTTOM, op_ignore },
   { OP_VIEW_SELECTION_TO_MIDDLE, op_ignore },
   { OP_VIEW_SELECTION_TO_TOP,    op_ignore },
-  { OP_VIEW_SELECTION_TO_BOTTOM, op_ignore },
-  { OP_BOTTOM_PAGE,              op_ignore },
-  { OP_MIDDLE_PAGE,              op_ignore },
-  { OP_GENERIC_SELECT_ENTRY,     op_ignore },
-  { OP_TOP_PAGE,                 op_ignore },
   { 0, NULL },
   // clang-format on
 };

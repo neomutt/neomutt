@@ -129,8 +129,6 @@ const char *opcodes_get_name       (int op);
 #define OPS_CORE(_fmt) \
   /* L10N: Help for Index function: <alias-dialog> */ \
   _fmt(OP_ALIAS_DIALOG,                       N_("Open the aliases dialog")) \
-  /* L10N: Help for Pager: <bottom-page> */ \
-  _fmt(OP_BOTTOM_PAGE,                        N_("Move to the bottom of the page")) \
   /* L10N: Help for Attach, Index function: <bounce-message> */ \
   _fmt(OP_BOUNCE_MESSAGE,                     N_("Remail a message to another user")) \
   /* L10N: Help for Browser function: <goto-folder> */ \
@@ -259,8 +257,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_ENTER_MASK,                         N_("Enter a file mask")) \
   /* L10N: Help for Generic function: <exit> */ \
   _fmt(OP_EXIT,                               N_("Exit this menu")) \
-  /* L10N: Help for Generic function: <first-entry> */ \
-  _fmt(OP_FIRST_ENTRY,                        N_("Move to the first entry")) \
   /* L10N: Help for Index function: <flag-message> */ \
   _fmt(OP_FLAG_MESSAGE,                       N_("Toggle a message's 'important' flag")) \
   /* L10N: Help for Attach, Index function: <followup-message> */ \
@@ -287,8 +283,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_HELP,                               N_("This screen")) \
   /* L10N: Help for Generic function: <jump> */ \
   _fmt(OP_JUMP,                               N_("Jump to an index number")) \
-  /* L10N: Help for Generic function: <last-entry> */ \
-  _fmt(OP_LAST_ENTRY,                         N_("Move to the last entry")) \
   /* L10N: Help for Index function: <limit-current-thread> */ \
   _fmt(OP_LIMIT_CURRENT_THREAD,               N_("Limit view to current thread")) \
   /* L10N: Help for Index function: <list-action> */ \
@@ -407,10 +401,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_MAIN_UNTAG_PATTERN,                 N_("Untag non-hidden messages matching a pattern")) \
   /* L10N: Help for Index function: <mark-message> */ \
   _fmt(OP_MARK_MSG,                           N_("Create a hotkey macro for the current message")) \
-  /* L10N: Help for Generic function: <middle-page> */ \
-  _fmt(OP_MIDDLE_PAGE,                        N_("Move to the middle of the page")) \
-  /* L10N: Help for Generic function: <next-entry> */ \
-  _fmt(OP_NEXT_ENTRY,                         N_("Move to the next entry")) \
   /* L10N: Help for Pager function: <toggle-quoted> */ \
   _fmt(OP_PAGER_HIDE_QUOTED,                  N_("Toggle display of quoted text")) \
   /* L10N: Help for Pager function: <skip-headers> */ \
@@ -421,8 +411,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_PIPE,                               N_("Pipe message/attachment to a shell command")) \
   /* L10N: Help for Index function: <post-message> */ \
   _fmt(OP_POST,                               N_("Post message to newsgroup")) \
-  /* L10N: Help for Generic function: <previous-entry> */ \
-  _fmt(OP_PREV_ENTRY,                         N_("Move to the previous entry")) \
   /* L10N: Help for Index function: <print-message> */ \
   _fmt(OP_PRINT,                              N_("Print the current entry")) \
   /* L10N: Help for Index function: <purge-message> */ \
@@ -487,8 +475,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_TOGGLE_READ,                        N_("Toggle view of read messages")) \
   /* L10N: Help for Index function: <toggle-write> */ \
   _fmt(OP_TOGGLE_WRITE,                       N_("Toggle whether the mailbox will be rewritten")) \
-  /* L10N: Help for Generic function: <top-page> */ \
-  _fmt(OP_TOP_PAGE,                           N_("Move to the top of the page")) \
   /* L10N: Help for Browser function: <uncatchup> */ \
   _fmt(OP_UNCATCHUP,                          N_("Mark all articles in newsgroup as unread")) \
   /* L10N: Help for Alias, Postpone, Index function: <undelete-entry> */ \
@@ -576,6 +562,22 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Pgp, Smime function: <view-name> */ \
   _fmt(OP_VIEW_ID,                            N_("View the key's user id")) \
 
+#define OPS_SELECT(_fmt) \
+  /* L10N: Help for Generic function: <select-bottom-of-page> */ \
+  _fmt(OP_SELECT_BOTTOM_OF_PAGE,              N_("Move to the bottom of the page")) \
+  /* L10N: Help for Generic function: <select-first-entry> */ \
+  _fmt(OP_SELECT_FIRST_ENTRY,                 N_("Move to the first entry")) \
+  /* L10N: Help for Generic function: <select-last-entry> */ \
+  _fmt(OP_SELECT_LAST_ENTRY,                  N_("Move to the last entry")) \
+  /* L10N: Help for Generic function: <select-middle-of-page> */ \
+  _fmt(OP_SELECT_MIDDLE_OF_PAGE,              N_("Move to the middle of the page")) \
+  /* L10N: Help for Generic function: <select-next-entry> */ \
+  _fmt(OP_SELECT_NEXT_ENTRY,                  N_("Move to the next entry")) \
+  /* L10N: Help for Generic function: <select-previous-entry> */ \
+  _fmt(OP_SELECT_PREVIOUS_ENTRY,              N_("Move to the previous entry")) \
+  /* L10N: Help for Generic function: <select-top-of-page> */ \
+  _fmt(OP_SELECT_TOP_OF_PAGE,                 N_("Move to the top of the page")) \
+
 #define OPS_SIDEBAR(_fmt) \
   /* L10N: Help for Sidebar function: <sidebar-first> */ \
   _fmt(OP_SIDEBAR_FIRST,                      N_("Move the highlight to the first mailbox")) \
@@ -637,6 +639,7 @@ const char *opcodes_get_name       (int op);
   OPS_ENVELOPE(_fmt) \
   OPS_NOTMUCH(_fmt) \
   OPS_PGP(_fmt) \
+  OPS_SELECT(_fmt) \
   OPS_SIDEBAR(_fmt) \
   OPS_SMIME(_fmt) \
   OPS_VIEW(_fmt) \

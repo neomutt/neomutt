@@ -191,7 +191,7 @@ static bool check_read_delay(uint64_t *timestamp)
  * commands to highlight it.
  *
  * From the Pager, the user can also use some Index functions, such as
- * `<next-entry>` or `<delete>`.
+ * `<select-next-entry>` or `<delete>`.
  *
  * This pager is actually not so simple as it once was. But it will be again.
  * Currently it operates in 3 modes:
