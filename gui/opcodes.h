@@ -177,12 +177,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_CREATE_ALIAS,                       N_("Create an alias from a message sender")) \
   /* L10N: Help for Browser function: <create-mailbox> */ \
   _fmt(OP_CREATE_MAILBOX,                     N_("Create a new mailbox (IMAP only)")) \
-  /* L10N: Help for Generic function: <current-bottom> */ \
-  _fmt(OP_CURRENT_BOTTOM,                     N_("Move entry to bottom of screen")) \
-  /* L10N: Help for Generic function: <current-middle> */ \
-  _fmt(OP_CURRENT_MIDDLE,                     N_("Move entry to middle of screen")) \
-  /* L10N: Help for Generic function: <current-top> */ \
-  _fmt(OP_CURRENT_TOP,                        N_("Move entry to top of screen")) \
   /* L10N: Help for Index function: <decode-copy> */ \
   _fmt(OP_DECODE_COPY,                        N_("Make decoded (text/plain) copy")) \
   /* L10N: Help for Index function: <decode-save> */ \
@@ -289,10 +283,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_GROUP_CHAT_REPLY,                   N_("Reply to all recipients preserving To/Cc")) \
   /* L10N: Help for Attach, Index function: <group-reply> */ \
   _fmt(OP_GROUP_REPLY,                        N_("Reply to all recipients")) \
-  /* L10N: Help for Generic function: <half-down> */ \
-  _fmt(OP_HALF_DOWN,                          N_("Scroll down 1/2 page")) \
-  /* L10N: Help for Generic function: <half-up> */ \
-  _fmt(OP_HALF_UP,                            N_("Scroll up 1/2 page")) \
   /* L10N: Help for Editor, Generic function: <help> */ \
   _fmt(OP_HELP,                               N_("This screen")) \
   /* L10N: Help for Generic function: <jump> */ \
@@ -421,10 +411,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_MIDDLE_PAGE,                        N_("Move to the middle of the page")) \
   /* L10N: Help for Generic function: <next-entry> */ \
   _fmt(OP_NEXT_ENTRY,                         N_("Move to the next entry")) \
-  /* L10N: Help for Generic function: <next-line> */ \
-  _fmt(OP_NEXT_LINE,                          N_("Scroll down one line")) \
-  /* L10N: Help for Generic function: <next-page> */ \
-  _fmt(OP_NEXT_PAGE,                          N_("Move to the next page")) \
   /* L10N: Help for Pager function: <toggle-quoted> */ \
   _fmt(OP_PAGER_HIDE_QUOTED,                  N_("Toggle display of quoted text")) \
   /* L10N: Help for Pager function: <skip-headers> */ \
@@ -437,10 +423,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_POST,                               N_("Post message to newsgroup")) \
   /* L10N: Help for Generic function: <previous-entry> */ \
   _fmt(OP_PREV_ENTRY,                         N_("Move to the previous entry")) \
-  /* L10N: Help for Generic function: <previous-line> */ \
-  _fmt(OP_PREV_LINE,                          N_("Scroll up one line")) \
-  /* L10N: Help for Generic function: <previous-page> */ \
-  _fmt(OP_PREV_PAGE,                          N_("Move to the previous page")) \
   /* L10N: Help for Index function: <print-message> */ \
   _fmt(OP_PRINT,                              N_("Print the current entry")) \
   /* L10N: Help for Index function: <purge-message> */ \
@@ -626,6 +608,26 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Compose function: <smime-menu> */ \
   _fmt(OP_COMPOSE_SMIME_MENU,                 N_("Show S/MIME options")) \
 
+#define OPS_VIEW(_fmt) \
+  /* L10N: Help for Generic function: <view-selection-to-bottom> */ \
+  _fmt(OP_VIEW_SELECTION_TO_BOTTOM,           N_("Move entry to bottom of screen")) \
+  /* L10N: Help for Generic function: <view-selection-to-middle> */ \
+  _fmt(OP_VIEW_SELECTION_TO_MIDDLE,           N_("Move entry to middle of screen")) \
+  /* L10N: Help for Generic function: <view-selection-to-top> */ \
+  _fmt(OP_VIEW_SELECTION_TO_TOP,              N_("Move entry to top of screen")) \
+  /* L10N: Help for Generic function: <view-half-down> */ \
+  _fmt(OP_VIEW_HALF_DOWN,                     N_("Scroll down 1/2 page")) \
+  /* L10N: Help for Generic function: <view-half-up> */ \
+  _fmt(OP_VIEW_HALF_UP,                       N_("Scroll up 1/2 page")) \
+  /* L10N: Help for Generic function: <view-next-line> */ \
+  _fmt(OP_VIEW_NEXT_LINE,                     N_("Scroll down one line")) \
+  /* L10N: Help for Generic function: <view-next-page> */ \
+  _fmt(OP_VIEW_NEXT_PAGE,                     N_("Move to the next page")) \
+  /* L10N: Help for Generic function: <view-previous-line> */ \
+  _fmt(OP_VIEW_PREVIOUS_LINE,                 N_("Scroll up one line")) \
+  /* L10N: Help for Generic function: <view-previous-page> */ \
+  _fmt(OP_VIEW_PREVIOUS_PAGE,                 N_("Move to the previous page")) \
+
 #define OPS(_fmt) \
   _fmt(OP_NULL,                               N_("Null operation")) \
   OPS_ATTACH(_fmt) \
@@ -637,6 +639,7 @@ const char *opcodes_get_name       (int op);
   OPS_PGP(_fmt) \
   OPS_SIDEBAR(_fmt) \
   OPS_SMIME(_fmt) \
+  OPS_VIEW(_fmt) \
 
 /**
  * enum MuttOps - All NeoMutt Opcodes

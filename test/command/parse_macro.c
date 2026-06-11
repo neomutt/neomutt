@@ -40,7 +40,7 @@ static const struct CommandTest Tests[] = {
   // macro <map>[,<map> ... ] <key> <sequence> [ <description> ]
   { MUTT_CMD_SUCCESS, "" },
   { MUTT_CMD_SUCCESS, "index eee '<enter-function>echo<enter>'" },
-  { MUTT_CMD_SUCCESS, "index nn  '<next-line><next-page>'" },
+  { MUTT_CMD_SUCCESS, "index nn  '<view-next-line><view-next-page>'" },
   { MUTT_CMD_ERROR,   NULL },
   { MUTT_CMD_ERROR,   NULL },
   // clang-format on

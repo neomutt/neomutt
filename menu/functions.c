@@ -146,20 +146,20 @@ done:
  *
  * This function handles:
  * - OP_BOTTOM_PAGE
- * - OP_CURRENT_BOTTOM
- * - OP_CURRENT_MIDDLE
- * - OP_CURRENT_TOP
+ * - OP_VIEW_SELECTION_TO_BOTTOM
+ * - OP_VIEW_SELECTION_TO_MIDDLE
+ * - OP_VIEW_SELECTION_TO_TOP
  * - OP_FIRST_ENTRY
- * - OP_HALF_DOWN
- * - OP_HALF_UP
+ * - OP_VIEW_HALF_DOWN
+ * - OP_VIEW_HALF_UP
  * - OP_LAST_ENTRY
  * - OP_MIDDLE_PAGE
  * - OP_NEXT_ENTRY
- * - OP_NEXT_LINE
- * - OP_NEXT_PAGE
+ * - OP_VIEW_NEXT_LINE
+ * - OP_VIEW_NEXT_PAGE
  * - OP_PREV_ENTRY
- * - OP_PREV_LINE
- * - OP_PREV_PAGE
+ * - OP_VIEW_PREVIOUS_LINE
+ * - OP_VIEW_PREVIOUS_PAGE
  * - OP_TOP_PAGE
  */
 static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *event)
@@ -176,15 +176,15 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
       flags = menu_bottom_page(menu);
       return (menu->max == 0) ? FR_ERROR : FR_SUCCESS;
 
-    case OP_CURRENT_BOTTOM:
+    case OP_VIEW_SELECTION_TO_BOTTOM:
       flags = menu_current_bottom(menu);
       return (menu->max == 0) ? FR_ERROR : FR_SUCCESS;
 
-    case OP_CURRENT_MIDDLE:
+    case OP_VIEW_SELECTION_TO_MIDDLE:
       flags = menu_current_middle(menu);
       return (menu->max == 0) ? FR_ERROR : FR_SUCCESS;
 
-    case OP_CURRENT_TOP:
+    case OP_VIEW_SELECTION_TO_TOP:
       flags = menu_current_top(menu);
       return (menu->max == 0) ? FR_ERROR : FR_SUCCESS;
 
@@ -192,11 +192,11 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
       flags = menu_first_entry(menu, count);
       return (menu->max == 0) ? FR_ERROR : FR_SUCCESS;
 
-    case OP_HALF_DOWN:
+    case OP_VIEW_HALF_DOWN:
       menu_half_down(menu, count);
       return FR_SUCCESS;
 
-    case OP_HALF_UP:
+    case OP_VIEW_HALF_UP:
       menu_half_up(menu, count);
       return FR_SUCCESS;
 
@@ -215,14 +215,14 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
                  FR_ERROR :
                  FR_SUCCESS;
 
-    case OP_NEXT_LINE:
+    case OP_VIEW_NEXT_LINE:
       flags = menu_next_line(menu, count);
       return ((flags == MENU_REDRAW_NONE) && (menu->top == old_top) &&
               (menu->current == old_current)) ?
                  FR_ERROR :
                  FR_SUCCESS;
 
-    case OP_NEXT_PAGE:
+    case OP_VIEW_NEXT_PAGE:
       menu_next_page(menu, count);
       return FR_SUCCESS;
 
@@ -233,14 +233,14 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
                  FR_ERROR :
                  FR_SUCCESS;
 
-    case OP_PREV_LINE:
+    case OP_VIEW_PREVIOUS_LINE:
       flags = menu_prev_line(menu, count);
       return ((flags == MENU_REDRAW_NONE) && (menu->top == old_top) &&
               (menu->current == old_current)) ?
                  FR_ERROR :
                  FR_SUCCESS;
 
-    case OP_PREV_PAGE:
+    case OP_VIEW_PREVIOUS_PAGE:
       menu_prev_page(menu, count);
       return FR_SUCCESS;
 
@@ -334,28 +334,28 @@ done:
  */
 static const struct MenuFunction MenuFunctions[] = {
   // clang-format off
-  { OP_BOTTOM_PAGE,            menu_movement },
-  { OP_CURRENT_BOTTOM,         menu_movement },
-  { OP_CURRENT_MIDDLE,         menu_movement },
-  { OP_CURRENT_TOP,            menu_movement },
-  { OP_FIRST_ENTRY,            menu_movement },
-  { OP_HALF_DOWN,              menu_movement },
-  { OP_HALF_UP,                menu_movement },
-  { OP_HELP,                   op_help },
-  { OP_JUMP,                   op_jump },
-  { OP_LAST_ENTRY,             menu_movement },
-  { OP_MIDDLE_PAGE,            menu_movement },
-  { OP_NEXT_ENTRY,             menu_movement },
-  { OP_NEXT_LINE,              menu_movement },
-  { OP_NEXT_PAGE,              menu_movement },
-  { OP_PREV_ENTRY,             menu_movement },
-  { OP_PREV_LINE,              menu_movement },
-  { OP_PREV_PAGE,              menu_movement },
-  { OP_SEARCH,                 menu_search },
-  { OP_SEARCH_NEXT,            menu_search },
-  { OP_SEARCH_PREVIOUS,        menu_search },
-  { OP_SEARCH_REVERSE,         menu_search },
-  { OP_TOP_PAGE,               menu_movement },
+  { OP_BOTTOM_PAGE,              menu_movement },
+  { OP_VIEW_SELECTION_TO_BOTTOM, menu_movement },
+  { OP_VIEW_SELECTION_TO_MIDDLE, menu_movement },
+  { OP_VIEW_SELECTION_TO_TOP,    menu_movement },
+  { OP_FIRST_ENTRY,              menu_movement },
+  { OP_VIEW_HALF_DOWN,           menu_movement },
+  { OP_VIEW_HALF_UP,             menu_movement },
+  { OP_HELP,                     op_help },
+  { OP_JUMP,                     op_jump },
+  { OP_LAST_ENTRY,               menu_movement },
+  { OP_MIDDLE_PAGE,              menu_movement },
+  { OP_NEXT_ENTRY,               menu_movement },
+  { OP_VIEW_NEXT_LINE,           menu_movement },
+  { OP_VIEW_NEXT_PAGE,           menu_movement },
+  { OP_PREV_ENTRY,               menu_movement },
+  { OP_VIEW_PREVIOUS_LINE,       menu_movement },
+  { OP_VIEW_PREVIOUS_PAGE,       menu_movement },
+  { OP_SEARCH,                   menu_search },
+  { OP_SEARCH_NEXT,              menu_search },
+  { OP_SEARCH_PREVIOUS,          menu_search },
+  { OP_SEARCH_REVERSE,           menu_search },
+  { OP_TOP_PAGE,                 menu_movement },
   { 0, NULL },
   // clang-format on
 };

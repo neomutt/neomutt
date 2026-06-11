@@ -66,8 +66,8 @@
 static const struct Mapping PagerHelp[] = {
   // clang-format off
   { N_("Exit"),          OP_EXIT },
-  { N_("PrevPg"),        OP_PREV_PAGE },
-  { N_("NextPg"),        OP_NEXT_PAGE },
+  { N_("PrevPg"),        OP_VIEW_PREVIOUS_PAGE },
+  { N_("NextPg"),        OP_VIEW_NEXT_PAGE },
   { N_("Help"),          OP_HELP },
   { NULL, 0 },
   // clang-format on
@@ -77,8 +77,8 @@ static const struct Mapping PagerHelp[] = {
 static const struct Mapping PagerHelpHelp[] = {
   // clang-format off
   { N_("Exit"),          OP_EXIT },
-  { N_("PrevPg"),        OP_PREV_PAGE },
-  { N_("NextPg"),        OP_NEXT_PAGE },
+  { N_("PrevPg"),        OP_VIEW_PREVIOUS_PAGE },
+  { N_("NextPg"),        OP_VIEW_NEXT_PAGE },
   { NULL, 0 },
   // clang-format on
 };
@@ -87,8 +87,8 @@ static const struct Mapping PagerHelpHelp[] = {
 static const struct Mapping PagerNormalHelp[] = {
   // clang-format off
   { N_("Exit"),          OP_EXIT },
-  { N_("PrevPg"),        OP_PREV_PAGE },
-  { N_("NextPg"),        OP_NEXT_PAGE },
+  { N_("PrevPg"),        OP_VIEW_PREVIOUS_PAGE },
+  { N_("NextPg"),        OP_VIEW_NEXT_PAGE },
   { N_("View Attachm."), OP_VIEW_ATTACHMENTS },
   { N_("Del"),           OP_DELETE },
   { N_("Reply"),         OP_REPLY },
@@ -102,8 +102,8 @@ static const struct Mapping PagerNormalHelp[] = {
 static const struct Mapping PagerNewsHelp[] = {
   // clang-format off
   { N_("Exit"),          OP_EXIT },
-  { N_("PrevPg"),        OP_PREV_PAGE },
-  { N_("NextPg"),        OP_NEXT_PAGE },
+  { N_("PrevPg"),        OP_VIEW_PREVIOUS_PAGE },
+  { N_("NextPg"),        OP_VIEW_NEXT_PAGE },
   { N_("Post"),          OP_POST },
   { N_("Followup"),      OP_FOLLOWUP },
   { N_("Del"),           OP_DELETE },

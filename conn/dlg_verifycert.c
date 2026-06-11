@@ -105,21 +105,21 @@ static int menu_dialog_dokey(struct Menu *menu, int *id)
 /**
  * menu_dialog_translate_op - Convert menubar movement to scrolling
  * @param op Action requested, e.g. OP_NEXT_ENTRY
- * @retval num Action to perform, e.g. OP_NEXT_LINE
+ * @retval num Action to perform, e.g. OP_VIEW_NEXT_LINE
  */
 static int menu_dialog_translate_op(int op)
 {
   switch (op)
   {
     case OP_NEXT_ENTRY:
-      return OP_NEXT_LINE;
+      return OP_VIEW_NEXT_LINE;
     case OP_PREV_ENTRY:
-      return OP_PREV_LINE;
-    case OP_CURRENT_TOP:
+      return OP_VIEW_PREVIOUS_LINE;
+    case OP_VIEW_SELECTION_TO_TOP:
       return OP_TOP_PAGE;
-    case OP_CURRENT_BOTTOM:
+    case OP_VIEW_SELECTION_TO_BOTTOM:
       return OP_BOTTOM_PAGE;
-    case OP_CURRENT_MIDDLE:
+    case OP_VIEW_SELECTION_TO_MIDDLE:
       return OP_MIDDLE_PAGE;
   }
 
