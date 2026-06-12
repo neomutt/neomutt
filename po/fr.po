@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2026-06-06 23:17+0100\n"
+"POT-Creation-Date: 2026-06-12 13:14+0100\n"
 "PO-Revision-Date: 2023-05-08 12:38+0000\n"
 "Last-Translator: Ryan d'Huart <homoelectromagneticus@protonmail.com>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
@@ -57,8 +57,8 @@ msgstr "Attention : ce nom d'alias peut ne pas fonctionner. Corriger ?"
 msgid "Address: "
 msgstr "Adresse : "
 
-#: alias/alias.c:449 attach/recvcmd.c:209 conn/raw.c:177 conn/raw.c:234
-#: envelope/functions.c:133 external.c:132 send/send.c:212
+#: alias/alias.c:449 attach/recvcmd.c:209 conn/raw.c:176 conn/raw.c:233
+#: envelope/functions.c:133 external.c:132 send/send.c:211
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "Mauvais IDN : '%s'"
@@ -123,7 +123,7 @@ msgstr "Alias ajouté"
 #: hooks/parse.c:1199 imap/imap.c:100 imap/imap.c:151 index/subjectrx.c:74
 #: index/subjectrx.c:113 index/subjectrx.c:122 index/subjectrx.c:200
 #: index/subjectrx.c:232 key/commands.c:161 key/commands.c:212
-#: key/commands.c:467 key/commands.c:821 lua/commands.c:64 lua/commands.c:107
+#: key/commands.c:472 key/commands.c:826 lua/commands.c:64 lua/commands.c:107
 #: send/my_header.c:59 send/my_header.c:113 sidebar/commands.c:53
 #: sidebar/commands.c:84
 #, c-format
@@ -233,20 +233,20 @@ msgstr "unsubscribe { * | <regex> ... }"
 #: alias/dlg_alias.c:102 alias/dlg_query.c:101 attach/dlg_attach.c:94
 #: autocrypt/dlg_autocrypt.c:91 browser/dlg_browser.c:112
 #: browser/dlg_browser.c:124 conn/dlg_verifycert.c:67 history/dlg_history.c:77
-#: index/dlg_list.c:41 ncrypt/dlg_gpgme.c:94 ncrypt/dlg_pgp.c:93
+#: mlist/dlg_mlist.c:45 ncrypt/dlg_gpgme.c:94 ncrypt/dlg_pgp.c:93
 #: ncrypt/dlg_smime.c:75 pager/dlg_pager.c:68 pager/dlg_pager.c:79
 #: pager/dlg_pager.c:89 pager/dlg_pager.c:104 pattern/dlg_pattern.c:90
-#: postpone/dlg_postpone.c:89
+#: postpone/dlg_postpone.c:90
 msgid "Exit"
 msgstr "Quitter"
 
 #: alias/dlg_alias.c:103 index/dlg_index.c:104 index/dlg_index.c:119
-#: pager/dlg_pager.c:93 pager/dlg_pager.c:109 postpone/dlg_postpone.c:90
+#: pager/dlg_pager.c:93 pager/dlg_pager.c:109 postpone/dlg_postpone.c:91
 msgid "Del"
 msgstr "Supprimer"
 
 #: alias/dlg_alias.c:104 index/dlg_index.c:105 index/dlg_index.c:120
-#: postpone/dlg_postpone.c:91
+#: postpone/dlg_postpone.c:92
 msgid "Undel"
 msgstr "Récup"
 
@@ -268,10 +268,10 @@ msgstr "Sélectionner"
 #: browser/dlg_browser.c:130 compose/dlg_compose.c:106
 #: compose/dlg_compose.c:120 conn/dlg_verifycert.c:68 editor/window.c:50
 #: history/dlg_history.c:80 index/dlg_index.c:110 index/dlg_index.c:125
-#: index/dlg_list.c:43 index/dlg_list.c:65 ncrypt/dlg_gpgme.c:97
+#: mlist/dlg_mlist.c:47 mlist/functions.c:47 ncrypt/dlg_gpgme.c:97
 #: ncrypt/dlg_pgp.c:96 ncrypt/dlg_smime.c:77 pager/dlg_pager.c:71
 #: pager/dlg_pager.c:96 pager/dlg_pager.c:111 pattern/dlg_pattern.c:92
-#: postpone/dlg_postpone.c:93
+#: postpone/dlg_postpone.c:94
 msgid "Help"
 msgstr "Aide"
 
@@ -315,7 +315,7 @@ msgstr "Commande de requête non définie"
 msgid "Query: "
 msgstr "Requête : "
 
-#: alias/functions.c:332 browser/functions.c:909 index/functions.c:1323
+#: alias/functions.c:332 browser/functions.c:909 index/functions.c:1286
 msgid "Invalid message number"
 msgstr "Numéro de message invalide"
 
@@ -366,7 +366,7 @@ msgstr "%sgroup : attention : mauvais IDN '%s'"
 
 # , c-format
 #. L10N: ask for a limit to apply
-#: alias/gui.c:88 index/functions.c:2502
+#: alias/gui.c:88 index/functions.c:2465
 #, c-format
 msgid "Limit: %s"
 msgstr "Limite : %s"
@@ -442,11 +442,11 @@ msgid "Attachments"
 msgstr "Pièces jointes"
 
 # , c-format
-#: attach/functions.c:53 index/functions.c:3912
+#: attach/functions.c:53 index/functions.c:3875
 msgid "Function not permitted in attach-message mode"
 msgstr "Fonction non autorisée en mode attach-message"
 
-#: attach/functions.c:206 index/functions.c:3906 mx.c:930
+#: attach/functions.c:206 index/functions.c:3869 mx.c:931
 msgid "Mailbox is read-only"
 msgstr "La boîte aux lettres est en lecture seule"
 
@@ -479,7 +479,7 @@ msgstr "Seul la suppression des pièces jointes en plusieurs parties est possibl
 msgid "You may only followup to message/rfc822 parts"
 msgstr "Vous ne pouvez renvoyer que des parties message/rfc822"
 
-#: attach/functions.c:757 index/functions.c:3649
+#: attach/functions.c:757 index/functions.c:3612
 msgid "Reply by mail as poster prefers?"
 msgstr "Répondre par mail selon la préférence de l'expéditeur ?"
 
@@ -493,9 +493,9 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "L'entrée compose du fichier mailcap nécessite %%s"
 
 #: attach/mutt_attach.c:162 attach/mutt_attach.c:301 compmbox/compress.c:317
-#: compose/functions.c:2410 gui/curs_lib.c:126 index/dlg_index.c:1240
+#: compose/functions.c:2410 gui/curs_lib.c:125 index/dlg_index.c:1240
 #: index/dlg_index.c:1285 pager/dlg_pager.c:459 pager/do_pager.c:166
-#: pager/message.c:327 send/sendlib.c:587
+#: pager/message.c:326 send/sendlib.c:587
 #, c-format
 msgid "Error running \"%s\""
 msgstr "Erreur en exécutant \"%s\""
@@ -699,7 +699,7 @@ msgstr "Impossible de créer %s"
 msgid "Can't find any selected messages"
 msgstr "Aucun message marqué n'a pu être trouvé"
 
-#: attach/recvcmd.c:826 send/send.c:1129
+#: attach/recvcmd.c:826 send/send.c:1128
 msgid "No mailing lists found"
 msgstr "Pas de liste de diffusion trouvée"
 
@@ -717,7 +717,7 @@ msgstr "Vous ne pouvez composer à l'expéditeur qu'avec des parties message/rfc
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:78 main.c:1151
+#: autocrypt/autocrypt.c:78 main.c:1149
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s n'existe pas. Le créer?"
@@ -725,8 +725,8 @@ msgstr "%s n'existe pas. Le créer?"
 # , c-format
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:85 bcache/bcache.c:234 hcache/hcache.c:332 main.c:654
-#: main.c:1155 nntp/newsrc.c:1028
+#: autocrypt/autocrypt.c:85 bcache/bcache.c:234 hcache/hcache.c:332 main.c:651
+#: main.c:1153 nntp/newsrc.c:1028
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "Impossible de créer %s : %s"
@@ -990,12 +990,12 @@ msgid "List"
 msgstr "Liste"
 
 # , c-format
-#: browser/dlg_browser.c:126 index/dlg_list.c:46 index/dlg_list.c:67
+#: browser/dlg_browser.c:126 mlist/dlg_mlist.c:50 mlist/functions.c:49
 msgid "Subscribe"
 msgstr "S'abonner"
 
 # , c-format
-#: browser/dlg_browser.c:127 index/dlg_list.c:47 index/dlg_list.c:68
+#: browser/dlg_browser.c:127 mlist/dlg_mlist.c:51 mlist/functions.c:50
 msgid "Unsubscribe"
 msgstr "Se désabonner"
 
@@ -1207,7 +1207,7 @@ msgstr "%s : cette couleur n'est pas prise en charge sur ce terminal"
 #: hooks/parse.c:86 hooks/parse.c:133 hooks/parse.c:218 hooks/parse.c:386
 #: hooks/parse.c:468 hooks/parse.c:577 hooks/parse.c:706 hooks/parse.c:815
 #: hooks/parse.c:955 hooks/parse.c:1118 imap/imap.c:113 imap/imap.c:162
-#: key/commands.c:222 key/commands.c:276 key/commands.c:537 key/commands.c:751
+#: key/commands.c:222 key/commands.c:276 key/commands.c:542 key/commands.c:756
 #: lua/commands.c:127
 #, c-format
 msgid "%s: too many arguments"
@@ -1727,7 +1727,7 @@ msgstr "Ouvrir une boîte aux lettres de laquelle vous voulez joindre un message
 msgid "Open newsgroup to attach message from"
 msgstr "Ouvrir un forum duquel vous voulez joindre un message"
 
-#: compose/functions.c:1157 main.c:1617
+#: compose/functions.c:1157 main.c:1615
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Impossible d'ouvrir la boîte aux lettres %s"
@@ -1843,7 +1843,7 @@ msgstr "La pièce jointe actuelle sera convertie"
 msgid "Attachment is not 'multipart'"
 msgstr "La pièce jointe n'est pas en plusieurs parties (au format 'multipart')"
 
-#: compose/functions.c:2324 send/send.c:2668
+#: compose/functions.c:2324 send/send.c:2667
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "Mauvais IDN dans « %s » : '%s'"
@@ -1956,7 +1956,7 @@ msgstr "Valeur d'énumération invalide : %ld"
 
 # , c-format
 #: config/helpers.c:340 config/set.c:110 config/set.c:455 config/set.c:626
-#: config/set.c:702 config/set.c:822 main.c:683 parse/set.c:120 parse/set.c:184
+#: config/set.c:702 config/set.c:822 main.c:680 parse/set.c:120 parse/set.c:184
 #: parse/set.c:233 parse/set.c:267 parse/set.c:330 parse/set.c:371
 #: parse/set.c:438
 #, c-format
@@ -2063,55 +2063,55 @@ msgstr "La commande a retourné une chaîne vide"
 msgid "OAUTH token is too big: %ld"
 msgstr "Le jeton OAUTH est trop gros : %ld"
 
-#: conn/dlg_verifycert.c:185
+#: conn/dlg_verifycert.c:188
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 msgstr "(r)ejeter, accepter (u)ne fois, (a)ccepter toujours, (p)asser"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:189
+#: conn/dlg_verifycert.c:192
 msgid "roas"
 msgstr "ruap"
 
-#: conn/dlg_verifycert.c:193
+#: conn/dlg_verifycert.c:196
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)ejeter, accepter (u)ne fois, (a)ccepter toujours"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:197
+#: conn/dlg_verifycert.c:200
 msgid "roa"
 msgstr "rua"
 
-#: conn/dlg_verifycert.c:204
+#: conn/dlg_verifycert.c:207
 msgid "(r)eject, accept (o)nce, (s)kip"
 msgstr "(r)ejeter, accepter (u)ne fois, (p)asser"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:208
+#: conn/dlg_verifycert.c:211
 msgid "ros"
 msgstr "rup"
 
-#: conn/dlg_verifycert.c:212
+#: conn/dlg_verifycert.c:215
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)ejeter, accepter (u)ne fois"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:216
+#: conn/dlg_verifycert.c:219
 msgid "ro"
 msgstr "ru"
 
-#: conn/dlg_verifycert.c:268
+#: conn/dlg_verifycert.c:271
 msgid "Jumping is not implemented for dialogs"
 msgstr "Le saut n'est pas implémenté pour les dialogues"
 
-#: conn/dlg_verifycert.c:275
+#: conn/dlg_verifycert.c:278
 msgid "Search is not implemented for this menu"
 msgstr "La recherche n'est pas implémentée pour ce menu"
 
@@ -2217,7 +2217,7 @@ msgstr "Tous les protocoles disponibles pour une connexion TLS/SSL sont désacti
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
 msgstr "Sélection de suite cryptographique explicite via $ssl_ciphers non supportée"
 
-#: conn/gnutls.c:864 imap/command.c:1468
+#: conn/gnutls.c:864 imap/command.c:1467
 #, c-format
 msgid "Connection to %s timed out"
 msgstr "Connexion à %s interrompue"
@@ -2292,7 +2292,7 @@ msgstr "Échec de la vérification du certificat du hôte : %s"
 msgid "I/O error"
 msgstr "E/S a rencontré une erreur"
 
-#: conn/openssl.c:1195 conn/raw.c:285 mutt_logging.c:108
+#: conn/openssl.c:1195 conn/raw.c:284 mutt_logging.c:108
 msgid "unknown error"
 msgstr "erreur inconnue"
 
@@ -2313,36 +2313,36 @@ msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr "Attention : erreur lors de l'activation de ssl_verify_partial_chains"
 
 # , c-format
-#: conn/raw.c:185 conn/raw.c:242
+#: conn/raw.c:184 conn/raw.c:241
 #, c-format
 msgid "Looking up %s..."
 msgstr "Recherche de %s..."
 
-#: conn/raw.c:195 conn/raw.c:252
+#: conn/raw.c:194 conn/raw.c:251
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Impossible de trouver la machine \"%s\""
 
 # , c-format
-#: conn/raw.c:200 conn/raw.c:258
+#: conn/raw.c:199 conn/raw.c:257
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Connexion à %s..."
 
 # , c-format
-#: conn/raw.c:284
+#: conn/raw.c:283
 #, c-format
 msgid "Could not connect to %s (%s)"
 msgstr "Impossible de se connecter à %s (%s)"
 
 # , c-format
-#: conn/raw.c:307 conn/raw.c:340
+#: conn/raw.c:306 conn/raw.c:339
 #, c-format
 msgid "Error talking to %s (%s)"
 msgstr "Erreur en parlant à %s (%s)"
 
 # , c-format
-#: conn/raw.c:314
+#: conn/raw.c:313
 #, c-format
 msgid "Connection to %s has been aborted"
 msgstr "Connexion à %s fermée"
@@ -2869,7 +2869,7 @@ msgstr "[-- %s/%s n'est pas supporté --]\n"
 
 # , c-format
 #. L10N: %s expands to a keystroke/key binding, e.g. 'v'.
-#: email/handler.c:1834
+#: email/handler.c:1835
 #, c-format
 msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
 msgstr "[-- Ceci est une pièce jointe (utilisez '%s' pour voir cette partie) --]\n"
@@ -2877,23 +2877,23 @@ msgstr "[-- Ceci est une pièce jointe (utilisez '%s' pour voir cette partie) --
 # , c-format
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #. The last %s expands to a keystroke/key binding, e.g. 'v'.
-#: email/handler.c:1841
+#: email/handler.c:1842
 #, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
 msgstr "[-- %s/%s n'est pas disponible (utilisez '%s' pour voir cette partie) --]\n"
 
-#: email/handler.c:1849
+#: email/handler.c:1850
 msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- Ceci est une pièce jointe (la fonction 'view-attachments' doit être affectée à une touche ) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
-#: email/handler.c:1854
+#: email/handler.c:1855
 #, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- %s/%s n'est pas disponible (la fonction 'view-attachments' doit être affectée à une touche ) --]\n"
 
 # , c-format
-#: email/header.c:351 main.c:1424
+#: email/header.c:351 main.c:1422
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s : impossible de joindre le fichier"
@@ -2933,7 +2933,7 @@ msgstr "entrée mailcap pour le type %s non trouvée"
 msgid "mailcap entry with field '%s' for type %s not found"
 msgstr "entrée mailcap pour le type %s non trouvée"
 
-#: email/parse.c:1651
+#: email/parse.c:1715
 msgid "multipart message has no boundary parameter"
 msgstr "le message en plusieurs parties (au format 'multipart') n'a pas de paramètre boundary"
 
@@ -2985,22 +2985,22 @@ msgid "From: "
 msgstr "De : "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:93 send/send.c:283
+#: envelope/window.c:93 send/send.c:282
 msgid "To: "
 msgstr "À : "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:95 send/send.c:290
+#: envelope/window.c:95 send/send.c:289
 msgid "Cc: "
 msgstr "CC : "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:97 send/send.c:297
+#: envelope/window.c:97 send/send.c:296
 msgid "Bcc: "
 msgstr "CCI : "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:99 send/send.c:347
+#: envelope/window.c:99 send/send.c:346
 msgid "Subject: "
 msgstr "Objet : "
 
@@ -3376,8 +3376,8 @@ msgstr "Jeu de caractères changé à %s ; conversion"
 # TODO: Typically a thread is translated as « un fil », but maybe
 # 	    « disscussion » is better here? Need to look into this.
 #: flags.c:390 gui/thread.c:1377 gui/thread.c:1444 gui/thread.c:1538
-#: index/functions.c:816 index/functions.c:1462 index/functions.c:1587
-#: index/functions.c:1606 index/functions.c:1659 index/functions.c:1806
+#: index/functions.c:779 index/functions.c:1425 index/functions.c:1550
+#: index/functions.c:1569 index/functions.c:1622 index/functions.c:1769
 #, fuzzy
 msgid "Threading is not enabled"
 msgstr "L'affichage des discussions n'est pas activé"
@@ -3392,1589 +3392,1255 @@ msgstr "Supprimer le drapeau"
 msgid "Set flag"
 msgstr "Marquer d'un drapeau"
 
-#: gui/curs_lib.c:142 index/functions.c:1151
+#: gui/curs_lib.c:141 index/functions.c:1114
 msgid "Exit NeoMutt without saving?"
 msgstr "Quitter NeoMutt sans enregistrer ?"
 
-#: gui/curs_lib.c:195
+#: gui/curs_lib.c:194
 msgid "Press any key to continue..."
 msgstr "Appuyez sur une touche pour continuer..."
 
-#: gui/curs_lib.c:254
+#: gui/curs_lib.c:253
 msgid " ('?' for list): "
 msgstr " ('?' pour voir la liste) : "
 
 # , c-format
-#: gui/curs_lib.c:518
+#: gui/curs_lib.c:517
 #, c-format
 msgid "Enter keys (%s to abort): "
 msgstr "Taper des touches (%s pour abandonner) : "
 
-#: gui/curs_lib.c:570
+#: gui/curs_lib.c:569
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d\n"
 msgstr "Caractère = %s, Octal = %o, Décimal = %d\n"
 
-#. L10N: Help screen description for OP_ATTACH_ATTACH_FILE
-#. Compose Dialog: <op_attach_attach_file>
-#: gui/opcodes.h:42
+#. L10N: Help for Compose function: <attach-file>
+#: gui/opcodes.h:41
 msgid "Attach files to this message"
 msgstr "Joindre des fichiers à ce message"
 
-#. L10N: Help screen description for OP_ATTACH_ATTACH_MESSAGE
-#. Compose Dialog: <op_attach_attach_message>
-#: gui/opcodes.h:45
+#. L10N: Help for Compose function: <attach-message>
+#: gui/opcodes.h:43
 msgid "Attach messages to this message"
 msgstr "Joindre des messages à ce message"
 
-#. L10N: Help screen description for OP_ATTACH_ATTACH_NEWS_MESSAGE
-#. Compose Dialog: <op_attach_attach_message>
-#: gui/opcodes.h:48
+#. L10N: Help for Compose function: <attach-news-message>
+#: gui/opcodes.h:45
 msgid "Attach news articles to this message"
 msgstr "Joindre des fichiers de groupes de discussion à ce message"
 
-#. L10N: Help screen description for OP_ATTACH_COLLAPSE
-#. Attach Dialog: <op_attach_collapse>
-#: gui/opcodes.h:51
+#. L10N: Help for Attach function: <collapse-parts>
+#: gui/opcodes.h:47
 msgid "Toggle display of subparts"
 msgstr "Activer/désactiver l'affichage des sous-parties"
 
-#. L10N: Help screen description for OP_ATTACH_DELETE
-#. Attach Dialog: <op_attach_delete>
-#. L10N: Help screen description for OP_ATTACH_DETACH
-#. Compose Dialog: <op_attach_detach>
-#. L10N: Help screen description for OP_DELETE
-#. Alias Dialog: <op_delete>
-#. Index: <op_delete>
-#. Postponed Dialog: <op_delete>
-#: gui/opcodes.h:54 gui/opcodes.h:57 gui/opcodes.h:279
+#. L10N: Help for Attach function: <delete-entry>
+#. L10N: Help for Compose function: <detach-file>
+#. L10N: Help for Alias, Postpone, Index function: <delete-entry>
+#: gui/opcodes.h:49 gui/opcodes.h:51 gui/opcodes.h:191
 msgid "Delete the current entry"
 msgstr "Supprimer l'entrée actuelle"
 
-#. L10N: Help screen description for OP_ATTACH_EDIT_CONTENT_ID
-#. Compose Dialog: <op_attach_edit_content_id>
-#: gui/opcodes.h:60
+#. L10N: Help for Compose function: <edit-content-id>
+#: gui/opcodes.h:53
 msgid "Edit the 'Content-ID' of the attachment"
 msgstr "Modifier le 'Content-ID' de la pièce jointe"
 
-#. L10N: Help screen description for OP_ATTACH_EDIT_DESCRIPTION
-#. Compose Dialog: <op_attach_edit_description>
-#: gui/opcodes.h:63
+#. L10N: Help for Compose function: <edit-description>
+#: gui/opcodes.h:55
 msgid "Edit attachment description"
 msgstr "Modifier la description de la pièce jointe"
 
 # TODO: how to translate "transfer-encoding"
-#. L10N: Help screen description for OP_ATTACH_EDIT_ENCODING
-#. Compose Dialog: <op_attach_edit_encoding>
-#: gui/opcodes.h:66
+#. L10N: Help for Compose function: <edit-encoding>
+#: gui/opcodes.h:57
 #, fuzzy
 msgid "Edit attachment transfer-encoding"
 msgstr "Modifier le transfer-encoding de la pièce jointe"
 
-#. L10N: Help screen description for OP_ATTACH_EDIT_LANGUAGE
-#. Compose Dialog: <op_attach_edit_language>
-#: gui/opcodes.h:69
+#. L10N: Help for Compose function: <edit-language>
+#: gui/opcodes.h:59
 msgid "Edit the 'Content-Language' of the attachment"
 msgstr "Modifier le 'Content-Language' de la pièce jointe"
 
-#. L10N: Help screen description for OP_ATTACH_EDIT_MIME
-#. Compose Dialog: <op_attach_edit_mime>
-#: gui/opcodes.h:72
+#. L10N: Help for Compose function: <edit-mime>
+#: gui/opcodes.h:61
 msgid "Edit attachment using mailcap entry"
 msgstr "Modifier la pièce jointe en utilisant l'entrée mailcap"
 
-#. L10N: Help screen description for OP_ATTACH_EDIT_TYPE
-#. Attach Dialog: <op_attach_edit_type>
-#. Compose Dialog: <op_attach_edit_type>
-#. Index: <op_attach_edit_type>
-#: gui/opcodes.h:77
+#. L10N: Help for Attach, Compose, Index function: <edit-type>
+#: gui/opcodes.h:63
 msgid "Edit attachment content type"
 msgstr "Modifier le type de contenu de la pièce jointe"
 
-#. L10N: Help screen description for OP_ATTACH_FILTER
-#. Compose Dialog: <op_attach_filter>
-#: gui/opcodes.h:80
+#. L10N: Help for Compose function: <filter-entry>
+#: gui/opcodes.h:65
 msgid "Filter attachment through a shell command"
 msgstr "Traiter la pièce jointe au moyen d'une commande shell"
 
-#. L10N: Help screen description for OP_ATTACH_GET_ATTACHMENT
-#. Compose Dialog: <op_attach_get_attachment>
-#: gui/opcodes.h:83
+#. L10N: Help for Compose function: <get-attachment>
+#: gui/opcodes.h:67
 msgid "Get a temporary copy of an attachment"
 msgstr "Obtenir une copie temporaire d'une pièce jointe"
 
-#. L10N: Help screen description for OP_ATTACH_GROUP_ALTS
-#. Compose Dialog: <op_attach_group_alts>
-#: gui/opcodes.h:86
+#. L10N: Help for Compose function: <group-alternatives>
+#: gui/opcodes.h:69
 msgid "Group tagged attachments as 'multipart/alternative'"
 msgstr "Regrouper les pièces jointes marquées comme 'multipart/alternative'"
 
-#. L10N: Help screen description for OP_ATTACH_GROUP_LINGUAL
-#. Compose Dialog: <op_attach_group_lingual>
-#: gui/opcodes.h:89
+#. L10N: Help for Compose function: <group-multilingual>
+#: gui/opcodes.h:71
 msgid "Group tagged attachments as 'multipart/multilingual'"
 msgstr "Regrouper les pièces jointes marquées comme 'multipart/multilingual'"
 
-#. L10N: Help screen description for OP_ATTACH_GROUP_RELATED
-#. Compose Dialog: <op_attach_group_related>
-#: gui/opcodes.h:92
+#. L10N: Help for Compose function: <group-related>
+#: gui/opcodes.h:73
 #, fuzzy
 msgid "Group tagged attachments as 'multipart/related'"
 msgstr "Regrouper les pièces jointes marquées comme 'multipart/related'"
 
-#. L10N: Help screen description for OP_ATTACH_MOVE_DOWN
-#. Compose Dialog: <op_attach_move_down>
-#: gui/opcodes.h:95
+#. L10N: Help for Compose function: <move-down>
+#: gui/opcodes.h:75
 msgid "Move an attachment down in the attachment list"
 msgstr "Déplacer une pièce jointe vers le bas dans la liste des pièces jointes"
 
-#. L10N: Help screen description for OP_ATTACH_MOVE_UP
-#. Compose Dialog: <op_attach_move_up>
-#: gui/opcodes.h:98
+#. L10N: Help for Compose function: <move-up>
+#: gui/opcodes.h:77
 msgid "Move an attachment up in the attachment list"
 msgstr "Déplacer une pièce jointe vers le haut dans la liste des pièce jointes"
 
-#. L10N: Help screen description for OP_ATTACH_NEW_MIME
-#. Compose Dialog: <op_attach_new_mime>
-#: gui/opcodes.h:101
+#. L10N: Help for Compose function: <new-mime>
+#: gui/opcodes.h:79
 msgid "Compose new attachment using mailcap entry"
 msgstr "Composer une nouvelle pièce jointe en utilisant l'entrée mailcap"
 
-#. L10N: Help screen description for OP_ATTACH_PIPE
-#. L10N: Help screen description for OP_PIPE
-#. Compose Dialog: <op_attach_filter>
-#. Attach Dialog: <op_attach_pipe>
-#. Index: <op_pipe>
-#: gui/opcodes.h:103 gui/opcodes.h:693
-msgid "Pipe message/attachment to a shell command"
-msgstr "Passer le message/la pièce jointe à une commande shell"
-
-#. L10N: Help screen description for OP_ATTACH_PRINT
-#. Attach Dialog: <op_attach_print>
-#. Compose Dialog: <op_attach_print>
-#. L10N: Help screen description for OP_PRINT
-#. Index: <op_print>
-#: gui/opcodes.h:107 gui/opcodes.h:711
+#. L10N: Help for Attach, Compose function: <print-entry>
+#. L10N: Help for Index function: <print-message>
+#: gui/opcodes.h:81 gui/opcodes.h:449
 msgid "Print the current entry"
 msgstr "Imprimer l'entrée actuelle"
 
-#. L10N: Help screen description for OP_ATTACH_RENAME_ATTACHMENT
-#. Compose Dialog: <op_attach_rename_attachment>
-#: gui/opcodes.h:110
+#. L10N: Help for Compose function: <rename-attachment>
+#: gui/opcodes.h:83
 msgid "Send attachment with a different name"
 msgstr "Envoyer la pièce jointe avec un autre nom"
 
-#. L10N: Help screen description for OP_ATTACH_SAVE
-#. Attach Dialog: <op_attach_save>
-#. Compose Dialog: <op_attach_save>
-#. L10N: Help screen description for OP_SAVE
-#. Index: <op_save>
-#. Pager: <op_save>
-#: gui/opcodes.h:114 gui/opcodes.h:754
+#. L10N: Help for Compose, Attach function: <copy-file>
+#. L10N: Help for Index function: <save-message>
+#: gui/opcodes.h:85 gui/opcodes.h:473
 msgid "Save message/attachment to a mailbox/file"
 msgstr "Enregistrer le message/la pièce jointe dans une boîte aux lettres ou un fichier"
 
-#. L10N: Help screen description for OP_ATTACH_TOGGLE_DISPOSITION
-#. Compose Dialog: <op_attach_toggle_disposition>
-#: gui/opcodes.h:117
+#. L10N: Help for Compose function: <toggle-disposition>
+#: gui/opcodes.h:87
 msgid "Toggle disposition between inline/attachment"
 msgstr "Basculer la disposition (en ligne / en pièce jointe)"
 
-#. L10N: Help screen description for OP_ATTACH_TOGGLE_RECODE
-#. Compose Dialog: <op_attach_toggle_recode>
-#: gui/opcodes.h:120
+#. L10N: Help for Compose function: <toggle-recode>
+#: gui/opcodes.h:89
 msgid "Toggle recoding of this attachment"
 msgstr "Activer/désactiver le recodage de cette pièce jointe"
 
-#. L10N: Help screen description for OP_ATTACH_TOGGLE_UNLINK
-#. Compose Dialog: <op_attach_toggle_unlink>
-#: gui/opcodes.h:123
+#. L10N: Help for Compose function: <toggle-unlink>
+#: gui/opcodes.h:91
 msgid "Toggle whether to delete file after sending it"
 msgstr "Basculer l'option de suppression de fichier après l'envoi"
 
-#. L10N: Help screen description for OP_ATTACH_UNDELETE
-#. Attach Dialog: <op_attach_undelete>
-#. L10N: Help screen description for OP_UNDELETE
-#. Alias Dialog: <op_delete>
-#. Postponed Dialog: <op_delete>
-#. Index: <op_undelete>
-#: gui/opcodes.h:126 gui/opcodes.h:840
+#. L10N: Help for Attach function: <undelete-entry>
+#. L10N: Help for Alias, Postpone, Index function: <undelete-entry>
+#: gui/opcodes.h:93 gui/opcodes.h:517
 msgid "Undelete the current entry"
 msgstr "Récupérer l'entrée courante"
 
-#. L10N: Help screen description for OP_ATTACH_UNGROUP
-#. Compose Dialog: <op_attach_ungroup>
-#: gui/opcodes.h:129
+#. L10N: Help for Compose function: <ungroup-attachment>
+#: gui/opcodes.h:95
 msgid "Ungroup 'multipart' attachment"
 msgstr "Retirer la pièce jointe 'multipart'"
 
-#. L10N: Help screen description for OP_ATTACH_UPDATE_ENCODING
-#. Compose Dialog: <op_attach_update_encoding>
-#: gui/opcodes.h:132
+#. L10N: Help for Compose function: <update-encoding>
+#: gui/opcodes.h:97
 msgid "Update an attachment's encoding info"
 msgstr "Mettre à jour l'information de codage d'une pièce jointe"
 
-#. L10N: Help screen description for OP_ATTACH_VIEW
-#. Attach Dialog: <op_attach_view>
-#. Compose Dialog: <op_display_headers>
-#: gui/opcodes.h:136
+#. L10N: Help for Attach, Compose function: <view-attach>
+#: gui/opcodes.h:99
 msgid "View attachment using mailcap entry if necessary"
 msgstr "Visionner la pièce jointe en utilisant l'entrée mailcap si nécessaire"
 
-#. L10N: Help screen description for OP_ATTACH_VIEW_MAILCAP
-#. Attach Dialog: <op_attach_view_mailcap>
-#. Compose Dialog: <op_display_headers>
-#: gui/opcodes.h:140
+#. L10N: Help for Attach, Compose function: <view-mailcap>
+#: gui/opcodes.h:101
 msgid "Force viewing of attachment using mailcap"
 msgstr "Forcer l'affichage d'une pièce jointe en utilisant le fichier mailcap"
 
-#. L10N: Help screen description for OP_ATTACH_VIEW_PAGER
-#. Attach Dialog: <op_attach_view_pager>
-#. Compose Dialog: <op_display_headers>
-#: gui/opcodes.h:144
+#. L10N: Help for Attach, Compose function: <view-pager>
+#: gui/opcodes.h:103
 msgid "View attachment in pager using copiousoutput mailcap"
 msgstr "Visionner la pièce jointe avec le visionneur en utilisant mailcap avec l'option 'copiousoutput'"
 
-#. L10N: Help screen description for OP_ATTACH_VIEW_TEXT
-#. Attach Dialog: <op_attach_view_text>
-#. Compose Dialog: <op_display_headers>
-#: gui/opcodes.h:148
+#. L10N: Help for Attach, Compose function: <view-text>
+#: gui/opcodes.h:105
 msgid "View attachment as text"
 msgstr "Visionner la pièce jointe en tant que texte"
 
-#. L10N: Help screen description for OP_PREVIEW_PAGE_DOWN
-#. Compose Dialog: <op_preview_page_down>
-#: gui/opcodes.h:151
+#. L10N: Help for Compose function: <preview-page-down>
+#: gui/opcodes.h:107
 msgid "Show the next page of the message"
 msgstr "Afficher la prochaine page du message"
 
-#. L10N: Help screen description for OP_PREVIEW_PAGE_UP
-#. Compose Dialog: <op_preview_page_up>
-#: gui/opcodes.h:154
+#. L10N: Help for Compose function: <preview-page-up>
+#: gui/opcodes.h:109
 msgid "Show the previous page of the message"
 msgstr "Afficher la page précédente du message"
 
-#. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
-#. Index: <op_autocrypt_acct_menu>
-#: gui/opcodes.h:160
+#. L10N: Help for Index function: <autocrypt-acct-menu>
+#: gui/opcodes.h:114
 msgid "Manage autocrypt accounts"
 msgstr "Gérer les comptes autocrypt"
 
-#. L10N: Help screen description for OP_AUTOCRYPT_CREATE_ACCT
-#. Autocrypt Dialog: <op_autocrypt_create_acct>
-#: gui/opcodes.h:163
+#. L10N: Help for Autocrypt function: <create-account>
+#: gui/opcodes.h:116
 msgid "Create a new autocrypt account"
 msgstr "Créer un nouveau compte autocrypt"
 
-#. L10N: Help screen description for OP_AUTOCRYPT_DELETE_ACCT
-#. Autocrypt Dialog: <op_autocrypt_delete_acct>
-#: gui/opcodes.h:166
+#. L10N: Help for Autocrypt function: <delete-account>
+#: gui/opcodes.h:118
 msgid "Delete the current account"
 msgstr "Supprimer le compte actuel"
 
-#. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_ACTIVE
-#. Autocrypt Dialog: <op_autocrypt_toggle_active>
-#: gui/opcodes.h:169
+#. L10N: Help for Autocrypt function: <toggle-active>
+#: gui/opcodes.h:120
 msgid "Toggle the current account active/inactive"
 msgstr "Basculer l'état actif/infactif du compte actuel"
 
-#. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_PREFER
-#. Autocrypt Dialog: <op_autocrypt_toggle_prefer>
-#: gui/opcodes.h:172
+#. L10N: Help for Autocrypt function: <toggle-prefer-encrypt>
+#: gui/opcodes.h:122
 msgid "Toggle the current account prefer-encrypt flag"
 msgstr "Basculer le drapeau 'prefer-encrypt' du compte actuel"
 
-#. L10N: Help screen description for OP_COMPOSE_AUTOCRYPT_MENU
-#. Envelope Window: <op_compose_autocrypt_menu>
-#: gui/opcodes.h:175
+#. L10N: Help for Compose function: <autocrypt-menu>
+#: gui/opcodes.h:124
 msgid "Show autocrypt compose menu options"
 msgstr "Afficher les options du menu de composition d'autocrypt"
 
 # TODO: Does "dialog" here refer to a pop-up or a separate window?
-#. L10N: Help screen description for OP_ALIAS_DIALOG
-#. Index: <op_alias_dialog>
-#: gui/opcodes.h:183
+#. L10N: Help for Index function: <alias-dialog>
+#: gui/opcodes.h:131
 #, fuzzy
 msgid "Open the aliases dialog"
 msgstr "Vous êtes sur le dernier message"
 
-#. L10N: Help screen description for OP_BOTTOM_PAGE
-#. Menu: <menu_movement>
-#: gui/opcodes.h:186
+#. L10N: Help for Pager: <bottom-page>
+#: gui/opcodes.h:133
 msgid "Move to the bottom of the page"
 msgstr "Aller en bas de la page"
 
-#. L10N: Help screen description for OP_BOUNCE_MESSAGE
-#. Attach Dialog: <op_bounce_message>
-#. Index: <op_bounce_message>
-#: gui/opcodes.h:190
+#. L10N: Help for Attach, Index function: <bounce-message>
+#: gui/opcodes.h:135
 msgid "Remail a message to another user"
 msgstr "Renvoyer un message à un autre utilisateur"
 
-#. L10N: Help screen description for OP_BROWSER_GOTO_FOLDER
-#. Browser: <op_toggle_mailboxes>
-#: gui/opcodes.h:193
+#. L10N: Help for Browser function: <goto-folder>
+#: gui/opcodes.h:137
 msgid "Swap the current folder position with $folder if it exists"
 msgstr "Échanger la position du répertoire courant avec $folder s'il existe"
 
-#. L10N: Help screen description for OP_BROWSER_NEW_FILE
-#. Browser: <op_browser_new_file>
-#: gui/opcodes.h:196
+#. L10N: Help for Browser function: <select-new>
+#: gui/opcodes.h:139
 msgid "Select a new file in this directory"
 msgstr "Sélectionner un nouveau fichier dans ce répertoire"
 
-#. L10N: Help screen description for OP_BROWSER_SUBSCRIBE
-#. Browser: <op_browser_subscribe>
-#: gui/opcodes.h:199
+#. L10N: Help for Browser function: <subscribe>
+#: gui/opcodes.h:141
 msgid "Subscribe to current mbox (IMAP/NNTP only)"
 msgstr "S'abonner à la boîte mail courante (IMAP/NNTP seulement)"
 
-#. L10N: Help screen description for OP_BROWSER_TELL
-#. Browser: <op_browser_tell>
-#: gui/opcodes.h:202
+#. L10N: Help for Browser function: <display-filename>
+#: gui/opcodes.h:143
 msgid "Display the currently selected file's name"
 msgstr "Afficher le nom du fichier sélectionné actuellement"
 
 # TODO: Try to find a way to shorten this translation
-#. L10N: Help screen description for OP_BROWSER_TOGGLE_LSUB
-#. Browser: <op_browser_toggle_lsub>
-#: gui/opcodes.h:205
+#. L10N: Help for Browser function: <toggle-subscribed>
+#: gui/opcodes.h:145
 msgid "Toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "Changer entre voir toutes les boîtes aux lettres/voir les boîtes aux lettres abonnées (IMAP seulement)"
 
-#. L10N: Help screen description for OP_BROWSER_UNSUBSCRIBE
-#. Browser: <op_browser_subscribe>
-#: gui/opcodes.h:208
+#. L10N: Help for Browser function: <unsubscribe>
+#: gui/opcodes.h:147
 msgid "Unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "Se désabonner de la boîte aux lettres actuelle (IMAP seulement)"
 
-#. L10N: Help screen description for OP_BROWSER_VIEW_FILE
-#. Browser: <op_browser_view_file>
-#: gui/opcodes.h:211
+#. L10N: Help for Browser function: <view-file>
+#: gui/opcodes.h:149
 msgid "View file"
 msgstr "Visionner le fichier"
 
-#. L10N: Help screen description for OP_CATCHUP
-#. Browser: <op_catchup>
-#. Index: <op_catchup>
-#: gui/opcodes.h:215
+#. L10N: Help for Browser, Index function: <catchup>
+#: gui/opcodes.h:151
 msgid "Mark all articles in newsgroup as read"
 msgstr "Marquer tous les articles de ce forum comme lus"
 
-#. L10N: Help screen description for OP_CHANGE_DIRECTORY
-#. Browser: <op_change_directory>
-#: gui/opcodes.h:218
+#. L10N: Help for Browser function: <change-dir>
+#: gui/opcodes.h:153
 msgid "Change directories"
 msgstr "Changer de répertoires"
 
-#. L10N: Help screen description for OP_CHECK_NEW
-#. Browser: <op_toggle_mailboxes>
-#: gui/opcodes.h:221
+#. L10N: Help for Browser function: <check-new>
+#: gui/opcodes.h:155
 msgid "Check mailboxes for new mail"
 msgstr "Vérifier s'il y a de nouveaux messages dans les boîtes aux lettres"
 
-#. L10N: Help screen description for OP_CHECK_STATS
-#. Global: <op_check_stats>
-#: gui/opcodes.h:224
+#. L10N: Help for Generic function: <check-stats>
+#: gui/opcodes.h:157
 msgid "Calculate message statistics for all mailboxes"
 msgstr "Calculer les statistiques des messages pour toutes les boîtes aux lettres"
 
-#. L10N: Help screen description for OP_COMPOSE_EDIT_FILE
-#. Compose Dialog: <op_compose_edit_file>
-#: gui/opcodes.h:227
+#. L10N: Help for Compose function: <edit-file>
+#: gui/opcodes.h:159
 msgid "Edit the file to be attached"
 msgstr "Éditer le fichier à attacher"
 
-#. L10N: Help screen description for OP_COMPOSE_EDIT_MESSAGE
-#. Compose Dialog: <op_compose_edit_message>
-#: gui/opcodes.h:230
+#. L10N: Help for Compose function: <edit-message>
+#: gui/opcodes.h:161
 msgid "Edit the message"
 msgstr "Éditer le message"
 
-#. L10N: Help screen description for OP_COMPOSE_ISPELL
-#. Compose Dialog: <op_compose_ispell>
-#: gui/opcodes.h:233
+#. L10N: Help for Compose function: <ispell>
+#: gui/opcodes.h:163
 msgid "Run ispell on the message"
 msgstr "Lancer ispell sur le message"
 
-#. L10N: Help screen description for OP_COMPOSE_POSTPONE_MESSAGE
-#. Compose Dialog: <op_compose_postpone_message>
-#: gui/opcodes.h:236
+#. L10N: Help for Compose function: <postpone-message>
+#: gui/opcodes.h:165
 msgid "Save this message to send later"
 msgstr "Sauvegarder ce message pour l'envoyer plus tard"
 
-#. L10N: Help screen description for OP_COMPOSE_RENAME_FILE
-#. Compose Dialog: <op_compose_rename_file>
-#: gui/opcodes.h:239
+#. L10N: Help for Compose function: <rename-file>
+#: gui/opcodes.h:167
 msgid "Rename/move an attached file"
 msgstr "Renommer/déplacer un fichier attaché"
 
-#. L10N: Help screen description for OP_COMPOSE_SEND_MESSAGE
-#. Compose Dialog: <op_compose_send_message>
-#: gui/opcodes.h:242
+#. L10N: Help for Compose function: <send-message>
+#: gui/opcodes.h:169
 msgid "Send the message"
 msgstr "Envoyer le message"
 
-#. L10N: Help screen description for OP_COMPOSE_TO_SENDER
-#. Attach Dialog: <op_compose_to_sender>
-#. Index: <op_compose_to_sender>
-#: gui/opcodes.h:246
+#. L10N: Help for Attach, Index function: <compose-to-sender>
+#: gui/opcodes.h:171
 msgid "Compose new message to the current message sender"
 msgstr "Composer un nouveau message pour l'expéditeur du message courant"
 
-#. L10N: Help screen description for OP_COMPOSE_WRITE_MESSAGE
-#. Compose Dialog: <op_compose_write_message>
-#: gui/opcodes.h:249
+#. L10N: Help for Compose function: <write-fcc>
+#: gui/opcodes.h:173
 msgid "Write the message to a folder"
 msgstr "Écrire le message dans un répertoire"
 
-#. L10N: Help screen description for OP_COPY_MESSAGE
-#. Index: <op_save>
-#: gui/opcodes.h:252
+#. L10N: Help for Index function: <copy-message>
+#: gui/opcodes.h:175
 msgid "Copy a message to a file/mailbox"
 msgstr "Copier un message dans un fichier ou une boîte aux lettres"
 
-#. L10N: Help screen description for OP_CREATE_ALIAS
-#. Alias Dialog: <op_create_alias>
-#. Index: <op_create_alias>
-#: gui/opcodes.h:256
+#. L10N: Help for Index, Query function: <create-alias>
+#: gui/opcodes.h:177
 msgid "Create an alias from a message sender"
 msgstr "Créer un alias à partir de l'expéditeur d'un message"
 
-#. L10N: Help screen description for OP_CREATE_MAILBOX
-#. Browser: <op_create_mailbox>
-#: gui/opcodes.h:259
+#. L10N: Help for Browser function: <create-mailbox>
+#: gui/opcodes.h:179
 msgid "Create a new mailbox (IMAP only)"
 msgstr "Créer une nouvelle boîte aux lettres (IMAP seulement)"
 
-#. L10N: Help screen description for OP_CURRENT_BOTTOM
-#. Menu: <menu_movement>
-#: gui/opcodes.h:262
+#. L10N: Help for Generic function: <current-bottom>
+#: gui/opcodes.h:181
 msgid "Move entry to bottom of screen"
 msgstr "Déplacer l'entrée au bas de l'écran"
 
-#. L10N: Help screen description for OP_CURRENT_MIDDLE
-#. Menu: <menu_movement>
-#: gui/opcodes.h:265
+#. L10N: Help for Generic function: <current-middle>
+#: gui/opcodes.h:183
 msgid "Move entry to middle of screen"
 msgstr "Déplacer l'entrée au milieu de l'écran"
 
-#. L10N: Help screen description for OP_CURRENT_TOP
-#. Menu: <menu_movement>
-#: gui/opcodes.h:268
+#. L10N: Help for Generic function: <current-top>
+#: gui/opcodes.h:185
 msgid "Move entry to top of screen"
 msgstr "Déplacer l'entrée en haut de l'écran"
 
-#. L10N: Help screen description for OP_DECODE_COPY
-#. Index: <op_save>
-#: gui/opcodes.h:271
+#. L10N: Help for Index function: <decode-copy>
+#: gui/opcodes.h:187
 msgid "Make decoded (text/plain) copy"
 msgstr "Faire une copie décodée (text/plain)"
 
-#. L10N: Help screen description for OP_DECODE_SAVE
-#. Index: <op_save>
-#: gui/opcodes.h:274
+#. L10N: Help for Index function: <decode-save>
+#: gui/opcodes.h:189
 msgid "Make decoded copy (text/plain) and delete"
 msgstr "Faire une copie décodée (text/plain) et supprimer"
 
-#. L10N: Help screen description for OP_DELETE_MAILBOX
-#. Browser: <op_delete_mailbox>
-#: gui/opcodes.h:282
+#. L10N: Help for Browser function: <delete-mailbox>
+#: gui/opcodes.h:193
 msgid "Delete the current mailbox (IMAP only)"
 msgstr "Supprimer la boîte aux lettres actuelle (IMAP seulement)"
 
-#. L10N: Help screen description for OP_DELETE_SUBTHREAD
-#. Index: <op_delete_thread>
-#: gui/opcodes.h:285
+#. L10N: Help for Index function: <delete-subthread>
+#: gui/opcodes.h:195
 msgid "Delete all messages in subthread"
 msgstr "Supprimer tous les messages dans la sous-discussion"
 
-#. L10N: Help screen description for OP_DELETE_THREAD
-#. Index: <op_delete_thread>
-#: gui/opcodes.h:288
+#. L10N: Help for Index function: <delete-thread>
+#: gui/opcodes.h:197
 msgid "Delete all messages in thread"
 msgstr "Supprimer tous les messages dans la discussion"
 
-#. L10N: Help screen description for OP_DESCEND_DIRECTORY
-#. Browser: <op_generic_select_entry>
-#: gui/opcodes.h:291
+#. L10N: Help for Browser function: <descend-directory>
+#: gui/opcodes.h:199
 msgid "Descend into a directory"
 msgstr "Descendre dans un répertoire"
 
-#. L10N: Help screen description for OP_DISPLAY_ADDRESS
-#. Index: <op_display_address>
-#: gui/opcodes.h:294
+#. L10N: Help for Index function: <display-address>
+#: gui/opcodes.h:201
 msgid "Display full address of sender"
 msgstr "Afficher l'adresse complète de l'expéditeur"
 
-#. L10N: Help screen description for OP_DISPLAY_HEADERS
-#. Attach Dialog: <op_attach_view>
-#. Compose Dialog: <op_display_headers>
-#. Index: <op_display_message>
-#: gui/opcodes.h:299
+#. L10N: Help for Attach, Compose, Index function: <display-toggle-weed>
+#: gui/opcodes.h:203
 msgid "Display message and toggle header weeding"
 msgstr "Afficher le message et activer/désactiver la restriction des en-têtes"
 
-#. L10N: Help screen description for OP_DISPLAY_MESSAGE
-#. Index: <op_display_message>
-#: gui/opcodes.h:302
+#. L10N: Help for Index function: <display-message>
+#: gui/opcodes.h:205
 msgid "Display a message"
 msgstr "Afficher un message"
 
-#. L10N: Help screen description for OP_EDITOR_BACKSPACE
-#. Text Entry: <op_editor_backspace>
-#: gui/opcodes.h:305
+#. L10N: Help for Editor function: <backspace>
+#: gui/opcodes.h:207
 msgid "Delete the char in front of the cursor"
 msgstr "Supprimer le caractère situé devant le curseur"
 
-#. L10N: Help screen description for OP_EDITOR_BACKWARD_CHAR
-#. Text Entry: <op_editor_backward_char>
-#: gui/opcodes.h:308
+#. L10N: Help for Editor function: <backward-char>
+#: gui/opcodes.h:209
 msgid "Move the cursor one character to the left"
 msgstr "Déplacer le curseur d'un caractère vers la gauche"
 
-#. L10N: Help screen description for OP_EDITOR_BACKWARD_WORD
-#. Text Entry: <op_editor_backward_word>
-#: gui/opcodes.h:311
+#. L10N: Help for Editor function: <backward-word>
+#: gui/opcodes.h:211
 msgid "Move the cursor to the beginning of the word"
 msgstr "Déplacer le curseur au début du mot"
 
-#. L10N: Help screen description for OP_EDITOR_BOL
-#. Text Entry: <op_editor_bol>
-#: gui/opcodes.h:314
+#. L10N: Help for Editor function: <bol>
+#: gui/opcodes.h:213
 msgid "Jump to the beginning of the line"
 msgstr "Aller au début de la ligne"
 
-#. L10N: Help screen description for OP_EDITOR_CAPITALIZE_WORD
-#. Text Entry: <op_editor_capitalize_word>
-#: gui/opcodes.h:317
+#. L10N: Help for Editor function: <capitalize-word>
+#: gui/opcodes.h:215
 msgid "Capitalize the word"
 msgstr "Capitaliser le mot"
 
-#. L10N: Help screen description for OP_EDITOR_COMPLETE
-#. Text Entry: <op_editor_complete>
-#: gui/opcodes.h:320
+#. L10N: Help for Editor function: <complete>
+#: gui/opcodes.h:217
 msgid "Complete filename or alias"
 msgstr "Compléter un nom de fichier ou un alias"
 
-#. L10N: Help screen description for OP_EDITOR_COMPLETE_QUERY
-#. Text Entry: <op_editor_complete>
-#: gui/opcodes.h:323
+#. L10N: Help for Editor function: <complete-query>
+#: gui/opcodes.h:219
 msgid "Complete address with query"
 msgstr "Compléter une adresse grâce à une requête"
 
-#. L10N: Help screen description for OP_EDITOR_DELETE_CHAR
-#. Text Entry: <op_editor_delete_char>
-#: gui/opcodes.h:326
+#. L10N: Help for Editor function: <delete-char>
+#: gui/opcodes.h:221
 msgid "Delete the char under the cursor"
 msgstr "Supprimer le caractère situé sous le curseur"
 
-#. L10N: Help screen description for OP_EDITOR_DOWNCASE_WORD
-#. Text Entry: <op_editor_capitalize_word>
-#: gui/opcodes.h:329
+#. L10N: Help for Editor function: <downcase-word>
+#: gui/opcodes.h:223
 msgid "Convert the word to lower case"
 msgstr "Convertir le mot en minuscules"
 
-#. L10N: Help screen description for OP_EDITOR_EOL
-#. Text Entry: <op_editor_eol>
-#: gui/opcodes.h:332
+#. L10N: Help for Editor function: <eol>
+#: gui/opcodes.h:225
 msgid "Jump to the end of the line"
 msgstr "Aller à la fin de la ligne"
 
-#. L10N: Help screen description for OP_EDITOR_FORWARD_CHAR
-#. Text Entry: <op_editor_forward_char>
-#: gui/opcodes.h:335
+#. L10N: Help for Editor function: <forward-char>
+#: gui/opcodes.h:227
 msgid "Move the cursor one character to the right"
 msgstr "Déplacer le curseur d'un caractère vers la droite"
 
-#. L10N: Help screen description for OP_EDITOR_FORWARD_WORD
-#. Text Entry: <op_editor_forward_word>
-#: gui/opcodes.h:338
+#. L10N: Help for Editor function: <forward-word>
+#: gui/opcodes.h:229
 msgid "Move the cursor to the end of the word"
 msgstr "Déplacer le curseur à la fin du mot"
 
-#. L10N: Help screen description for OP_EDITOR_HISTORY_DOWN
-#. Text Entry: <op_editor_history_down>
-#: gui/opcodes.h:341
+#. L10N: Help for Editor function: <history-down>
+#: gui/opcodes.h:231
 msgid "Scroll down through the history list"
 msgstr "Redescendre dans l'historique"
 
-#. L10N: Help screen description for OP_EDITOR_HISTORY_SEARCH
-#. Text Entry: <op_editor_history_search>
-#: gui/opcodes.h:344
+#. L10N: Help for Editor function: <history-search>
+#: gui/opcodes.h:233
 msgid "Search through the history list"
 msgstr "Rechercher dans l'historique"
 
-#. L10N: Help screen description for OP_EDITOR_HISTORY_UP
-#. Text Entry: <op_editor_history_up>
-#: gui/opcodes.h:347
+#. L10N: Help for Editor function: <history-up>
+#: gui/opcodes.h:235
 msgid "Scroll up through the history list"
 msgstr "Remonter dans l'historique"
 
-#. L10N: Help screen description for OP_EDITOR_KILL_EOL
-#. Text Entry: <op_editor_kill_eol>
-#: gui/opcodes.h:350
+#. L10N: Help for Editor function: <kill-eol>
+#: gui/opcodes.h:237
 msgid "Delete chars from cursor to end of line"
 msgstr "Supprimer jusqu'à la fin de la ligne à partir du curseur"
 
-#. L10N: Help screen description for OP_EDITOR_KILL_EOW
-#. Text Entry: <op_editor_kill_eow>
-#: gui/opcodes.h:353
+#. L10N: Help for Editor function: <kill-eow>
+#: gui/opcodes.h:239
 msgid "Delete chars from the cursor to the end of the word"
 msgstr "Supprimer jusqu'à la fin du mot à partir du curseur"
 
-#. L10N: Help screen description for OP_EDITOR_KILL_LINE
-#. Text Entry: <op_editor_kill_line>
-#: gui/opcodes.h:356
+#. L10N: Help for Editor function: <kill-line>
+#: gui/opcodes.h:241
 msgid "Delete chars from cursor to beginning the line"
 msgstr "Supprimer jusqu'au début de la ligne à partir du curseur"
 
-#. L10N: Help screen description for OP_EDITOR_KILL_WHOLE_LINE
-#. Text Entry: <op_editor_kill_whole_line>
-#: gui/opcodes.h:359
+#. L10N: Help for Editor function: <kill-whole-line>
+#: gui/opcodes.h:243
 msgid "Delete all chars on the line"
 msgstr "Supprimer tous les caractères de la ligne"
 
-#. L10N: Help screen description for OP_EDITOR_KILL_WORD
-#. Text Entry: <op_editor_kill_word>
-#: gui/opcodes.h:362
+#. L10N: Help for Editor function: <kill-word>
+#: gui/opcodes.h:245
 msgid "Delete the word in front of the cursor"
 msgstr "Supprimer le mot devant le curseur"
 
-#. L10N: Help screen description for OP_EDITOR_MAILBOX_CYCLE
-#. Text Entry: <op_editor_complete>
-#: gui/opcodes.h:365
+#. L10N: Help for Editor function: <mailbox-cycle>
+#: gui/opcodes.h:247
 msgid "Cycle among incoming mailboxes"
 msgstr "Faire défiler les boîtes aux lettres"
 
-#. L10N: Help screen description for OP_EDITOR_QUOTE_CHAR
-#. Text Entry: <op_editor_quote_char>
-#: gui/opcodes.h:368
+#. L10N: Help for Editor function: <quote-char>
+#: gui/opcodes.h:249
 #, fuzzy
 msgid "Quote the next typed key"
 msgstr "Entrer le caractère correspondant à la prochaine touche"
 
-#. L10N: Help screen description for OP_EDITOR_TRANSPOSE_CHARS
-#. Text Entry: <op_editor_transpose_chars>
-#: gui/opcodes.h:371
+#. L10N: Help for Editor function: <transpose-chars>
+#: gui/opcodes.h:251
 msgid "Transpose character under cursor with previous"
 msgstr "Échanger le caractère situé sous le curseur avec le précédent"
 
-#. L10N: Help screen description for OP_EDITOR_UPCASE_WORD
-#. Text Entry: <op_editor_capitalize_word>
-#: gui/opcodes.h:374
+#. L10N: Help for Editor function: <upcase-word>
+#: gui/opcodes.h:253
 msgid "Convert the word to upper case"
 msgstr "Convertir le mot en majuscules"
 
-#. L10N: Help screen description for OP_EDIT_LABEL
-#. Index: <op_edit_label>
-#: gui/opcodes.h:377
+#. L10N: Help for Index function: <edit-label>
+#: gui/opcodes.h:255
 msgid "Add, change, or delete a message's label"
 msgstr "Ajouter, changer ou supprimer le label d'un message"
 
-#. L10N: Help screen description for OP_EDIT_OR_VIEW_RAW_MESSAGE
-#. Index: <op_edit_raw_message>
-#: gui/opcodes.h:380
+#. L10N: Help for Index function: <edit-or-view-raw-message>
+#: gui/opcodes.h:257
 msgid "Edit the raw message if the mailbox is not read-only, otherwise view it"
 msgstr "Éditer le message brut si la boîte aux lettres n'est pas en lecture seul, sinon l'afficher"
 
-#. L10N: Help screen description for OP_EDIT_RAW_MESSAGE
-#. Index: <op_edit_raw_message>
-#: gui/opcodes.h:383
+#. L10N: Help for Index, Index function: <edit>
+#: gui/opcodes.h:259
 msgid "Edit the raw message (edit and edit-raw-message are synonyms)"
 msgstr "Edit modifie le message brut  (les commandes edit et edit-raw-message sont synonymes)"
 
-#. L10N: Help screen description for OP_END_COND
-#. Index: <op_end_cond>
-#: gui/opcodes.h:386
+#. L10N: Help for Generic function: <end-cond>
+#: gui/opcodes.h:261
 msgid "End of conditional execution (noop)"
 msgstr "Fin d'exécution conditionnelle (noop)"
 
-#. L10N: Help screen description for OP_ENTER_COMMAND
-#. Global: <op_enter_command>
-#: gui/opcodes.h:389
+#. L10N: Help for Generic function: <enter-command>
+#: gui/opcodes.h:263
 msgid "Enter a neomuttrc command"
 msgstr "Entrer une commande neomuttrc"
 
-#. L10N: Help screen description for OP_ENTER_MASK
-#. Browser: <op_enter_mask>
-#: gui/opcodes.h:392
+#. L10N: Help for Browser function: <enter-mask>
+#: gui/opcodes.h:265
 msgid "Enter a file mask"
 msgstr "Entrer un masque de fichier"
 
-#. L10N: Help screen description for OP_EXIT
-#. Alias Dialog: <op_exit>
-#. Attach Dialog: <op_exit>
-#. Autocrypt Dialog: <op_exit>
-#. Browser: <op_exit>
-#. Compose Dialog: <op_exit>
-#. GPGME Key Selection Dialog: <op_exit>
-#. Index: <op_exit>
-#. Pager: <op_exit>
-#. PGP Key Selection Dialog: <op_exit>
-#. Postponed Dialog: <op_exit>
-#. Smime Key Selection Dialog: <op_exit>
-#: gui/opcodes.h:405
+#. L10N: Help for Generic function: <exit>
+#: gui/opcodes.h:267
 msgid "Exit this menu"
 msgstr "Sortir de ce menu"
 
-#. L10N: Help screen description for OP_FIRST_ENTRY
-#. Menu: <menu_movement>
-#: gui/opcodes.h:408
+#. L10N: Help for Generic function: <first-entry>
+#: gui/opcodes.h:269
 msgid "Move to the first entry"
 msgstr "Aller à la première entrée"
 
-#. L10N: Help screen description for OP_FLAG_MESSAGE
-#. Index: <op_flag_message>
-#: gui/opcodes.h:411
+#. L10N: Help for Index function: <flag-message>
+#: gui/opcodes.h:271
 msgid "Toggle a message's 'important' flag"
 msgstr "Basculer le drapeau 'important' du message"
 
 # , c-format
-#. L10N: Help screen description for OP_FOLLOWUP
-#. Attach Dialog: <op_followup>
-#. Index: <op_post>
-#: gui/opcodes.h:415
+#. L10N: Help for Attach, Index function: <followup-message>
+#: gui/opcodes.h:273
 msgid "Followup to newsgroup"
 msgstr "Suivi du forum"
 
-#. L10N: Help screen description for OP_FORWARD_MESSAGE
-#. Attach Dialog: <op_forward_message>
-#. Index: <op_forward_message>
-#: gui/opcodes.h:419
+#. L10N: Help for Attach, Index function: <forward-message>
+#: gui/opcodes.h:275
 msgid "Forward a message with comments"
 msgstr "Transférer un message avec des commentaires"
 
-#. L10N: Help screen description for OP_FORWARD_TO_GROUP
-#. Attach Dialog: <op_forward_to_group>
-#. Index: <op_post>
-#: gui/opcodes.h:423
+#. L10N: Help for Attach, Index function: <forward-to-group>
+#: gui/opcodes.h:277
 msgid "Forward to newsgroup"
 msgstr "Transférer au forum"
 
-#. L10N: Help screen description for OP_GENERIC_SELECT_ENTRY
-#. Alias Dialog: <op_generic_select_entry>
-#. Browser: <op_generic_select_entry>
-#. GPGME Key Selection Dialog: <op_generic_select_entry>
-#. History Dialog: <op_generic_select_entry>
-#. Pattern Dialog: <op_generic_select_entry>
-#. PGP Key Selection Dialog: <op_generic_select_entry>
-#. Postponed Dialog: <op_generic_select_entry>
-#. Smime Key Selection Dialog: <op_generic_select_entry>
-#: gui/opcodes.h:433
+#. L10N: Help for Generic function: <select-entry>
+#: gui/opcodes.h:279
 msgid "Select the current entry"
 msgstr "Sélectionner l'entrée courante"
 
-#. L10N: Help screen description for OP_GET_CHILDREN
-#. Index: <op_get_children>
-#: gui/opcodes.h:436
+#. L10N: Help for Index function: <get-children>
+#: gui/opcodes.h:281
 msgid "Get all children of the current message"
 msgstr "Afficher le(s) message(s) enfant(s) du message courant"
 
-#. L10N: Help screen description for OP_GET_MESSAGE
-#. Index: <op_get_message>
-#: gui/opcodes.h:439
+#. L10N: Help for Index function: <get-message>
+#: gui/opcodes.h:283
 #, fuzzy
 msgid "Get message with Message-ID"
 msgstr "Éditer le message avec ses en-têtes"
 
-#. L10N: Help screen description for OP_GET_PARENT
-#. Index: <op_get_message>
-#: gui/opcodes.h:442
+#. L10N: Help for Index function: <get-parent>
+#: gui/opcodes.h:285
 msgid "Get parent of the current message"
 msgstr "Afficher le message parent du message courant"
 
 # , c-format
-#. L10N: Help screen description for OP_GOTO_PARENT
-#. Browser: <op_change_directory>
-#: gui/opcodes.h:445
+#. L10N: Help for Browser function: <goto-parent>
+#: gui/opcodes.h:287
 msgid "Go to parent directory"
 msgstr "%s n'est pas un répertoire"
 
-#. L10N: Help screen description for OP_GROUP_CHAT_REPLY
-#. Index: <op_group_reply>
-#. Attach Dialog: <op_reply>
-#: gui/opcodes.h:449
+#. L10N: Help for Attach, Index function: <group-chat-reply>
+#: gui/opcodes.h:289
 msgid "Reply to all recipients preserving To/Cc"
 msgstr "Répondre à tous les destinataires en préservant À/Cc (To/Cc)"
 
-#. L10N: Help screen description for OP_GROUP_REPLY
-#. Index: <op_group_reply>
-#. Attach Dialog: <op_reply>
-#: gui/opcodes.h:453
+#. L10N: Help for Attach, Index function: <group-reply>
+#: gui/opcodes.h:291
 msgid "Reply to all recipients"
 msgstr "Répondre à tous les destinataires"
 
-#. L10N: Help screen description for OP_HALF_DOWN
-#. Menu: <menu_movement>
-#. Pager: <op_pager_half_down>
-#: gui/opcodes.h:457
+#. L10N: Help for Generic function: <half-down>
+#: gui/opcodes.h:293
 msgid "Scroll down 1/2 page"
 msgstr "Descendre d'1/2 page"
 
-#. L10N: Help screen description for OP_HALF_UP
-#. Menu: <menu_movement>
-#. Pager: <op_pager_half_up>
-#: gui/opcodes.h:461
+#. L10N: Help for Generic function: <half-up>
+#: gui/opcodes.h:295
 msgid "Scroll up 1/2 page"
 msgstr "Remonter d'1/2 page"
 
-#. L10N: Help screen description for OP_HELP
-#. Text Entry: <op_help>
-#. Menu: <op_help>
-#. Pager: <op_help>
-#: gui/opcodes.h:466
+#. L10N: Help for Editor, Generic function: <help>
+#: gui/opcodes.h:297
 msgid "This screen"
 msgstr "Cet écran"
 
-#. L10N: Help screen description for OP_JUMP
-#. Index: <op_jump>
-#. Menu: <op_jump>
-#: gui/opcodes.h:470
+#. L10N: Help for Generic function: <jump>
+#: gui/opcodes.h:299
 msgid "Jump to an index number"
 msgstr "Aller à un numéro d'index"
 
-#. L10N: Help screen description for OP_LAST_ENTRY
-#. Menu: <menu_movement>
-#: gui/opcodes.h:473
+#. L10N: Help for Generic function: <last-entry>
+#: gui/opcodes.h:301
 msgid "Move to the last entry"
 msgstr "Aller à la dernière entrée"
 
-#. L10N: Help screen description for OP_LIMIT_CURRENT_THREAD
-#. Index: <op_main_limit>
-#: gui/opcodes.h:476
+#. L10N: Help for Index function: <limit-current-thread>
+#: gui/opcodes.h:303
 #, fuzzy
 msgid "Limit view to current thread"
 msgstr "Marquer la discussion courante"
 
-#. L10N: Help screen description for OP_LIST_ACTION
-#. Index: <op_list_action>
-#. Pager: <op_list_action>
-#: gui/opcodes.h:480
+#. L10N: Help for Index function: <list-action>
+#: gui/opcodes.h:305
 #, fuzzy
 msgid "Perform mailing list action"
 msgstr "Pas de liste de diffusion trouvée"
 
-#. L10N: Help screen description for OP_LIST_ARCHIVE
-#. List Dialog: <op_list_archive>
-#: gui/opcodes.h:483
+#. L10N: Help for List function: <list-archive>
+#: gui/opcodes.h:307
 msgid "Retrieve list archive information"
 msgstr ""
 
-#. L10N: Help screen description for OP_LIST_HELP
-#. List Dialog: <op_list_help>
-#: gui/opcodes.h:486
+#. L10N: Help for List function: <list-help>
+#: gui/opcodes.h:309
 msgid "Retrieve list help"
 msgstr ""
 
-#. L10N: Help screen description for OP_LIST_OWNER
-#. List Dialog: <op_list_owner>
-#: gui/opcodes.h:489
+#. L10N: Help for List function: <list-owner>
+#: gui/opcodes.h:311
 msgid "Contact list owner"
 msgstr ""
 
-#. L10N: Help screen description for OP_LIST_POST
-#. List Dialog: <op_list_post>
-#: gui/opcodes.h:492
+#. L10N: Help for List function: <list-post>
+#: gui/opcodes.h:313
 #, fuzzy
 msgid "Post to mailing list"
 msgstr "S'abonner à la liste de diffusion spécifiée"
 
-#. L10N: Help screen description for OP_LIST_REPLY
-#. Index: <op_list_reply>
-#. Attach Dialog: <op_reply>
-#: gui/opcodes.h:496
+#. L10N: Help for Attach, Index function: <list-reply>
+#: gui/opcodes.h:315
 msgid "Reply to specified mailing list"
 msgstr "Répondre à la liste de diffusion spécifiée"
 
-#. L10N: Help screen description for OP_LIST_SUBSCRIBE
-#. Attach Dialog: <op_list_subscribe>
-#. Index: <op_list_subscribe>
-#: gui/opcodes.h:500
+#. L10N: Help for Attach, Index, List function: <list-subscribe>
+#: gui/opcodes.h:317
 msgid "Subscribe to a mailing list"
 msgstr "S'abonner à la liste de diffusion spécifiée"
 
 # , c-format
-#. L10N: Help screen description for OP_LIST_UNSUBSCRIBE
-#. Attach Dialog: <op_list_unsubscribe>
-#. Index: <op_list_unsubscribe>
-#: gui/opcodes.h:504
+#. L10N: Help for Attach, Index, List function: <list-unsubscribe>
+#: gui/opcodes.h:319
 msgid "Unsubscribe from a mailing list"
 msgstr "Se désabonner d'une liste de diffusion"
 
-#. L10N: Help screen description for OP_LOAD_ACTIVE
-#. Browser: <op_load_active>
-#: gui/opcodes.h:507
+#. L10N: Help for Browser function: <reload-active>
+#: gui/opcodes.h:321
 msgid "Load list of all newsgroups from NNTP server"
 msgstr "Charger la liste de tous les forums du serveur NNTP"
 
-#. L10N: Help screen description for OP_MACRO
-#: gui/opcodes.h:509
+#. L10N: Help for executing a macro
+#: gui/opcodes.h:323
 msgid "Execute a macro"
 msgstr "Exécuter une macro"
 
-#. L10N: Help screen description for OP_MAIL
-#. Alias Dialog: <op_generic_select_entry>
-#. Index: <op_mail>
-#: gui/opcodes.h:513
+#. L10N: Help for Alias, Index, Query function: <mail>
+#: gui/opcodes.h:325
 msgid "Compose a new mail message"
 msgstr "Composer un nouveau message"
 
-#. L10N: Help screen description for OP_MAILBOX_LIST
-#. Browser: <op_mailbox_list>
-#. Index: <op_mailbox_list>
-#: gui/opcodes.h:517
+#. L10N: Help for Browser, Index function: <mailbox-list>
+#: gui/opcodes.h:327
 msgid "List mailboxes with new mail"
 msgstr "Lister les boîtes aux lettres ayant de nouveaux messages"
 
-#. L10N: Help screen description for OP_MAIN_BREAK_THREAD
-#. Index: <op_main_break_thread>
-#: gui/opcodes.h:520
+#. L10N: Help for Index function: <break-thread>
+#: gui/opcodes.h:329
 msgid "Break the thread in two"
 msgstr "Casser la discussion en deux"
 
-#. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER
-#. Index: <op_main_change_folder>
-#: gui/opcodes.h:523
+#. L10N: Help for Index function: <change-folder>
+#: gui/opcodes.h:331
 msgid "Open a different folder"
 msgstr "Ouvrir un autre dossier"
 
-#. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER_READONLY
-#. Index: <op_main_change_folder>
-#: gui/opcodes.h:526
+#. L10N: Help for Index function: <change-folder-readonly>
+#: gui/opcodes.h:333
 msgid "Open a different folder in read only mode"
 msgstr "Ouvrir un autre répertoire en lecture seule"
 
-#. L10N: Help screen description for OP_MAIN_CHANGE_GROUP
-#. Index: <op_main_change_group>
-#: gui/opcodes.h:529
+#. L10N: Help for Index function: <change-newsgroup>
+#: gui/opcodes.h:335
 msgid "Open a different newsgroup"
 msgstr "Ouvrir un autre forum"
 
 # TODO: « dossier » vs « répertoire » and how to translate "newsgroup"
-#. L10N: Help screen description for OP_MAIN_CHANGE_GROUP_READONLY
-#. Index: <op_main_change_group>
-#: gui/opcodes.h:532
+#. L10N: Help for Index function: <change-newsgroup-readonly>
+#: gui/opcodes.h:337
 msgid "Open a different newsgroup in read only mode"
 msgstr "Ouvrir un autre forum en lecture seule"
 
-#. L10N: Help screen description for OP_MAIN_CLEAR_FLAG
-#. Index: <op_main_set_flag>
-#: gui/opcodes.h:535
+#. L10N: Help for Index function: <clear-flag>
+#: gui/opcodes.h:339
 msgid "Clear a status flag from a message"
 msgstr "Effacer un drapeau de statut d'un message"
 
-#. L10N: Help screen description for OP_MAIN_CLOSE_ALL_THREADS
-#. Index: <op_main_close_all_threads>
-#: gui/opcodes.h:538
+#. L10N: Help for Index function: <close-all-threads>
+#: gui/opcodes.h:341
 #, fuzzy
 msgid "Collapse all threads"
 msgstr "Comprimer/décomprimer toutes les discussions"
 
-#. L10N: Help screen description for OP_MAIN_CLOSE_THREAD
-#. Index: <op_main_close_thread>
-#: gui/opcodes.h:541
+#. L10N: Help for Index function: <close-thread>
+#: gui/opcodes.h:343
 #, fuzzy
 msgid "Collapse current thread"
 msgstr "Comprimer/décomprimer la discussion courante"
 
-#. L10N: Help screen description for OP_MAIN_COLLAPSE_ALL
-#. Index: <op_main_collapse_all>
-#: gui/opcodes.h:544
+#. L10N: Help for Index function: <collapse-all>
+#: gui/opcodes.h:345
 msgid "Collapse/uncollapse all threads"
 msgstr "Comprimer/décomprimer toutes les discussions"
 
-#. L10N: Help screen description for OP_MAIN_COLLAPSE_THREAD
-#. Index: <op_main_collapse_thread>
-#: gui/opcodes.h:547
+#. L10N: Help for Index function: <collapse-thread>
+#: gui/opcodes.h:347
 msgid "Collapse/uncollapse current thread"
 msgstr "Comprimer/décomprimer la discussion courante"
 
-#. L10N: Help screen description for OP_MAIN_DELETE_PATTERN
-#. Index: <op_main_delete_pattern>
-#: gui/opcodes.h:550
+#. L10N: Help for Index function: <delete-pattern>
+#: gui/opcodes.h:349
 msgid "Delete non-hidden messages matching a pattern"
 msgstr "Supprimer des messages non caché correspondant à un motif"
 
-#. L10N: Help screen description for OP_MAIN_FETCH_MAIL
-#. Index: <op_main_fetch_mail>
-#: gui/opcodes.h:553
+#. L10N: Help for Index function: <fetch-mail>
+#: gui/opcodes.h:351
 msgid "Retrieve mail from POP server"
 msgstr "Récupérer des messages depuis un serveur POP"
 
-#. L10N: Help screen description for OP_MAIN_IMAP_FETCH
-#. Index: <op_main_imap_fetch>
-#: gui/opcodes.h:556
+#. L10N: Help for Index function: <imap-fetch-mail>
+#: gui/opcodes.h:353
 msgid "Force retrieval of mail from IMAP server"
 msgstr "Forcer la récupération des messages depuis un serveur IMAP"
 
-#. L10N: Help screen description for OP_MAIN_IMAP_LOGOUT_ALL
-#. Index: <op_main_imap_logout_all>
-#: gui/opcodes.h:559
+#. L10N: Help for Index function: <imap-logout-all>
+#: gui/opcodes.h:355
 msgid "Logout from all IMAP servers"
 msgstr "Se déconnecter de tous les serveurs IMAP"
 
-#. L10N: Help screen description for OP_MAIN_LIMIT
-#. Alias Dialog: <op_main_limit>
-#. Index: <op_main_limit>
-#: gui/opcodes.h:563
+#. L10N: Help for Alias, Index, Query function: <limit>
+#: gui/opcodes.h:357
 msgid "Show only messages matching a pattern"
 msgstr "Afficher seulement les messages correspondant à un motif"
 
-#. L10N: Help screen description for OP_MAIN_LINK_THREADS
-#. Index: <op_main_link_threads>
-#: gui/opcodes.h:566
+#. L10N: Help for Index function: <link-threads>
+#: gui/opcodes.h:359
 msgid "Link tagged message to the current one"
 msgstr "Lier le message marqué au message courant"
 
-#. L10N: Help screen description for OP_MAIN_MODIFY_TAGS
-#. Index: <op_main_modify_tags>
-#: gui/opcodes.h:569
+#. L10N: Help for Index, Index function: <modify-labels>
+#: gui/opcodes.h:361
 msgid "Modify (notmuch/imap) tags"
 msgstr "Modifier les étiquettes (notmuch/imap)"
 
-#. L10N: Help screen description for OP_MAIN_MODIFY_TAGS_THEN_HIDE
-#. Index: <op_main_modify_tags>
-#: gui/opcodes.h:572
+#. L10N: Help for Index, Index function: <modify-labels-then-hide>
+#: gui/opcodes.h:363
 msgid "Modify (notmuch/imap) tags and then hide message"
 msgstr "Modifier les étiquettes (notmuch/imap), et puis cacher le message"
 
-#. L10N: Help screen description for OP_MAIN_NEXT_NEW
-#. Index: <op_main_next_new>
-#: gui/opcodes.h:575
+#. L10N: Help for Index function: <next-new>
+#: gui/opcodes.h:365
 msgid "Jump to the next new message"
 msgstr "Aller au nouveau message suivant"
 
-#. L10N: Help screen description for OP_MAIN_NEXT_NEW_THEN_UNREAD
-#. Index: <op_main_next_new>
-#: gui/opcodes.h:578
+#. L10N: Help for Index function: <next-new-then-unread>
+#: gui/opcodes.h:367
 msgid "Jump to the next new or unread message"
 msgstr "Aller au message nouveau ou non lu suivant"
 
-#. L10N: Help screen description for OP_MAIN_NEXT_SUBTHREAD
-#. Index: <op_main_next_thread>
-#: gui/opcodes.h:581
+#. L10N: Help for Index function: <next-subthread>
+#: gui/opcodes.h:369
 msgid "Jump to the next subthread"
 msgstr "Aller à la sous-discussion suivante"
 
-#. L10N: Help screen description for OP_MAIN_NEXT_THREAD
-#. Index: <op_main_next_thread>
-#: gui/opcodes.h:584
+#. L10N: Help for Index function: <next-thread>
+#: gui/opcodes.h:371
 msgid "Jump to the next thread"
 msgstr "Aller à la discussion suivante"
 
-#. L10N: Help screen description for OP_MAIN_NEXT_UNDELETED
-#. Index: <op_main_next_undeleted>
-#: gui/opcodes.h:587
+#. L10N: Help for Index function: <next-undeleted>
+#: gui/opcodes.h:373
 msgid "Move to the next undeleted message"
 msgstr "Aller au message non supprimé suivant"
 
-#. L10N: Help screen description for OP_MAIN_NEXT_UNREAD
-#. Index: <op_main_next_new>
-#: gui/opcodes.h:590
+#. L10N: Help for Index function: <next-unread>
+#: gui/opcodes.h:375
 msgid "Jump to the next unread message"
 msgstr "Aller au message non lu suivant"
 
-#. L10N: Help screen description for OP_MAIN_NEXT_UNREAD_MAILBOX
-#. Index: <op_main_next_unread_mailbox>
-#. Pager: <op_main_next_unread_mailbox>
-#: gui/opcodes.h:594
+#. L10N: Help for Index function: <next-unread-mailbox>
+#: gui/opcodes.h:377
 msgid "Open next mailbox with new mail"
 msgstr "Ouvrir la boîte aux lettres avec de nouveaux messages suivante"
 
-#. L10N: Help screen description for OP_MAIN_PREV_UNREAD_MAILBOX
-#. Index: <op_main_prev_unread_mailbox>
-#. Pager: <op_main_prev_unread_mailbox>
-#: gui/opcodes.h:598
+#. L10N: Help for Index function: <previous-unread-mailbox>
+#: gui/opcodes.h:379
 #, fuzzy
 msgid "Open previous mailbox with new mail"
 msgstr "Ouvrir la boîte aux lettres avec de nouveaux messages suivante"
 
-#. L10N: Help screen description for OP_MAIN_OPEN_ALL_THREADS
-#. Index: <op_main_open_all_threads>
-#: gui/opcodes.h:601
+#. L10N: Help for Index function: <open-all-threads>
+#: gui/opcodes.h:381
 #, fuzzy
 msgid "Uncollapse all threads"
 msgstr "Comprimer/décomprimer toutes les discussions"
 
-#. L10N: Help screen description for OP_MAIN_OPEN_THREAD
-#. Index: <op_main_open_thread>
-#: gui/opcodes.h:604
+#. L10N: Help for Index function: <open-thread>
+#: gui/opcodes.h:383
 #, fuzzy
 msgid "Uncollapse current thread"
 msgstr "Comprimer/décomprimer la discussion courante"
 
-#. L10N: Help screen description for OP_MAIN_PARENT_MESSAGE
-#. Index: <op_main_root_message>
-#: gui/opcodes.h:607
+#. L10N: Help for Index function: <parent-message>
+#: gui/opcodes.h:385
 msgid "Jump to parent message in thread"
 msgstr "Aller au message père dans la discussion"
 
-#. L10N: Help screen description for OP_MAIN_PREV_NEW
-#. Index: <op_main_next_new>
-#: gui/opcodes.h:610
+#. L10N: Help for Index function: <previous-new>
+#: gui/opcodes.h:387
 msgid "Jump to the previous new message"
 msgstr "Aller au nouveau message précédent"
 
-#. L10N: Help screen description for OP_MAIN_PREV_NEW_THEN_UNREAD
-#. Index: <op_main_next_new>
-#: gui/opcodes.h:613
+#. L10N: Help for Index function: <previous-new-then-unread>
+#: gui/opcodes.h:389
 msgid "Jump to the previous new or unread message"
 msgstr "Aller au message nouveau ou non lu précédent"
 
-#. L10N: Help screen description for OP_MAIN_PREV_SUBTHREAD
-#. Index: <op_main_next_thread>
-#: gui/opcodes.h:616
+#. L10N: Help for Index function: <previous-subthread>
+#: gui/opcodes.h:391
 msgid "Jump to previous subthread"
 msgstr "Aller à la sous-discussion précédente"
 
-#. L10N: Help screen description for OP_MAIN_PREV_THREAD
-#. Index: <op_main_next_thread>
-#: gui/opcodes.h:619
+#. L10N: Help for Index function: <previous-thread>
+#: gui/opcodes.h:393
 msgid "Jump to previous thread"
 msgstr "Aller à la discussion précédente"
 
-#. L10N: Help screen description for OP_MAIN_PREV_UNDELETED
-#. Index: <op_main_prev_undeleted>
-#: gui/opcodes.h:622
+#. L10N: Help for Index function: <previous-undeleted>
+#: gui/opcodes.h:395
 msgid "Move to the previous undeleted message"
 msgstr "Aller au message non supprimé précédent"
 
-#. L10N: Help screen description for OP_MAIN_PREV_UNREAD
-#. Index: <op_main_next_new>
-#: gui/opcodes.h:625
+#. L10N: Help for Index function: <previous-unread>
+#: gui/opcodes.h:397
 msgid "Jump to the previous unread message"
 msgstr "Aller au message non lu précédent"
 
-#. L10N: Help screen description for OP_MAIN_QUASI_DELETE
-#. Index: <op_main_quasi_delete>
-#: gui/opcodes.h:628
+#. L10N: Help for Index function: <quasi-delete>
+#: gui/opcodes.h:399
 msgid "Delete from NeoMutt, don't touch on disk"
 msgstr "Supprimer de NeoMutt, ne pas toucher au disque"
 
-#. L10N: Help screen description for OP_MAIN_READ_SUBTHREAD
-#. Index: <op_main_read_thread>
-#: gui/opcodes.h:631
+#. L10N: Help for Index function: <read-subthread>
+#: gui/opcodes.h:401
 msgid "Mark the current subthread as read"
 msgstr "Marquer la sous-discussion courante comme lue"
 
-#. L10N: Help screen description for OP_MAIN_READ_THREAD
-#. Index: <op_main_read_thread>
-#: gui/opcodes.h:634
+#. L10N: Help for Index function: <read-thread>
+#: gui/opcodes.h:403
 msgid "Mark the current thread as read"
 msgstr "Marquer la discussion courante comme lue"
 
-#. L10N: Help screen description for OP_MAIN_ROOT_MESSAGE
-#. Index: <op_main_root_message>
-#: gui/opcodes.h:637
+#. L10N: Help for Index function: <root-message>
+#: gui/opcodes.h:405
 msgid "Jump to root message in thread"
 msgstr "Aller au message racine dans la discussion"
 
-#. L10N: Help screen description for OP_MAIN_SET_FLAG
-#. Index: <op_main_set_flag>
-#: gui/opcodes.h:640
+#. L10N: Help for Index function: <set-flag>
+#: gui/opcodes.h:407
 msgid "Set a status flag on a message"
 msgstr "Marquer un message d'un drapeau d'état"
 
-#. L10N: Help screen description for OP_MAIN_SHOW_LIMIT
-#. Index: <op_main_show_limit>
-#: gui/opcodes.h:643
+#. L10N: Help for Index function: <show-limit>
+#: gui/opcodes.h:409
 msgid "Show currently active limit pattern"
 msgstr "Afficher le motif de limitation actuel"
 
-#. L10N: Help screen description for OP_MAIN_SYNC_FOLDER
-#. Index: <op_main_sync_folder>
-#: gui/opcodes.h:646
+#. L10N: Help for Index function: <sync-mailbox>
+#: gui/opcodes.h:411
 msgid "Save changes to mailbox"
 msgstr "Enregistrer les modifications de la boîte aux lettres"
 
-#. L10N: Help screen description for OP_MAIN_TAG_PATTERN
-#. Index: <op_main_tag_pattern>
-#: gui/opcodes.h:649
+#. L10N: Help for Alias, Index, Query function: <tag-pattern>
+#: gui/opcodes.h:413
 msgid "Tag non-hidden messages matching a pattern"
 msgstr "Étiqueter des messages non cachés correspondant à un motif"
 
-#. L10N: Help screen description for OP_MAIN_UNDELETE_PATTERN
-#. Index: <op_main_undelete_pattern>
-#: gui/opcodes.h:652
+#. L10N: Help for Index function: <undelete-pattern>
+#: gui/opcodes.h:415
 msgid "Undelete non-hidden messages matching a pattern"
 msgstr "Récupérer des messages non cachés correspondant à un motif"
 
-#. L10N: Help screen description for OP_MAIN_UNTAG_PATTERN
-#. Index: <op_main_untag_pattern>
-#: gui/opcodes.h:655
+#. L10N: Help for Alias, Index, Query function: <untag-pattern>
+#: gui/opcodes.h:417
 msgid "Untag non-hidden messages matching a pattern"
 msgstr "Enlever l'étiquette des messages non cachés correspondant à un motif"
 
-#. L10N: Help screen description for OP_MARK_MSG
-#. Index: <op_mark_msg>
-#: gui/opcodes.h:658
+#. L10N: Help for Index function: <mark-message>
+#: gui/opcodes.h:419
 msgid "Create a hotkey macro for the current message"
 msgstr "Créer une macro hotkey (marque-page) pour le message courant"
 
-#. L10N: Help screen description for OP_MIDDLE_PAGE
-#. Menu: <menu_movement>
-#: gui/opcodes.h:661
+#. L10N: Help for Generic function: <middle-page>
+#: gui/opcodes.h:421
 msgid "Move to the middle of the page"
 msgstr "Aller au milieu de la page"
 
-#. L10N: Help screen description for OP_NEXT_ENTRY
-#. Menu: <menu_movement>
-#. Index: <op_next_entry>
-#: gui/opcodes.h:665
+#. L10N: Help for Generic function: <next-entry>
+#: gui/opcodes.h:423
 msgid "Move to the next entry"
 msgstr "Aller à l'entrée suivante"
 
-#. L10N: Help screen description for OP_NEXT_LINE
-#. Menu: <menu_movement>
-#. Pager: <op_pager_next_line>
-#: gui/opcodes.h:669
+#. L10N: Help for Generic function: <next-line>
+#: gui/opcodes.h:425
 msgid "Scroll down one line"
 msgstr "Descendre d'une ligne"
 
-#. L10N: Help screen description for OP_NEXT_PAGE
-#. Menu: <menu_movement>
-#. Pager: <op_pager_next_page>
-#: gui/opcodes.h:673
+#. L10N: Help for Generic function: <next-page>
+#: gui/opcodes.h:427
 msgid "Move to the next page"
 msgstr "Aller à la page suivante"
 
-#. L10N: Help screen description for OP_PAGER_BOTTOM
-#. Pager: <op_pager_bottom>
-#: gui/opcodes.h:676
+#. L10N: Help for Generic function: <pager-bottom>
+#: gui/opcodes.h:429
 msgid "Jump to the bottom of the message"
 msgstr "Aller à la fin du message"
 
-#. L10N: Help screen description for OP_PAGER_HIDE_QUOTED
-#. Pager: <op_pager_hide_quoted>
-#: gui/opcodes.h:679
+#. L10N: Help for Pager function: <toggle-quoted>
+#: gui/opcodes.h:431
 msgid "Toggle display of quoted text"
 msgstr "Activer/désactiver l'affichage du texte cité"
 
-#. L10N: Help screen description for OP_PAGER_SKIP_HEADERS
-#. Pager: <op_pager_skip_headers>
-#: gui/opcodes.h:682
+#. L10N: Help for Pager function: <skip-headers>
+#: gui/opcodes.h:433
 #, fuzzy
 msgid "Jump to first line after headers"
 msgstr "Aller à la discussion suivante"
 
-#. L10N: Help screen description for OP_PAGER_SKIP_QUOTED
-#. Pager: <op_pager_skip_quoted>
-#: gui/opcodes.h:685
+#. L10N: Help for Pager function: <skip-quoted>
+#: gui/opcodes.h:435
 msgid "Skip beyond quoted text"
 msgstr "Sauter le texte cité"
 
-#. L10N: Help screen description for OP_PAGER_TOP
-#. Pager: <op_pager_top>
-#: gui/opcodes.h:688
+#. L10N: Help for Generic function: <pager-top>
+#: gui/opcodes.h:437
 msgid "Jump to the top of the message"
 msgstr "Aller au début du message"
 
-#. L10N: Help screen description for OP_POST
-#. Index: <op_post>
-#: gui/opcodes.h:696
+#. L10N: Help for Attach, Compose, Index, Attach, Compose, Index function: <pipe-entry>
+#: gui/opcodes.h:439
+msgid "Pipe message/attachment to a shell command"
+msgstr "Passer le message/la pièce jointe à une commande shell"
+
+#. L10N: Help for Index function: <post-message>
+#: gui/opcodes.h:441
 msgid "Post message to newsgroup"
 msgstr "Publier le message à un forum"
 
-#. L10N: Help screen description for OP_PREV_ENTRY
-#. Menu: <menu_movement>
-#. Index: <op_prev_entry>
-#: gui/opcodes.h:700
+#. L10N: Help for Generic function: <previous-entry>
+#: gui/opcodes.h:443
 msgid "Move to the previous entry"
 msgstr "Aller à l'entrée précédente"
 
-#. L10N: Help screen description for OP_PREV_LINE
-#. Menu: <menu_movement>
-#. Pager: <op_pager_prev_line>
-#: gui/opcodes.h:704
+#. L10N: Help for Generic function: <previous-line>
+#: gui/opcodes.h:445
 msgid "Scroll up one line"
 msgstr "Remonter d'une ligne"
 
-#. L10N: Help screen description for OP_PREV_PAGE
-#. Menu: <menu_movement>
-#. Pager: <op_pager_prev_page>
-#: gui/opcodes.h:708
+#. L10N: Help for Generic function: <previous-page>
+#: gui/opcodes.h:447
 msgid "Move to the previous page"
 msgstr "Aller à la page précédente"
 
-#. L10N: Help screen description for OP_PURGE_MESSAGE
-#. Index: <op_delete>
-#: gui/opcodes.h:714
+#. L10N: Help for Index function: <purge-message>
+#: gui/opcodes.h:451
 msgid "Delete the current entry, bypassing the trash folder"
 msgstr "Supprimer l'entrée courante, sans utiliser la corbeille"
 
-#. L10N: Help screen description for OP_PURGE_THREAD
-#. Index: <op_delete_thread>
-#: gui/opcodes.h:717
+#. L10N: Help for Index function: <purge-thread>
+#: gui/opcodes.h:453
 msgid "Delete the current thread, bypassing the trash folder"
 msgstr "Supprimer le fil de discussion sélectionné, sans passer par la corbeille"
 
-#. L10N: Help screen description for OP_QUERY
-#. Alias Dialog: <op_query>
-#. Index: <op_query>
-#: gui/opcodes.h:721
+#. L10N: Help for Index, Query function: <query>
+#: gui/opcodes.h:455
 msgid "Query external program for addresses"
 msgstr "Demander des adresses à un programme externe"
 
-#. L10N: Help screen description for OP_QUERY_APPEND
-#. Alias Dialog: <op_query>
-#: gui/opcodes.h:724
+#. L10N: Help for Query function: <query-append>
+#: gui/opcodes.h:457
 msgid "Append new query results to current results"
 msgstr "Ajouter les nouveaux résultats de la requête aux résultats courants"
 
-#. L10N: Help screen description for OP_QUIT
-#. History Dialog: <op_quit>
-#. Index: <op_quit>
-#. Pattern Dialog: <op_quit>
-#: gui/opcodes.h:729
+#. L10N: Help for Generic function: <quit>
+#: gui/opcodes.h:459
 msgid "Save changes to mailbox and quit"
 msgstr "Enregistrer les modifications de la boîte aux lettres et quitter"
 
-#. L10N: Help screen description for OP_RECALL_MESSAGE
-#. Index: <op_recall_message>
-#: gui/opcodes.h:732
+#. L10N: Help for Index function: <recall-message>
+#: gui/opcodes.h:461
 msgid "Recall a postponed message"
 msgstr "Rappeler un message ajourné"
 
-#. L10N: Help screen description for OP_RECONSTRUCT_THREAD
-#. Index: <op_get_children>
-#: gui/opcodes.h:735
+#. L10N: Help for Index function: <reconstruct-thread>
+#: gui/opcodes.h:463
 #, fuzzy
 msgid "Reconstruct thread containing current message"
 msgstr "Cette fil de discussion contient des messages non lus."
 
-#. L10N: Help screen description for OP_REDRAW
-#. Text Entry: <op_redraw>
-#. Global: <op_redraw>
-#: gui/opcodes.h:739
+#. L10N: Help for Editor, Generic function: <redraw-screen>
+#: gui/opcodes.h:465
 msgid "Clear and redraw the screen"
 msgstr "Effacer l'écran et réafficher"
 
-#. L10N: Help screen description for OP_RENAME_MAILBOX
-#. Browser: <op_rename_mailbox>
-#: gui/opcodes.h:742
+#. L10N: Help for Browser function: <rename-mailbox>
+#: gui/opcodes.h:467
 msgid "Rename the current mailbox (IMAP only)"
 msgstr "Renommer la boîte aux lettres actuelle (IMAP seulement)"
 
-#. L10N: Help screen description for OP_REPLY
-#. Attach Dialog: <op_reply>
-#. Index: <op_reply>
-#: gui/opcodes.h:746
+#. L10N: Help for Attach, Index function: <reply>
+#: gui/opcodes.h:469
 msgid "Reply to a message"
 msgstr "Répondre à un message"
 
-#. L10N: Help screen description for OP_RESEND
-#. Attach Dialog: <op_resend>
-#. Index: <op_resend>
-#: gui/opcodes.h:750
+#. L10N: Help for Attach, Index function: <resend-message>
+#: gui/opcodes.h:471
 msgid "Use the current message as a template for a new one"
 msgstr "Utiliser le message courant comme modèle pour un nouveau message"
 
-#. L10N: Help screen description for OP_SEARCH
-#. Menu: <menu_search>
-#. Pager: <op_pager_search>
-#. Alias Dialog: <op_search>
-#. Index: <op_search>
-#. Postponed Dialog: <op_search>
-#: gui/opcodes.h:761
+#. L10N: Help for Generic function: <search>
+#: gui/opcodes.h:475
 msgid "Search for a regular expression"
 msgstr "Rechercher une expression rationnelle"
 
-#. L10N: Help screen description for OP_SEARCH_NEXT
-#. Menu: <menu_search>
-#. Pager: <op_pager_search_next>
-#. Alias Dialog: <op_search>
-#. Index: <op_search>
-#. Postponed Dialog: <op_search>
-#: gui/opcodes.h:768
+#. L10N: Help for Generic function: <search-next>
+#: gui/opcodes.h:477
 msgid "Search for next match"
 msgstr "Rechercher la prochaine occurrence"
 
-#. L10N: Help screen description for OP_SEARCH_OPPOSITE
-#. Menu: <menu_search>
-#. Pager: <op_pager_search_next>
-#. Alias Dialog: <op_search>
-#. Index: <op_search>
-#. Postponed Dialog: <op_search>
-#: gui/opcodes.h:775
+#. L10N: Help for Generic function: <search-opposite>
+#: gui/opcodes.h:479
 msgid "Search for next match in opposite direction"
 msgstr "Rechercher la prochaine occurrence dans la direction opposée"
 
-#. L10N: Help screen description for OP_SEARCH_REVERSE
-#. Menu: <menu_search>
-#. Pager: <op_pager_search>
-#. Alias Dialog: <op_search>
-#. Index: <op_search>
-#. Postponed Dialog: <op_search>
-#: gui/opcodes.h:782
+#. L10N: Help for Generic function: <search-reverse>
+#: gui/opcodes.h:481
 msgid "Search backwards for a regular expression"
 msgstr "Rechercher en arrière une expression rationnelle"
 
-#. L10N: Help screen description for OP_SEARCH_TOGGLE
-#. Pager: <op_search_toggle>
-#: gui/opcodes.h:785
+#. L10N: Help for Pager function: <search-toggle>
+#: gui/opcodes.h:483
 msgid "Toggle search pattern coloring"
 msgstr "Activer/désactiver la coloration du motif de recherche"
 
-#. L10N: Help screen description for OP_SHELL_ESCAPE
-#. Global: <op_shell_escape>
-#: gui/opcodes.h:788
+#. L10N: Help for Generic function: <shell-escape>
+#: gui/opcodes.h:485
 msgid "Invoke a command in a subshell"
 msgstr "Exécuter une commande dans un sous-shell"
 
-#. L10N: Help screen description for OP_SHOW_LOG_MESSAGES
-#. Global: <op_show_log_messages>
-#: gui/opcodes.h:791
+#. L10N: Help for Generic function: <show-log-messages>
+#: gui/opcodes.h:487
 msgid "Show log (and debug) messages"
 msgstr "Afficher les messages de log (et de débogage)"
 
-#. L10N: Help screen description for OP_SORT
-#. Alias Dialog: <op_sort>
-#. Browser: <op_sort>
-#. Index: <op_sort>
-#: gui/opcodes.h:796
+#. L10N: Help for Browser, Query, Alias, Index function: <sort>
+#: gui/opcodes.h:489
 msgid "Sort messages"
 msgstr "Trier les messages"
 
-#. L10N: Help screen description for OP_SORT_REVERSE
-#. Alias Dialog: <op_sort>
-#. Browser: <op_sort>
-#. Index: <op_sort>
-#: gui/opcodes.h:801
+#. L10N: Help for Alias, Browser, Index, Query function: <sort-alias-reverse>
+#: gui/opcodes.h:491
 msgid "Sort messages in reverse order"
 msgstr "Trier les messages dans l'ordre inverse"
 
-#. L10N: Help screen description for OP_SUBSCRIBE_PATTERN
-#. Browser: <op_subscribe_pattern>
-#: gui/opcodes.h:804
+#. L10N: Help for Browser function: <subscribe-pattern>
+#: gui/opcodes.h:493
 msgid "Subscribe to newsgroups matching a pattern"
 msgstr "S'abonner aux forums correspondant à un motif"
 
-#. L10N: Help screen description for OP_TAG
-#. Index: <op_tag>
-#: gui/opcodes.h:807
+#. L10N: Help for Generic, Postpone function: <tag-entry>
+#: gui/opcodes.h:495
 msgid "Tag the current entry"
 msgstr "Marquer l'entrée actuelle"
 
-#. L10N: Help screen description for OP_TAG_PREFIX
-#: gui/opcodes.h:809
+#. L10N: Help for Generic function: <tag-prefix>
+#: gui/opcodes.h:497
 msgid "Apply next function to tagged messages"
 msgstr "Appliquer la prochaine fonction aux messages étiquettés"
 
-#. L10N: Help screen description for OP_TAG_PREFIX_COND
-#: gui/opcodes.h:811
+#. L10N: Help for Generic function: <tag-prefix-cond>
+#: gui/opcodes.h:499
 msgid "Apply next function ONLY to tagged messages"
 msgstr "Appliquer la prochaine fonction SEULEMENT aux messages marqués"
 
-#. L10N: Help screen description for OP_TAG_SUBTHREAD
-#. Index: <op_tag_thread>
-#: gui/opcodes.h:814
+#. L10N: Help for Index function: <tag-subthread>
+#: gui/opcodes.h:501
 msgid "Tag the current subthread"
 msgstr "Étiqueter la sous-discussion actuelle"
 
-#. L10N: Help screen description for OP_TAG_THREAD
-#. Index: <op_tag_thread>
-#: gui/opcodes.h:817
+#. L10N: Help for Index function: <tag-thread>
+#: gui/opcodes.h:503
 msgid "Tag the current thread"
 msgstr "Étiqueter la discussion actuelle"
 
-#. L10N: Help screen description for OP_TOGGLE_MAILBOXES
-#. Browser: <op_toggle_mailboxes>
-#: gui/opcodes.h:820
+#. L10N: Help for Browser function: <toggle-mailboxes>
+#: gui/opcodes.h:505
 msgid "Toggle whether to browse mailboxes or all files"
 msgstr "Basculer entre l'affichage des boîtes aux lettres ou celui de tous les fichiers"
 
-#. L10N: Help screen description for OP_TOGGLE_NEW
-#. Index: <op_toggle_new>
-#: gui/opcodes.h:823
+#. L10N: Help for Index function: <toggle-new>
+#: gui/opcodes.h:507
 msgid "Toggle a message's 'new' flag"
 msgstr "Basculer le drapeau 'nouveau' du message"
 
-#. L10N: Help screen description for OP_TOGGLE_READ
-#. Index: <op_main_limit>
-#: gui/opcodes.h:826
+#. L10N: Help for Index function: <toggle-read>
+#: gui/opcodes.h:509
 #, fuzzy
 msgid "Toggle view of read messages"
 msgstr "Basculer la vue des messages lus"
 
-#. L10N: Help screen description for OP_TOGGLE_WRITE
-#. Index: <op_toggle_write>
-#: gui/opcodes.h:829
+#. L10N: Help for Index function: <toggle-write>
+#: gui/opcodes.h:511
 #, fuzzy
 msgid "Toggle whether the mailbox will be rewritten"
 msgstr "Changer l'option de mise à jour de la boîte aux lettres"
 
-#. L10N: Help screen description for OP_TOP_PAGE
-#. Menu: <menu_movement>
-#: gui/opcodes.h:832
+#. L10N: Help for Generic function: <top-page>
+#: gui/opcodes.h:513
 msgid "Move to the top of the page"
 msgstr "Aller en haut de la page"
 
-#. L10N: Help screen description for OP_UNCATCHUP
-#. Browser: <op_catchup>
-#: gui/opcodes.h:835
+#. L10N: Help for Browser function: <uncatchup>
+#: gui/opcodes.h:515
 msgid "Mark all articles in newsgroup as unread"
 msgstr "Marquer tous les articles du forum comme non lus"
 
-#. L10N: Help screen description for OP_UNDELETE_SUBTHREAD
-#. Index: <op_undelete_thread>
-#: gui/opcodes.h:843
+#. L10N: Help for Index function: <undelete-subthread>
+#: gui/opcodes.h:519
 msgid "Undelete all messages in subthread"
 msgstr "Récupérer tous les messages de la sous-discussion"
 
-#. L10N: Help screen description for OP_UNDELETE_THREAD
-#. Index: <op_undelete_thread>
-#: gui/opcodes.h:846
+#. L10N: Help for Index function: <undelete-thread>
+#: gui/opcodes.h:521
 msgid "Undelete all messages in thread"
 msgstr "Récupérer tous les messages de la discussion"
 
-#. L10N: Help screen description for OP_UNSUBSCRIBE_PATTERN
-#. Browser: <op_subscribe_pattern>
-#: gui/opcodes.h:849
+#. L10N: Help for Browser function: <unsubscribe-pattern>
+#: gui/opcodes.h:523
 msgid "Unsubscribe from newsgroups matching a pattern"
 msgstr "Se désabonner des forums correspondant à un motif"
 
-#. L10N: Help screen description for OP_VERSION
-#. Global: <op_version>
-#: gui/opcodes.h:852
+#. L10N: Help for Generic function: <show-version>
+#: gui/opcodes.h:525
 msgid "Show the NeoMutt version number and date"
 msgstr "Afficher la version de NeoMutt (numéro et date)"
 
-#. L10N: Help screen description for OP_VIEW_ATTACHMENTS
-#. Index: <op_view_attachments>
-#. Pager: <op_view_attachments>
-#: gui/opcodes.h:856
+#. L10N: Help for Index function: <view-attachments>
+#: gui/opcodes.h:527
 msgid "Show MIME attachments"
 msgstr "Afficher les pièces jointes MIME"
 
-#. L10N: Help screen description for OP_VIEW_RAW_MESSAGE
-#. Index: <op_edit_raw_message>
-#: gui/opcodes.h:859
+#. L10N: Help for Index function: <view-raw-message>
+#: gui/opcodes.h:529
 msgid "Show the raw message"
 msgstr "Afficher le message brut"
 
-#. L10N: Help screen description for OP_WHAT_KEY
-#. Global: <op_what_key>
-#: gui/opcodes.h:862
+#. L10N: Help for Generic function: <what-key>
+#: gui/opcodes.h:531
 msgid "Display the keycode for a key press"
 msgstr "Afficher le code d'une touche enfoncée"
 
-#. L10N: Help screen description for OP_DECRYPT_COPY
-#. Index: <op_save>
-#: gui/opcodes.h:867
+#. L10N: Help for Index function: <decrypt-copy>
+#: gui/opcodes.h:535
 msgid "Make decrypted copy"
 msgstr "Faire une copie déchiffrée"
 
-#. L10N: Help screen description for OP_DECRYPT_SAVE
-#. Index: <op_save>
-#: gui/opcodes.h:870
+#. L10N: Help for Index function: <decrypt-save>
+#: gui/opcodes.h:537
 msgid "Make decrypted copy and delete"
 msgstr "Faire une copie déchiffrée et supprimer"
 
-#. L10N: Help screen description for OP_EXTRACT_KEYS
-#. Attach Dialog: <op_extract_keys>
-#. Index: <op_extract_keys>
-#: gui/opcodes.h:874
+#. L10N: Help for Attach, Index function: <extract-keys>
+#: gui/opcodes.h:539
 msgid "Extract supported public keys"
 msgstr "Extraire les clés publiques supportées"
 
@@ -4982,256 +4648,212 @@ msgstr "Extraire les clés publiques supportées"
 # « supprimer » is better than « effacer ». However, in this case « effacer »
 # is more appropriate as it implies deleting and then wiping the data so it's
 # not recoverable.
-#. L10N: Help screen description for OP_FORGET_PASSPHRASE
-#. Attach Dialog: <op_forget_passphrase>
-#. Compose Dialog: <op_forget_passphrase>
-#. Index: <op_forget_passphrase>
-#: gui/opcodes.h:879
+#. L10N: Help for Attach, Compose, Index function: <forget-passphrase>
+#: gui/opcodes.h:541
 msgid "Wipe passphrases from memory"
 msgstr "Effacer les phrases de passe de la mémoire"
 
-#. L10N: Help screen description for OP_ENVELOPE_EDIT_BCC
-#. Envelope Window: <op_envelope_edit_bcc>
-#: gui/opcodes.h:884
+#. L10N: Help for Compose function: <edit-bcc>
+#: gui/opcodes.h:545
 msgid "Edit the BCC list"
 msgstr "Éditer la liste CCI"
 
-#. L10N: Help screen description for OP_ENVELOPE_EDIT_CC
-#. Envelope Window: <op_envelope_edit_cc>
-#: gui/opcodes.h:887
+#. L10N: Help for Compose function: <edit-cc>
+#: gui/opcodes.h:547
 msgid "Edit the CC list"
 msgstr "Éditer la liste CC"
 
 # TODO: « taper » vs « entrer » here and elsewhere
-#. L10N: Help screen description for OP_ENVELOPE_EDIT_FCC
-#. Envelope Window: <op_envelope_edit_fcc>
-#: gui/opcodes.h:890
+#. L10N: Help for Compose function: <edit-fcc>
+#: gui/opcodes.h:549
 msgid "Enter a file to save a copy of this message in"
 msgstr "Entrer le nom d'un fichier dans lequel enregistrer une copie de ce message"
 
 # TODO: should the name of this field be translated?
-#. L10N: Help screen description for OP_ENVELOPE_EDIT_FOLLOWUP_TO
-#. Envelope Window: <op_envelope_edit_followup_to>
-#: gui/opcodes.h:893
+#. L10N: Help for Compose function: <edit-followup-to>
+#: gui/opcodes.h:551
 msgid "Edit the Followup-To field"
 msgstr "Modifier le champ Followup-To"
 
 # TODO: should the name of this field be translated?
-#. L10N: Help screen description for OP_ENVELOPE_EDIT_FROM
-#. Envelope Window: <op_envelope_edit_from>
-#: gui/opcodes.h:896
+#. L10N: Help for Compose function: <edit-from>
+#: gui/opcodes.h:553
 msgid "Edit the from field"
 msgstr "Modifier le champ from"
 
-#. L10N: Help screen description for OP_ENVELOPE_EDIT_HEADERS
-#. Compose Dialog: <op_envelope_edit_headers>
-#: gui/opcodes.h:899
+#. L10N: Help for Compose function: <edit-headers>
+#: gui/opcodes.h:555
 msgid "Edit the message with headers"
 msgstr "Modifier le message avec ses en-têtes"
 
-#. L10N: Help screen description for OP_ENVELOPE_EDIT_NEWSGROUPS
-#. Envelope Window: <op_envelope_edit_newsgroups>
-#: gui/opcodes.h:902
+#. L10N: Help for Compose function: <edit-newsgroups>
+#: gui/opcodes.h:557
 msgid "Edit the newsgroups list"
 msgstr "Modifier la liste des forums"
 
-#. L10N: Help screen description for OP_ENVELOPE_EDIT_REPLY_TO
-#. Envelope Window: <op_envelope_edit_reply_to>
-#: gui/opcodes.h:905
+#. L10N: Help for Compose function: <edit-reply-to>
+#: gui/opcodes.h:559
 msgid "Edit the Reply-To field"
 msgstr "Éditer le champ Reply-To"
 
-#. L10N: Help screen description for OP_ENVELOPE_EDIT_SUBJECT
-#. Envelope Window: <op_envelope_edit_subject>
-#: gui/opcodes.h:908
+#. L10N: Help for Compose function: <edit-subject>
+#: gui/opcodes.h:561
 msgid "Edit the subject of this message"
 msgstr "Éditer l'objet (Subject) de ce message"
 
-#. L10N: Help screen description for OP_ENVELOPE_EDIT_TO
-#. Envelope Window: <op_envelope_edit_to>
-#: gui/opcodes.h:911
+#. L10N: Help for Compose function: <edit-to>
+#: gui/opcodes.h:563
 msgid "Edit the TO list"
 msgstr "Éditer la liste TO"
 
-#. L10N: Help screen description for OP_ENVELOPE_EDIT_X_COMMENT_TO
-#. Envelope Window: <op_envelope_edit_x_comment_to>
-#: gui/opcodes.h:914
+#. L10N: Help for Compose function: <edit-x-comment-to>
+#: gui/opcodes.h:565
 #, fuzzy
 msgid "Edit the X-Comment-To field"
 msgstr "Éditer le champ Reply-To"
 
-#. L10N: Help screen description for OP_MAIN_CHANGE_VFOLDER
-#. Index: <op_main_change_folder>
-#: gui/opcodes.h:920
+#. L10N: Help for Index function: <change-vfolder>
+#: gui/opcodes.h:570
 msgid "Open a different virtual folder"
 msgstr "Ouvrir un autre répertoire virtuel"
 
-#. L10N: Help screen description for OP_MAIN_ENTIRE_THREAD
-#. Index: <op_main_entire_thread>
-#: gui/opcodes.h:923
+#. L10N: Help for Index function: <entire-thread>
+#: gui/opcodes.h:572
 #, fuzzy
 msgid "Read entire thread of the current message"
 msgstr "Créer une macro hotkey (marque-page) pour le message courant"
 
-#. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY
-#. Index: <op_main_vfolder_from_query>
-#: gui/opcodes.h:926
+#. L10N: Help for Index function: <vfolder-from-query>
+#: gui/opcodes.h:574
 msgid "Generate virtual folder from query"
 msgstr "Générer un répertoire virtuel depuis la requête"
 
-#. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY_READONLY
-#. Index: <op_main_vfolder_from_query>
-#: gui/opcodes.h:929
+#. L10N: Help for Index function: <vfolder-from-query-readonly>
+#: gui/opcodes.h:576
 msgid "Generate a read-only virtual folder from query"
 msgstr "Générer un répertoire virtuel en lecture seule depuis la requête"
 
 # TODO: Not sure about this one
-#. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_BACKWARD
-#. Index: <op_main_windowed_vfolder>
-#: gui/opcodes.h:932
+#. L10N: Help for Index function: <vfolder-window-backward>
+#: gui/opcodes.h:578
 msgid "Shifts virtual folder time window backwards"
 msgstr "Décaler la fenêtre temporelle du répertoire virtuel vers l'arrière"
 
 # TODO: Not sure about this one
-#. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_FORWARD
-#. Index: <op_main_windowed_vfolder>
-#: gui/opcodes.h:935
+#. L10N: Help for Index function: <vfolder-window-forward>
+#: gui/opcodes.h:580
 msgid "Shifts virtual folder time window forwards"
 msgstr "Décaler la fenêtre temporelle du répertoire virtuel vers l'avant"
 
-#. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_RESET
-#. Index: <op_main_windowed_vfolder>
-#: gui/opcodes.h:938
+#. L10N: Help for Index function: <vfolder-window-reset>
+#: gui/opcodes.h:582
 msgid "Resets virtual folder time window to the present"
 msgstr "Remettre la fenêtre temporelle du répertoire virtuel au présent"
 
-#. L10N: Help screen description for OP_ATTACH_ATTACH_KEY
-#. Compose Dialog: <op_attach_attach_key>
-#: gui/opcodes.h:946
+#. L10N: Help for Compose function: <attach-key>
+#: gui/opcodes.h:589
 msgid "Attach a PGP public key"
 msgstr "Attacher une clé publique PGP"
 
-#. L10N: Help screen description for OP_CHECK_TRADITIONAL
-#. Attach Dialog: <op_check_traditional>
-#. Index: <op_check_traditional>
-#: gui/opcodes.h:950
+#. L10N: Help for Attach, Index function: <check-traditional-pgp>
+#: gui/opcodes.h:591
 #, fuzzy
 msgid "Check for classic PGP"
 msgstr "Reconnaissance PGP classique"
 
-#. L10N: Help screen description for OP_COMPOSE_PGP_MENU
-#. Envelope Window: <op_compose_pgp_menu>
-#: gui/opcodes.h:953
+#. L10N: Help for Compose function: <pgp-menu>
+#: gui/opcodes.h:593
 msgid "Show PGP options"
 msgstr "Afficher les options PGP"
 
-#. L10N: Help screen description for OP_MAIL_KEY
-#. Index: <op_mail_key>
-#: gui/opcodes.h:956
+#. L10N: Help for Index function: <mail-key>
+#: gui/opcodes.h:595
 msgid "Mail a PGP public key"
 msgstr "Envoyer une clé publique PGP"
 
-#. L10N: Help screen description for OP_VERIFY_KEY
-#. GPGME Key Selection Dialog: <op_verify_key>
-#. PGP Key Selection Dialog: <op_verify_key>
-#: gui/opcodes.h:960
+#. L10N: Help for Pgp, Smime function: <verify-key>
+#: gui/opcodes.h:597
 #, fuzzy
 msgid "Verify a public key"
 msgstr "Vérifier une clé publique "
 
-#. L10N: Help screen description for OP_VIEW_ID
-#. GPGME Key Selection Dialog: <op_view_id>
-#. PGP Key Selection Dialog: <op_view_id>
-#: gui/opcodes.h:964
+#. L10N: Help for Pgp, Smime function: <view-name>
+#: gui/opcodes.h:599
 msgid "View the key's user id"
 msgstr "Afficher le numéro d'utilisateur de la clé"
 
-#. L10N: Help screen description for OP_SIDEBAR_FIRST
-#. Sidebar: <op_sidebar_first>
-#: gui/opcodes.h:969
+#. L10N: Help for Sidebar function: <sidebar-first>
+#: gui/opcodes.h:603
 msgid "Move the highlight to the first mailbox"
 msgstr "Déplacer le focus vers la boîte aux lettres suivante"
 
-#. L10N: Help screen description for OP_SIDEBAR_LAST
-#. Sidebar: <op_sidebar_last>
-#: gui/opcodes.h:972
+#. L10N: Help for Sidebar function: <sidebar-last>
+#: gui/opcodes.h:605
 msgid "Move the highlight to the last mailbox"
 msgstr "Déplacer le focus vers la boîte aux lettres suivante"
 
-#. L10N: Help screen description for OP_SIDEBAR_NEXT
-#. Sidebar: <op_sidebar_next>
-#: gui/opcodes.h:975
+#. L10N: Help for Sidebar function: <sidebar-next>
+#: gui/opcodes.h:607
 msgid "Move the highlight to next mailbox"
 msgstr "Déplacer le focus vers la boîte aux lettres suivante"
 
-#. L10N: Help screen description for OP_SIDEBAR_NEXT_NEW
-#. Sidebar: <op_sidebar_next_new>
-#: gui/opcodes.h:978
+#. L10N: Help for Sidebar function: <sidebar-next-new>
+#: gui/opcodes.h:609
 msgid "Move the highlight to next mailbox with new mail"
 msgstr "Déplacer le focus vers la boîte aux lettres avec de nouveaux messages suivante"
 
-#. L10N: Help screen description for OP_SIDEBAR_OPEN
-#. Sidebar: <op_sidebar_open>
-#: gui/opcodes.h:981
+#. L10N: Help for Sidebar function: <sidebar-open>
+#: gui/opcodes.h:611
 msgid "Open highlighted mailbox"
 msgstr "Ouvrir la boîte aux lettres en surbrillance"
 
-#. L10N: Help screen description for OP_SIDEBAR_PAGE_DOWN
-#. Sidebar: <op_sidebar_page_down>
-#: gui/opcodes.h:984
+#. L10N: Help for Sidebar function: <sidebar-page-down>
+#: gui/opcodes.h:613
 msgid "Scroll the sidebar down 1 page"
 msgstr "Descendre la barre latérale d'une page"
 
-#. L10N: Help screen description for OP_SIDEBAR_PAGE_UP
-#. Sidebar: <op_sidebar_page_up>
-#: gui/opcodes.h:987
+#. L10N: Help for Sidebar function: <sidebar-page-up>
+#: gui/opcodes.h:615
 msgid "Scroll the sidebar up 1 page"
 msgstr "Remonter la barre latérale d'une page"
 
-#. L10N: Help screen description for OP_SIDEBAR_PREV
-#. Sidebar: <op_sidebar_prev>
-#: gui/opcodes.h:990
+#. L10N: Help for Sidebar function: <sidebar-prev>
+#: gui/opcodes.h:617
 msgid "Move the highlight to previous mailbox"
 msgstr "Déplacer la marque vers la boîte aux lettres précédente"
 
-#. L10N: Help screen description for OP_SIDEBAR_PREV_NEW
-#. Sidebar: <op_sidebar_prev_new>
-#: gui/opcodes.h:993
+#. L10N: Help for Sidebar function: <sidebar-prev-new>
+#: gui/opcodes.h:619
 msgid "Move the highlight to previous mailbox with new mail"
 msgstr "Déplacer la marque vers la boîte aux lettres avec de nouveaux messages précédente"
 
-#. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VIRTUAL
-#. Sidebar: <op_sidebar_toggle_virtual>
-#: gui/opcodes.h:996
+#. L10N: Help for Sidebar function: <sidebar-toggle-virtual>
+#: gui/opcodes.h:621
 msgid "Toggle between mailboxes and virtual mailboxes"
 msgstr "Basculer entre l'affichage des boîtes aux lettres et celui des boîtes aux lettres virtuelles"
 
-#. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VISIBLE
-#. Sidebar: <op_sidebar_toggle_visible>
-#: gui/opcodes.h:999
+#. L10N: Help for Sidebar function: <sidebar-toggle-visible>
+#: gui/opcodes.h:623
 msgid "Make the sidebar (in)visible"
 msgstr "Rendre la barre latérale (in)visible"
 
-#. L10N: Help screen description for OP_SIDEBAR_ABORT_SEARCH
-#. Sidebar: <op_sidebar_abort_search>
-#: gui/opcodes.h:1002
+#. L10N: Help for Sidebar function: <sidebar-abort-search>
+#: gui/opcodes.h:625
 #, fuzzy
 msgid "Close the sidebar search"
 msgstr "Rendre la barre latérale (in)visible"
 
-#. L10N: Help screen description for OP_SIDEBAR_START_SEARCH
-#. Sidebar: <op_sidebar_start_search>
-#: gui/opcodes.h:1005
+#. L10N: Help for Sidebar function: <sidebar-start-search>
+#: gui/opcodes.h:627
 msgid "Fuzzy search the sidebar"
 msgstr ""
 
-#. L10N: Help screen description for OP_COMPOSE_SMIME_MENU
-#. Envelope Window: <op_compose_smime_menu>
-#: gui/opcodes.h:1010
+#. L10N: Help for Compose function: <smime-menu>
+#: gui/opcodes.h:631
 msgid "Show S/MIME options"
 msgstr "Afficher les options S/MIME"
 
-#: gui/opcodes.h:1013
+#: gui/opcodes.h:634
 msgid "Null operation"
 msgstr "Opération nulle"
 
@@ -5365,17 +4987,17 @@ msgstr "vous êtes sur la liste 'Reply-To'"
 
 # TODO: think about « drapeau » here. this is a fairly common translation for
 #       this application of the english word "flag"
-#: help.c:110
+#: help.c:111
 msgid "Message flags:"
 msgstr "Les drapeaux du message :"
 
 # , c-format
-#: help.c:262
+#: help.c:263
 #, c-format
 msgid "Help for %s"
 msgstr "Aide pour %s"
 
-#: history/dlg_history.c:127
+#: history/dlg_history.c:130
 #, c-format
 msgid "History '%s'"
 msgstr "Historique '%s'"
@@ -5690,48 +5312,48 @@ msgid "Mailbox renamed"
 msgstr "La boîte aux lettres renommée"
 
 # , c-format
-#: imap/command.c:219
+#: imap/command.c:218
 #, fuzzy, c-format
 msgid "Connection lost. Retrying in %u seconds..."
 msgstr "Connexion à %s a été fermée. Reconnecter ?"
 
 # , c-format
-#: imap/command.c:228
+#: imap/command.c:227
 #, fuzzy, c-format
 msgid "Reconnected to %s"
 msgstr "Connexion établie à %s. %s"
 
-#: imap/command.c:233
+#: imap/command.c:232
 #, fuzzy, c-format
 msgid "Reopened mailbox on %s"
 msgstr "Renommer la boîte aux lettres %s en : "
 
-#: imap/command.c:237
+#: imap/command.c:236
 #, fuzzy, c-format
 msgid "Reconnected to %s but failed to reopen mailbox"
 msgstr "La boîte aux lettres n'a pas pu être réouverte"
 
-#: imap/command.c:249
+#: imap/command.c:248
 #, c-format
 msgid "Failed to reconnect to %s after %d attempts"
 msgstr ""
 
-#: imap/command.c:255
+#: imap/command.c:254
 #, c-format
 msgid "Reconnection to %s failed. Will retry automatically."
 msgstr ""
 
-#: imap/command.c:1341
+#: imap/command.c:1340
 #, c-format
 msgid "IMAP command failed: %s"
 msgstr "La commande IMAP a échoué : %s"
 
-#: imap/command.c:1607
+#: imap/command.c:1606
 #, fuzzy, c-format
 msgid "Connection to %s timed out waiting for IDLE response"
 msgstr "Connexion à %s interrompue"
 
-#: imap/command.c:1631
+#: imap/command.c:1630
 #, fuzzy, c-format
 msgid "IDLE command failed for %s"
 msgstr "La commande IMAP a échoué : %s"
@@ -5930,7 +5552,7 @@ msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Impossible de récupérer les en-têtes à partir de cette version du serveur IMAP"
 
 # , c-format
-#: imap/message.c:1189 index/functions.c:3396 nntp/nntp.c:1284 pop/pop.c:388
+#: imap/message.c:1189 index/functions.c:3359 nntp/nntp.c:1284 pop/pop.c:388
 msgid "Fetching message headers..."
 msgstr "Récupération des en-têtes des messages..."
 
@@ -6011,7 +5633,7 @@ msgstr "Répondre"
 msgid "Group"
 msgstr "Groupe"
 
-#: index/dlg_index.c:122 index/dlg_list.c:45 index/dlg_list.c:66
+#: index/dlg_index.c:122 mlist/dlg_mlist.c:49 mlist/functions.c:48
 #: pager/dlg_pager.c:107
 msgid "Post"
 msgstr "Poster"
@@ -6050,7 +5672,7 @@ msgstr "Nouveau(x) message(s) dans cette boîte aux lettres"
 msgid "Mailbox was externally modified"
 msgstr "La boîte aux lettres a été modifiée extérieurement"
 
-#: index/dlg_index.c:1361 index/functions.c:3886 pattern/message.c:289
+#: index/dlg_index.c:1361 index/functions.c:3849 pattern/message.c:289
 msgid "No mailbox is open"
 msgstr "Aucune boîte aux lettres n'est ouverte"
 
@@ -6059,45 +5681,9 @@ msgid "No tagged messages"
 msgstr "Pas de messages marqués"
 
 # , c-format
-#: index/dlg_index.c:1374 index/functions.c:1309
+#: index/dlg_index.c:1374 index/functions.c:1272
 msgid "Nothing to do"
 msgstr "Rien à faire"
-
-#: index/dlg_list.c:42
-msgid "Archive"
-msgstr ""
-
-#: index/dlg_list.c:44 index/dlg_list.c:70
-msgid "Owner"
-msgstr ""
-
-#: index/dlg_list.c:69
-msgid "Archives"
-msgstr ""
-
-#: index/dlg_list.c:144
-#, fuzzy, c-format
-msgid "No list action available for %s"
-msgstr "Pas de moteur de déchiffrement disponible pour le message"
-
-#: index/dlg_list.c:150
-msgid "List actions only support mailto: URIs. (Try a browser?)"
-msgstr ""
-
-#: index/dlg_list.c:160
-#, fuzzy
-msgid "Could not parse mailto: URI"
-msgstr "La boîte aux lettres n'a pas pu être réouverte"
-
-#: index/dlg_list.c:335
-#, fuzzy
-msgid "Unable to read mailing list headers"
-msgstr "S'abonner à la liste de diffusion spécifiée"
-
-#: index/dlg_list.c:356
-#, fuzzy
-msgid "Available mailing list actions"
-msgstr "Pas de liste de diffusion trouvée"
 
 #: index/expando_status.c:251
 msgid "(no mailbox)"
@@ -6111,7 +5697,7 @@ msgstr "fin"
 
 #. L10N: Status bar message: all the emails are visible in the index
 #. L10N: Status bar message: the entire email is visible in the pager
-#: index/expando_status.c:433 pager/message.c:59 pager/pbar.c:119
+#: index/expando_status.c:433 pager/message.c:58 pager/pbar.c:119
 msgid "all"
 msgstr "tout"
 
@@ -6124,11 +5710,11 @@ msgid "%d%%"
 msgstr "%d %%"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:748
+#: index/functions.c:711
 msgid "Can't delete message"
 msgstr "Impossible de supprimer le message"
 
-#: index/functions.c:874
+#: index/functions.c:837
 #, fuzzy
 msgid "Thread contains unread or flagged messages"
 msgstr "Cette discussion contient des messages non lus"
@@ -6137,13 +5723,13 @@ msgstr "Cette discussion contient des messages non lus"
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:903 index/functions.c:1698
+#: index/functions.c:866 index/functions.c:1661
 msgid "Can't delete messages"
 msgstr "Impossible de supprimer le(s) message(s)"
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
-#: index/functions.c:1068
+#: index/functions.c:1031
 #, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
@@ -6153,146 +5739,146 @@ msgstr[1] "%d labels ont changés"
 #. L10N: This is displayed when editing an x-label, but no messages
 #. were updated.  Possibly due to canceling at the prompt or if the new
 #. label is the same as the old label.
-#: index/functions.c:1078
+#: index/functions.c:1041
 msgid "No labels changed"
 msgstr "Aucun label n'a changé"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:1100
+#: index/functions.c:1063
 msgid "Can't edit message"
 msgstr "Impossible de modifier le message"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:1190
+#: index/functions.c:1153
 msgid "Can't flag message"
 msgstr "Impossible de marquer le message d'un drapeau"
 
-#: index/functions.c:1306
+#: index/functions.c:1269
 msgid "Jump to message: "
 msgstr "Aller au message : "
 
-#: index/functions.c:1316
+#: index/functions.c:1279
 msgid "Argument must be a message number"
 msgstr "L'argument doit être un numéro de message"
 
-#: index/functions.c:1328
+#: index/functions.c:1291
 msgid "That message is not visible"
 msgstr "Ce message n'est pas visible"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:1451
+#: index/functions.c:1414
 #, fuzzy
 msgid "Can't break thread"
 msgstr "Impossible de lier les discussions"
 
-#: index/functions.c:1494
+#: index/functions.c:1457
 msgid "Thread broken"
 msgstr "Discussion cassée"
 
-#: index/functions.c:1500
+#: index/functions.c:1463
 msgid "Thread can't be broken, message is not part of a thread"
 msgstr "La discussion ne peut pas être cassée, le message n'est pas dans une discussion"
 
-#: index/functions.c:1528
+#: index/functions.c:1491
 msgid "Open mailbox in read-only mode"
 msgstr "Ouvrir la boîte aux lettres en lecture seule"
 
-#: index/functions.c:1533
+#: index/functions.c:1496
 msgid "Open mailbox"
 msgstr "Ouvrir la boîte aux lettres"
 
-#: index/functions.c:1701
+#: index/functions.c:1664
 msgid "Delete messages matching: "
 msgstr "Supprimer les messages correspondant à : "
 
-#: index/functions.c:1747
+#: index/functions.c:1710
 msgid "Limit to messages matching: "
 msgstr "Limiter aux messages correspondant à : "
 
-#: index/functions.c:1778
+#: index/functions.c:1741
 msgid "To view all messages, limit to \"all\""
 msgstr "Pour voir tous les messages, limiter à \"all\""
 
 #. L10N: CHECK_ACL
-#: index/functions.c:1795
+#: index/functions.c:1758
 msgid "Can't link threads"
 msgstr "Impossible de lier les discussions"
 
-#: index/functions.c:1811
+#: index/functions.c:1774
 msgid "No Message-ID: header available to link thread"
 msgstr "Pas d'en-tête Message-ID: disponible pour lier la discussion"
 
-#: index/functions.c:1836
+#: index/functions.c:1799
 msgid "Threads linked"
 msgstr "Discussions liées"
 
-#: index/functions.c:1841
+#: index/functions.c:1804
 msgid "No thread linked"
 msgstr "Pas de discussion liée"
 
-#: index/functions.c:1872 mx.c:1284 mx.c:1304
+#: index/functions.c:1835 mx.c:1285 mx.c:1305
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Le répertoire ne supporte pas le marquage, abandon"
 
-#: index/functions.c:1895
+#: index/functions.c:1858
 msgid "No tag specified, aborting"
 msgstr "Pas d'étiquette spécifiée, abandon"
 
-#: index/functions.c:1910
+#: index/functions.c:1873
 msgid "Update tags..."
 msgstr "Mise à jour des objets..."
 
-#: index/functions.c:1951
+#: index/functions.c:1914
 msgid "Failed to modify tags, aborting"
 msgstr "Échec de la modification des objets, abandon"
 
-#: index/functions.c:2100
+#: index/functions.c:2063
 msgid "No new messages in this limited view"
 msgstr "Pas de nouveaux messages dans cette vue limitée"
 
-#: index/functions.c:2102
+#: index/functions.c:2065
 msgid "No new messages"
 msgstr "Pas de nouveaux messages"
 
-#: index/functions.c:2107
+#: index/functions.c:2070
 msgid "No unread messages in this limited view"
 msgstr "Pas de messages non lus dans cette vue limitée"
 
-#: index/functions.c:2109
+#: index/functions.c:2072
 msgid "No unread messages"
 msgstr "Pas de messages non lus"
 
-#: index/functions.c:2122 menu/functions.c:115 pager/functions.c:818
+#: index/functions.c:2085 menu/functions.c:115 pager/functions.c:818
 #: pattern/pattern.c:540 pattern/pattern.c:695
 msgid "Search wrapped to top"
 msgstr "La recherche est repartie du début"
 
-#: index/functions.c:2127 pager/functions.c:850 pattern/pattern.c:553
+#: index/functions.c:2090 pager/functions.c:850 pattern/pattern.c:553
 #: pattern/pattern.c:708
 msgid "Search wrapped to bottom"
 msgstr "La recherche est repartie de la fin"
 
-#: index/functions.c:2171
+#: index/functions.c:2134
 msgid "No more threads"
 msgstr "Pas d'autres discussions"
 
-#: index/functions.c:2173
+#: index/functions.c:2136
 msgid "You are on the first thread"
 msgstr "Vous êtes sur la première discussion"
 
-#: index/functions.c:2216 index/functions.c:2719
+#: index/functions.c:2179 index/functions.c:2682
 msgid "You are on the last message"
 msgstr "Vous êtes sur le dernier message"
 
-#: index/functions.c:2233 index/functions.c:2340
+#: index/functions.c:2196 index/functions.c:2303
 msgid "No undeleted messages"
 msgstr "Pas de message non supprimé"
 
-#: index/functions.c:2257 index/functions.c:2282
+#: index/functions.c:2220 index/functions.c:2245
 msgid "No mailboxes have new mail"
 msgstr "Pas de boîte aux lettres avec des nouveaux messages"
 
-#: index/functions.c:2324 index/functions.c:2767
+#: index/functions.c:2287 index/functions.c:2730
 msgid "You are on the first message"
 msgstr "Vous êtes sur le premier message"
 
@@ -6300,15 +5886,15 @@ msgstr "Vous êtes sur le premier message"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:2395
+#: index/functions.c:2358
 msgid "Can't mark messages as read"
 msgstr "Impossible de marquer le(s) message(s) comme lu(s)"
 
-#: index/functions.c:2508
+#: index/functions.c:2471
 msgid "No limit pattern is in effect"
 msgstr "Aucun motif de limite n'est en vigueur"
 
-#: index/functions.c:2605
+#: index/functions.c:2568
 msgid "Tag messages matching: "
 msgstr "Marquer les messages correspondant à : "
 
@@ -6316,15 +5902,15 @@ msgstr "Marquer les messages correspondant à : "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:2623 index/functions.c:3223
+#: index/functions.c:2586 index/functions.c:3186
 msgid "Can't undelete messages"
 msgstr "Impossible de supprimer les messages"
 
-#: index/functions.c:2627
+#: index/functions.c:2590
 msgid "Undelete messages matching: "
 msgstr "Récupérer les messages correspondant à : "
 
-#: index/functions.c:2642
+#: index/functions.c:2605
 msgid "Untag messages matching: "
 msgstr "Démarquer les messages correspondant à : "
 
@@ -6332,126 +5918,126 @@ msgstr "Démarquer les messages correspondant à : "
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index/functions.c:2666
+#: index/functions.c:2629
 msgid "Enter macro stroke: "
 msgstr "Entrez les touches de la macro : "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index/functions.c:2682
+#: index/functions.c:2645
 msgid "message hotkey"
 msgstr "hotkey (marque-page)"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index/functions.c:2687
+#: index/functions.c:2650
 #, c-format
 msgid "Message bound to %s"
 msgstr "Message lié à %s"
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index/functions.c:2697
+#: index/functions.c:2660
 msgid "No message ID to macro"
 msgstr "Pas de Message-ID pour la macro"
 
-#: index/functions.c:2829
+#: index/functions.c:2792
 msgid "Quit NeoMutt?"
 msgstr "Quitter NeoMutt?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:3121
+#: index/functions.c:3084
 msgid "Can't toggle new"
 msgstr "Impossible de basculer le drapeau 'nouveau'"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:3177
+#: index/functions.c:3140
 msgid "Can't undelete message"
 msgstr "Impossible de récupérer le message"
 
-#: index/functions.c:3341
+#: index/functions.c:3304
 msgid "Logged out of IMAP servers"
 msgstr "Déconnecté des serveurs IMAP"
 
-#: index/functions.c:3392
+#: index/functions.c:3355
 msgid "No Message-ID. Unable to perform operation."
 msgstr "Pas de Message-ID. Impossible de réaliser l'opération."
 
-#: index/functions.c:3463
+#: index/functions.c:3426
 #, fuzzy
 msgid "No deleted messages found in the thread"
 msgstr "Pas de messages effacés trouvés dans la discussion"
 
 # , c-format
-#: index/functions.c:3491
+#: index/functions.c:3454
 msgid "Enter Message-ID: "
 msgstr "Entrez la valeur Message-ID : "
 
-#: index/functions.c:3502
+#: index/functions.c:3465
 msgid "Article has no parent reference"
 msgstr "L'article n'a pas de référence à un parent"
 
-#: index/functions.c:3525
+#: index/functions.c:3488
 #, fuzzy
 msgid "Message is not visible in limited view"
 msgstr "Le message n'est pas visible dans cette vue limitée"
 
-#: index/functions.c:3530
+#: index/functions.c:3493
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "Téléchargement de %s du serveur..."
 
-#: index/functions.c:3543 nntp/nntp.c:2720
+#: index/functions.c:3506 nntp/nntp.c:2720
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "Article %s non trouvé sur le serveur"
 
-#: index/functions.c:3574
+#: index/functions.c:3537
 msgid "Open newsgroup in read-only mode"
 msgstr "Ouvrir le forum en lecture seule"
 
-#: index/functions.c:3579
+#: index/functions.c:3542
 msgid "Open newsgroup"
 msgstr "Ouvrir le forum"
 
-#: index/functions.c:3654
+#: index/functions.c:3617
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Poster à ce groupe n'est pas autorisé, modération possible. Continuer ?"
 
-#: index/functions.c:3692
+#: index/functions.c:3655
 msgid "No virtual folder and no Message-ID, aborting"
 msgstr "Pas de répertoire virtuel et pas de Message-ID, abandon"
 
-#: index/functions.c:3724
+#: index/functions.c:3687
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr "Message non trouvé dans la base de données notmuch. Veuillez exécuter 'notmuch new'"
 
-#: index/functions.c:3736
+#: index/functions.c:3699
 msgid "Failed to read thread, aborting"
 msgstr "Échec de la lecture du fil, abandon"
 
-#: index/functions.c:3777
+#: index/functions.c:3740
 msgid "No query, aborting"
 msgstr "Pas de requête, abandon"
 
-#: index/functions.c:3823
+#: index/functions.c:3786
 msgid "Windowed queries disabled"
 msgstr "Requête fenêtrées désactivées"
 
-#: index/functions.c:3829
+#: index/functions.c:3792
 msgid "No notmuch vfolder currently loaded"
 msgstr "Pas de répertoire virtuel présentement chargé"
 
-#: index/functions.c:3892
+#: index/functions.c:3855
 msgid "There are no messages"
 msgstr "Il n'y a pas de messages"
 
-#: index/functions.c:3900
+#: index/functions.c:3863
 msgid "No visible messages"
 msgstr "Pas de messages visibles"
 
-#: index/index.c:101
+#: index/index.c:100
 msgid "Changing threaded display should prefer $use_threads over $sort"
 msgstr "Un changement de l'affichage des fils devrait préférer $use_threads plutôt que $sort"
 
@@ -6473,12 +6059,12 @@ msgstr "%s : séquence de touches nulle"
 msgid "%s: no such function: %s"
 msgstr "%s : cette fonction n'existe pas"
 
-#: key/commands.c:740
+#: key/commands.c:745
 msgid "macro: empty key sequence"
 msgstr "macro : séquence de touches vide"
 
 # , c-format
-#: key/commands.c:842
+#: key/commands.c:847
 #, c-format
 msgid "%s: no such function"
 msgstr "%s : cette fonction n'existe pas"
@@ -6641,72 +6227,72 @@ msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message() : impossible de fixer l'heure du fichier"
 
 # , c-format
-#: main.c:229
+#: main.c:226
 #, c-format
 msgid "Error in command line: %s"
 msgstr "Erreur dans la ligne de commande : %s"
 
 # , c-format
-#: main.c:231
+#: main.c:228
 #, c-format
 msgid "Warning in command line: %s"
 msgstr "Erreur dans la ligne de commande : %s"
 
-#: main.c:352
+#: main.c:349
 msgid "unable to determine nodename via uname()"
 msgstr "impossible de déterminer nodename via uname()"
 
-#: main.c:690 parse/set.c:127 parse/set.c:191 parse/set.c:239 parse/set.c:273
+#: main.c:687 parse/set.c:127 parse/set.c:191 parse/set.c:239 parse/set.c:273
 #: parse/set.c:336 parse/set.c:377 parse/set.c:444
 #, c-format
 msgid "Option %s is deprecated"
 msgstr "La variable de configuration %s n'est plus valide"
 
-#: main.c:738
+#: main.c:736
 msgid "Error initializing terminal"
 msgstr "Erreur d'initialisation du terminal"
 
-#: main.c:785
+#: main.c:783
 msgid "unable to determine username"
 msgstr "impossible de déterminer le nom d'utilisateur"
 
-#: main.c:791
+#: main.c:789
 msgid "unable to determine home directory"
 msgstr "impossible de déterminer le répertoire personnel"
 
-#: main.c:913
+#: main.c:911
 #, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Erreur : la valeur '%s' est invalide pour -d"
 
-#: main.c:1214
+#: main.c:1212
 msgid "Failed to parse mailto: link"
 msgstr "Échec de l'analyse du lien malto"
 
-#: main.c:1229 main.c:1500 send/send.c:303 send/send.c:2657 send/send.c:2661
+#: main.c:1227 main.c:1498 send/send.c:302 send/send.c:2656 send/send.c:2660
 msgid "No recipients specified"
 msgstr "Pas de destinataire spécifié"
 
-#: main.c:1263
+#: main.c:1261
 msgid "Can't use -E flag with stdin"
 msgstr "Impossible d'utiliser l'option -E avec stdin"
 
 # , c-format
-#: main.c:1353
+#: main.c:1351
 #, c-format
 msgid "Can't parse message template: %s"
 msgstr "Impossible d'analyser le modèle : %s"
 
-#: main.c:1515
+#: main.c:1513
 msgid "No mailbox with new mail"
 msgstr "Pas de boîte aux lettres avec des nouveaux messages"
 
-#: main.c:1535
+#: main.c:1533
 #, fuzzy
 msgid "No incoming mailboxes defined"
 msgstr "Pas de boîtes aux lettres recevant du courrier définies"
 
-#: main.c:1591
+#: main.c:1589
 msgid "Mailbox is empty"
 msgstr "La boîte aux lettres est vide"
 
@@ -6728,7 +6314,7 @@ msgstr "La boîte aux lettres a été altérée"
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Erreur fatale ! La boîte aux lettres n'a pas pu être réouverte !"
 
-#: mbox/mbox.c:1161 pager/message.c:218
+#: mbox/mbox.c:1161 pager/message.c:217
 msgid "Could not create temporary file"
 msgstr "Impossible de créer le fichier temporaire"
 
@@ -6807,7 +6393,44 @@ msgstr "Le marquage n'est pas supporté"
 msgid "No tagged entries"
 msgstr "Pas d'entrées marquées"
 
-#: mutt/buffer.c:361
+#: mlist/dlg_mlist.c:46
+msgid "Archive"
+msgstr ""
+
+#: mlist/dlg_mlist.c:48 mlist/functions.c:52
+msgid "Owner"
+msgstr ""
+
+#: mlist/dlg_mlist.c:138
+#, fuzzy
+msgid "Unable to read mailing list headers"
+msgstr "S'abonner à la liste de diffusion spécifiée"
+
+#: mlist/dlg_mlist.c:152
+#, fuzzy
+msgid "No mailing list actions available"
+msgstr "Pas de moteur de déchiffrement disponible pour le message"
+
+#: mlist/dlg_mlist.c:169
+#, fuzzy
+msgid "Available mailing list actions"
+msgstr "Pas de liste de diffusion trouvée"
+
+#: mlist/functions.c:51
+msgid "Archives"
+msgstr ""
+
+#: mlist/functions.c:132
+#, fuzzy
+msgid "No list action available"
+msgstr "Pas de moteur de déchiffrement disponible pour le message"
+
+#: mlist/functions.c:146
+#, fuzzy
+msgid "Could not parse mailto: URI"
+msgstr "La boîte aux lettres n'a pas pu être réouverte"
+
+#: mutt/buffer.c:359
 msgid "Out of memory"
 msgstr "Mémoire épuisée"
 
@@ -7004,7 +6627,7 @@ msgstr[1] "Déplacer %d messages lus dans %s ?"
 
 # TODO: « Effacer » could be the right word here. Need to validate what "purge"
 #       really means in this context
-#: mx.c:685 mx.c:946
+#: mx.c:685 mx.c:947
 #, fuzzy, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
@@ -7017,7 +6640,7 @@ msgstr[1] "Effacer %d message marqué à effacer ?"
 msgid "Moving read messages to %s..."
 msgstr "Déplacement des messages lus dans %s..."
 
-#: mx.c:793 mx.c:937
+#: mx.c:793 mx.c:938
 msgid "Mailbox is unchanged"
 msgstr "La boîte aux lettres est inchangée"
 
@@ -7028,46 +6651,46 @@ msgid "%d kept, %d moved, %d deleted"
 msgstr "%d gardé(s), %d déplacé(s), %d supprimé(s)"
 
 # , c-format
-#: mx.c:856 mx.c:999
+#: mx.c:856 mx.c:1000
 #, c-format
 msgid "%d kept, %d deleted"
 msgstr "%d gardé(s), %d supprimé(s)"
 
 # , c-format
-#: mx.c:918
+#: mx.c:919
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Tapez '%s' pour basculer en écriture"
 
-#: mx.c:920
+#: mx.c:921
 msgid "Use 'toggle-write' to re-enable write"
 msgstr "Utilisez 'toggle-write' pour réautoriser l'écriture"
 
 # , c-format
-#: mx.c:922
+#: mx.c:923
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "La boîte aux lettres est protégée contre l'écriture. %s"
 
-#: mx.c:994
+#: mx.c:995
 msgid "Mailbox checkpointed"
 msgstr "Boîte aux lettres vérifiée"
 
 # , c-format
-#: mx.c:1349
+#: mx.c:1350
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Impossible d'ouvrir le fichier : %s"
 
-#: mx.c:1828
+#: mx.c:1829
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Impossible d'activer l'écriture sur une boîte aux lettres en lecture seule"
 
-#: mx.c:1835
+#: mx.c:1836
 msgid "Changes to folder will be written on folder exit"
 msgstr "Les modifications du répertoire seront écrites à la sortie du répertoire"
 
-#: mx.c:1840
+#: mx.c:1841
 msgid "Changes to folder will not be written"
 msgstr "Les modifications du répertoire ne seront pas écrites"
 
@@ -7115,7 +6738,7 @@ msgstr "Appel de PGP..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Le message ne peut pas être envoyé en ligne. Utiliser PGP/MIME?"
 
-#: ncrypt/crypt.c:220 send/send.c:2636
+#: ncrypt/crypt.c:220 send/send.c:2635
 msgid "Mail not sent"
 msgstr "Message non envoyé"
 
@@ -8391,43 +8014,43 @@ msgid "Saved to: %s"
 msgstr "Enregistré sous : %s"
 
 #. L10N: Used for the $crypt_verify_sig prompt
-#: pager/message.c:192
+#: pager/message.c:191
 msgid "Verify signature?"
 msgstr "Vérifier la signature?"
 
-#: pager/message.c:231
+#: pager/message.c:230
 msgid "Can't create display filter"
 msgstr "Impossible de créer le filtre d'affichage"
 
-#: pager/message.c:255
+#: pager/message.c:254
 msgid "Could not copy message"
 msgstr "Impossible de copier le message"
 
-#: pager/message.c:338
+#: pager/message.c:337
 msgid "Command: "
 msgstr "Commande : "
 
-#: pager/message.c:369
+#: pager/message.c:368
 msgid "S/MIME signature successfully verified"
 msgstr "Signature S/MIME vérifiée avec succès"
 
-#: pager/message.c:371
+#: pager/message.c:370
 msgid "S/MIME certificate owner does not match sender"
 msgstr "Le propriétaire du certificat S/MIME ne correspond pas à l'expéditeur"
 
-#: pager/message.c:375 pager/message.c:388
+#: pager/message.c:374 pager/message.c:387
 msgid "Warning: Part of this message has not been signed"
 msgstr "Attention  Une partie de ce message n'a pas été signée"
 
-#: pager/message.c:379
+#: pager/message.c:378
 msgid "S/MIME signature could NOT be verified"
 msgstr "La signature S/MIME n'a PAS pu être vérifiée"
 
-#: pager/message.c:386
+#: pager/message.c:385
 msgid "PGP signature successfully verified"
 msgstr "Signature PGP vérifiée avec succès"
 
-#: pager/message.c:390
+#: pager/message.c:389
 msgid "PGP signature could NOT be verified"
 msgstr "La signature PGP n'a PAS pu être vérifiée"
 
@@ -8639,7 +8262,7 @@ msgid "messages having an immediate child matching PATTERN"
 msgstr "messages ayant un fils immédiat correspondant à MOTIF"
 
 #. L10N: Pattern completion menu title
-#: pattern/dlg_pattern.c:319
+#: pattern/dlg_pattern.c:321
 msgid "Patterns"
 msgstr "Motifs"
 
@@ -9115,11 +8738,11 @@ msgstr "Marquage des messages à supprimer..."
 msgid "Can't write message to temporary file"
 msgstr "Impossible d'écrire le message dans le fichier temporaire"
 
-#: postpone/dlg_postpone.c:92
+#: postpone/dlg_postpone.c:93
 msgid "Tag"
 msgstr ""
 
-#: postpone/dlg_postpone.c:268
+#: postpone/dlg_postpone.c:269
 msgid "Postponed Messages"
 msgstr "Messages ajournés"
 
@@ -9255,11 +8878,11 @@ msgstr "----- Fin du message transféré -----"
 msgid "invalid header field"
 msgstr "en-tête invalide"
 
-#: send/send.c:349
+#: send/send.c:348
 msgid "No subject, abort?"
 msgstr "Pas d'objet, abandonner ?"
 
-#: send/send.c:351
+#: send/send.c:350
 msgid "No subject, aborting"
 msgstr "Pas d'objet, abandon"
 
@@ -9269,49 +8892,49 @@ msgstr "Pas d'objet, abandon"
 #. Text/plain parts and the like will already be included in the
 #. message contents, but other attachment, such as PDF files, will also
 #. be added as attachments to the new mail, if this is answered yes.
-#: send/send.c:614
+#: send/send.c:613
 msgid "Forward attachments?"
 msgstr "Transférer les pièces jointes ?"
 
 # , c-format
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
-#: send/send.c:840
+#: send/send.c:839
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Répondre à %s%s ?"
 
 # , c-format
-#: send/send.c:887
+#: send/send.c:886
 #, fuzzy, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Suivre la discussion à %s%s ?"
 
-#: send/send.c:1172
+#: send/send.c:1171
 msgid "Include message in reply?"
 msgstr "Inclure le message dans la réponse ?"
 
-#: send/send.c:1178
+#: send/send.c:1177
 msgid "Including quoted message..."
 msgstr "Inclusion du message cité..."
 
-#: send/send.c:1185
+#: send/send.c:1184
 msgid "Could not include all requested messages"
 msgstr "Tous les messages demandés n'ont pas pu être inclus"
 
-#: send/send.c:1199
+#: send/send.c:1198
 msgid "Forward as attachment?"
 msgstr "Transférer en tant que pièce jointe ?"
 
-#: send/send.c:1204
+#: send/send.c:1203
 msgid "Preparing forwarded message..."
 msgstr "Préparation du message transféré..."
 
-#: send/send.c:1717 send/send.c:1729 send/send.c:1755
+#: send/send.c:1716 send/send.c:1728 send/send.c:1754
 msgid "Save attachments in Fcc?"
 msgstr "Enregistrer les pièces jointes dans Fcc ?"
 
-#: send/send.c:1772
+#: send/send.c:1771
 #, fuzzy, c-format
 msgid "Warning: Fcc to %s failed"
 msgstr "Omission du Fcc dans %s"
@@ -9320,127 +8943,127 @@ msgstr "Omission du Fcc dans %s"
 #. (r)etry tries the same mailbox again.
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
-#: send/send.c:1784
+#: send/send.c:1783
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr "Fcc a échoué. (r)éessayer, autre (b)oîte aux lettres, ou (s)auter ?"
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
-#: send/send.c:1788
+#: send/send.c:1787
 msgid "rms"
 msgstr "rbs"
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
-#: send/send.c:1794
+#: send/send.c:1793
 msgid "Fcc mailbox"
 msgstr "Boîte aux lettres Fcc"
 
-#: send/send.c:1862
+#: send/send.c:1861
 msgid "Can't postpone.  $postponed is unset"
 msgstr "Impossible d'ajourner. $postponed est non renseigné"
 
-#: send/send.c:1899 send/send.c:1917
+#: send/send.c:1898 send/send.c:1916
 msgid "Error encrypting message. Check your crypt settings."
 msgstr "Erreur de chiffrement du message. Vérifiez vos paramètres de chiffrement."
 
-#: send/send.c:2011
+#: send/send.c:2010
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr "Le message contient du texte correspondant à \"$abort_noattach_regex\" Pas d'envoi."
 
-#: send/send.c:2015
+#: send/send.c:2014
 msgid "No attachments, cancel sending?"
 msgstr "Pas de pièce jointe, abandonner l'envoi ?"
 
-#: send/send.c:2065
+#: send/send.c:2064
 msgid "Recall postponed message?"
 msgstr "Rappeler un message ajourné ?"
 
-#: send/send.c:2320
+#: send/send.c:2319
 msgid "Error sending message"
 msgstr "Erreur en envoyant le message"
 
-#: send/send.c:2409
+#: send/send.c:2408
 msgid "Edit forwarded message?"
 msgstr "Éditer le message à transférer ?"
 
-#: send/send.c:2450
+#: send/send.c:2449
 msgid "Abort unmodified message?"
 msgstr "Message non modifié. Abandonner ?"
 
-#: send/send.c:2452
+#: send/send.c:2451
 msgid "Aborted unmodified message"
 msgstr "Message non modifié. Abandon"
 
-#: send/send.c:2594
+#: send/send.c:2593
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr "Pas de backend crypto configuré. Désactivation de la sécurité du message."
 
-#: send/send.c:2634
+#: send/send.c:2633
 msgid "Article not posted"
 msgstr "Article non envoyé"
 
-#: send/send.c:2643
+#: send/send.c:2642
 msgid "Message postponed"
 msgstr "Message ajourné"
 
-#: send/send.c:2678
+#: send/send.c:2677
 msgid "No subject, abort sending?"
 msgstr "Pas d'objet (Subject), abandonner l'envoi ?"
 
-#: send/send.c:2682 send/send.c:2688
+#: send/send.c:2681 send/send.c:2687
 msgid "No subject specified"
 msgstr "Pas d'objet (Subject) spécifié"
 
-#: send/send.c:2694
+#: send/send.c:2693
 msgid "No newsgroup specified"
 msgstr "Pas de forum spécifié"
 
-#: send/send.c:2705
+#: send/send.c:2704
 #, fuzzy
 msgid "No recipients specified in To. Send anyway?"
 msgstr "Pas de destinataire spécifié"
 
-#: send/send.c:2746
+#: send/send.c:2745
 msgid "Missing encryption key; mail not sent"
 msgstr "Clé de chiffrement non trouvée ; message non envoyé"
 
-#: send/send.c:2770 send/smtp.c:273
+#: send/send.c:2769 send/smtp.c:273
 msgid "Sending message..."
 msgstr "Envoi du message..."
 
-#: send/send.c:2781
+#: send/send.c:2780
 msgid "Fcc failed.  Aborting sending."
 msgstr ""
 
-#: send/send.c:2824
+#: send/send.c:2823
 msgid "Could not send the message"
 msgstr "Impossible d'envoyer le message"
 
-#: send/send.c:2834
+#: send/send.c:2833
 msgid "Sending in background"
 msgstr "Envoi en arrière-plan"
 
-#: send/send.c:2835
+#: send/send.c:2834
 msgid "Article posted"
 msgstr "Article publié"
 
-#: send/send.c:2836
+#: send/send.c:2835
 msgid "Mail sent"
 msgstr "Message envoyé"
 
-#: send/send.c:2917
+#: send/send.c:2916
 msgid "No recipient specified"
 msgstr "Pas de destinataire spécifié"
 
-#: send/send.c:2966
+#: send/send.c:2965
 #, fuzzy
 msgid "No List-Subscribe header found"
 msgstr "clé secrète « %s » non trouvée : %s"
 
 # , c-format
-#: send/send.c:2995
+#: send/send.c:2994
 #, fuzzy
 msgid "No List-Unsubscribe header found"
 msgstr "Filtre de désabonnement : "
@@ -9520,20 +9143,20 @@ msgstr "La réponse du serveur n'est pas valide"
 msgid "Sidebar search: "
 msgstr "Rechercher en arrière : "
 
-#: sidebar/sidebar.c:51
+#: sidebar/sidebar.c:50
 msgid "Pin a mailbox in the sidebar (keep visible)"
 msgstr ""
 
-#: sidebar/sidebar.c:52
+#: sidebar/sidebar.c:51
 #, fuzzy
 msgid "sidebar-pin <mailbox> [ <mailbox> ... ]"
 msgstr "sidebar-pin <mailbox> [ <mailbox> ... ]"
 
-#: sidebar/sidebar.c:55
+#: sidebar/sidebar.c:54
 msgid "Unpin a previously pinned mailbox in the sidebar"
 msgstr ""
 
-#: sidebar/sidebar.c:56
+#: sidebar/sidebar.c:55
 #, fuzzy
 msgid "sidebar-unpin { * | <mailbox> ... }"
 msgstr "sidebar-unpin { * | <mailbox> ... }"
