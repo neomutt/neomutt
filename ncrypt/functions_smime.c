@@ -27,17 +27,18 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "smime_functions.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "question/lib.h"
 #include "mutt_logging.h"
 #include "smime.h"
+#include "smime_functions.h"
 
 /**
  * op_quit - Save changes and exit this dialog - Implements ::smime_function_t - @ingroup smime_function_api

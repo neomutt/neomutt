@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -34,7 +35,6 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "pgp_functions.h"
 #include "lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
@@ -43,6 +43,7 @@
 #include "globals.h"
 #include "mutt_logging.h"
 #include "pgp.h"
+#include "pgp_functions.h"
 #include "pgpinvoke.h"
 #include "pgpkey.h"
 #include "pgplib.h"

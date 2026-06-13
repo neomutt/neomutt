@@ -853,7 +853,6 @@ static int op_pager_skip_quoted(struct PagerFunctionData *fdata, const struct Ke
   return FR_SUCCESS;
 }
 
-
 // -----------------------------------------------------------------------------
 
 /**

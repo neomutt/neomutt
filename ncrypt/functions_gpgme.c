@@ -32,6 +32,7 @@
 #include <gpg-error.h>
 #include <gpgme.h>
 #include <langinfo.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -39,7 +40,6 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "gpgme_functions.h"
 #include "lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
@@ -47,6 +47,7 @@
 #include "question/lib.h"
 #include "crypt_gpgme.h"
 #include "globals.h"
+#include "gpgme_functions.h"
 #include "module_data.h"
 #include "mutt_logging.h"
 #ifdef ENABLE_NLS
