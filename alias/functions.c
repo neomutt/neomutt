@@ -56,18 +56,22 @@ static const struct MenuFuncOp OpAlias[] = { /* map: alias */
   { "delete-entry",                  OP_DELETE },
   { "limit",                         OP_MAIN_LIMIT },
   { "mail",                          OP_MAIL },
-  { "sort-alias",                    OP_SORT },
-  { "sort-alias-reverse",            OP_SORT_REVERSE },
+  { "sort",                          OP_SORT },
+  { "sort-reverse",                  OP_SORT_REVERSE },
   { "tag-pattern",                   OP_MAIN_TAG_PATTERN },
   { "undelete-entry",                OP_UNDELETE },
   { "untag-pattern",                 OP_MAIN_UNTAG_PATTERN },
+
+  // Deprecated
+  { "sort-alias",                    OP_SORT,         MFF_DEPRECATED },
+  { "sort-alias-reverse",            OP_SORT_REVERSE, MFF_DEPRECATED },
   { NULL, 0 },
 };
 
 /**
  * OpQuery - Functions for the external Query Menu
  */
-const struct MenuFuncOp OpQuery[] = { /* map: query */
+static const struct MenuFuncOp OpQuery[] = { /* map: query */
   { "create-alias",                  OP_CREATE_ALIAS },
   { "limit",                         OP_MAIN_LIMIT },
   { "mail",                          OP_MAIL },
@@ -513,7 +517,7 @@ static int op_query(struct AliasFunctionData *fdata, const struct KeyEvent *even
  * This function handles:
  * - OP_SEARCH
  * - OP_SEARCH_NEXT
- * - OP_SEARCH_OPPOSITE
+ * - OP_SEARCH_PREVIOUS
  * - OP_SEARCH_REVERSE
  */
 static int op_search(struct AliasFunctionData *fdata, const struct KeyEvent *event)
@@ -532,8 +536,8 @@ static int op_search(struct AliasFunctionData *fdata, const struct KeyEvent *eve
       break;
     case OP_SEARCH_NEXT:
       break;
-    case OP_SEARCH_OPPOSITE:
-      flags |= SEARCH_OPPOSITE;
+    case OP_SEARCH_PREVIOUS:
+      flags |= SEARCH_PREVIOUS;
       break;
   }
 
@@ -622,7 +626,7 @@ static const struct AliasFunction AliasFunctions[] = {
   { OP_QUIT,                   op_quit },
   { OP_SEARCH,                 op_search },
   { OP_SEARCH_NEXT,            op_search },
-  { OP_SEARCH_OPPOSITE,        op_search },
+  { OP_SEARCH_PREVIOUS,        op_search },
   { OP_SEARCH_REVERSE,         op_search },
   { OP_SORT,                   op_sort },
   { OP_SORT_REVERSE,           op_sort },

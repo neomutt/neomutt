@@ -104,23 +104,23 @@ static int menu_dialog_dokey(struct Menu *menu, int *id)
 
 /**
  * menu_dialog_translate_op - Convert menubar movement to scrolling
- * @param op Action requested, e.g. OP_NEXT_ENTRY
- * @retval num Action to perform, e.g. OP_NEXT_LINE
+ * @param op Action requested, e.g. OP_SELECT_NEXT_ENTRY
+ * @retval num Action to perform, e.g. OP_VIEW_NEXT_LINE
  */
 static int menu_dialog_translate_op(int op)
 {
   switch (op)
   {
-    case OP_NEXT_ENTRY:
-      return OP_NEXT_LINE;
-    case OP_PREV_ENTRY:
-      return OP_PREV_LINE;
-    case OP_CURRENT_TOP:
-      return OP_TOP_PAGE;
-    case OP_CURRENT_BOTTOM:
-      return OP_BOTTOM_PAGE;
-    case OP_CURRENT_MIDDLE:
-      return OP_MIDDLE_PAGE;
+    case OP_SELECT_NEXT_ENTRY:
+      return OP_VIEW_NEXT_LINE;
+    case OP_SELECT_PREVIOUS_ENTRY:
+      return OP_VIEW_PREVIOUS_LINE;
+    case OP_VIEW_SELECTION_TO_TOP:
+      return OP_SELECT_TOP_OF_PAGE;
+    case OP_VIEW_SELECTION_TO_BOTTOM:
+      return OP_SELECT_BOTTOM_OF_PAGE;
+    case OP_VIEW_SELECTION_TO_MIDDLE:
+      return OP_SELECT_MIDDLE_OF_PAGE;
   }
 
   return op;
@@ -271,7 +271,7 @@ int dlg_certificate(const char *title, struct StringArray *carr, bool allow_alwa
 
       case OP_SEARCH:
       case OP_SEARCH_NEXT:
-      case OP_SEARCH_OPPOSITE:
+      case OP_SEARCH_PREVIOUS:
       case OP_SEARCH_REVERSE:
         mutt_error(_("Search is not implemented for this menu"));
         continue;

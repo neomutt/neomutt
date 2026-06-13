@@ -944,7 +944,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
         break;
       }
 
-      case OP_NEXT_ENTRY:
+      case OP_SELECT_NEXT_ENTRY:
       case OP_MAIN_NEXT_UNDELETED: /* hack */
       {
         const int index = menu_get_index(menu) + 1;
@@ -960,7 +960,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
         break;
       }
 
-      case OP_PREV_ENTRY:
+      case OP_SELECT_PREVIOUS_ENTRY:
       case OP_MAIN_PREV_UNDELETED: /* hack */
       {
         const int index = menu_get_index(menu) - 1;

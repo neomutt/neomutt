@@ -105,7 +105,7 @@ typedef int (*preview_function_t)(struct PreviewWindowData *wdata,
  */
 struct PreviewFunction
 {
-  int op;                      ///< Op code, e.g. OP_NEXT_PAGE
+  int op;                      ///< Op code, e.g. OP_VIEW_NEXT_PAGE
   preview_function_t function; ///< Function to call
 };
 

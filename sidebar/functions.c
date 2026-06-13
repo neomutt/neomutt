@@ -57,12 +57,16 @@ static const struct MenuFuncOp OpSidebar[] = { /* map: sidebar */
   { "sidebar-open",           OP_SIDEBAR_OPEN           },
   { "sidebar-page-down",      OP_SIDEBAR_PAGE_DOWN      },
   { "sidebar-page-up",        OP_SIDEBAR_PAGE_UP        },
-  { "sidebar-prev",           OP_SIDEBAR_PREV           },
-  { "sidebar-prev-new",       OP_SIDEBAR_PREV_NEW       },
+  { "sidebar-previous",       OP_SIDEBAR_PREVIOUS       },
+  { "sidebar-previous-new",   OP_SIDEBAR_PREVIOUS_NEW   },
   { "sidebar-abort-search",   OP_SIDEBAR_ABORT_SEARCH   },
   { "sidebar-start-search",   OP_SIDEBAR_START_SEARCH   },
   { "sidebar-toggle-virtual", OP_SIDEBAR_TOGGLE_VIRTUAL },
   { "sidebar-toggle-visible", OP_SIDEBAR_TOGGLE_VISIBLE },
+
+  // Deprecated
+  { "sidebar-prev",           OP_SIDEBAR_PREVIOUS       },
+  { "sidebar-prev-new",       OP_SIDEBAR_PREVIOUS_NEW   },
   { NULL, 0 },
 };
 
@@ -71,7 +75,7 @@ static const struct MenuFuncOp OpSidebar[] = { /* map: sidebar */
  */
 const struct MenuOpSeq SidebarDefaultBindings[] = {
   { OP_SIDEBAR_NEXT,         "<down>" },
-  { OP_SIDEBAR_PREV,         "<up>"   },
+  { OP_SIDEBAR_PREVIOUS,     "<up>"   },
   { 0, NULL },
 };
 // clang-format on
@@ -431,9 +435,9 @@ static int op_sidebar_page_up(struct SidebarFunctionData *fdata, const struct Ke
 }
 
 /**
- * op_sidebar_prev - Selects the previous unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ * op_sidebar_previous - Selects the previous unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
-static int op_sidebar_prev(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
+static int op_sidebar_previous(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
 {
   struct SidebarWindowData *wdata = fdata->wdata;
   if (!mutt_window_is_visible(wdata->win))
@@ -462,11 +466,12 @@ static int op_sidebar_prev(struct SidebarFunctionData *fdata, const struct KeyEv
 }
 
 /**
- * op_sidebar_prev_new - Selects the previous new mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ * op_sidebar_previous_new - Selects the previous new mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  *
  * Search up the list of mail folders for one containing new mail.
  */
-static int op_sidebar_prev_new(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
+static int op_sidebar_previous_new(struct SidebarFunctionData *fdata,
+                                   const struct KeyEvent *event)
 {
   struct SidebarWindowData *wdata = fdata->wdata;
   if (!mutt_window_is_visible(wdata->win))
@@ -698,8 +703,8 @@ static const struct SidebarFunction SidebarFunctions[] = {
   { OP_SIDEBAR_OPEN,           op_sidebar_open },
   { OP_SIDEBAR_PAGE_DOWN,      op_sidebar_page_down },
   { OP_SIDEBAR_PAGE_UP,        op_sidebar_page_up },
-  { OP_SIDEBAR_PREV,           op_sidebar_prev },
-  { OP_SIDEBAR_PREV_NEW,       op_sidebar_prev_new },
+  { OP_SIDEBAR_PREVIOUS,       op_sidebar_previous },
+  { OP_SIDEBAR_PREVIOUS_NEW,   op_sidebar_previous_new },
   { OP_SIDEBAR_TOGGLE_VIRTUAL, op_sidebar_toggle_virtual },
   { OP_SIDEBAR_TOGGLE_VISIBLE, op_sidebar_toggle_visible },
   { OP_SIDEBAR_ABORT_SEARCH,   op_sidebar_abort_search },
