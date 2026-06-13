@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_SIDEBAR_FUNCTIONS_H
-#define MUTT_SIDEBAR_FUNCTIONS_H
+#ifndef MUTT_SIDEBAR_FUNCTIONS_SIDEBAR_H
+#define MUTT_SIDEBAR_FUNCTIONS_SIDEBAR_H
 
 #include "key/lib.h"
 
@@ -59,4 +59,4 @@ struct SidebarFunction
   sidebar_function_t function; ///< Function to call
 };
 
-#endif /* MUTT_SIDEBAR_FUNCTIONS_H */
+#endif /* MUTT_SIDEBAR_FUNCTIONS_SIDEBAR_H */

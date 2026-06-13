@@ -22,7 +22,7 @@
  */
 
 /**
- * @page sidebar_functions Sidebar functions
+ * @page sidebar_functions_sidebar Sidebar functions
  *
  * Sidebar functions
  */
@@ -35,7 +35,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "functions.h"
+#include "functions_sidebar.h"
 #include "lib.h"
 #include "editor/lib.h"
 #include "fuzzy/lib.h"
