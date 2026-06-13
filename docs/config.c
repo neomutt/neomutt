@@ -5596,6 +5596,16 @@
 ** sorting, though.
 */
 
+{ "url_open_command", D_STRING_COMMAND, 0 },
+/*
+** .pp
+** This specifies the external command used to open URLs from mailing-list
+** \fCList-*\fP headers.
+** .pp
+** The command supports a single \fC%u\fP expando for the URL. If \fC%u\fP is
+** not present, NeoMutt appends the URL to the command.
+*/
+
 { "use_8bit_mime", DT_BOOL, false },
 /*
 ** .pp
