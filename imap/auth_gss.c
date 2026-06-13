@@ -286,7 +286,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
 
   /* we don't care about buffer size if we don't wrap content. But here it is */
   ((char *) send_token.value)[0] = '\0';
-  buf_size = ntohl(*((long *) send_token.value));
+  buf_size = ntohl(*((uint32_t *) send_token.value));
   gss_release_buffer(&min_stat, &send_token);
   mutt_debug(LL_DEBUG2, "Unwrapped security level flags: %c%c%c\n",
              (server_conf_flags & GSS_AUTH_P_NONE) ? 'N' : '-',
