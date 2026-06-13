@@ -166,8 +166,6 @@ static int cert_make_entry(struct Menu *menu, int line, int max_cols, struct Buf
 int dlg_certificate(const char *title, struct StringArray *carr, bool allow_always, bool allow_skip)
 {
   const struct MenuDefinition *md_generic = generic_get_menu_definition();
-  const struct MenuDefinition *md_dialog = dialog_get_menu_definition();
-
   struct SimpleDialogWindows sdw = simple_dialog_new(md_generic, WT_DLG_CERTIFICATE, VerifyHelp);
 
   struct CertMenuData mdata = { carr };
@@ -235,7 +233,7 @@ int dlg_certificate(const char *title, struct StringArray *carr, bool allow_alwa
     // Try to catch dialog keys before ops
     if (menu_dialog_dokey(menu, &op) != 0)
     {
-      event = km_dokey(md_dialog, GETCH_IGNORE_MACRO);
+      event = km_dokey(md_generic, GETCH_IGNORE_MACRO);
       op = event.op;
     }
 

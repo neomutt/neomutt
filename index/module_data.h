@@ -31,7 +31,8 @@
 struct IndexModuleData
 {
   struct Notify         *notify;             ///< Notifications
-  struct MenuDefinition *menu_index;         ///< Index menu definition
+  struct MenuDefinition *md_index;           ///< Index Menu Definition
+  struct SubMenu        *sm_index;           ///< Index functions
   struct ReplaceList     subject_rx_list;    ///< List of subject-regex rules for modifying the Subject:
   struct Notify         *subject_rx_notify;  ///< Notifications: #NotifySubjectRx
 };

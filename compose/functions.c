@@ -105,7 +105,6 @@ static const struct MenuFuncOp OpCompose[] = { /* map: compose */
   { "edit-to",                       OP_ENVELOPE_EDIT_TO },
   { "edit-type",                     OP_ATTACH_EDIT_TYPE },
   { "edit-x-comment-to",             OP_ENVELOPE_EDIT_X_COMMENT_TO },
-  { "exit",                          OP_EXIT },
   { "filter-entry",                  OP_ATTACH_FILTER },
   { "forget-passphrase",             OP_FORGET_PASSPHRASE },
   { "get-attachment",                OP_ATTACH_GET_ATTACHMENT },
@@ -162,7 +161,6 @@ static const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_ATTACH_MOVE_DOWN,                   "+" },
   { OP_ATTACH_MOVE_UP,                     "-" },
   { OP_ATTACH_NEW_MIME,                    "n" },
-  { OP_EXIT,                               "q" },
   { OP_PIPE,                               "|" },
   { OP_ATTACH_PRINT,                       "l" },
   { OP_ATTACH_RENAME_ATTACHMENT,           "\017" },           // <Ctrl-O>
@@ -2609,9 +2607,9 @@ static int op_display_headers(struct ComposeFunctionData *fdata, const struct Ke
 }
 
 /**
- * op_exit - Exit this menu - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_quit - Save changes and exit this dialog - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_exit(struct ComposeFunctionData *fdata, const struct KeyEvent *event)
+static int op_quit(struct ComposeFunctionData *fdata, const struct KeyEvent *event)
 {
   struct ComposeSharedData *shared = fdata->shared;
   enum QuadOption ans = query_quadoption(_("Save (postpone) draft message?"),
@@ -2700,9 +2698,10 @@ static const struct ComposeFunction ComposeFunctions[] = {
   { OP_COMPOSE_WRITE_MESSAGE,      op_compose_write_message     },
   { OP_DISPLAY_HEADERS,            op_display_headers           },
   { OP_ENVELOPE_EDIT_HEADERS,      op_envelope_edit_headers     },
-  { OP_EXIT,                       op_exit                      },
+  { OP_EXIT,                       op_quit                      },
   { OP_FORGET_PASSPHRASE,          op_forget_passphrase         },
   { OP_PIPE,                       op_attach_filter             },
+  { OP_QUIT,                       op_quit                      },
   { 0, NULL },
   // clang-format on
 };

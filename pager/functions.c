@@ -64,139 +64,18 @@ static int op_pager_search_next(struct PagerFunctionData *fdata, const struct Ke
  * OpPager - Functions for the Pager Menu
  */
 static const struct MenuFuncOp OpPager[] = { /* map: pager */
-  { "bottom",                        OP_PAGER_BOTTOM },
-  { "bounce-message",                OP_BOUNCE_MESSAGE },
-  { "break-thread",                  OP_MAIN_BREAK_THREAD },
-  { "change-folder",                 OP_MAIN_CHANGE_FOLDER },
-  { "change-folder-readonly",        OP_MAIN_CHANGE_FOLDER_READONLY },
-  { "change-newsgroup",              OP_MAIN_CHANGE_GROUP },
-  { "change-newsgroup-readonly",     OP_MAIN_CHANGE_GROUP_READONLY },
-#ifdef USE_NOTMUCH
-  { "change-vfolder",                OP_MAIN_CHANGE_VFOLDER },
-#endif
-  { "check-stats",                   OP_CHECK_STATS },
-  { "check-traditional-pgp",         OP_CHECK_TRADITIONAL },
-  { "clear-flag",                    OP_MAIN_CLEAR_FLAG },
-  { "compose-to-sender",             OP_COMPOSE_TO_SENDER },
-  { "copy-message",                  OP_COPY_MESSAGE },
-  { "create-alias",                  OP_CREATE_ALIAS },
-  { "decode-copy",                   OP_DECODE_COPY },
-  { "decode-save",                   OP_DECODE_SAVE },
-  { "decrypt-copy",                  OP_DECRYPT_COPY },
-  { "decrypt-save",                  OP_DECRYPT_SAVE },
-  { "delete-message",                OP_DELETE },
-  { "delete-subthread",              OP_DELETE_SUBTHREAD },
-  { "delete-thread",                 OP_DELETE_THREAD },
-  { "display-address",               OP_DISPLAY_ADDRESS },
-  { "display-toggle-weed",           OP_DISPLAY_HEADERS },
-  { "edit",                          OP_EDIT_RAW_MESSAGE },
-  { "edit-label",                    OP_EDIT_LABEL },
-  { "edit-or-view-raw-message",      OP_EDIT_OR_VIEW_RAW_MESSAGE },
-  { "edit-raw-message",              OP_EDIT_RAW_MESSAGE },
-  { "edit-type",                     OP_ATTACH_EDIT_TYPE },
-  { "enter-command",                 OP_ENTER_COMMAND },
-#ifdef USE_NOTMUCH
-  { "entire-thread",                 OP_MAIN_ENTIRE_THREAD },
-#endif
-  { "exit",                          OP_EXIT },
-  { "extract-keys",                  OP_EXTRACT_KEYS },
-  { "flag-message",                  OP_FLAG_MESSAGE },
-  { "followup-message",              OP_FOLLOWUP },
-  { "forget-passphrase",             OP_FORGET_PASSPHRASE },
-  { "forward-message",               OP_FORWARD_MESSAGE },
-  { "forward-to-group",              OP_FORWARD_TO_GROUP },
-  { "group-chat-reply",              OP_GROUP_CHAT_REPLY },
-  { "group-reply",                   OP_GROUP_REPLY },
-  { "half-down",                     OP_HALF_DOWN },
-  { "half-up",                       OP_HALF_UP },
-  { "help",                          OP_HELP },
-  { "imap-fetch-mail",               OP_MAIN_IMAP_FETCH },
-  { "imap-logout-all",               OP_MAIN_IMAP_LOGOUT_ALL },
-  { "jump",                          OP_JUMP },
-  { "link-threads",                  OP_MAIN_LINK_THREADS },
-  { "list-action",                   OP_LIST_ACTION },
-  { "list-reply",                    OP_LIST_REPLY },
-  { "list-subscribe",                OP_LIST_SUBSCRIBE },
-  { "list-unsubscribe",              OP_LIST_UNSUBSCRIBE },
-  { "mail",                          OP_MAIL },
-  { "mail-key",                      OP_MAIL_KEY },
-  { "mailbox-list",                  OP_MAILBOX_LIST },
-  { "mark-as-new",                   OP_TOGGLE_NEW },
-  { "modify-labels",                 OP_MAIN_MODIFY_TAGS },
-  { "modify-labels-then-hide",       OP_MAIN_MODIFY_TAGS_THEN_HIDE },
-  { "modify-tags",                   OP_MAIN_MODIFY_TAGS },
-  { "modify-tags-then-hide",         OP_MAIN_MODIFY_TAGS_THEN_HIDE },
-  { "next-entry",                    OP_NEXT_ENTRY },
-  { "next-line",                     OP_NEXT_LINE },
-  { "next-new",                      OP_MAIN_NEXT_NEW },
-  { "next-new-then-unread",          OP_MAIN_NEXT_NEW_THEN_UNREAD },
-  { "next-page",                     OP_NEXT_PAGE },
-  { "next-subthread",                OP_MAIN_NEXT_SUBTHREAD },
-  { "next-thread",                   OP_MAIN_NEXT_THREAD },
-  { "next-undeleted",                OP_MAIN_NEXT_UNDELETED },
-  { "next-unread",                   OP_MAIN_NEXT_UNREAD },
-  { "next-unread-mailbox",           OP_MAIN_NEXT_UNREAD_MAILBOX },
-  { "parent-message",                OP_MAIN_PARENT_MESSAGE },
-  { "pipe-entry",                    OP_PIPE },
-  { "pipe-message",                  OP_PIPE },
-  { "post-message",                  OP_POST },
-  { "previous-entry",                OP_PREV_ENTRY },
-  { "previous-line",                 OP_PREV_LINE },
-  { "previous-new",                  OP_MAIN_PREV_NEW },
-  { "previous-new-then-unread",      OP_MAIN_PREV_NEW_THEN_UNREAD },
-  { "previous-page",                 OP_PREV_PAGE },
-  { "previous-subthread",            OP_MAIN_PREV_SUBTHREAD },
-  { "previous-thread",               OP_MAIN_PREV_THREAD },
-  { "previous-undeleted",            OP_MAIN_PREV_UNDELETED },
-  { "previous-unread",               OP_MAIN_PREV_UNREAD },
-  { "previous-unread-mailbox",       OP_MAIN_PREV_UNREAD_MAILBOX },
-  { "print-entry",                   OP_ATTACH_PRINT },
-  { "print-message",                 OP_PRINT },
-  { "purge-message",                 OP_PURGE_MESSAGE },
-  { "purge-thread",                  OP_PURGE_THREAD },
-  { "quasi-delete",                  OP_MAIN_QUASI_DELETE },
-  { "quit",                          OP_QUIT },
-  { "read-subthread",                OP_MAIN_READ_SUBTHREAD },
-  { "read-thread",                   OP_MAIN_READ_THREAD },
-  { "recall-message",                OP_RECALL_MESSAGE },
-  { "reconstruct-thread",            OP_RECONSTRUCT_THREAD },
-  { "redraw-screen",                 OP_REDRAW },
-  { "reply",                         OP_REPLY },
-  { "resend-message",                OP_RESEND },
-  { "root-message",                  OP_MAIN_ROOT_MESSAGE },
-  { "save-entry",                    OP_ATTACH_SAVE },
-  { "save-message",                  OP_SAVE },
-  { "search",                        OP_SEARCH },
-  { "search-next",                   OP_SEARCH_NEXT },
-  { "search-opposite",               OP_SEARCH_OPPOSITE },
-  { "search-reverse",                OP_SEARCH_REVERSE },
   { "search-toggle",                 OP_SEARCH_TOGGLE },
-  { "set-flag",                      OP_MAIN_SET_FLAG },
-  { "shell-escape",                  OP_SHELL_ESCAPE },
-  { "show-log-messages",             OP_SHOW_LOG_MESSAGES },
-  { "show-version",                  OP_VERSION },
   { "skip-headers",                  OP_PAGER_SKIP_HEADERS },
   { "skip-quoted",                   OP_PAGER_SKIP_QUOTED },
-  { "sort-mailbox",                  OP_SORT },
-  { "sort-reverse",                  OP_SORT_REVERSE },
-  { "sync-mailbox",                  OP_MAIN_SYNC_FOLDER },
-  { "tag-message",                   OP_TAG },
   { "toggle-quoted",                 OP_PAGER_HIDE_QUOTED },
-  { "toggle-write",                  OP_TOGGLE_WRITE },
-  { "top",                           OP_PAGER_TOP },
-  { "undelete-message",              OP_UNDELETE },
-  { "undelete-subthread",            OP_UNDELETE_SUBTHREAD },
-  { "undelete-thread",               OP_UNDELETE_THREAD },
-#ifdef USE_NOTMUCH
-  { "vfolder-from-query",            OP_MAIN_VFOLDER_FROM_QUERY },
-  { "vfolder-from-query-readonly",   OP_MAIN_VFOLDER_FROM_QUERY_READONLY },
-#endif
-  { "view-attachments",              OP_VIEW_ATTACHMENTS },
-  { "view-raw-message",              OP_VIEW_RAW_MESSAGE },
-  { "what-key",                      OP_WHAT_KEY },
+
   // Deprecated
+  { "bottom",                        OP_LAST_ENTRY,        MFF_DEPRECATED },
   { "buffy-list",                    OP_MAILBOX_LIST,      MFF_DEPRECATED },
   { "error-history",                 OP_SHOW_LOG_MESSAGES, MFF_DEPRECATED },
+  { "mark-as-new",                   OP_TOGGLE_NEW,        MFF_DEPRECATED },
+  { "tag-message",                   OP_TAG,               MFF_DEPRECATED },
+  { "top",                           OP_FIRST_ENTRY,       MFF_DEPRECATED },
   { NULL, 0 },
 };
 
@@ -204,94 +83,21 @@ static const struct MenuFuncOp OpPager[] = { /* map: pager */
  * PagerDefaultBindings - Key bindings for the Pager Menu
  */
 static const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
-  { OP_ATTACH_EDIT_TYPE,                   "\005" },           // <Ctrl-E>
-  { OP_BOUNCE_MESSAGE,                     "b" },
-  { OP_CHECK_TRADITIONAL,                  "\033P" },          // <Alt-P>
-  { OP_COPY_MESSAGE,                       "C" },
-  { OP_CREATE_ALIAS,                       "a" },
-  { OP_DECODE_COPY,                        "\033C" },          // <Alt-C>
-  { OP_DECODE_SAVE,                        "\033s" },          // <Alt-s>
-  { OP_DELETE,                             "d" },
-  { OP_DELETE_SUBTHREAD,                   "\033d" },          // <Alt-d>
-  { OP_DELETE_THREAD,                      "\004" },           // <Ctrl-D>
-  { OP_DISPLAY_ADDRESS,                    "@" },
-  { OP_DISPLAY_HEADERS,                    "h" },
-  { OP_EDIT_LABEL,                         "Y" },
-  { OP_EDIT_OR_VIEW_RAW_MESSAGE,           "e" },
-  { OP_ENTER_COMMAND,                      ":" },
   { OP_EXIT,                               "q" },
-  { OP_EXIT,                               "x" },
-  { OP_EXTRACT_KEYS,                       "\013" },           // <Ctrl-K>
-  { OP_FLAG_MESSAGE,                       "F" },
-  { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
-  { OP_FORWARD_MESSAGE,                    "f" },
-  { OP_GROUP_REPLY,                        "g" },
-  { OP_HELP,                               "?" },
-  { OP_LIST_ACTION,                        "\033L" },          // <Alt-L>
-  { OP_LIST_REPLY,                         "L" },
-  { OP_MAIL,                               "m" },
-  { OP_MAILBOX_LIST,                       "." },
-  { OP_MAIL_KEY,                           "\033k" },          // <Alt-k>
-  { OP_MAIN_BREAK_THREAD,                  "#" },
-  { OP_MAIN_CHANGE_FOLDER,                 "c" },
-  { OP_MAIN_CHANGE_FOLDER_READONLY,        "\033c" },          // <Alt-c>
-  { OP_MAIN_CLEAR_FLAG,                    "W" },
-  { OP_MAIN_LINK_THREADS,                  "&" },
-  { OP_MAIN_NEXT_NEW_THEN_UNREAD,          "\t" },             // <Tab>
-  { OP_MAIN_NEXT_SUBTHREAD,                "\033n" },          // <Alt-n>
-  { OP_MAIN_NEXT_THREAD,                   "\016" },           // <Ctrl-N>
-  { OP_MAIN_NEXT_UNDELETED,                "<down>" },
   { OP_MAIN_NEXT_UNDELETED,                "<right>" },
-  { OP_MAIN_NEXT_UNDELETED,                "j" },
-  { OP_MAIN_PARENT_MESSAGE,                "P" },
-  { OP_MAIN_PREV_SUBTHREAD,                "\033p" },          // <Alt-p>
-  { OP_MAIN_PREV_THREAD,                   "\020" },           // <Ctrl-P>
   { OP_MAIN_PREV_UNDELETED,                "<left>" },
-  { OP_MAIN_PREV_UNDELETED,                "<up>" },
-  { OP_MAIN_PREV_UNDELETED,                "k" },
-  { OP_MAIN_READ_SUBTHREAD,                "\033r" },          // <Alt-r>
-  { OP_MAIN_READ_THREAD,                   "\022" },           // <Ctrl-R>
-  { OP_MAIN_SET_FLAG,                      "w" },
-  { OP_MAIN_SYNC_FOLDER,                   "$" },
-  { OP_NEXT_ENTRY,                         "J" },
   { OP_NEXT_LINE,                          "<keypadenter>" },
   { OP_NEXT_LINE,                          "\n" },             // <Enter>
   { OP_NEXT_LINE,                          "\r" },             // <Return>
   { OP_NEXT_PAGE,                          " " },              // <Space>
-  { OP_NEXT_PAGE,                          "<pagedown>" },
-  { OP_PAGER_BOTTOM,                       "<end>" },
   { OP_PAGER_HIDE_QUOTED,                  "T" },
   { OP_PAGER_SKIP_HEADERS,                 "H" },
   { OP_PAGER_SKIP_QUOTED,                  "S" },
-  { OP_PAGER_TOP,                          "<home>" },
-  { OP_PAGER_TOP,                          "^" },
-  { OP_PIPE,                               "|" },
-  { OP_PREV_ENTRY,                         "K" },
+  { OP_FIRST_ENTRY,                        "^" },
   { OP_PREV_LINE,                          "<backspace>" },
   { OP_PREV_PAGE,                          "-" },
-  { OP_PREV_PAGE,                          "<pageup>" },
-  { OP_PRINT,                              "p" },
   { OP_QUIT,                               "Q" },
-  { OP_RECALL_MESSAGE,                     "R" },
-  { OP_REDRAW,                             "\014" },           // <Ctrl-L>
-  { OP_REPLY,                              "r" },
-  { OP_RESEND,                             "\033e" },          // <Alt-e>
-  { OP_SAVE,                               "s" },
-  { OP_SEARCH,                             "/" },
-  { OP_SEARCH_NEXT,                        "n" },
-  { OP_SEARCH_REVERSE,                     "\033/" },          // <Alt-/>
   { OP_SEARCH_TOGGLE,                      "\\" },             // <Backslash>
-  { OP_SHELL_ESCAPE,                       "!" },
-  { OP_SORT,                               "o" },
-  { OP_SORT_REVERSE,                       "O" },
-  { OP_TAG,                                "t" },
-  { OP_TOGGLE_NEW,                         "N" },
-  { OP_TOGGLE_WRITE,                       "%" },
-  { OP_UNDELETE,                           "u" },
-  { OP_UNDELETE_SUBTHREAD,                 "\033u" },          // <Alt-u>
-  { OP_UNDELETE_THREAD,                    "\025" },           // <Ctrl-U>
-  { OP_VERSION,                            "V" },
-  { OP_VIEW_ATTACHMENTS,                   "v" },
   { 0, NULL },
 };
 // clang-format on
@@ -303,17 +109,20 @@ void pager_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm_pager = NULL;
+  struct SubMenu *sm_index = index_get_submenu();
   struct SubMenu *sm_sidebar = sidebar_get_submenu();
 
   sm_pager = km_register_submenu(OpPager);
   md = km_register_menu(MENU_PAGER, "pager");
   km_menu_add_submenu(md, sm_pager);
+  km_menu_add_submenu(md, sm_index);
   km_menu_add_submenu(md, sm_sidebar);
+  km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, PagerDefaultBindings);
 
   struct PagerModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_PAGER);
   ASSERT(mod_data);
-  mod_data->menu_pager = md;
+  mod_data->md_pager = md;
 }
 
 /**
@@ -411,9 +220,29 @@ bool jump_to_bottom(struct PagerPrivateData *priv, struct PagerView *pview)
 // -----------------------------------------------------------------------------
 
 /**
- * op_pager_bottom - Jump to the bottom of the message - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_first_entry - Move to the first entry - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_pager_bottom(struct PagerFunctionData *fdata, const struct KeyEvent *event)
+static int op_first_entry(struct PagerFunctionData *fdata, const struct KeyEvent *event)
+{
+  struct PagerPrivateData *priv = fdata->priv;
+  if (priv->top_line == 0)
+  {
+    mutt_message(_("Top of message is shown"));
+    return FR_ERROR;
+  }
+  else
+  {
+    priv->top_line = 0;
+    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
+  }
+
+  return FR_SUCCESS;
+}
+
+/**
+ * op_last_entry - Move to the last entry - Implements ::pager_function_t - @ingroup pager_function_api
+ */
+static int op_last_entry(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
   struct PagerPrivateData *priv = fdata->priv;
   if (!jump_to_bottom(priv, priv->pview))
@@ -1024,25 +853,6 @@ static int op_pager_skip_quoted(struct PagerFunctionData *fdata, const struct Ke
   return FR_SUCCESS;
 }
 
-/**
- * op_pager_top - Jump to the top of the message - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_pager_top(struct PagerFunctionData *fdata, const struct KeyEvent *event)
-{
-  struct PagerPrivateData *priv = fdata->priv;
-  if (priv->top_line == 0)
-  {
-    mutt_message(_("Top of message is shown"));
-    return FR_ERROR;
-  }
-  else
-  {
-    priv->top_line = 0;
-    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
-  }
-
-  return FR_SUCCESS;
-}
 
 // -----------------------------------------------------------------------------
 
@@ -1069,7 +879,7 @@ static int op_help(struct PagerFunctionData *fdata, const struct KeyEvent *event
     mutt_error(_("Help is currently being shown"));
     return FR_ERROR;
   }
-  mutt_help(fdata->mod_data->menu_pager);
+  mutt_help(fdata->mod_data->md_pager);
   pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   return FR_SUCCESS;
 }
@@ -1170,6 +980,14 @@ static int op_view_attachments(struct PagerFunctionData *fdata, const struct Key
   return FR_SUCCESS;
 }
 
+/**
+ * op_ignore - Ignore this function - Implements ::pager_function_t - @ingroup pager_function_api
+ */
+static int op_ignore(struct PagerFunctionData *fdata, const struct KeyEvent *event)
+{
+  return FR_NO_ACTION;
+}
+
 // -----------------------------------------------------------------------------
 
 /**
@@ -1178,25 +996,34 @@ static int op_view_attachments(struct PagerFunctionData *fdata, const struct Key
 static const struct PagerFunction PagerFunctions[] = {
   // clang-format off
   { OP_EXIT,                   op_exit },
+  { OP_FIRST_ENTRY,            op_first_entry },
   { OP_HALF_DOWN,              op_pager_half_down },
   { OP_HALF_UP,                op_pager_half_up },
   { OP_HELP,                   op_help },
+  { OP_LAST_ENTRY,             op_last_entry },
   { OP_NEXT_LINE,              op_pager_next_line },
   { OP_NEXT_PAGE,              op_pager_next_page },
-  { OP_PAGER_BOTTOM,           op_pager_bottom },
   { OP_PAGER_HIDE_QUOTED,      op_pager_hide_quoted },
   { OP_PAGER_SKIP_HEADERS,     op_pager_skip_headers },
   { OP_PAGER_SKIP_QUOTED,      op_pager_skip_quoted },
-  { OP_PAGER_TOP,              op_pager_top },
   { OP_PREV_LINE,              op_pager_prev_line },
   { OP_PREV_PAGE,              op_pager_prev_page },
   { OP_SAVE,                   op_save },
   { OP_SEARCH,                 op_pager_search },
-  { OP_SEARCH_REVERSE,         op_pager_search },
   { OP_SEARCH_NEXT,            op_pager_search_next },
   { OP_SEARCH_OPPOSITE,        op_pager_search_next },
+  { OP_SEARCH_REVERSE,         op_pager_search },
   { OP_SEARCH_TOGGLE,          op_search_toggle },
   { OP_VIEW_ATTACHMENTS,       op_view_attachments },
+
+  // OpGeneric - Ignore
+  { OP_CURRENT_MIDDLE,         op_ignore },
+  { OP_CURRENT_TOP,            op_ignore },
+  { OP_CURRENT_BOTTOM,         op_ignore },
+  { OP_BOTTOM_PAGE,            op_ignore },
+  { OP_MIDDLE_PAGE,            op_ignore },
+  { OP_GENERIC_SELECT_ENTRY,   op_ignore },
+  { OP_TOP_PAGE,               op_ignore },
   { 0, NULL },
   // clang-format on
 };
@@ -1269,5 +1096,5 @@ struct MenuDefinition *pager_get_menu_definition(void)
   struct PagerModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
   ASSERT(mod_data);
 
-  return mod_data->menu_pager;
+  return mod_data->md_pager;
 }

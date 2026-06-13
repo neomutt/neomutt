@@ -303,9 +303,7 @@ bool dlg_pattern(struct Buffer *buf)
 {
   struct PatternData *pd = pattern_data_new();
   const struct MenuDefinition *md_generic = generic_get_menu_definition();
-  const struct MenuDefinition *md_dialog = dialog_get_menu_definition();
-
-  struct SimpleDialogWindows sdw = simple_dialog_new(md_dialog, WT_DLG_PATTERN, PatternHelp);
+  struct SimpleDialogWindows sdw = simple_dialog_new(md_generic, WT_DLG_PATTERN, PatternHelp);
   create_pattern_entries(&pd->entries);
 
   struct Menu *menu = sdw.menu;
@@ -334,7 +332,7 @@ bool dlg_pattern(struct Buffer *buf)
     menu_tagging_dispatcher(menu->win, &event);
     window_redraw(NULL);
 
-    event = km_dokey(md_dialog, GETCH_NONE);
+    event = km_dokey(md_generic, GETCH_NONE);
     op = event.op;
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)

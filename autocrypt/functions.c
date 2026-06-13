@@ -50,7 +50,6 @@
 static const struct MenuFuncOp OpAutocrypt[] = { /* map: autocrypt account */
   { "create-account",                OP_AUTOCRYPT_CREATE_ACCT },
   { "delete-account",                OP_AUTOCRYPT_DELETE_ACCT },
-  { "exit",                          OP_EXIT },
   { "toggle-active",                 OP_AUTOCRYPT_TOGGLE_ACTIVE },
   { "toggle-prefer-encrypt",         OP_AUTOCRYPT_TOGGLE_PREFER },
   { NULL, 0 }
@@ -64,7 +63,6 @@ static const struct MenuOpSeq AutocryptDefaultBindings[] = { /* map: autocrypt a
   { OP_AUTOCRYPT_DELETE_ACCT,              "D" },
   { OP_AUTOCRYPT_TOGGLE_ACTIVE,            "a" },
   { OP_AUTOCRYPT_TOGGLE_PREFER,            "p" },
-  { OP_EXIT,                               "q" },
   { 0, NULL }
 };
 // clang-format on
@@ -209,9 +207,9 @@ static int op_autocrypt_toggle_prefer(struct AutocryptData *ad, const struct Key
 }
 
 /**
- * op_exit - Exit this menu - Implements ::autocrypt_function_t - @ingroup autocrypt_function_api
+ * op_quit - Save changes and exit this dialog - Implements ::autocrypt_function_t - @ingroup autocrypt_function_api
  */
-static int op_exit(struct AutocryptData *ad, const struct KeyEvent *event)
+static int op_quit(struct AutocryptData *ad, const struct KeyEvent *event)
 {
   ad->done = true;
   return FR_SUCCESS;
@@ -228,7 +226,8 @@ static const struct AutocryptFunction AutocryptFunctions[] = {
   { OP_AUTOCRYPT_DELETE_ACCT,   op_autocrypt_delete_acct },
   { OP_AUTOCRYPT_TOGGLE_ACTIVE, op_autocrypt_toggle_active },
   { OP_AUTOCRYPT_TOGGLE_PREFER, op_autocrypt_toggle_prefer },
-  { OP_EXIT,                    op_exit },
+  { OP_EXIT,                    op_quit },
+  { OP_QUIT,                    op_quit },
   { 0, NULL },
   // clang-format on
 };

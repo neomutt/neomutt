@@ -337,7 +337,7 @@ int external_pager(struct MailboxView *mv, struct Email *e, const char *command)
     mutt_unget_ch(mutt_any_key_to_continue(_("Command: ")));
     struct PagerModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
     ASSERT(mod_data);
-    struct KeyEvent event = km_dokey(mod_data->menu_pager, GETCH_NONE);
+    struct KeyEvent event = km_dokey(mod_data->md_pager, GETCH_NONE);
     rc = event.op;
   }
   else

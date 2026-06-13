@@ -75,7 +75,6 @@ static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
   { "descend-directory",             OP_DESCEND_DIRECTORY },
   { "display-filename",              OP_BROWSER_TELL },
   { "enter-mask",                    OP_ENTER_MASK },
-  { "exit",                          OP_EXIT },
   { "goto-folder",                   OP_BROWSER_GOTO_FOLDER },
   { "goto-parent",                   OP_GOTO_PARENT },
   { "mailbox-list",                  OP_MAILBOX_LIST },
@@ -112,7 +111,6 @@ static const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
   { OP_CREATE_MAILBOX,                     "C" },
   { OP_DELETE_MAILBOX,                     "d" },
   { OP_ENTER_MASK,                         "m" },
-  { OP_EXIT,                               "q" },
   { OP_GOTO_PARENT,                        "p" },
   { OP_MAILBOX_LIST,                       "." },
   { OP_RENAME_MAILBOX,                     "r" },
@@ -850,9 +848,9 @@ static int op_enter_mask(struct BrowserPrivateData *priv, const struct KeyEvent 
 }
 
 /**
- * op_exit - Exit this menu - Implements ::browser_function_t - @ingroup browser_function_api
+ * op_quit - Save changes and exit this dialog - Implements ::browser_function_t - @ingroup browser_function_api
  */
-static int op_exit(struct BrowserPrivateData *priv, const struct KeyEvent *event)
+static int op_quit(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
   if (priv->multiple)
@@ -1085,7 +1083,7 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct
     buf_concat_path(priv->file, buf_string(&mod_data->last_dir), ff->name);
   }
 
-  return op_exit(priv, event);
+  return op_quit(priv, event);
 }
 
 /**
@@ -1417,11 +1415,12 @@ static const struct BrowserFunction BrowserFunctions[] = {
   { OP_DELETE_MAILBOX,       op_delete_mailbox },
   { OP_DESCEND_DIRECTORY,    op_generic_select_entry },
   { OP_ENTER_MASK,           op_enter_mask },
-  { OP_EXIT,                 op_exit },
+  { OP_EXIT,                 op_quit },
   { OP_GENERIC_SELECT_ENTRY, op_generic_select_entry },
   { OP_GOTO_PARENT,          op_change_directory },
   { OP_LOAD_ACTIVE,          op_load_active },
   { OP_MAILBOX_LIST,         op_mailbox_list },
+  { OP_QUIT,                 op_quit },
   { OP_RENAME_MAILBOX,       op_rename_mailbox },
   { OP_SORT,                 op_sort },
   { OP_SORT_REVERSE,         op_sort },

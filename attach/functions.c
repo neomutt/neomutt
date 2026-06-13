@@ -64,7 +64,6 @@ static const struct MenuFuncOp OpAttach[] = { /* map: attach */
   { "delete-entry",                  OP_ATTACH_DELETE },
   { "display-toggle-weed",           OP_DISPLAY_HEADERS },
   { "edit-type",                     OP_ATTACH_EDIT_TYPE },
-  { "exit",                          OP_EXIT },
   { "extract-keys",                  OP_EXTRACT_KEYS },
   { "followup-message",              OP_FOLLOWUP },
   { "forget-passphrase",             OP_FORGET_PASSPHRASE },
@@ -96,7 +95,6 @@ static const struct MenuOpSeq AttachDefaultBindings[] = { /* map: attach */
   { OP_ATTACH_COLLAPSE,                    "v" },
   { OP_ATTACH_DELETE,                      "d" },
   { OP_ATTACH_EDIT_TYPE,                   "\005" },           // <Ctrl-E>
-  { OP_EXIT,                               "q" },
   { OP_PIPE,                               "|" },
   { OP_ATTACH_PRINT,                       "p" },
   { OP_ATTACH_SAVE,                        "s" },
@@ -599,9 +597,9 @@ static int op_compose_to_sender(struct AttachFunctionData *fdata, const struct K
 }
 
 /**
- * op_exit - exit this menu - Implements ::attach_function_t - @ingroup attach_function_api
+ * op_quit - Save changes and exit this dialog - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_exit(struct AttachFunctionData *fdata, const struct KeyEvent *event)
+static int op_quit(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
   struct AttachPrivateData *priv = fdata->priv;
   priv->actx->email->attach_del = false;
@@ -805,7 +803,7 @@ static const struct AttachFunction AttachFunctions[] = {
   { OP_CHECK_TRADITIONAL,   op_check_traditional   },
   { OP_COMPOSE_TO_SENDER,   op_compose_to_sender   },
   { OP_DISPLAY_HEADERS,     op_attach_view         },
-  { OP_EXIT,                op_exit                },
+  { OP_EXIT,                op_quit                },
   { OP_EXTRACT_KEYS,        op_extract_keys        },
   { OP_FOLLOWUP,            op_followup            },
   { OP_FORGET_PASSPHRASE,   op_forget_passphrase   },
@@ -817,6 +815,7 @@ static const struct AttachFunction AttachFunctions[] = {
   { OP_LIST_SUBSCRIBE,      op_list_subscribe      },
   { OP_LIST_UNSUBSCRIBE,    op_list_unsubscribe    },
   { OP_PIPE,                op_attach_pipe         },
+  { OP_QUIT,                op_quit                },
   { OP_REPLY,               op_reply               },
   { OP_RESEND,              op_resend              },
   { 0, NULL },

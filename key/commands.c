@@ -399,15 +399,6 @@ void set_default_bindings(const struct MenuDefinition *md)
     success = true;
   }
 
-  const struct MenuDefinition *md_dialog = dialog_get_menu_definition();
-  if (!md || (md == md_dialog))
-  {
-    km_bind(md_dialog, ":", OP_ENTER_COMMAND, NULL, NULL, NULL);
-    km_bind(md_dialog, "?", OP_HELP, NULL, NULL, NULL);
-    km_bind(md_dialog, "q", OP_EXIT, NULL, NULL, NULL);
-    success = true;
-  }
-
   if (success)
   {
     mutt_debug(LL_NOTIFY, "NT_BINDING_ADD set defaults\n");

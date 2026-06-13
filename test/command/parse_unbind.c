@@ -408,7 +408,6 @@ static void test_parse_unbind_restore_defaults(void)
   buf_seek(line, 0);
   TEST_CHECK_NUM_EQ(parse_unbind(&UnBind, line, pc, pe), MUTT_CMD_SUCCESS);
   TEST_CHECK(has_binding("index", OP_DISPLAY_MESSAGE));
-  TEST_CHECK(!has_binding("pager", OP_EXIT));
   km_cleanup(neomutt_get_module_data(NeoMutt, MODULE_ID_KEY));
 
   TEST_CASE("unmacro index * does not restore fallback bindings");

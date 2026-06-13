@@ -47,7 +47,6 @@
  * OpPostpone - Functions for the Postpone Menu
  */
 static const struct MenuFuncOp OpPostpone[] = { /* map: postpone */
-  { "exit",                          OP_EXIT },
   { "delete-entry",                  OP_DELETE },
   { "undelete-entry",                OP_UNDELETE },
   { "tag-entry",                     OP_TAG },
@@ -59,7 +58,6 @@ static const struct MenuFuncOp OpPostpone[] = { /* map: postpone */
  */
 static const struct MenuOpSeq PostponeDefaultBindings[] = { /* map: postpone */
   { OP_DELETE,                             "d" },
-  { OP_EXIT,                               "q" },
   { OP_TAG,                                "t" },
   { OP_UNDELETE,                           "u" },
   { 0, NULL },
@@ -208,9 +206,9 @@ static int op_delete(struct PostponeData *pd, const struct KeyEvent *event)
 }
 
 /**
- * op_exit - Exit this menu - Implements ::postpone_function_t - @ingroup postpone_function_api
+ * op_quit - Save changes and exit this dialog - Implements ::postpone_function_t - @ingroup postpone_function_api
  */
-static int op_exit(struct PostponeData *pd, const struct KeyEvent *event)
+static int op_quit(struct PostponeData *pd, const struct KeyEvent *event)
 {
   pd->done = true;
   return FR_SUCCESS;
@@ -275,8 +273,9 @@ static int op_search(struct PostponeData *pd, const struct KeyEvent *event)
 static const struct PostponeFunction PostponeFunctions[] = {
   // clang-format off
   { OP_DELETE,                 op_delete },
-  { OP_EXIT,                   op_exit },
+  { OP_EXIT,                   op_quit },
   { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },
+  { OP_QUIT,                   op_quit },
   { OP_SEARCH,                 op_search },
   { OP_SEARCH_NEXT,            op_search },
   { OP_SEARCH_OPPOSITE,        op_search },

@@ -61,7 +61,6 @@ const int ListActionsCount = countof(ListActions);
  * OpList - Functions for the List Dialog
  */
 static const struct MenuFuncOp OpList[] = { /* map: list */
-  { "exit",                          OP_EXIT },
   { "list-archive",                  OP_LIST_ARCHIVE },
   { "list-help",                     OP_LIST_HELP },
   { "list-owner",                    OP_LIST_OWNER },
@@ -75,7 +74,6 @@ static const struct MenuFuncOp OpList[] = { /* map: list */
  * ListDefaultBindings - Key bindings for the List Dialog
  */
 static const struct MenuOpSeq ListDefaultBindings[] = { /* map: list */
-  { OP_EXIT,                               "q" },
   { OP_LIST_ARCHIVE,                       "a" },
   { OP_LIST_HELP,                          "h" },
   { OP_LIST_OWNER,                         "o" },
@@ -181,19 +179,19 @@ static bool compose_list_action(struct ListData *ld, const struct ListEntry *ent
 }
 
 /**
- * op_exit - Exit the list dialog
+ * op_quit - Save changes and exit this dialog - Implements ::mlist_function_t - @ingroup mlist_function_api
  * @param ld    Dialog state
  * @param event Event being handled
  * @retval enum #FunctionRetval
  */
-static int op_exit(struct ListData *ld, const struct KeyEvent *event)
+static int op_quit(struct ListData *ld, const struct KeyEvent *event)
 {
   ld->done = true;
   return FR_SUCCESS;
 }
 
 /**
- * op_select_action - Execute the selected mailing-list action
+ * op_select_action - Execute the selected mailing-list action - Implements ::mlist_function_t - @ingroup mlist_function_api
  * @param ld    Dialog state
  * @param event Event being handled
  * @retval enum #FunctionRetval
@@ -252,7 +250,7 @@ static int op_select_action(struct ListData *ld, const struct KeyEvent *event)
  */
 static const struct MlistFunction MlistFunctions[] = {
   // clang-format off
-  { OP_EXIT,                 op_exit          },
+  { OP_EXIT,                 op_quit          },
   { OP_GENERIC_SELECT_ENTRY, op_select_action },
   { OP_LIST_ARCHIVE,         op_select_action },
   { OP_LIST_HELP,            op_select_action },
@@ -260,6 +258,7 @@ static const struct MlistFunction MlistFunctions[] = {
   { OP_LIST_POST,            op_select_action },
   { OP_LIST_SUBSCRIBE,       op_select_action },
   { OP_LIST_UNSUBSCRIBE,     op_select_action },
+  { OP_QUIT,                 op_quit          },
   { 0, NULL },
   // clang-format on
 };

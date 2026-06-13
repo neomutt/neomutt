@@ -28,6 +28,5 @@ struct NeoMutt;
 struct SubMenu *generic_init_keys(struct NeoMutt *n);
 
 struct MenuDefinition *generic_get_menu_definition(void);
-struct MenuDefinition *dialog_get_menu_definition(void);
 
 #endif /* MUTT_FUNCTIONS_H */

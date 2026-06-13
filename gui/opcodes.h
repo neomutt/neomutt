@@ -425,16 +425,12 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_NEXT_LINE,                          N_("Scroll down one line")) \
   /* L10N: Help for Generic function: <next-page> */ \
   _fmt(OP_NEXT_PAGE,                          N_("Move to the next page")) \
-  /* L10N: Help for Generic function: <pager-bottom> */ \
-  _fmt(OP_PAGER_BOTTOM,                       N_("Jump to the bottom of the message")) \
   /* L10N: Help for Pager function: <toggle-quoted> */ \
   _fmt(OP_PAGER_HIDE_QUOTED,                  N_("Toggle display of quoted text")) \
   /* L10N: Help for Pager function: <skip-headers> */ \
   _fmt(OP_PAGER_SKIP_HEADERS,                 N_("Jump to first line after headers")) \
   /* L10N: Help for Pager function: <skip-quoted> */ \
   _fmt(OP_PAGER_SKIP_QUOTED,                  N_("Skip beyond quoted text")) \
-  /* L10N: Help for Generic function: <pager-top> */ \
-  _fmt(OP_PAGER_TOP,                          N_("Jump to the top of the message")) \
   /* L10N: Help for Attach, Compose, Index, Attach, Compose, Index function: <pipe-entry> */ \
   _fmt(OP_PIPE,                               N_("Pipe message/attachment to a shell command")) \
   /* L10N: Help for Index function: <post-message> */ \

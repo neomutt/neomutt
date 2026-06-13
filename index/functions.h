@@ -68,5 +68,6 @@ struct IndexFunction
 int index_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 bool index_next_undeleted(struct MuttWindow *win_index);
 struct MenuDefinition *index_get_menu_definition(void);
+struct SubMenu *index_get_submenu(void);
 
 #endif /* MUTT_INDEX_FUNCTIONS_H */
