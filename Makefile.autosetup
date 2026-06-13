@@ -478,7 +478,7 @@ $(PWD)/expando:
 ###############################################################################
 # libfuzzy
 LIBFUZZY=	libfuzzy.a
-LIBFUZZYOBJS=	fuzzy/fuzzy.o fuzzy/subseq.o
+LIBFUZZYOBJS=	fuzzy/functions.o fuzzy/fuzzy.o fuzzy/module.o fuzzy/subseq.o
 CLEANFILES+=	$(LIBFUZZY) $(LIBFUZZYOBJS)
 ALLOBJS+=	$(LIBFUZZYOBJS)
 

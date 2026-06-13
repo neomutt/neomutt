@@ -60,7 +60,9 @@
  *
  * | File                   | Description                   |
  * | :--------------------- | :---------------------------- |
+ * | fuzzy/functions.c      | @subpage fuzzy_functions      |
  * | fuzzy/fuzzy.c          | @subpage fuzzy_fuzzy          |
+ * | fuzzy/module.c         | @subpage fuzzy_module         |
  * | fuzzy/subseq.c         | @subpage fuzzy_subseq         |
  */
 
@@ -68,6 +70,9 @@
 #define MUTT_FUZZY_LIB_H
 
 #include <stdbool.h>
+
+struct NeoMutt;
+struct SubMenu;
 
 /**
  * enum FuzzyAlgo - Fuzzy matching algorithm types
@@ -101,6 +106,9 @@ struct FuzzyResult
   int start;             ///< First match position
   int end;               ///< Last match position
 };
+
+void fuzzy_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic);
+struct SubMenu *fuzzy_get_submenu(void);
 
 int fuzzy_match(const char *pattern, const char *candidate, enum FuzzyAlgo algo, const struct FuzzyOptions *opts, struct FuzzyResult *out);
 

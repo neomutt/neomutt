@@ -64,6 +64,7 @@ enum ModuleId
   MODULE_ID_EMAIL,         ///< #ModuleEmail,     @ref lib_email
   MODULE_ID_ENVELOPE,      ///< #ModuleEnvelope,  @ref lib_envelope
   MODULE_ID_EXPANDO,       ///< #ModuleExpando,   @ref lib_expando
+  MODULE_ID_FUZZY,         ///< #ModuleFuzzy,     @ref lib_fuzzy
   MODULE_ID_HCACHE,        ///< #ModuleHcache,    @ref lib_hcache
   MODULE_ID_HELPBAR,       ///< #ModuleHelpbar,   @ref lib_helpbar
   MODULE_ID_HISTORY,       ///< #ModuleHistory,   @ref lib_history
