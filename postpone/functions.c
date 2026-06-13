@@ -49,7 +49,6 @@
 static const struct MenuFuncOp OpPostpone[] = { /* map: postpone */
   { "delete-entry",                  OP_DELETE },
   { "undelete-entry",                OP_UNDELETE },
-  { "tag-entry",                     OP_TAG },
   { NULL, 0 },
 };
 
