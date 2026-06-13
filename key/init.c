@@ -36,6 +36,7 @@
 #include "commands.h"
 #include "keymap.h"
 #include "menu.h"
+#include "menudef.h"
 #include "module_data.h"
 
 /// All the registered Menus - moved to KeyModuleData
@@ -87,12 +88,12 @@ const struct Command KeyCommands[] = {
 struct SubMenu *km_register_submenu(const struct MenuFuncOp functions[])
 {
   struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
-  struct SubMenu sm = { 0 };
-  sm.functions = functions;
-  ARRAY_INIT(&sm.keymaps);
+  struct SubMenu *sm = submenu_new();
+  sm->functions = functions;
+  ARRAY_INIT(&sm->keymaps);
 
   ARRAY_ADD(&mod_data->sub_menus, sm);
-  return ARRAY_LAST(&mod_data->sub_menus);
+  return *ARRAY_LAST(&mod_data->sub_menus);
 }
 
 /**
@@ -104,7 +105,8 @@ struct SubMenu *km_register_submenu(const struct MenuFuncOp functions[])
 struct MenuDefinition *km_register_menu(int menu, const char *name)
 {
   struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
-  struct MenuDefinition *md = MUTT_MEM_CALLOC(1, struct MenuDefinition);
+
+  struct MenuDefinition *md = menudef_new();
   md->id = menu;
   md->name = mutt_str_dup(name);
   ARRAY_INIT(&md->submenus);
@@ -208,18 +210,14 @@ void km_cleanup(struct KeyModuleData *mod_data)
   struct MenuDefinition **mdp = NULL;
   ARRAY_FOREACH(mdp, &mod_data->menu_defs)
   {
-    struct MenuDefinition *md = *mdp;
-
-    FREE(&md->name);
-    ARRAY_FREE(&md->submenus);
-    FREE(&md);
+    menudef_free(mdp);
   }
   ARRAY_FREE(&mod_data->menu_defs);
 
-  struct SubMenu *sm = NULL;
-  ARRAY_FOREACH(sm, &mod_data->sub_menus)
+  struct SubMenu **smp = NULL;
+  ARRAY_FOREACH(smp, &mod_data->sub_menus)
   {
-    keymaplist_free(&sm->keymaps);
+    submenu_free(smp);
   }
   ARRAY_FREE(&mod_data->sub_menus);
 

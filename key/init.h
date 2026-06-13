@@ -27,7 +27,9 @@
 #include "menu.h"
 
 struct KeyModuleData;
+struct MenuDefinition;
 struct NotifyCallback;
+struct SubMenu;
 
 void                   km_cleanup          (struct KeyModuleData *mod_data);
 int                    km_config_observer  (struct NotifyCallback *nc);
