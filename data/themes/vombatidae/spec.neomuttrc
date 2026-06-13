@@ -1,0 +1,104 @@
+# vim: filetype=neomuttrc
+#
+# Vombatidae Spec
+
+source palette.neomuttrc
+
+# Core UI roles
+set my_normal_fg      = $my_fg0
+set my_normal_bg      = $my_bg0
+set my_error_fg       = $my_teal
+set my_error_bg       = $my_bg0
+set my_warning_fg     = $my_yellow
+set my_warning_bg     = $my_bg0
+set my_message_fg     = $my_fg0
+set my_message_bg     = $my_bg0
+set my_indicator_fg   = $my_fg1
+set my_indicator_bg   = $my_bg3
+set my_status_fg      = "color101"
+set my_status_bg      = "color16"
+set my_search_fg      = $my_search
+set my_search_bg      = "default"
+set my_tree_fg        = $my_orange
+set my_tree_bg        = $my_bg0
+set my_tilde_fg       = "color130"
+set my_tilde_bg       = $my_bg2
+set my_markers_fg     = "color138"
+set my_markers_bg     = "default"
+set my_progress_fg    = $my_bg0
+set my_progress_bg    = $my_green
+set my_prompt_fg      = $my_fg0
+set my_prompt_bg      = $my_bg0
+set my_options_fg     = $my_fg0
+set my_options_bg     = $my_bg0
+set my_attach_fg      = $my_blue
+set my_attach_bg      = $my_bg0
+set my_signature_fg   = $my_fg3
+set my_signature_bg   = $my_bg0
+
+# Text attributes
+set my_bold_fg        = $my_fg0
+set my_bold_bg        = $my_bg0
+set my_italic_fg      = $my_fg0
+set my_italic_bg      = $my_bg0
+set my_underline_fg   = $my_fg0
+set my_underline_bg   = $my_bg0
+
+# Stripes
+set my_stripe_even_fg = $my_fg0
+set my_stripe_even_bg = $my_bg2
+set my_stripe_odd_fg  = $my_fg0
+set my_stripe_odd_bg  = $my_bg0
+
+# Sidebar
+set my_sidebar_fg     = $my_fg0
+set my_sidebar_bg     = $my_bg0
+set my_sidebar_div_fg = $my_fg2
+set my_sidebar_new_fg = $my_green
+set my_sidebar_flag_fg = $my_red
+set my_sidebar_unread_fg = $my_green
+
+# Compose
+set my_compose_fg     = $my_fg0
+set my_compose_bg     = $my_bg0
+set my_sec_both_fg    = $my_lime
+set my_sec_encrypt_fg = $my_blue
+set my_sec_none_fg    = $my_red
+set my_sec_sign_fg    = $my_yellow
+
+# Headers
+set my_header_fg      = $my_teal
+set my_header_bg      = $my_bg1
+set my_header_from_fg = $my_lime
+set my_header_subj_fg = $my_yellow
+set my_header_date_fg = $my_magenta
+set my_header_to_fg   = "color153"
+set my_header_reply_fg = $my_cyan
+set my_header_ua_fg   = "color31"
+
+# Quoted text
+set my_quoted0_fg     = "color107"
+set my_quoted1_fg     = "color66"
+set my_quoted2_fg     = "color32"
+set my_quoted3_fg     = $my_teal
+set my_quoted4_fg     = "color99"
+set my_quoted5_fg     = "color36"
+set my_quoted6_fg     = "color114"
+set my_quoted7_fg     = "color109"
+set my_quoted8_fg     = "color41"
+set my_quoted9_fg     = "color138"
+set my_quoted_bg      = $my_bg0
+
+# Index
+set my_index_new_fg   = $my_green
+set my_index_flag_fg  = $my_red
+set my_index_del_fg   = $my_fg2
+set my_index_tag_fg   = "color229"
+set my_index_tag_bg   = "color22"
+set my_index_bg       = $my_bg0
+
+# Body patterns
+set my_url_fg         = $my_blue
+set my_gpg_good_fg    = $my_lime
+set my_gpg_bad_fg     = $my_red
+set my_gpg_fg         = $my_fg2

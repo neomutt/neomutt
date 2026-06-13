@@ -1,0 +1,25 @@
+# vim: filetype=neomuttrc
+#
+# Neonwolf Palette
+
+# Background shades
+set my_bg0 = "color233"
+set my_bg1 = "color235"
+set my_bg2 = "color236"
+
+# Foreground shades
+set my_fg0 = "color255"
+set my_fg1 = "color244"
+set my_fg2 = "color241"
+set my_fg3 = "color232"
+
+# Accent colors
+set my_red     = "color196"
+set my_green   = "color154"
+set my_yellow  = "color222"
+set my_blue    = "color39"
+set my_magenta = "color165"
+set my_cyan    = "color81"
+set my_orange  = "color166"
+set my_lime    = "color82"
+set my_search  = "color154"

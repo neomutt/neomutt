@@ -1,0 +1,24 @@
+# vim: filetype=neomuttrc
+#
+# Solarized Dark Palette
+
+# Background shades
+set my_bg0 = "color234"
+set my_bg1 = "color235"
+set my_bg2 = "color236"
+
+# Foreground shades
+set my_fg0 = "color254"
+set my_fg1 = "color244"
+set my_fg2 = "color241"
+set my_fg3 = "color240"
+set my_fg4 = "color245"
+
+# Accent colors
+set my_red     = "color160"
+set my_green   = "color64"
+set my_yellow  = "color136"
+set my_blue    = "color33"
+set my_magenta = "color61"
+set my_cyan    = "color37"
+set my_orange  = "color166"
