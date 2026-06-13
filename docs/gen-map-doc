@@ -30,10 +30,11 @@ for (my $i = 0; $i <= $#lines; $i++) {
     $MAP_OP_TO_SEQSET{$map} = {};
     while (defined($_ = $lines[++$i])) {
       last if (/^}/);
+      last if (/Deprecated/);
       if (/^\s*\*\*\s*(.*)/) {
         $DOC{$map} .= "$1\n";
       }
-      elsif (/{\s*"(.+)"\s*,\s*(\w+)\s*}/) {
+      elsif (/{\s*"(.+)"\s*,\s*(\w+)(, +MFF_.+ )*\s*}/) {
         my ($function, $op) = ($1, $2);
         die "unknown OP $op" unless $OPS{$op};
         $MAP_OP_TO_SEQSET{$map}->{$op} = {};
