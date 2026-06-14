@@ -49,7 +49,7 @@
  * Insert a key sequence into the specified map.
  * The map is sorted by ASCII value (lowest to highest)
  */
-enum CommandResult km_bind(struct MenuDefinition *md, const char *key_str,
+enum CommandResult km_bind(const struct MenuDefinition *md, const char *key_str,
                            int op, char *macro, char *desc, struct Buffer *err)
 {
   if (!md || ARRAY_EMPTY(&md->submenus))

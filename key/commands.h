@@ -31,7 +31,7 @@ struct MenuDefinitionArray;
 struct ParseContext;
 struct ParseError;
 
-enum CommandResult km_bind     (struct MenuDefinition *md, const char *key_str, int op, char *macro, char *desc, struct Buffer *err);
+enum CommandResult km_bind     (const struct MenuDefinition *md, const char *key_str, int op, char *macro, char *desc, struct Buffer *err);
 char *             parse_keymap(const struct Command *cmd, struct MenuDefinitionArray *mda, struct Buffer *line, struct Buffer *err);
 void               parse_menu  (struct MenuDefinitionArray *menus, const char *s, struct Buffer *err);
 
