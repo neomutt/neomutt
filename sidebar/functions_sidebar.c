@@ -67,9 +67,7 @@ static const struct MenuFuncOp OpSidebar[] = { /* map: sidebar */
 /**
  * SidebarDefaultBindings - Key bindings for the Sidebar Window
  */
-const struct MenuOpSeq SidebarDefaultBindings[] = {
-  { OP_SIDEBAR_NEXT,         "<down>" },
-  { OP_SIDEBAR_PREV,         "<up>"   },
+const struct MenuOpSeq SidebarDefaultBindings[] = { /* map: sidebar */
   { 0, NULL },
 };
 // clang-format on

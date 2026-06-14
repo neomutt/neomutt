@@ -25,6 +25,7 @@ __print_map(smime)
 __print_map(editor)
 __print_map(sidebar)
 __print_map(autocrypt account)
+__print_map(fuzzy)
 
     </sect1>
   </chapter>

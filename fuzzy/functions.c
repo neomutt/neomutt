@@ -53,7 +53,7 @@ static const struct MenuFuncOp OpFuzzy[] = { /* map: fuzzy */
 /**
  * FuzzyDefaultBindings - Key bindings for the Fuzzy Window
  */
-const struct MenuOpSeq FuzzyDefaultBindings[] = {
+const struct MenuOpSeq FuzzyDefaultBindings[] = { /* map: fuzzy */
   { OP_FIRST_ENTRY,                        "<home>" },
   { OP_LAST_ENTRY,                         "<end>" },
   { OP_NEXT_ENTRY,                         "<down>" },
