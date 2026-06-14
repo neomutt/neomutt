@@ -478,7 +478,7 @@ $(PWD)/expando:
 ###############################################################################
 # libfuzzy
 LIBFUZZY=	libfuzzy.a
-LIBFUZZYOBJS=	fuzzy/fuzzy.o fuzzy/subseq.o
+LIBFUZZYOBJS=	fuzzy/functions.o fuzzy/fuzzy.o fuzzy/module.o fuzzy/subseq.o
 CLEANFILES+=	$(LIBFUZZY) $(LIBFUZZYOBJS)
 ALLOBJS+=	$(LIBFUZZYOBJS)
 
@@ -612,7 +612,7 @@ $(PWD)/index:
 # libkey
 LIBKEY=		libkey.a
 LIBKEYOBJS=	key/commands.o key/dump.o key/get.o key/keymap.o key/init.o \
-		key/menu.o key/module.o
+		key/menu.o key/menudef.o key/module.o
 @if HAVE_USE_EXTENDED_NAMES
 LIBKEYOBJS+=	key/extended.o
 @endif
@@ -923,8 +923,9 @@ $(PWD)/send:
 # libsidebar
 LIBSIDEBAR=	libsidebar.a
 LIBSIDEBAROBJS=	sidebar/commands.o sidebar/config.o sidebar/expando.o \
-		sidebar/functions.o sidebar/observer.o sidebar/sidebar.o \
-		sidebar/sort.o sidebar/wdata.o sidebar/window.o sidebar/module.o
+		sidebar/functions_fuzzy.o sidebar/functions_sidebar.o \
+		sidebar/observer.o sidebar/sidebar.o sidebar/sort.o \
+		sidebar/wdata.o sidebar/window.o sidebar/module.o
 CLEANFILES+=	$(LIBSIDEBAR) $(LIBSIDEBAROBJS)
 ALLOBJS+=	$(LIBSIDEBAROBJS)
 

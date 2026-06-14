@@ -22,7 +22,7 @@
  */
 
 /**
- * @page sidebar_functions Sidebar functions
+ * @page sidebar_functions_sidebar Sidebar functions
  *
  * Sidebar functions
  */
@@ -35,14 +35,13 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "functions.h"
+#include "functions_sidebar.h"
 #include "lib.h"
 #include "editor/lib.h"
-#include "fuzzy/lib.h"
-#include "history/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
+#include "functions_fuzzy.h"
 #include "module_data.h"
 
 // clang-format off
@@ -59,7 +58,6 @@ static const struct MenuFuncOp OpSidebar[] = { /* map: sidebar */
   { "sidebar-page-up",        OP_SIDEBAR_PAGE_UP        },
   { "sidebar-prev",           OP_SIDEBAR_PREV           },
   { "sidebar-prev-new",       OP_SIDEBAR_PREV_NEW       },
-  { "sidebar-abort-search",   OP_SIDEBAR_ABORT_SEARCH   },
   { "sidebar-start-search",   OP_SIDEBAR_START_SEARCH   },
   { "sidebar-toggle-virtual", OP_SIDEBAR_TOGGLE_VIRTUAL },
   { "sidebar-toggle-visible", OP_SIDEBAR_TOGGLE_VISIBLE },
@@ -234,7 +232,7 @@ static struct SbEntry **sb_prev_new(struct SidebarWindowData *wdata, size_t begi
 /**
  * op_sidebar_first - Selects the first unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
-static int op_sidebar_first(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
+int op_sidebar_first(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
 {
   struct SidebarWindowData *wdata = fdata->wdata;
   if (!mutt_window_is_visible(wdata->win))
@@ -260,7 +258,7 @@ static int op_sidebar_first(struct SidebarFunctionData *fdata, const struct KeyE
 /**
  * op_sidebar_last - Selects the last unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
-static int op_sidebar_last(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
+int op_sidebar_last(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
 {
   struct SidebarWindowData *wdata = fdata->wdata;
   if (!mutt_window_is_visible(wdata->win))
@@ -285,7 +283,7 @@ static int op_sidebar_last(struct SidebarFunctionData *fdata, const struct KeyEv
 /**
  * op_sidebar_next - Selects the next unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
-static int op_sidebar_next(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
+int op_sidebar_next(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
 {
   struct SidebarWindowData *wdata = fdata->wdata;
   if (!mutt_window_is_visible(wdata->win))
@@ -356,7 +354,7 @@ static int op_sidebar_next_new(struct SidebarFunctionData *fdata, const struct K
 /**
  * op_sidebar_open - Open highlighted mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
-static int op_sidebar_open(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
+int op_sidebar_open(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
 {
   struct SidebarWindowData *wdata = fdata->wdata;
   struct MuttWindow *win_sidebar = wdata->win;
@@ -371,7 +369,7 @@ static int op_sidebar_open(struct SidebarFunctionData *fdata, const struct KeyEv
 /**
  * op_sidebar_page_down - Selects the first entry in the next page of mailboxes - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
-static int op_sidebar_page_down(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
+int op_sidebar_page_down(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
 {
   struct SidebarWindowData *wdata = fdata->wdata;
   if (!mutt_window_is_visible(wdata->win))
@@ -402,7 +400,7 @@ static int op_sidebar_page_down(struct SidebarFunctionData *fdata, const struct 
 /**
  * op_sidebar_page_up - Selects the last entry in the previous page of mailboxes - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
-static int op_sidebar_page_up(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
+int op_sidebar_page_up(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
 {
   struct SidebarWindowData *wdata = fdata->wdata;
   if (!mutt_window_is_visible(wdata->win))
@@ -433,7 +431,7 @@ static int op_sidebar_page_up(struct SidebarFunctionData *fdata, const struct Ke
 /**
  * op_sidebar_prev - Selects the previous unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
-static int op_sidebar_prev(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
+int op_sidebar_prev(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
 {
   struct SidebarWindowData *wdata = fdata->wdata;
   if (!mutt_window_is_visible(wdata->win))
@@ -522,168 +520,6 @@ static int op_sidebar_toggle_virtual(struct SidebarFunctionData *fdata,
   return FR_SUCCESS;
 }
 
-/**
- * sidebar_matcher_cb - React to keys as they are entered - Implements ::get_field_callback_t
- */
-static void sidebar_matcher_cb(const char *text, void *data)
-{
-  struct MuttWindow *win = data;
-  struct SidebarWindowData *wdata = win->wdata;
-  wdata->hil_index = -1;
-  wdata->repage = true;
-
-  struct SbEntry **sbep = NULL;
-
-  if (text[0] == '\0')
-  {
-    ARRAY_FOREACH(sbep, &wdata->entries)
-    {
-      struct SbEntry *sbe = *sbep;
-      sbe->mailbox->visible = true;
-      sbe->score = -1;
-      if (wdata->hil_index == -1)
-        wdata->hil_index = ARRAY_FOREACH_IDX_sbep;
-    }
-    wdata->win->actions |= WA_RECALC;
-    return;
-  }
-
-  struct FuzzyOptions opts = { .smart_case = true };
-  struct FuzzyResult result = { 0 };
-  int best_score = -1;
-  int best_index = -1;
-  struct Buffer *buf = buf_pool_get();
-
-  ARRAY_FOREACH(sbep, &wdata->entries)
-  {
-    struct SbEntry *sbe = *sbep;
-    buf_printf(buf, "%s %s", sbe->box, sbe->display);
-    int score = fuzzy_match(text, buf_string(buf), FUZZY_ALGO_SUBSEQ, &opts, &result);
-    if (score > 0)
-    {
-      // Extra 2 points for new (unseen) mail
-      //       1 point  for old (seen)   mail
-      score += (2 * sbe->mailbox->msg_new);
-      score += (sbe->mailbox->msg_unread - sbe->mailbox->msg_new);
-    }
-    sbe->score = score;
-    if (score >= 0)
-    {
-      if ((best_score == -1) || (score > best_score))
-      {
-        best_score = score;
-        best_index = ARRAY_FOREACH_IDX_sbep;
-      }
-      sbe->mailbox->visible = true;
-    }
-    else
-    {
-      sbe->mailbox->visible = false;
-    }
-  }
-
-  if (best_index != -1)
-    wdata->hil_index = best_index;
-
-  wdata->win->actions |= WA_RECALC;
-  buf_pool_release(&buf);
-}
-
-/**
- * op_sidebar_abort_search - Close the Sidebar Search - Implements ::sidebar_function_t - @ingroup sidebar_function_api
- *
- * Close the Sidebar Search without a selection.
- */
-static int op_sidebar_abort_search(struct SidebarFunctionData *fdata,
-                                   const struct KeyEvent *event)
-{
-  struct SidebarWindowData *wdata = fdata->wdata;
-  if (wdata->search_active)
-    return FR_DONE;
-  else
-    return FR_NO_ACTION;
-}
-
-/**
- * op_sidebar_start_search - Selects the last unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
- */
-static int op_sidebar_start_search(struct SidebarFunctionData *fdata,
-                                   const struct KeyEvent *event)
-{
-  struct SidebarWindowData *wdata = fdata->wdata;
-  if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
-  {
-    mutt_warning(_("There are no mailboxes"));
-    return FR_ERROR;
-  }
-
-  const bool was_visible = cs_subset_bool(fdata->n->sub, "sidebar_visible");
-  if (!was_visible)
-  {
-    cs_subset_str_native_set(fdata->n->sub, "sidebar_visible", true, NULL);
-    mutt_window_reflow(NULL);
-  }
-
-  struct Buffer *buf = buf_pool_get();
-  int orghlidx = wdata->hil_index;
-
-  struct SbEntry **sbep = NULL;
-  ARRAY_FOREACH(sbep, &wdata->entries)
-  {
-    struct SbEntry *sbe = *sbep;
-    if (sbe->box[0] == '\0')
-      sb_entry_set_display_name(sbe);
-  }
-
-  int rc = FR_NO_ACTION;
-  wdata->search_active = true;
-
-  if (mw_get_field_notify(_("Sidebar search: "), buf, MUTT_COMP_UNBUFFERED,
-                          HC_NONE, NULL, NULL, sidebar_matcher_cb, wdata->win,
-                          fdata->mod_data->md_sidebar, sb_function_dispatcher) != 0)
-  {
-    wdata->hil_index = orghlidx;
-    goto done;
-  }
-
-  if (!buf || buf_is_empty(buf) || (wdata->hil_index == -1))
-  {
-    wdata->hil_index = orghlidx;
-    goto done;
-  }
-
-  ARRAY_FOREACH(sbep, &wdata->entries)
-  {
-    struct SbEntry *sbe = *sbep;
-    sbe->score = -1;
-  }
-  rc = FR_SUCCESS;
-
-done:
-  ARRAY_FOREACH(sbep, &wdata->entries)
-  {
-    (*sbep)->mailbox->visible = true;
-  }
-  wdata->search_active = false;
-  wdata->repage = false;
-  wdata->win->actions |= WA_RECALC;
-
-  if (rc == FR_SUCCESS)
-  {
-    struct MuttWindow *dlg = dialog_find(wdata->win);
-    index_change_folder(dlg, sb_get_highlight(wdata->win));
-  }
-
-  if (!was_visible)
-  {
-    cs_subset_str_native_set(fdata->n->sub, "sidebar_visible", false, NULL);
-    mutt_window_reflow(NULL);
-  }
-
-  buf_pool_release(&buf);
-  return rc;
-}
-
 // -----------------------------------------------------------------------------
 
 /**
@@ -700,10 +536,9 @@ static const struct SidebarFunction SidebarFunctions[] = {
   { OP_SIDEBAR_PAGE_UP,        op_sidebar_page_up },
   { OP_SIDEBAR_PREV,           op_sidebar_prev },
   { OP_SIDEBAR_PREV_NEW,       op_sidebar_prev_new },
+  { OP_SIDEBAR_START_SEARCH,   op_sidebar_start_search },
   { OP_SIDEBAR_TOGGLE_VIRTUAL, op_sidebar_toggle_virtual },
   { OP_SIDEBAR_TOGGLE_VISIBLE, op_sidebar_toggle_visible },
-  { OP_SIDEBAR_ABORT_SEARCH,   op_sidebar_abort_search },
-  { OP_SIDEBAR_START_SEARCH,   op_sidebar_start_search },
   { 0, NULL },
   // clang-format on
 };

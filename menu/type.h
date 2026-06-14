@@ -40,6 +40,7 @@ enum MenuType
   MENU_COMPOSE,          ///< Compose an email
   MENU_DIALOG,           ///< Simple Dialog
   MENU_EDITOR,           ///< Text entry area
+  MENU_FUZZY,            ///< Fuzzy searcher
   MENU_GENERIC,          ///< Generic selection list
   MENU_INDEX,            ///< Index panel (list of emails)
   MENU_LIST,             ///< Mailing-list actions

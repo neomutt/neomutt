@@ -25,7 +25,7 @@
 
 #include "get.h"
 #include "keymap.h"
-#include "menu.h"
+#include "menudef.h"
 
 /**
  * struct KeyModuleData - Key private Module data

@@ -26,7 +26,9 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "get.h"
-#include "keymap.h"
+
+struct MenuDefinition;
+struct SubMenu;
 
 /**
  * struct MenuFuncOp - Mapping between a function and an operation
@@ -57,29 +59,6 @@ struct MenuFunctionOp
   int         op;         ///< Operation, e.g. OP_DELETE
 };
 ARRAY_HEAD(MenuFunctionOpArray, struct MenuFunctionOp);
-
-/**
- * struct SubMenu - Collection of related functions
- */
-struct SubMenu
-{
-  struct MenuDefinition   *parent;      ///< Primary parent
-  const struct MenuFuncOp *functions;   ///< All available functions
-  struct KeymapList        keymaps;     ///< All keybindings
-};
-ARRAY_HEAD(SubMenuArray,  struct SubMenu);
-ARRAY_HEAD(SubMenuPArray, struct SubMenu *);
-
-/**
- * struct MenuDefinition - Functions for a Dialog or Window
- */
-struct MenuDefinition
-{
-  int                   id;         ///< Menu ID, e.g. #MENU_ALIAS
-  const char           *name;       ///< Menu name, e.g. "alias"
-  struct SubMenuPArray  submenus;   ///< Parts making up the Menu
-};
-ARRAY_HEAD(MenuDefinitionArray, struct MenuDefinition *);
 
 /**
  * @defgroup init_keys_api Initialise Key Bindings

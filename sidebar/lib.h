@@ -25,18 +25,18 @@
  *
  * Display the mailboxes in a side panel
  *
- * | File                | Description                |
- * | :------------------ | :------------------------- |
- * | sidebar/commands.c  | @subpage sidebar_commands  |
- * | sidebar/config.c    | @subpage sidebar_config    |
- * | sidebar/expando.c   | @subpage sidebar_expando   |
- * | sidebar/functions.c | @subpage sidebar_functions |
- * | sidebar/module.c    | @subpage sidebar_module    |
- * | sidebar/observer.c  | @subpage sidebar_observers |
- * | sidebar/sidebar.c   | @subpage sidebar_sidebar   |
- * | sidebar/sort.c      | @subpage sidebar_sort      |
- * | sidebar/wdata.c     | @subpage sidebar_wdata     |
- * | sidebar/window.c    | @subpage sidebar_window    |
+ * | File                         | Description                         |
+ * | :--------------------------- | :---------------------------------- |
+ * | sidebar/commands.c           | @subpage sidebar_commands           |
+ * | sidebar/config.c             | @subpage sidebar_config             |
+ * | sidebar/expando.c            | @subpage sidebar_expando            |
+ * | sidebar/functions_sidebar.c  | @subpage sidebar_functions_sidebar  |
+ * | sidebar/module.c             | @subpage sidebar_module             |
+ * | sidebar/observer.c           | @subpage sidebar_observers          |
+ * | sidebar/sidebar.c            | @subpage sidebar_sidebar            |
+ * | sidebar/sort.c               | @subpage sidebar_sort               |
+ * | sidebar/wdata.c              | @subpage sidebar_wdata              |
+ * | sidebar/window.c             | @subpage sidebar_window             |
  */
 
 #ifndef MUTT_SIDEBAR_LIB_H
