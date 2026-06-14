@@ -192,14 +192,9 @@ static int op_delete(struct PostponeData *pd, const struct KeyEvent *event)
     if (new_index >= (menu->top + menu->page_len))
     {
       menu->top = new_index;
-      menu_queue_redraw(menu, MENU_REDRAW_INDEX);
     }
   }
-  else
-  {
-    menu_queue_redraw(menu, (menu->tag_prefix || (num > 1)) ? MENU_REDRAW_INDEX :
-                                                              MENU_REDRAW_CURRENT);
-  }
+  menu_queue_redraw(menu, MENU_REDRAW_FULL);
 
   return FR_SUCCESS;
 }
