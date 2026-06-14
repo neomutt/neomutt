@@ -923,9 +923,9 @@ $(PWD)/send:
 # libsidebar
 LIBSIDEBAR=	libsidebar.a
 LIBSIDEBAROBJS=	sidebar/commands.o sidebar/config.o sidebar/expando.o \
-		sidebar/functions_sidebar.o sidebar/observer.o \
-		sidebar/sidebar.o sidebar/sort.o sidebar/wdata.o \
-		sidebar/window.o sidebar/module.o
+		sidebar/functions_fuzzy.o sidebar/functions_sidebar.o \
+		sidebar/observer.o sidebar/sidebar.o sidebar/sort.o \
+		sidebar/wdata.o sidebar/window.o sidebar/module.o
 CLEANFILES+=	$(LIBSIDEBAR) $(LIBSIDEBAROBJS)
 ALLOBJS+=	$(LIBSIDEBAROBJS)
 

@@ -617,8 +617,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_SIDEBAR_TOGGLE_VIRTUAL,             N_("Toggle between mailboxes and virtual mailboxes")) \
   /* L10N: Help for Sidebar function: <sidebar-toggle-visible> */ \
   _fmt(OP_SIDEBAR_TOGGLE_VISIBLE,             N_("Make the sidebar (in)visible")) \
-  /* L10N: Help for Sidebar function: <sidebar-abort-search> */ \
-  _fmt(OP_SIDEBAR_ABORT_SEARCH,               N_("Close the sidebar search")) \
   /* L10N: Help for Sidebar function: <sidebar-start-search> */ \
   _fmt(OP_SIDEBAR_START_SEARCH,               N_("Fuzzy search the sidebar")) \
 
