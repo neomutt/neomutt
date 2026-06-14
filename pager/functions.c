@@ -867,6 +867,27 @@ static int op_exit(struct PagerFunctionData *fdata, const struct KeyEvent *event
 }
 
 /**
+ * op_quit - Save changes to mailbox and quit - Implements ::pager_function_t - @ingroup pager_function_api
+ *
+ * Close the Pager and ask the Index to quit NeoMutt.  The Index will save any
+ * changes to the Mailbox and close it.
+ */
+static int op_quit(struct PagerFunctionData *fdata, const struct KeyEvent *event)
+{
+  struct PagerPrivateData *priv = fdata->priv;
+  if (priv->pview->mode != PAGER_MODE_EMAIL)
+    return FR_UNKNOWN;
+
+  priv->rc = -1;
+  priv->loop = PAGER_LOOP_QUIT;
+
+  // Close the Pager, then let the Index handle the quit
+  mutt_push_macro_event(0, OP_QUIT);
+
+  return FR_DONE;
+}
+
+/**
  * op_help - Help screen - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_help(struct PagerFunctionData *fdata, const struct KeyEvent *event)
@@ -1007,6 +1028,7 @@ static const struct PagerFunction PagerFunctions[] = {
   { OP_PAGER_SKIP_QUOTED,      op_pager_skip_quoted },
   { OP_PREV_LINE,              op_pager_prev_line },
   { OP_PREV_PAGE,              op_pager_prev_page },
+  { OP_QUIT,                   op_quit },
   { OP_SAVE,                   op_save },
   { OP_SEARCH,                 op_pager_search },
   { OP_SEARCH_NEXT,            op_pager_search_next },
