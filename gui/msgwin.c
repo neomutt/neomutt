@@ -471,9 +471,11 @@ void msgwin_add_text_n(struct MuttWindow *win, const char *text, int bytes,
 
   if (text)
   {
-    const char *dptr = wdata->text->dptr;
+    // Track the length of the text so far
+    const size_t len = buf_len(wdata->text);
     buf_addstr_n(wdata->text, text, bytes);
-    measure(&wdata->chars, dptr, ac_color);
+    // and only measure the newly added text
+    measure(&wdata->chars, wdata->text->data + len, ac_color);
     mutt_debug(LL_DEBUG5, "MW ADD: %zu, %s\n", buf_len(wdata->text),
                buf_string(wdata->text));
   }
