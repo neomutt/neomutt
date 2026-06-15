@@ -2027,57 +2027,6 @@ done:
 }
 
 /**
- * nm_get_all_tags - Fill a list with all notmuch tags
- * @param[in]  m         Mailbox
- * @param[out] tag_list  List of tags
- * @param[out] tag_count Number of tags
- * @retval  0 Success
- * @retval -1 Failure
- *
- * If tag_list is NULL, just count the tags.
- */
-int nm_get_all_tags(struct Mailbox *m, const char **tag_list, int *tag_count)
-{
-  struct NmMboxData *mdata = nm_mdata_get(m);
-  if (!mdata || !tag_count)
-    return -1;
-
-  notmuch_database_t *db = NULL;
-  notmuch_tags_t *tags = NULL;
-  const char *tag = NULL;
-  int rc = -1;
-
-  if (!(db = nm_db_get(m, false)) || !(tags = notmuch_database_get_all_tags(db)))
-    goto done;
-
-  *tag_count = 0;
-  mutt_debug(LL_DEBUG1, "nm: get all tags\n");
-
-  while (notmuch_tags_valid(tags))
-  {
-    tag = notmuch_tags_get(tags);
-    /* Skip empty string */
-    if (*tag)
-    {
-      if (tag_list)
-        tag_list[*tag_count] = mutt_str_dup(tag);
-      (*tag_count)++;
-    }
-    notmuch_tags_move_to_next(tags);
-  }
-
-  rc = 0;
-done:
-  if (tags)
-    notmuch_tags_destroy(tags);
-
-  nm_db_release(m);
-
-  mutt_debug(LL_DEBUG1, "nm: get all tags done [rc=%d tag_count=%u]\n", rc, *tag_count);
-  return rc;
-}
-
-/**
  * nm_ac_owns_path - Check whether an Account owns a Mailbox path - Implements MxOps::ac_owns_path() - @ingroup mx_ac_owns_path
  */
 static bool nm_ac_owns_path(struct Account *a, const char *path)
