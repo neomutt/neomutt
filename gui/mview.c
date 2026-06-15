@@ -236,7 +236,9 @@ static void update_tables(struct MailboxView *mv)
 
   struct Mailbox *m = mv->mailbox;
 
-  int i, j, padding;
+  int i;
+  int j;
+  int padding;
 
   /* update memory to reflect the new state of the mailbox */
   m->vcount = 0;

@@ -321,7 +321,8 @@ int mutt_addwch(struct MuttWindow *win, wchar_t wc)
 {
   char buf[MB_LEN_MAX * 2] = { 0 };
   mbstate_t mbstate = { 0 };
-  size_t n1, n2;
+  size_t n1;
+  size_t n2;
 
   if (((n1 = wcrtomb(buf, wc, &mbstate)) == ICONV_ILLEGAL_SEQ) ||
       ((n2 = wcrtomb(buf + n1, 0, &mbstate)) == ICONV_ILLEGAL_SEQ))
@@ -385,7 +386,10 @@ void mutt_paddstr(struct MuttWindow *win, int n, const char *s)
 size_t mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *width)
 {
   wchar_t wc = 0;
-  size_t n, w = 0, l = 0, cl;
+  size_t n;
+  size_t w = 0;
+  size_t l = 0;
+  size_t cl;
   int cw;
   mbstate_t mbstate = { 0 };
 

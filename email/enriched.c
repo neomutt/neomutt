@@ -384,7 +384,8 @@ static void enriched_set_flags(const wchar_t *tag, struct EnrichedState *enriche
     return;
 
   const wchar_t *tagptr = tag;
-  int i, j;
+  int i;
+  int j;
 
   if (*tagptr == (wchar_t) '/')
     tagptr++;

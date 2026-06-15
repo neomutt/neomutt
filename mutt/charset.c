@@ -581,7 +581,8 @@ iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, uint8_t fla
 {
   char tocode1[128] = { 0 };
   char fromcode1[128] = { 0 };
-  const char *tocode2 = NULL, *fromcode2 = NULL;
+  const char *tocode2 = NULL;
+  const char *fromcode2 = NULL;
   const char *tmp = NULL;
 
   /* transform to MIME preferred charset names */
@@ -1097,8 +1098,10 @@ char *mutt_ch_choose(const char *fromcode, const struct Slist *charsets,
   if (!fromcode || !charsets)
     return NULL;
 
-  char *e = NULL, *tocode = NULL;
-  size_t elen = 0, bestn = 0;
+  char *e = NULL;
+  char *tocode = NULL;
+  size_t elen = 0;
+  size_t bestn = 0;
 
   const struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &charsets->head, entries)

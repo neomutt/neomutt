@@ -128,7 +128,8 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *st
   char bufo[BUFO_SIZE] = { 0 };
   const char *ib = NULL;
   char *ob = NULL;
-  size_t ibl = 0, obl = 0;
+  size_t ibl = 0;
+  size_t obl = 0;
 
   if (!bufi)
   {
@@ -245,7 +246,8 @@ static int qp_decode_triple(char *s, char *d)
  */
 static void qp_decode_line(char *dest, char *src, size_t *l, int last)
 {
-  char *d = NULL, *s = NULL;
+  char *d = NULL;
+  char *s = NULL;
   char c = 0;
 
   int kind = -1;
@@ -1253,7 +1255,8 @@ static int multilingual_handler(struct Body *b_email, struct State *state)
  */
 static int multipart_handler(struct Body *b_email, struct State *state)
 {
-  struct Body *b = NULL, *p = NULL;
+  struct Body *b = NULL;
+  struct Body *p = NULL;
   int count;
   int rc = 0;
 
@@ -1565,7 +1568,8 @@ static int malformed_pgp_encrypted_handler(struct Body *b_email, struct State *s
 void mutt_decode_base64(struct State *state, size_t len, bool istext, iconv_t cd)
 {
   char buf[5] = { 0 };
-  int ch, i;
+  int ch;
+  int i;
   bool cr = false;
   char bufi[BUFI_SIZE] = { 0 };
   size_t l = 0;

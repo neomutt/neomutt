@@ -65,7 +65,8 @@ struct Rfc2231Parameter
  */
 static void purge_empty_parameters(struct ParameterList *pl)
 {
-  struct Parameter *np = NULL, *tmp = NULL;
+  struct Parameter *np = NULL;
+  struct Parameter *tmp = NULL;
   TAILQ_FOREACH_SAFE(np, pl, entries, tmp)
   {
     if (!np->attribute || !np->value)
@@ -246,7 +247,8 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
   struct Rfc2231Parameter *conthead = NULL;
   struct Rfc2231Parameter *conttmp = NULL;
 
-  char *s = NULL, *t = NULL;
+  char *s = NULL;
+  char *t = NULL;
   char charset[256] = { 0 };
 
   bool encoded;
@@ -255,7 +257,8 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
 
   purge_empty_parameters(pl);
 
-  struct Parameter *np = NULL, *tmp = NULL;
+  struct Parameter *np = NULL;
+  struct Parameter *tmp = NULL;
   const bool c_rfc2047_parameters = cs_subset_bool(NeoMutt->sub, "rfc2047_parameters");
   const struct Slist *c_assumed_charset = cc_assumed_charset();
   const char *c_charset = cc_charset();
@@ -362,8 +365,12 @@ size_t rfc2231_encode_string(struct ParameterList *head, const char *attribute, 
   bool free_src_value = false;
   bool split = false;
   int continuation_number = 0;
-  size_t dest_value_len = 0, max_value_len = 0, cur_value_len = 0;
-  char *cur = NULL, *charset = NULL, *src_value = NULL;
+  size_t dest_value_len = 0;
+  size_t max_value_len = 0;
+  size_t cur_value_len = 0;
+  char *cur = NULL;
+  char *charset = NULL;
+  char *src_value = NULL;
   struct Parameter *current = NULL;
 
   struct Buffer *cur_attribute = buf_pool_get();

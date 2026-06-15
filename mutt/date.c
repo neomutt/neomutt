@@ -760,7 +760,9 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
     tm.tm_year -= 1900;
 
   /* Time */
-  int hour = 0, min = 0, sec = 0;
+  int hour = 0;
+  int min = 0;
+  int sec = 0;
   sscanf(s + mutt_regmatch_start(mhour), "%d", &hour);
   sscanf(s + mutt_regmatch_start(mminute), "%d", &min);
   if (mutt_regmatch_start(msecond) != -1)
@@ -873,7 +875,8 @@ time_t mutt_date_parse_imap(const char *s)
   sscanf(s + mutt_regmatch_start(mtime), "%d:%d:%d", &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
 
   char direction = '\0';
-  int zhours = 0, zminutes = 0;
+  int zhours = 0;
+  int zminutes = 0;
   sscanf(s + mutt_regmatch_start(mtz), "%c%02d%02d", &direction, &zhours, &zminutes);
   bool zoccident = (direction == '-');
 

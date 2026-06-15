@@ -125,7 +125,8 @@ void mutt_list_free(struct ListHead *h)
   if (!h)
     return;
 
-  struct ListNode *np = NULL, *tmp = NULL;
+  struct ListNode *np = NULL;
+  struct ListNode *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, h, entries, tmp)
   {
     STAILQ_REMOVE(h, np, ListNode, entries);
@@ -146,7 +147,8 @@ void mutt_list_free_type(struct ListHead *h, list_free_t fn)
   if (!h || !fn)
     return;
 
-  struct ListNode *np = NULL, *tmp = NULL;
+  struct ListNode *np = NULL;
+  struct ListNode *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, h, entries, tmp)
   {
     STAILQ_REMOVE(h, np, ListNode, entries);
@@ -168,7 +170,8 @@ void mutt_list_clear(struct ListHead *h)
   if (!h)
     return;
 
-  struct ListNode *np = NULL, *tmp = NULL;
+  struct ListNode *np = NULL;
+  struct ListNode *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, h, entries, tmp)
   {
     STAILQ_REMOVE(h, np, ListNode, entries);
@@ -346,7 +349,8 @@ void remove_from_stailq(struct ListHead *head, const char *str)
   }
   else
   {
-    struct ListNode *np = NULL, *tmp = NULL;
+    struct ListNode *np = NULL;
+    struct ListNode *tmp = NULL;
     STAILQ_FOREACH_SAFE(np, head, entries, tmp)
     {
       if (mutt_istr_equal(str, np->data))

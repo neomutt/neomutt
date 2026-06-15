@@ -104,7 +104,8 @@ bool pgp_cansign(unsigned char type)
  */
 static void pgp_uid_free(struct PgpUid **upp)
 {
-  struct PgpUid *up = NULL, *q = NULL;
+  struct PgpUid *up = NULL;
+  struct PgpUid *q = NULL;
 
   if (!upp || !*upp)
     return;
@@ -172,7 +173,9 @@ struct PgpKeyInfo *pgp_remove_key(struct PgpKeyInfo **klist, struct PgpKeyInfo *
     return NULL;
 
   struct PgpKeyInfo **last = NULL;
-  struct PgpKeyInfo *p = NULL, *q = NULL, *r = NULL;
+  struct PgpKeyInfo *p = NULL;
+  struct PgpKeyInfo *q = NULL;
+  struct PgpKeyInfo *r = NULL;
 
   if (key->parent && (key->parent != key))
     key = key->parent;
@@ -203,7 +206,9 @@ void pgp_key_free(struct PgpKeyInfo **kpp)
   if (!kpp || !*kpp)
     return;
 
-  struct PgpKeyInfo *p = NULL, *q = NULL, *r = NULL;
+  struct PgpKeyInfo *p = NULL;
+  struct PgpKeyInfo *q = NULL;
+  struct PgpKeyInfo *r = NULL;
 
   if ((*kpp)->parent && ((*kpp)->parent != *kpp))
     *kpp = (*kpp)->parent;

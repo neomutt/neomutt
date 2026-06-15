@@ -202,8 +202,12 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
   char buf[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1] = { 0 };
   const char *ib = NULL;
   char *ob = NULL;
-  size_t ibl = 0, obl = 0;
-  int count, len, len_b, len_q;
+  size_t ibl = 0;
+  size_t obl = 0;
+  int count;
+  int len;
+  int len_b;
+  int len_q;
 
   if (fromcode)
   {
@@ -436,10 +440,16 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
 {
   int rc = 0;
   char *buf = NULL;
-  size_t bufpos, buflen;
-  char *t0 = NULL, *t1 = NULL, *t = NULL;
-  char *s0 = NULL, *s1 = NULL;
-  size_t ulen, r, wlen = 0;
+  size_t bufpos;
+  size_t buflen;
+  char *t0 = NULL;
+  char *t1 = NULL;
+  char *t = NULL;
+  char *s0 = NULL;
+  char *s1 = NULL;
+  size_t ulen;
+  size_t r;
+  size_t wlen = 0;
   encoder_t encoder = NULL;
   char *tocode1 = NULL;
   const char *tocode = NULL;

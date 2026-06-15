@@ -333,7 +333,9 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     else
     {
       bool cont = false;
-      size_t buflen = 2048, off = 0, b = 0;
+      size_t buflen = 2048;
+      size_t off = 0;
+      size_t b = 0;
 
       FREE(&adata->overview_fmt);
       adata->overview_fmt = MUTT_MEM_MALLOC(buflen, char);
@@ -452,7 +454,9 @@ static int nntp_auth(struct NntpAccountData *adata)
 {
   struct Connection *conn = adata->conn;
   char authenticators[1024] = "USER";
-  char *method = NULL, *a = NULL, *p = NULL;
+  char *method = NULL;
+  char *a = NULL;
+  char *p = NULL;
   unsigned char flags = conn->account.flags;
   struct Buffer *buf = buf_pool_get();
 
@@ -1056,7 +1060,8 @@ static int parse_overview_line(char *line, void *data)
 
   struct NntpMboxData *mdata = m->mdata;
   struct Email *e = NULL;
-  char *header = NULL, *field = NULL;
+  char *header = NULL;
+  char *field = NULL;
   bool save = true;
   anum_t anum = 0;
 
@@ -1440,7 +1445,9 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
 static int nntp_group_poll(struct NntpMboxData *mdata, bool update_stat)
 {
   char buf[1024] = { 0 };
-  anum_t count = 0, first = 0, last = 0;
+  anum_t count = 0;
+  anum_t first = 0;
+  anum_t last = 0;
 
   /* use GROUP command to poll newsgroup */
   if (nntp_query(mdata, buf, sizeof(buf)) < 0)
@@ -2109,7 +2116,8 @@ int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
   char buf[1024] = { 0 };
   char *msg = _("Checking for new newsgroups...");
   unsigned int i;
-  int rc, update_active = false;
+  int rc;
+  int update_active = false;
 
   if (!adata || !adata->newgroups_time)
     return -1;
@@ -2391,7 +2399,9 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
   char *group = NULL;
   int rc;
   struct HeaderCache *hc = NULL;
-  anum_t first = 0, last = 0, count = 0;
+  anum_t first = 0;
+  anum_t last = 0;
+  anum_t count = 0;
 
   struct Url *url = url_parse(mailbox_path(m));
   if (!url || !url->host || !url->path ||

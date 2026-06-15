@@ -568,7 +568,9 @@ bool mailcap_lookup(struct Body *b, char *type, size_t typelen,
 void mailcap_expand_filename(const char *nametemplate, const char *oldfile,
                              struct Buffer *newfile)
 {
-  int i, j, k;
+  int i;
+  int j;
+  int k;
   const char *s = NULL;
   bool lmatch = false, rmatch = false;
 

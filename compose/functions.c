@@ -308,7 +308,8 @@ static int check_attachments(struct AttachCtx *actx, struct ConfigSubset *sub)
 {
   int rc = -1;
   struct stat st = { 0 };
-  struct Buffer *pretty = NULL, *msg = NULL;
+  struct Buffer *pretty = NULL;
+  struct Buffer *msg = NULL;
 
   for (int i = 0; i < actx->idxlen; i++)
   {

@@ -155,7 +155,8 @@ bool crypt_valid_passphrase(SecurityFlags flags)
  */
 int mutt_protect(struct Email *e, char *keylist, bool postpone)
 {
-  struct Body *pbody = NULL, *tmp_pbody = NULL;
+  struct Body *pbody = NULL;
+  struct Body *tmp_pbody = NULL;
   struct Body *tmp_smime_pbody = NULL;
   struct Body *tmp_pgp_pbody = NULL;
   bool has_retainable_sig = false;
@@ -1395,8 +1396,12 @@ int mutt_signed_handler(struct Body *b_email, struct State *state)
 const char *crypt_get_fingerprint_or_id(const char *p, const char **pphint,
                                         const char **ppl, const char **pps)
 {
-  const char *ps = NULL, *pl = NULL, *phint = NULL;
-  char *pfcopy = NULL, *s1 = NULL, *s2 = NULL;
+  const char *ps = NULL;
+  const char *pl = NULL;
+  const char *phint = NULL;
+  char *pfcopy = NULL;
+  char *s1 = NULL;
+  char *s2 = NULL;
   char c;
   int isid;
   size_t hexdigits;

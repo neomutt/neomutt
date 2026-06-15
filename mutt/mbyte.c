@@ -427,7 +427,8 @@ int mutt_mb_filter_unprintable(char **s)
     return -1;
 
   wchar_t wc = 0;
-  size_t k, k2;
+  size_t k;
+  size_t k2;
   char scratch[MB_LEN_MAX + 1] = { 0 };
   char *p = *s;
   mbstate_t mbstate1 = { 0 };

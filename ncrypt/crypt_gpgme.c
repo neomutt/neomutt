@@ -430,7 +430,8 @@ static gpgme_data_t body_to_data_object(struct Body *b, bool convert)
 
   if (convert)
   {
-    int c, hadcr = 0;
+    int c;
+    int hadcr = 0;
     unsigned char buf[1] = { 0 };
 
     data = create_gpgme_data();
@@ -915,7 +916,8 @@ static struct Body *sign_message(struct Body *b, const struct AddressList *from,
   gpgme_error_t err = GPG_ERR_NO_ERROR;
   char buf[100] = { 0 };
   gpgme_ctx_t ctx = NULL;
-  gpgme_data_t message = NULL, signature = NULL;
+  gpgme_data_t message = NULL;
+  gpgme_data_t signature = NULL;
   gpgme_sign_result_t sigres = NULL;
 
   crypt_convert_to_7bit(b); /* Signed data _must_ be in 7-bit format. */
@@ -1201,7 +1203,8 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
 
   if ((sum & GPGME_SIGSUM_SYS_ERROR))
   {
-    const char *t0 = NULL, *t1 = NULL;
+    const char *t0 = NULL;
+    const char *t1 = NULL;
     gpgme_verify_result_t result = NULL;
     gpgme_signature_t sig2 = NULL;
     unsigned int i;
@@ -1746,7 +1749,8 @@ static struct Body *decrypt_part(struct Body *b, struct State *state,
 
   struct Body *tattach = NULL;
   gpgme_error_t err = GPG_ERR_NO_ERROR;
-  gpgme_data_t ciphertext = NULL, plaintext = NULL;
+  gpgme_data_t ciphertext = NULL;
+  gpgme_data_t plaintext = NULL;
   gpgme_decrypt_result_t result = NULL;
   bool maybe_signed = false;
   bool anywarn = false;
@@ -1842,7 +1846,8 @@ restart:
 
   if (sig_stat)
   {
-    int res, idx;
+    int res;
+    int idx;
     int anybad = 0;
 
     if (r_is_signed)
@@ -2661,7 +2666,8 @@ int pgp_gpgme_application_handler(struct Body *b, struct State *state)
           maybe_goodsig = false;
           if ((state->flags & STATE_DISPLAY) && sig_stat)
           {
-            int res, idx;
+            int res;
+            int idx;
             bool anybad = false;
 
             state_attach_puts(state, _("[-- Begin signature information --]\n"));
@@ -3010,7 +3016,8 @@ unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
  */
 static char *list_to_pattern(struct ListHead *list)
 {
-  char *pattern = NULL, *p = NULL;
+  char *pattern = NULL;
+  char *p = NULL;
   const char *s = NULL;
   size_t n;
 
@@ -3077,7 +3084,9 @@ static char *list_to_pattern(struct ListHead *list)
  */
 static struct CryptKeyInfo *get_candidates(struct ListHead *hints, SecurityFlags app, int secret)
 {
-  struct CryptKeyInfo *db = NULL, *k = NULL, **kend = NULL;
+  struct CryptKeyInfo *db = NULL;
+  struct CryptKeyInfo *k = NULL;
+  struct CryptKeyInfo **kend = NULL;
   gpgme_error_t err = GPG_ERR_NO_ERROR;
   gpgme_ctx_t ctx = NULL;
   gpgme_key_t key = NULL;
@@ -3263,7 +3272,8 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
   int this_key_has_addr_match = false;
   int match = false;
 
-  struct CryptKeyInfo *keys = NULL, *k = NULL;
+  struct CryptKeyInfo *keys = NULL;
+  struct CryptKeyInfo *k = NULL;
   struct CryptKeyInfo *the_strong_valid_key = NULL;
   struct CryptKeyInfo *a_valid_addrmatch_key = NULL;
   struct CryptKeyInfo *matches = NULL;
@@ -3393,7 +3403,9 @@ static struct CryptKeyInfo *crypt_getkeybystr(const char *p, KeyFlags abilities,
   struct CryptKeyInfo *matches = NULL;
   struct CryptKeyInfo **matches_endp = &matches;
   struct CryptKeyInfo *k = NULL;
-  const char *ps = NULL, *pl = NULL, *phint = NULL;
+  const char *ps = NULL;
+  const char *pl = NULL;
+  const char *phint = NULL;
 
   mutt_message(_("Looking for keys matching \"%s\"..."), p);
 
@@ -3703,7 +3715,8 @@ int mutt_gpgme_select_secret_key(struct Buffer *keyid)
   gpgme_error_t err = GPG_ERR_NO_ERROR;
   gpgme_key_t key = NULL;
   gpgme_user_id_t uid = NULL;
-  struct CryptKeyInfo *results = NULL, *k = NULL;
+  struct CryptKeyInfo *results = NULL;
+  struct CryptKeyInfo *k = NULL;
   struct CryptKeyInfo **kend = NULL;
   struct CryptKeyInfo *choice = NULL;
 
@@ -4118,7 +4131,8 @@ static bool verify_sender(struct Email *e)
             /* length of mailbox part including '@' */
             int mailbox_length = at_sign - tmp_email + 1;
             int domainname_length = sender_length - mailbox_length;
-            int mailbox_match, domainname_match;
+            int mailbox_match;
+            int domainname_match;
 
             mailbox_match = mutt_strn_equal(tmp_email, tmp_sender, mailbox_length);
             tmp_email += mailbox_length;

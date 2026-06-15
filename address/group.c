@@ -117,7 +117,8 @@ static void group_add_addrlist(struct Group *g, const struct AddressList *al)
   struct AddressList al_new = TAILQ_HEAD_INITIALIZER(al_new);
   mutt_addrlist_copy(&al_new, al, false);
   mutt_addrlist_remove_xrefs(&g->al, &al_new);
-  struct Address *a = NULL, *tmp = NULL;
+  struct Address *a = NULL;
+  struct Address *tmp = NULL;
   TAILQ_FOREACH_SAFE(a, &al_new, entries, tmp)
   {
     TAILQ_REMOVE(&al_new, a, entries);

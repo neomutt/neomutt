@@ -354,7 +354,8 @@ static int pgp_check_pgp_decryption_okay_regex(FILE *fp_in)
 static int pgp_check_decryption_okay(FILE *fp_in)
 {
   int rc = -1;
-  char *line = NULL, *s = NULL;
+  char *line = NULL;
+  char *s = NULL;
   size_t linelen = 0;
   int inside_decrypt = 0;
 
@@ -477,9 +478,12 @@ int pgp_class_application_handler(struct Body *b, struct State *state)
   int rc = -1;
   int c = 1;
   long bytes;
-  LOFF_T last_pos, offset;
+  LOFF_T last_pos;
+  LOFF_T offset;
   char buf[8192] = { 0 };
-  FILE *fp_pgp_out = NULL, *fp_pgp_in = NULL, *fp_pgp_err = NULL;
+  FILE *fp_pgp_out = NULL;
+  FILE *fp_pgp_in = NULL;
+  FILE *fp_pgp_err = NULL;
   FILE *fp_tmp = NULL;
   pid_t pid;
   struct Buffer *tempfile = buf_pool_get();
@@ -1028,7 +1032,9 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *state,
 
   struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   char buf[1024] = { 0 };
-  FILE *fp_pgp_in = NULL, *fp_pgp_out = NULL, *fp_pgp_tmp = NULL;
+  FILE *fp_pgp_in = NULL;
+  FILE *fp_pgp_out = NULL;
+  FILE *fp_pgp_tmp = NULL;
   struct Body *tattach = NULL;
   pid_t pid;
   int rv;
@@ -1330,9 +1336,13 @@ int pgp_class_encrypted_handler(struct Body *b, struct State *state)
 struct Body *pgp_class_sign_message(struct Body *b, const struct AddressList *from)
 {
   struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
-  struct Body *b_enc = NULL, *rv = NULL;
+  struct Body *b_enc = NULL;
+  struct Body *rv = NULL;
   char buf[1024] = { 0 };
-  FILE *fp_pgp_in = NULL, *fp_pgp_out = NULL, *fp_pgp_err = NULL, *fp_signed = NULL;
+  FILE *fp_pgp_in = NULL;
+  FILE *fp_pgp_out = NULL;
+  FILE *fp_pgp_err = NULL;
+  FILE *fp_signed = NULL;
   bool err = false;
   bool empty = true;
   pid_t pid;
@@ -1595,7 +1605,8 @@ struct Body *pgp_class_encrypt_message(struct Body *b, char *keylist, bool sign,
 {
   struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   char buf[1024] = { 0 };
-  FILE *fp_pgp_in = NULL, *fp_tmp = NULL;
+  FILE *fp_pgp_in = NULL;
+  FILE *fp_tmp = NULL;
   struct Body *b_enc = NULL;
   bool err = false;
   bool empty = false;

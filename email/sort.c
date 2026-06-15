@@ -202,8 +202,10 @@ static int email_sort_unsorted(const struct Email *a, const struct Email *b, boo
  */
 static int email_sort_spam(const struct Email *a, const struct Email *b, bool reverse)
 {
-  char *aptr = NULL, *bptr = NULL;
-  int ahas, bhas;
+  char *aptr = NULL;
+  char *bptr = NULL;
+  int ahas;
+  int bhas;
   int result = 0;
   double difference;
 
@@ -251,7 +253,9 @@ static int email_sort_spam(const struct Email *a, const struct Email *b, bool re
  */
 static int email_sort_label(const struct Email *a, const struct Email *b, bool reverse)
 {
-  int ahas, bhas, result = 0;
+  int ahas;
+  int bhas;
+  int result = 0;
 
   /* As with email_sort_spam, not all messages will have the x-label
    * property.  Blank X-Labels are treated as null in the index

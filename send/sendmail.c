@@ -301,7 +301,10 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
                          struct AddressList *bcc, const char *msg,
                          bool eightbit, struct ConfigSubset *sub)
 {
-  char *ps = NULL, *path = NULL, *s = NULL, *childout = NULL;
+  char *ps = NULL;
+  char *path = NULL;
+  char *s = NULL;
+  char *childout = NULL;
   struct StringArray args = ARRAY_HEAD_INITIALIZER;
   struct StringArray extra_args = ARRAY_HEAD_INITIALIZER;
   int i;

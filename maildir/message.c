@@ -167,7 +167,8 @@ cleanup:
  */
 FILE *maildir_open_find_message(const char *folder, const char *msg, char **newname)
 {
-  static unsigned int new_hits = 0, cur_hits = 0; /* simple dynamic optimization */
+  static unsigned int new_hits = 0;
+  static unsigned int cur_hits = 0; /* simple dynamic optimization */
 
   struct Buffer *unique = buf_pool_get();
   maildir_canon_filename(unique, msg);

@@ -21,7 +21,8 @@ static void print_usage(const char *progname)
 
 int main(int argc, char **argv)
 {
-  char **opts = NULL, **opt = NULL;
+  char **opts = NULL;
+  char **opt = NULL;
   char *pfx = NULL;
 
   if (argc < 2)

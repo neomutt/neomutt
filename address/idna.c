@@ -117,7 +117,8 @@ int mutt_idna_to_ascii_lz(const char *input, char **output, uint8_t flags)
 char *mutt_idna_intl_to_local(const char *user, const char *domain, uint8_t flags)
 {
   char *mailbox = NULL;
-  char *reversed_user = NULL, *reversed_domain = NULL;
+  char *reversed_user = NULL;
+  char *reversed_domain = NULL;
   char *tmp = NULL;
 
   char *local_user = mutt_str_dup(user);

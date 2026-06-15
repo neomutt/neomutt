@@ -728,7 +728,8 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
   /* update the count for the status display */
   mod_data->post_count = m->msg_count - m->msg_deleted;
 
-  struct ListNode *np = NULL, *tmp = NULL;
+  struct ListNode *np = NULL;
+  struct ListNode *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, &hdr->env->userhdrs, entries, tmp)
   {
     size_t plen = 0;

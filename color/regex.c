@@ -175,7 +175,8 @@ void regex_color_list_clear(struct RegexColorList *rcl)
   if (!rcl)
     return;
 
-  struct RegexColor *np = NULL, *tmp = NULL;
+  struct RegexColor *np = NULL;
+  struct RegexColor *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, rcl, entries, tmp)
   {
     STAILQ_REMOVE(rcl, np, RegexColor, entries);
@@ -434,7 +435,8 @@ bool regex_colors_parse_uncolor(enum ColorId cid, const char *pat)
   }
 
   bool rc = false;
-  struct RegexColor *np = NULL, *prev = NULL;
+  struct RegexColor *np = NULL;
+  struct RegexColor *prev = NULL;
   prev = NULL;
   STAILQ_FOREACH(np, cl, entries)
   {

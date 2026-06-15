@@ -73,7 +73,8 @@ const struct CryptModuleSpecs *crypto_module_lookup(struct NcryptModuleData *mod
  */
 void crypto_module_cleanup(struct NcryptModuleData *mod_data)
 {
-  struct CryptModule *np = NULL, *tmp = NULL;
+  struct CryptModule *np = NULL;
+  struct CryptModule *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, &mod_data->crypt_modules, entries, tmp)
   {
     STAILQ_REMOVE(&mod_data->crypt_modules, np, CryptModule, entries);

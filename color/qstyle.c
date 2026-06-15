@@ -137,9 +137,13 @@ struct QuoteStyle *qstyle_classify(struct QuoteStyle **quote_list, const char *q
                                    size_t length, bool *force_redraw, int *q_level)
 {
   struct QuoteStyle *q_list = *quote_list;
-  struct QuoteStyle *qc = NULL, *tmp = NULL, *ptr = NULL, *save = NULL;
+  struct QuoteStyle *qc = NULL;
+  struct QuoteStyle *tmp = NULL;
+  struct QuoteStyle *ptr = NULL;
+  struct QuoteStyle *save = NULL;
   const char *tail_qptr = NULL;
-  size_t offset, tail_lng;
+  size_t offset;
+  size_t tail_lng;
   int index = -1;
 
   /* classify quoting prefix */

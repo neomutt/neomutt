@@ -137,7 +137,9 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value, size_t 
 
   const char *p = value;
   char buf[8192] = { 0 };
-  int first = 1, col = 0, l = 0;
+  int first = 1;
+  int col = 0;
+  int l = 0;
   const bool display = (chflags & CH_DISPLAY);
 
   mutt_debug(LL_DEBUG5, "pfx=[%s], tag=[%s], flags=%d value=[%.*s]\n", pfx, tag,
@@ -312,7 +314,8 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
              (short_enough ? "<=" : ">"), wraplen);
 
   int rc = 0;
-  const char *valbuf = NULL, *tagbuf = NULL;
+  const char *valbuf = NULL;
+  const char *tagbuf = NULL;
   const bool is_from = (vallen > 5) && mutt_istr_startswith(start, "from ");
 
   /* only pass through folding machinery if necessary for sending,
@@ -425,8 +428,11 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
                           const char *pfx, int wraplen, CopyHeaderFlags chflags,
                           struct ConfigSubset *sub)
 {
-  char *last = NULL, *line = NULL;
-  int max = 0, w, rc = -1;
+  char *last = NULL;
+  char *line = NULL;
+  int max = 0;
+  int w;
+  int rc = -1;
   int pfxw = mutt_strwidth(pfx);
   char *v = mutt_str_dup(value);
   bool display = (chflags & CH_DISPLAY);

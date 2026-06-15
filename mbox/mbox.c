@@ -191,7 +191,8 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
   int count = 0;
   int lines;
   time_t t = 0;
-  LOFF_T loc, tmploc;
+  LOFF_T loc;
+  LOFF_T tmploc;
   struct Email *e = NULL;
   struct stat st = { 0 };
   struct Progress *progress = NULL;
@@ -366,7 +367,8 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
   char return_path[1024] = { 0 };
   struct Email *e_cur = NULL;
   time_t t = 0;
-  int count = 0, lines = 0;
+  int count = 0;
+  int lines = 0;
   bool has_mbox_sep = false;
   bool expect_from_line = true;
   LOFF_T loc;

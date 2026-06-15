@@ -237,9 +237,12 @@ static const char *imap_get_field(enum ConnAccountField field, void *gf_data)
  */
 static void imap_msn_index_to_uid_seqset(struct Buffer *buf, struct ImapMboxData *mdata)
 {
-  int first = 1, state = 0;
-  unsigned int cur_uid = 0, last_uid = 0;
-  unsigned int range_begin = 0, range_end = 0;
+  int first = 1;
+  int state = 0;
+  unsigned int cur_uid = 0;
+  unsigned int last_uid = 0;
+  unsigned int range_begin = 0;
+  unsigned int range_end = 0;
   const size_t max_msn = imap_msn_highest(&mdata->msn);
 
   for (unsigned int msn = 1; msn <= max_msn + 1; msn++)

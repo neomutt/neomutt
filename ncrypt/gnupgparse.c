@@ -79,7 +79,8 @@
 static void fix_uid(char *uid)
 {
   struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
-  char *s = NULL, *d = NULL;
+  char *s = NULL;
+  char *d = NULL;
   iconv_t cd = ICONV_T_INVALID;
 
   for (s = uid, d = uid; *s;)
@@ -138,7 +139,8 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
   bool is_uid = false;
   bool is_pub = false;
   bool is_fpr = false;
-  char *pend = NULL, *p = NULL;
+  char *pend = NULL;
+  char *p = NULL;
   int trust = 0;
   KeyFlags flags = KEYFLAG_NONE;
   char tstr[11] = { 0 };
@@ -420,7 +422,11 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
   FILE *fp = NULL;
   pid_t pid;
   char buf[1024] = { 0 };
-  struct PgpKeyInfo *db = NULL, **kend = NULL, *k = NULL, *kk = NULL, *mainkey = NULL;
+  struct PgpKeyInfo *db = NULL;
+  struct PgpKeyInfo **kend = NULL;
+  struct PgpKeyInfo *k = NULL;
+  struct PgpKeyInfo *kk = NULL;
+  struct PgpKeyInfo *mainkey = NULL;
   bool is_sub = false;
 
   int fd_null = open("/dev/null", O_RDWR);

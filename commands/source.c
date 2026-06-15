@@ -69,7 +69,9 @@ int source_rc(const char *rcfile_path, struct ParseContext *pc, struct ParseErro
   struct CommandsModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COMMANDS);
   struct Buffer *err = pe->message;
 
-  int lineno = 0, rc = 0, warnings = 0;
+  int lineno = 0;
+  int rc = 0;
+  int warnings = 0;
   enum CommandResult line_rc;
   struct Buffer *linebuf = NULL;
   char *line = NULL;

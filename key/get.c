@@ -355,7 +355,8 @@ void generic_tokenize_push_string(char *s)
   char *pp = NULL;
   char *p = s + mutt_str_len(s) - 1;
   size_t l;
-  int i, op = OP_NULL;
+  int i;
+  int op = OP_NULL;
 
   while (p >= s)
   {

@@ -111,7 +111,8 @@ int mutt_body_copy(FILE *fp, struct Body **b_dst, struct Body *b_src)
   b->email = NULL;
 
   /* copy parameters */
-  struct Parameter *np = NULL, *new_param = NULL;
+  struct Parameter *np = NULL;
+  struct Parameter *new_param = NULL;
   TAILQ_FOREACH(np, &b_src->parameter, entries)
   {
     new_param = mutt_param_new();

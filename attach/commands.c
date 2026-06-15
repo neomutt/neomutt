@@ -413,7 +413,8 @@ static enum CommandResult parse_unattach_list(const struct Command *cmd, struct 
     }
     const enum ContentType major = mutt_check_mime_type(tmp);
 
-    struct ListNode *np = NULL, *tmp2 = NULL;
+    struct ListNode *np = NULL;
+    struct ListNode *tmp2 = NULL;
     STAILQ_FOREACH_SAFE(np, head, entries, tmp2)
     {
       a = (struct AttachMatch *) np->data;

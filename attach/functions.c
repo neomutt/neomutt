@@ -146,7 +146,8 @@ void attach_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
  */
 static void attach_collapse(struct AttachCtx *actx, struct Menu *menu, struct ConfigSubset *sub)
 {
-  int rindex, curlevel;
+  int rindex;
+  int curlevel;
 
   struct AttachPtr *cur_att = current_attachment(actx, menu);
   cur_att->collapsed = !cur_att->collapsed;

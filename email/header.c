@@ -292,7 +292,8 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   /* search through the user defined headers added to see if
    * fcc: or attach: or pgp: or smime: was specified */
 
-  struct ListNode *np = NULL, *tmp = NULL;
+  struct ListNode *np = NULL;
+  struct ListNode *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, &e->env->userhdrs, entries, tmp)
   {
     bool keep = true;

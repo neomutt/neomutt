@@ -607,7 +607,8 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
     return 0;
   }
 
-  int i, read_msgs = 0;
+  int i;
+  int read_msgs = 0;
   enum MxStatus rc = MX_STATUS_ERROR;
   enum QuadOption move_messages = MUTT_NO;
   enum QuadOption purge = MUTT_YES;
@@ -907,7 +908,8 @@ enum MxStatus mx_mbox_sync(struct Mailbox *m)
 
   enum MxStatus rc = MX_STATUS_OK;
   int purge = 1;
-  int msgcount, deleted;
+  int msgcount;
+  int deleted;
 
   if (m->dontwrite)
   {

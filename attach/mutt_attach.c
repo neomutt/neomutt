@@ -80,7 +80,8 @@ int mutt_get_tmp_attachment(struct Body *b)
 
   mailcap_entry_free(&entry);
 
-  FILE *fp_in = NULL, *fp_out = NULL;
+  FILE *fp_in = NULL;
+  FILE *fp_out = NULL;
   if ((fp_in = mutt_file_fopen(b->filename, "r")) &&
       (fp_out = mutt_file_fopen(buf_string(tempfile), "w")))
   {
@@ -534,7 +535,8 @@ int mutt_view_attachment(FILE *fp, struct Body *b, enum ViewAttachMode mode,
   if (use_mailcap)
   {
     pid_t pid = 0;
-    int fd_temp = -1, fd_pager = -1;
+    int fd_temp = -1;
+    int fd_pager = -1;
 
     if (!use_pager)
       mutt_endwin();
@@ -737,10 +739,13 @@ return_error:
 int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, const char *outfile)
 {
   pid_t pid = 0;
-  int out = -1, rc = 0;
+  int out = -1;
+  int rc = 0;
   bool is_flowed = false;
   bool unlink_unstuff = false;
-  FILE *fp_filter = NULL, *fp_unstuff = NULL, *fp_in = NULL;
+  FILE *fp_filter = NULL;
+  FILE *fp_unstuff = NULL;
+  FILE *fp_in = NULL;
   struct Buffer *unstuff_tempfile = NULL;
 
   if (outfile && *outfile)
@@ -1135,7 +1140,8 @@ int mutt_print_attachment(FILE *fp, struct Body *b)
 {
   char type[256] = { 0 };
   pid_t pid;
-  FILE *fp_in = NULL, *fp_out = NULL;
+  FILE *fp_in = NULL;
+  FILE *fp_out = NULL;
   bool unlink_newfile = false;
   struct Buffer *newfile = buf_pool_get();
   struct Buffer *cmd = buf_pool_get();

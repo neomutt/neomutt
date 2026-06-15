@@ -204,7 +204,8 @@ static int getnameinfo_err(int rc)
 static int iptostring(const struct sockaddr *addr, socklen_t addrlen, char *out,
                       unsigned int outlen)
 {
-  char hbuf[NI_MAXHOST], pbuf[NI_MAXSERV];
+  char hbuf[NI_MAXHOST];
+  char pbuf[NI_MAXSERV];
   int rc;
 
   if (!addr || !out)
@@ -539,7 +540,8 @@ static int mutt_sasl_conn_write(struct Connection *conn, const char *buf, size_t
 {
   int rc;
   const char *pbuf = NULL;
-  unsigned int olen, plen;
+  unsigned int olen;
+  unsigned int plen;
 
   struct SaslSockData *sasldata = conn->sockdata;
   conn->sockdata = sasldata->sockdata;

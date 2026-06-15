@@ -66,7 +66,8 @@ bool mbtable_equal(const struct MbTable *a, const struct MbTable *b)
 struct MbTable *mbtable_parse(const char *s)
 {
   struct MbTable *t = NULL;
-  size_t slen, k;
+  size_t slen;
+  size_t k;
   mbstate_t mbstate = { 0 };
   char *d = NULL;
 

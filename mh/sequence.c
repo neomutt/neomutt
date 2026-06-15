@@ -383,7 +383,9 @@ int mh_seq_read(struct MhSequences *mhs, const char *path)
   size_t sz = 0;
 
   MhSeqFlags flags;
-  int first = 0, last = 0, rc = 0;
+  int first = 0;
+  int last = 0;
+  int rc = 0;
 
   char pathname[PATH_MAX] = { 0 };
   snprintf(pathname, sizeof(pathname), "%s/.mh_sequences", path);

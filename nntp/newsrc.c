@@ -228,7 +228,8 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
   line = MUTT_MEM_MALLOC(st.st_size + 1, char);
   while (st.st_size && fgets(line, st.st_size + 1, adata->fp_newsrc))
   {
-    char *b = NULL, *h = NULL;
+    char *b = NULL;
+    char *h = NULL;
     unsigned int j = 1;
     bool subs = false;
 
@@ -305,7 +306,8 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
     return;
 
   struct NntpMboxData *mdata = m->mdata;
-  anum_t last = 0, first = 1;
+  anum_t last = 0;
+  anum_t first = 1;
   bool series;
   unsigned int entries;
 
@@ -577,7 +579,8 @@ int nntp_add_group(char *line, void *data)
   char group[1024] = { 0 };
   char desc[8192] = { 0 };
   char mod = '\0';
-  anum_t first = 0, last = 0;
+  anum_t first = 0;
+  anum_t last = 0;
 
   if (!adata || !line)
     return 0;
@@ -737,7 +740,8 @@ void nntp_hcache_update(struct NntpMboxData *mdata, struct HeaderCache *hc)
 
   char buf[32] = { 0 };
   bool old = false;
-  anum_t first = 0, last = 0;
+  anum_t first = 0;
+  anum_t last = 0;
 
   /* fetch previous values of first and last */
   char *hdata = hcache_fetch_raw_str(hc, "index", 5);
@@ -1089,7 +1093,8 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
         char *hdata = hcache_fetch_raw_str(hc, "index", 5);
         if (hdata)
         {
-          anum_t first = 0, last = 0;
+          anum_t first = 0;
+          anum_t last = 0;
 
           if (sscanf(hdata, ANUM_FMT " " ANUM_FMT, &first, &last) == 2)
           {

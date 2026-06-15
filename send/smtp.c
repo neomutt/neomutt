@@ -526,8 +526,12 @@ static int smtp_get_auth_response(struct Connection *conn, struct Buffer *input_
 static int smtp_auth_gsasl(struct SmtpAccountData *adata, const char *mechlist)
 {
   Gsasl_session *gsasl_session = NULL;
-  struct Buffer *input_buf = NULL, *output_buf = NULL, *smtp_response_buf = NULL;
-  int rc = SMTP_AUTH_FAIL, gsasl_rc = GSASL_OK, smtp_rc = 0;
+  struct Buffer *input_buf = NULL;
+  struct Buffer *output_buf = NULL;
+  struct Buffer *smtp_response_buf = NULL;
+  int rc = SMTP_AUTH_FAIL;
+  int gsasl_rc = GSASL_OK;
+  int smtp_rc = 0;
   bool first_response = true;
 
   const char *chosen_mech = mutt_gsasl_get_mech(mechlist, adata->auth_mechs);

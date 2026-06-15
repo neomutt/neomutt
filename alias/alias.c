@@ -143,7 +143,8 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
 
         /* Next, move the expanded addresses
          * from the copy into the original list (before the alias) */
-        struct Address *a2 = NULL, *tmp = NULL;
+        struct Address *a2 = NULL;
+        struct Address *tmp = NULL;
         TAILQ_FOREACH_SAFE(a2, &copy, entries, tmp)
         {
           TAILQ_INSERT_BEFORE(a, a2, entries);

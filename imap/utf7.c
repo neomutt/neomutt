@@ -105,7 +105,9 @@ static const char B64Chars[64] = {
  */
 static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len)
 {
-  int b, ch, k;
+  int b;
+  int ch;
+  int k;
 
   char *buf = MUTT_MEM_MALLOC(u7len + u7len / 8 + 1, char);
   char *p = buf;
@@ -252,7 +254,9 @@ bail:
 static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len)
 {
   int ch;
-  int n, b = 0, k = 0;
+  int n;
+  int b = 0;
+  int k = 0;
   bool base64 = false;
 
   /* In the worst case we convert 2 chars to 7 chars. For example:

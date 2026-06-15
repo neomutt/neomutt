@@ -187,8 +187,11 @@ static void shrink_histfile(void)
 {
   FILE *fp_tmp = NULL;
   int n[HC_MAX] = { 0 };
-  int line = 0, hclass = 0, read = 0;
-  char *linebuf = NULL, *p = NULL;
+  int line = 0;
+  int hclass = 0;
+  int read = 0;
+  char *linebuf = NULL;
+  char *p = NULL;
   size_t buflen = 0;
   bool regen_file = false;
   struct HashTable *dup_hashes[HC_MAX] = { 0 };
@@ -585,8 +588,11 @@ void mutt_hist_read_file(void)
   if (!fp)
     return;
 
-  int line = 0, hclass = 0, read = 0;
-  char *linebuf = NULL, *p = NULL;
+  int line = 0;
+  int hclass = 0;
+  int read = 0;
+  char *linebuf = NULL;
+  char *p = NULL;
   size_t buflen = 0;
 
   const char *const c_charset = cc_charset();

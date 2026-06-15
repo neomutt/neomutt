@@ -441,7 +441,8 @@ int mutt_addrlist_remove(struct AddressList *al, const char *mailbox)
     return 0;
 
   int rc = -1;
-  struct Address *a = NULL, *tmp = NULL;
+  struct Address *a = NULL;
+  struct Address *tmp = NULL;
   TAILQ_FOREACH_SAFE(a, al, entries, tmp)
   {
     if (mutt_istr_equal(mailbox, buf_string(a->mailbox)))
@@ -485,7 +486,8 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
   int parsed = 0;
   char comment[1024] = { 0 };
   char phrase[1024] = { 0 };
-  size_t phraselen = 0, commentlen = 0;
+  size_t phraselen = 0;
+  size_t commentlen = 0;
 
   bool ws_pending = mutt_str_is_email_wsp(*s);
 
@@ -1023,7 +1025,8 @@ const char *mutt_addr_for_display(const struct Address *a)
   if (!a)
     return NULL;
 
-  char *user = NULL, *domain = NULL;
+  char *user = NULL;
+  char *domain = NULL;
   static char *buf = NULL;
 
   if (!a->mailbox || addr_is_local(a))
@@ -1445,7 +1448,9 @@ void mutt_addrlist_remove_xrefs(const struct AddressList *a, struct AddressList 
   if (!a || !b)
     return;
 
-  struct Address *aa = NULL, *ab = NULL, *tmp = NULL;
+  struct Address *aa = NULL;
+  struct Address *ab = NULL;
+  struct Address *tmp = NULL;
 
   TAILQ_FOREACH_SAFE(ab, b, entries, tmp)
   {
@@ -1472,7 +1477,8 @@ void mutt_addrlist_clear(struct AddressList *al)
   if (!al)
     return;
 
-  struct Address *a = TAILQ_FIRST(al), *next = NULL;
+  struct Address *a = TAILQ_FIRST(al);
+  struct Address *next = NULL;
   while (a)
   {
     next = TAILQ_NEXT(a, entries);

@@ -232,7 +232,9 @@ static int quote_width(struct State *state, int ql)
 static void print_flowed_line(char *line, struct State *state, int ql,
                               struct FlowedState *fst, bool term)
 {
-  size_t width, w, words = 0;
+  size_t width;
+  size_t w;
+  size_t words = 0;
   char *p = NULL;
   char last;
 

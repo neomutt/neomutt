@@ -60,7 +60,8 @@ void mutt_body_free(struct Body **ptr)
   if (!ptr || !*ptr)
     return;
 
-  struct Body *a = *ptr, *b = NULL;
+  struct Body *a = *ptr;
+  struct Body *b = NULL;
 
   while (a)
   {

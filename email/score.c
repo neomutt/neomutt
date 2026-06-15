@@ -85,8 +85,10 @@ enum CommandResult parse_score(const struct Command *cmd, struct Buffer *line,
     return MUTT_CMD_WARNING;
   }
 
-  struct Score *ptr = NULL, *last = NULL;
-  char *pattern = NULL, *patchar = NULL;
+  struct Score *ptr = NULL;
+  struct Score *last = NULL;
+  char *pattern = NULL;
+  char *patchar = NULL;
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
@@ -175,7 +177,8 @@ enum CommandResult parse_unscore(const struct Command *cmd, struct Buffer *line,
     return MUTT_CMD_WARNING;
   }
 
-  struct Score *tmp = NULL, *last = NULL;
+  struct Score *tmp = NULL;
+  struct Score *last = NULL;
   struct Buffer *token = buf_pool_get();
 
   while (MoreArgs(line))

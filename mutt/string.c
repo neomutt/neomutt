@@ -532,7 +532,8 @@ const char *mutt_istr_find(const char *haystack, const char *needle)
   if (!needle)
     return haystack;
 
-  const char *p = NULL, *q = NULL;
+  const char *p = NULL;
+  const char *q = NULL;
 
   while (*(p = haystack))
   {

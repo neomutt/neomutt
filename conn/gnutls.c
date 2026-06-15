@@ -474,7 +474,8 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
                                      const char *hostname, int idx, size_t len)
 {
   struct StringArray carr = ARRAY_HEAD_INITIALIZER;
-  int certerr = 0, savedcert = 0;
+  int certerr = 0;
+  int savedcert = 0;
   gnutls_x509_crt_t cert = NULL;
   struct Buffer *fpbuf = NULL;
   time_t t;
@@ -630,7 +631,9 @@ static int tls_check_certificate(struct Connection *conn)
   const gnutls_datum_t *cert_list = NULL;
   unsigned int cert_list_size = 0;
   gnutls_certificate_status_t certstat = 0;
-  int certerr = 0, savedcert = 0, rc = 0;
+  int certerr = 0;
+  int savedcert = 0;
+  int rc = 0;
   int max_preauth_pass = -1;
 
   /* tls_verify_peers() calls gnutls_certificate_verify_peers2(),

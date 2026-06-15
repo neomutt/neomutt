@@ -136,7 +136,8 @@ static void append_signature(FILE *fp, struct ConfigSubset *sub)
  */
 static void remove_user(struct AddressList *al, bool leave_only)
 {
-  struct Address *a = NULL, *tmp = NULL;
+  struct Address *a = NULL;
+  struct Address *tmp = NULL;
   TAILQ_FOREACH_SAFE(a, al, entries, tmp)
   {
     if (mutt_addr_is_user(a) && (!leave_only || TAILQ_NEXT(a, entries)))
@@ -574,7 +575,8 @@ static int inline_forward_attachments(struct Mailbox *m, struct Email *e,
   struct Body **last = *plast;
   struct Body *body = NULL;
   struct AttachCtx *actx = NULL;
-  int rc = 0, i;
+  int rc = 0;
+  int i;
 
   struct Message *msg = mx_msg_open(m, e);
   if (!msg)

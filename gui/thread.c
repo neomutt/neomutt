@@ -467,13 +467,22 @@ void mutt_draw_tree(struct ThreadsContext *tctx)
   if (!tctx || !tctx->tree)
     return;
 
-  char *pfx = NULL, *mypfx = NULL, *arrow = NULL, *myarrow = NULL, *new_tree = NULL;
+  char *pfx = NULL;
+  char *mypfx = NULL;
+  char *arrow = NULL;
+  char *myarrow = NULL;
+  char *new_tree = NULL;
   const bool reverse = (mutt_thread_style() == UT_REVERSE);
   enum TreeChar corner = reverse ? MUTT_TREE_ULCORNER : MUTT_TREE_LLCORNER;
   enum TreeChar vtee = reverse ? MUTT_TREE_BTEE : MUTT_TREE_TTEE;
   const bool c_narrow_tree = cs_subset_bool(NeoMutt->sub, "narrow_tree");
-  int depth = 0, start_depth = 0, max_depth = 0, width = c_narrow_tree ? 1 : 2;
-  struct MuttThread *nextdisp = NULL, *pseudo = NULL, *parent = NULL;
+  int depth = 0;
+  int start_depth = 0;
+  int max_depth = 0;
+  int width = c_narrow_tree ? 1 : 2;
+  struct MuttThread *nextdisp = NULL;
+  struct MuttThread *pseudo = NULL;
+  struct MuttThread *parent = NULL;
 
   struct MuttThread *tree = tctx->tree;
 
@@ -660,7 +669,8 @@ static struct MuttThread *find_subject(struct Mailbox *m, struct MuttThread *cur
     return NULL;
 
   struct HashElem *he = NULL;
-  struct MuttThread *tmp = NULL, *last = NULL;
+  struct MuttThread *tmp = NULL;
+  struct MuttThread *last = NULL;
   struct ListHead subjects = STAILQ_HEAD_INITIALIZER(subjects);
   time_t date = 0;
 
@@ -732,8 +742,11 @@ static void pseudo_threads(struct ThreadsContext *tctx)
 
   struct MuttThread *tree = tctx->tree;
   struct MuttThread *top = tree;
-  struct MuttThread *tmp = NULL, *cur = NULL, *parent = NULL, *curchild = NULL,
-                    *nextchild = NULL;
+  struct MuttThread *tmp = NULL;
+  struct MuttThread *cur = NULL;
+  struct MuttThread *parent = NULL;
+  struct MuttThread *curchild = NULL;
+  struct MuttThread *nextchild = NULL;
 
   if (!m->subj_hash)
     m->subj_hash = make_subj_hash(m);
@@ -858,10 +871,14 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
   if (!thread)
     return;
 
-  struct MuttThread **array = NULL, *top = NULL, *tmp = NULL;
-  struct Email *sort_aux_key = NULL, *oldsort_aux_key = NULL;
+  struct MuttThread **array = NULL;
+  struct MuttThread *top = NULL;
+  struct MuttThread *tmp = NULL;
+  struct Email *sort_aux_key = NULL;
+  struct Email *oldsort_aux_key = NULL;
   struct Email *oldsort_thread_key = NULL;
-  int i, array_size;
+  int i;
+  int array_size;
   bool sort_top = false;
 
   /* we put things into the array backwards to save some cycles,
@@ -1116,8 +1133,11 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
   struct Mailbox *m = mv->mailbox;
 
   struct Email *e = NULL;
-  int i, using_refs = 0;
-  struct MuttThread *thread = NULL, *tnew = NULL, *tmp = NULL;
+  int i;
+  int using_refs = 0;
+  struct MuttThread *thread = NULL;
+  struct MuttThread *tnew = NULL;
+  struct MuttThread *tmp = NULL;
   struct MuttThread top = { 0 };
   struct ListNode *ref = NULL;
 
@@ -1525,13 +1545,19 @@ off_t mutt_set_vnum(struct Mailbox *m)
  */
 int mutt_traverse_thread(struct Email *e_cur, MuttThreadFlags flag)
 {
-  struct MuttThread *thread = NULL, *top = NULL;
+  struct MuttThread *thread = NULL;
+  struct MuttThread *top = NULL;
   struct Email *e_root = NULL;
   const enum UseThreads threaded = mutt_thread_style();
-  int final, reverse = (threaded == UT_REVERSE), minmsgno;
-  int num_hidden = 0, new_mail = 0, old_mail = 0;
+  int final;
+  int reverse = (threaded == UT_REVERSE);
+  int minmsgno;
+  int num_hidden = 0;
+  int new_mail = 0;
+  int old_mail = 0;
   bool flagged = false;
-  int min_unread_msgno = INT_MAX, min_unread = e_cur->vnum;
+  int min_unread_msgno = INT_MAX;
+  int min_unread = e_cur->vnum;
 
   if (threaded == UT_FLAT)
   {

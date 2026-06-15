@@ -1569,7 +1569,8 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   size_t len = 0;
   struct Progress *progress = NULL;
   size_t sent;
-  int c, last;
+  int c;
+  int last;
   int rc;
 
   fp = mutt_file_fopen(msg->path, "r");

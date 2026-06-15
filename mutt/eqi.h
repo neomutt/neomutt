@@ -89,7 +89,8 @@ static inline bool eqi1(const char *a, const char b[1])
  */
 static inline bool eqi2(const char *a, const char b[2])
 {
-  uint16_t a16 = 0, b16 = 0;
+  uint16_t a16 = 0;
+  uint16_t b16 = 0;
   memcpy(&a16, a, sizeof(a16));
   memcpy(&b16, b, sizeof(b16));
   const uint16_t lowercase_mask = make_lowercase_mask(b16, 0) |
@@ -105,7 +106,8 @@ static inline bool eqi2(const char *a, const char b[2])
  */
 static inline bool eqi4(const char *a, const char b[4])
 {
-  uint32_t a32 = 0, b32 = 0;
+  uint32_t a32 = 0;
+  uint32_t b32 = 0;
   memcpy(&a32, a, sizeof(a32));
   memcpy(&b32, b, sizeof(b32));
   const uint32_t lowercase_mask = make_lowercase_mask(b32, 0) |
@@ -123,7 +125,8 @@ static inline bool eqi4(const char *a, const char b[4])
  */
 static inline bool eqi8(const char *a, const char b[8])
 {
-  uint64_t a64 = 0, b64 = 0;
+  uint64_t a64 = 0;
+  uint64_t b64 = 0;
   memcpy(&a64, a, sizeof(a64));
   memcpy(&b64, b, sizeof(b64));
   const uint64_t lowercase_mask = make_lowercase_mask(b64, 0) |

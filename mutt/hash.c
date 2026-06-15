@@ -157,7 +157,8 @@ static struct HashElem *union_hash_insert(struct HashTable *table,
   }
   else
   {
-    struct HashElem *tmp = NULL, *last = NULL;
+    struct HashElem *tmp = NULL;
+    struct HashElem *last = NULL;
 
     for (tmp = table->table[hash], last = NULL; tmp; last = tmp, tmp = tmp->next)
     {
@@ -462,7 +463,8 @@ void mutt_hash_free(struct HashTable **ptr)
     return;
 
   struct HashTable *table = *ptr;
-  struct HashElem *he = NULL, *tmp = NULL;
+  struct HashElem *he = NULL;
+  struct HashElem *tmp = NULL;
 
   for (size_t i = 0; i < table->num_elems; i++)
   {

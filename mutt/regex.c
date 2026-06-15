@@ -181,7 +181,8 @@ void mutt_regexlist_free(struct RegexList *rl)
   if (!rl)
     return;
 
-  struct RegexNode *np = NULL, *tmp = NULL;
+  struct RegexNode *np = NULL;
+  struct RegexNode *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, rl, entries, tmp)
   {
     STAILQ_REMOVE(rl, np, RegexNode, entries);
@@ -244,7 +245,8 @@ int mutt_regexlist_remove(struct RegexList *rl, const char *str)
   }
 
   int rc = -1;
-  struct RegexNode *np = NULL, *tmp = NULL;
+  struct RegexNode *np = NULL;
+  struct RegexNode *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, rl, entries, tmp)
   {
     if (mutt_istr_equal(str, np->regex->pattern))
@@ -452,7 +454,8 @@ void mutt_replacelist_free(struct ReplaceList *rl)
   if (!rl)
     return;
 
-  struct Replace *np = NULL, *tmp = NULL;
+  struct Replace *np = NULL;
+  struct Replace *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, rl, entries, tmp)
   {
     STAILQ_REMOVE(rl, np, Replace, entries);
@@ -569,7 +572,8 @@ int mutt_replacelist_remove(struct ReplaceList *rl, const char *pat)
     return 0;
 
   int nremoved = 0;
-  struct Replace *np = NULL, *tmp = NULL;
+  struct Replace *np = NULL;
+  struct Replace *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, rl, entries, tmp)
   {
     if (mutt_str_equal(np->regex->pattern, pat))

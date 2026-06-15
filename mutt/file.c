@@ -1087,7 +1087,8 @@ int mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st)
  */
 int mutt_file_lock(int fd, bool excl, bool timeout)
 {
-  struct stat st = { 0 }, prev_sb = { 0 };
+  struct stat st = { 0 };
+  struct stat prev_sb = { 0 };
   int count = 0;
   int attempt = 0;
 

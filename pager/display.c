@@ -511,7 +511,8 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
   struct RegexColor *color_line = NULL;
   regmatch_t pmatch[1] = { 0 };
   const bool c_header_color_partial = cs_subset_bool(NeoMutt->sub, "header_color_partial");
-  int offset, i = 0;
+  int offset;
+  int i = 0;
 
   if ((line_num == 0) || color_is_header(lines[line_num - 1].cid) ||
       (check_protected_header_marker(raw) == 0))
@@ -859,7 +860,11 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
   const bool c_markers = cs_subset_bool(NeoMutt->sub, "markers");
   size_t col = c_markers ? (*lines)[line_num].cont_line : 0;
   size_t k;
-  int ch, vch, last_special = -1, special = 0, t;
+  int ch;
+  int vch;
+  int last_special = -1;
+  int special = 0;
+  int t;
   wchar_t wc = 0;
   mbstate_t mbstate = { 0 }; // FIXME: this should come from lines
   const size_t c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
@@ -1061,10 +1066,15 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
                  bool *force_redraw, regex_t *search_re,
                  struct MuttWindow *win_pager, struct AttrColorList *ansi_list)
 {
-  unsigned char *buf = NULL, *fmt = NULL;
+  unsigned char *buf = NULL;
+  unsigned char *fmt = NULL;
   size_t buflen = 0;
   unsigned char *buf_ptr = NULL;
-  int ch = 0, vch = 0, col = 0, cnt, b_read;
+  int ch = 0;
+  int vch = 0;
+  int col = 0;
+  int cnt;
+  int b_read;
   int buf_ready = 0;
   bool change_last = false;
   int special = 0;

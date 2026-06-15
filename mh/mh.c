@@ -243,8 +243,10 @@ static void mh_update_emails(struct MhEmailArray *mha, struct MhSequences *mhs)
 static int mh_commit_msg(struct Mailbox *m, struct Message *msg, struct Email *e, bool updseq)
 {
   struct dirent *de = NULL;
-  char *cp = NULL, *dep = NULL;
-  unsigned int n = 0, hi = 0;
+  char *cp = NULL;
+  char *dep = NULL;
+  unsigned int n = 0;
+  unsigned int hi = 0;
   char path[PATH_MAX] = { 0 };
   char tmp[16] = { 0 };
 

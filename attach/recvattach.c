@@ -84,7 +84,9 @@ struct AttachPtr *current_attachment(struct AttachCtx *actx, struct Menu *menu)
  */
 static void mutt_update_v2r(struct AttachCtx *actx)
 {
-  int vindex, rindex, curlevel;
+  int vindex;
+  int rindex;
+  int curlevel;
 
   vindex = 0;
   rindex = 0;

@@ -386,7 +386,9 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
 
   bool multi = false;
 
-  struct PgpKeyInfo *keys = NULL, *k = NULL, *kn = NULL;
+  struct PgpKeyInfo *keys = NULL;
+  struct PgpKeyInfo *k = NULL;
+  struct PgpKeyInfo *kn = NULL;
   struct PgpKeyInfo *the_strong_valid_key = NULL;
   struct PgpKeyInfo *a_valid_addrmatch_key = NULL;
   struct PgpKeyInfo *matches = NULL;
@@ -521,10 +523,14 @@ struct PgpKeyInfo *pgp_getkeybystr(const char *cp, KeyFlags abilities, enum PgpR
   struct PgpKeyInfo *keys = NULL;
   struct PgpKeyInfo *matches = NULL;
   struct PgpKeyInfo **last = &matches;
-  struct PgpKeyInfo *k = NULL, *kn = NULL;
+  struct PgpKeyInfo *k = NULL;
+  struct PgpKeyInfo *kn = NULL;
   struct PgpUid *a = NULL;
   size_t l;
-  const char *ps = NULL, *pl = NULL, *pfcopy = NULL, *phint = NULL;
+  const char *ps = NULL;
+  const char *pl = NULL;
+  const char *pfcopy = NULL;
+  const char *phint = NULL;
 
   char *p = strdup(cp); // mutt_str_dup converts "" into NULL, see #1809
   l = mutt_str_len(p);

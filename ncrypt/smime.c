@@ -248,7 +248,8 @@ static pid_t smime_invoke(FILE **fp_smime_in, FILE **fp_smime_out, FILE **fp_smi
  */
 static struct SmimeKey *smime_parse_key(char *buf)
 {
-  char *pend = NULL, *p = NULL;
+  char *pend = NULL;
+  char *p = NULL;
   int field = 0;
 
   struct SmimeKey *key = MUTT_MEM_CALLOC(1, struct SmimeKey);
@@ -332,7 +333,8 @@ static struct SmimeKey *smime_parse_key(char *buf)
 static struct SmimeKey *smime_get_candidates(const char *search, bool only_public_key)
 {
   char buf[1024] = { 0 };
-  struct SmimeKey *key = NULL, *results = NULL;
+  struct SmimeKey *key = NULL;
+  struct SmimeKey *results = NULL;
   struct SmimeKey **results_end = &results;
 
   struct Buffer *index_file = buf_pool_get();
@@ -409,7 +411,8 @@ static struct SmimeKey *smime_get_key_by_addr(const char *mailbox, KeyFlags abil
   if (!mailbox)
     return NULL;
 
-  struct SmimeKey *results = NULL, *result = NULL;
+  struct SmimeKey *results = NULL;
+  struct SmimeKey *result = NULL;
   struct SmimeKey *matches = NULL;
   struct SmimeKey **matches_end = &matches;
   struct SmimeKey *match = NULL;
@@ -489,7 +492,8 @@ static struct SmimeKey *smime_get_key_by_str(const char *str, KeyFlags abilities
   if (!str)
     return NULL;
 
-  struct SmimeKey *results = NULL, *result = NULL;
+  struct SmimeKey *results = NULL;
+  struct SmimeKey *result = NULL;
   struct SmimeKey *matches = NULL;
   struct SmimeKey **matches_end = &matches;
   struct SmimeKey *match = NULL;
@@ -649,7 +653,8 @@ void smime_class_getkeys(struct Envelope *env)
 char *smime_class_find_keys(const struct AddressList *al, bool oppenc_mode)
 {
   struct SmimeKey *key = NULL;
-  char *keyid = NULL, *keylist = NULL;
+  char *keyid = NULL;
+  char *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
 
@@ -698,7 +703,8 @@ static int smime_handle_cert_email(const char *certificate, const char *mailbox,
                                    bool copy, char ***buffer, int *num)
 {
   char email[256] = { 0 };
-  int rc = -1, count = 0;
+  int rc = -1;
+  int count = 0;
   pid_t pid;
 
   FILE *fp_err = mutt_file_mkstemp();
@@ -1057,7 +1063,8 @@ done:
  */
 int smime_class_verify_sender(struct Email *e, struct Message *msg)
 {
-  const char *mbox = NULL, *certfile = NULL;
+  const char *mbox = NULL;
+  const char *certfile = NULL;
   int rc = 1;
 
   struct Buffer *tempfname = buf_pool_get();
@@ -1188,10 +1195,14 @@ struct Body *smime_class_build_smime_entity(struct Body *b, char *certlist)
   char buf[1024] = { 0 };
   char certfile[PATH_MAX] = { 0 };
   char *cert_end = NULL;
-  FILE *fp_smime_in = NULL, *fp_smime_err = NULL, *fp_out = NULL, *fp_tmp = NULL;
+  FILE *fp_smime_in = NULL;
+  FILE *fp_smime_err = NULL;
+  FILE *fp_out = NULL;
+  FILE *fp_tmp = NULL;
   struct Body *b_enc = NULL;
   bool err = false;
-  int empty, off;
+  int empty;
+  int off;
   pid_t pid;
 
   struct Buffer *tempfile = buf_pool_get();
@@ -1354,8 +1365,12 @@ struct Body *smime_class_sign_message(struct Body *b, const struct AddressList *
   struct Body *b_sign = NULL;
   struct Body *rc = NULL;
   char buf[1024] = { 0 };
-  struct Buffer *filetosign = NULL, *signedfile = NULL;
-  FILE *fp_smime_in = NULL, *fp_smime_out = NULL, *fp_smime_err = NULL, *fp_sign = NULL;
+  struct Buffer *filetosign = NULL;
+  struct Buffer *signedfile = NULL;
+  FILE *fp_smime_in = NULL;
+  FILE *fp_smime_out = NULL;
+  FILE *fp_smime_err = NULL;
+  FILE *fp_sign = NULL;
   bool err = false;
   int empty = 0;
   pid_t pid;
@@ -1566,7 +1581,9 @@ static pid_t smime_invoke_decrypt(FILE **fp_smime_in, FILE **fp_smime_out,
  */
 int smime_class_verify_one(struct Body *b, struct State *state, const char *tempfile)
 {
-  FILE *fp = NULL, *fp_smime_out = NULL, *fp_smime_err = NULL;
+  FILE *fp = NULL;
+  FILE *fp_smime_out = NULL;
+  FILE *fp_smime_err = NULL;
   pid_t pid;
   int badsig = -1;
 
@@ -1682,8 +1699,11 @@ static struct Body *smime_handle_entity(struct Body *b, struct State *state, FIL
 {
   struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   struct Buffer *tmpfname = buf_pool_get();
-  FILE *fp_smime_out = NULL, *fp_smime_in = NULL, *fp_smime_err = NULL;
-  FILE *fp_tmp = NULL, *fp_out = NULL;
+  FILE *fp_smime_out = NULL;
+  FILE *fp_smime_in = NULL;
+  FILE *fp_smime_err = NULL;
+  FILE *fp_tmp = NULL;
+  FILE *fp_out = NULL;
   struct Body *p = NULL;
   pid_t pid = -1;
   SecurityFlags type = mutt_is_application_smime(b);

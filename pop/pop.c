@@ -390,8 +390,9 @@ static int pop_fetch_headers(struct Mailbox *m)
 
   if (rc == 0)
   {
-    int i = 0, deleted;
-    for (i = 0, deleted = 0; i < old_count; i++)
+    int i = 0;
+    int deleted = 0;
+    for (; i < old_count; i++)
     {
       struct PopEmailData *edata = pop_edata_get(m->emails[i]);
       if (edata->refno == -1)
@@ -537,7 +538,11 @@ void pop_fetch_mail(void)
 
   char buf[1024] = { 0 };
   char msgbuf[128] = { 0 };
-  int last = 0, msgs = 0, bytes = 0, rset = 0, rc;
+  int last = 0;
+  int msgs = 0;
+  int bytes = 0;
+  int rset = 0;
+  int rc;
   struct ConnAccount cac = { { 0 } };
 
   char *url = NULL;
@@ -872,7 +877,9 @@ static enum MxStatus pop_mbox_check(struct Mailbox *m)
  */
 static enum MxStatus pop_mbox_sync(struct Mailbox *m)
 {
-  int i, j, rc = 0;
+  int i;
+  int j;
+  int rc = 0;
   char buf[1024] = { 0 };
   struct PopAccountData *adata = pop_adata_get(m);
 #ifdef USE_HCACHE

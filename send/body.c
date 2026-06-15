@@ -102,7 +102,8 @@ static void b64_putc(struct B64Context *bctx, char c, FILE *fp_out)
 static void encode_base64(struct FgetConv *fc, FILE *fp_out, int istext)
 {
   struct B64Context bctx = { 0 };
-  int ch, ch1 = EOF;
+  int ch;
+  int ch1 = EOF;
 
   while ((ch = mutt_ch_fgetconv(fc)) != EOF)
   {
@@ -148,7 +149,8 @@ static void encode_8bit(struct FgetConv *fc, FILE *fp_out)
  */
 static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
 {
-  int c, linelen = 0;
+  int c;
+  int linelen = 0;
   char line[77] = { 0 };
 
   while ((c = mutt_ch_fgetconv(fc)) != EOF)

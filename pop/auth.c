@@ -325,7 +325,8 @@ bail:
  */
 void pop_apop_timestamp(struct PopAccountData *adata, char *buf)
 {
-  char *p1 = NULL, *p2 = NULL;
+  char *p1 = NULL;
+  char *p2 = NULL;
 
   FREE(&adata->timestamp);
 

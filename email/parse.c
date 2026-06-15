@@ -1717,7 +1717,9 @@ static struct Body *parse_multipart(FILE *fp, const char *boundary,
   }
 
   char buf[1024] = { 0 };
-  struct Body *head = NULL, *last = NULL, *new_body = NULL;
+  struct Body *head = NULL;
+  struct Body *last = NULL;
+  struct Body *new_body = NULL;
   bool final = false; /* did we see the ending boundary? */
 
   const size_t blen = mutt_str_len(boundary);

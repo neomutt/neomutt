@@ -75,11 +75,14 @@
 enum ContentType mutt_lookup_mime_type(struct Body *b, const char *path)
 {
   FILE *fp = NULL;
-  char *p = NULL, *q = NULL, *ct = NULL;
+  char *p = NULL;
+  char *q = NULL;
+  char *ct = NULL;
   char buf[PATH_MAX] = { 0 };
   char subtype[256] = { 0 };
   char xtype[256] = { 0 };
-  int sze, cur_sze = 0;
+  int sze;
+  int cur_sze = 0;
   bool found_mimetypes = false;
   enum ContentType type = TYPE_OTHER;
 
@@ -571,7 +574,8 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
  */
 static void run_mime_type_query(struct Body *b, struct ConfigSubset *sub)
 {
-  FILE *fp = NULL, *fp_err = NULL;
+  FILE *fp = NULL;
+  FILE *fp_err = NULL;
   char *buf = NULL;
   size_t buflen = 0;
   pid_t pid;

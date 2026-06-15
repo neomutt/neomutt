@@ -116,7 +116,8 @@ enum CommandResult parse_unmy_header(const struct Command *cmd, struct Buffer *l
 
   struct Buffer *token = buf_pool_get();
 
-  struct ListNode *np = NULL, *tmp = NULL;
+  struct ListNode *np = NULL;
+  struct ListNode *tmp = NULL;
   size_t l;
 
   struct SendModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_SEND);
