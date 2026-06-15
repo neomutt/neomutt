@@ -278,7 +278,7 @@ int fuzzy_subseq_match(const char *pattern, const char *candidate,
 
   bool fold = compute_case_mode(pattern, opts);
 
-  int matchpos[DEFAULT_MAX_PATTERN];
+  int matchpos[DEFAULT_MAX_PATTERN] = { 0 };
 
   int pi = 0;
   int ci = 0;

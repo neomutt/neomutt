@@ -187,9 +187,9 @@ static void shrink_histfile(void)
 {
   FILE *fp_tmp = NULL;
   int n[HC_MAX] = { 0 };
-  int line, hclass = 0, read = 0;
+  int line = 0, hclass = 0, read = 0;
   char *linebuf = NULL, *p = NULL;
-  size_t buflen;
+  size_t buflen = 0;
   bool regen_file = false;
   struct HashTable *dup_hashes[HC_MAX] = { 0 };
 
@@ -210,7 +210,6 @@ static void shrink_histfile(void)
 
   /* First pass: count entries per class, detect duplicates, and validate
    * the file format (each line is "class:entry|") */
-  line = 0;
   while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, MUTT_RL_NONE)))
   {
     if ((sscanf(linebuf, "%d:%n", &hclass, &read) < 1) || (read == 0) ||
@@ -588,7 +587,7 @@ void mutt_hist_read_file(void)
 
   int line = 0, hclass = 0, read = 0;
   char *linebuf = NULL, *p = NULL;
-  size_t buflen;
+  size_t buflen = 0;
 
   const char *const c_charset = cc_charset();
   while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, MUTT_RL_NONE)))

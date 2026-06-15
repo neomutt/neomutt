@@ -1566,7 +1566,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   char buf[2048] = { 0 };
   struct Buffer *internaldate = NULL;
   struct Buffer *imap_flags = NULL;
-  size_t len;
+  size_t len = 0;
   struct Progress *progress = NULL;
   size_t sent;
   int c, last;
@@ -1726,7 +1726,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailArray *ea,
   char buf[PATH_MAX] = { 0 };
   char mbox[PATH_MAX] = { 0 };
   char mmbox[PATH_MAX] = { 0 };
-  char prompt[PATH_MAX + 64];
+  char prompt[PATH_MAX + 64] = { 0 };
   int rc;
   struct ConnAccount cac = { { 0 } };
   enum QuadOption err_continue = MUTT_NO;
@@ -2011,8 +2011,8 @@ bool imap_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
   struct Envelope *newenv = NULL;
   char buf[1024] = { 0 };
   char *pc = NULL;
-  unsigned int bytes;
-  unsigned int uid;
+  unsigned int bytes = 0;
+  unsigned int uid = 0;
   bool retried = false;
   bool read;
   int rc;

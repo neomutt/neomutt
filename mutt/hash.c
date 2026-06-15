@@ -322,7 +322,7 @@ struct HashElem *mutt_hash_typed_insert(struct HashTable *table,
   if (!table || !strkey)
     return NULL;
 
-  union HashKey key;
+  union HashKey key = { 0 };
   key.strkey = table->strdup_keys ? mutt_str_dup(strkey) : strkey;
   return union_hash_insert(table, key, type, data);
 }
@@ -350,7 +350,7 @@ struct HashElem *mutt_hash_int_insert(struct HashTable *table, unsigned int intk
 {
   if (!table)
     return NULL;
-  union HashKey key;
+  union HashKey key = { 0 };
   key.intkey = intkey;
   return union_hash_insert(table, key, -1, data);
 }
@@ -365,7 +365,7 @@ void *mutt_hash_find(const struct HashTable *table, const char *strkey)
 {
   if (!table || !strkey)
     return NULL;
-  union HashKey key;
+  union HashKey key = { 0 };
   key.strkey = strkey;
   return union_hash_find(table, key);
 }
@@ -380,7 +380,7 @@ struct HashElem *mutt_hash_find_elem(const struct HashTable *table, const char *
 {
   if (!table || !strkey)
     return NULL;
-  union HashKey key;
+  union HashKey key = { 0 };
   key.strkey = strkey;
   return union_hash_find_elem(table, key);
 }
@@ -395,7 +395,7 @@ void *mutt_hash_int_find(const struct HashTable *table, unsigned int intkey)
 {
   if (!table)
     return NULL;
-  union HashKey key;
+  union HashKey key = { 0 };
   key.intkey = intkey;
   return union_hash_find(table, key);
 }
@@ -413,7 +413,7 @@ struct HashElem *mutt_hash_find_bucket(const struct HashTable *table, const char
   if (!table || !strkey)
     return NULL;
 
-  union HashKey key;
+  union HashKey key = { 0 };
 
   key.strkey = strkey;
   size_t hash = table->gen_hash(key, table->num_elems);
@@ -430,7 +430,7 @@ void mutt_hash_delete(struct HashTable *table, const char *strkey, const void *d
 {
   if (!table || !strkey || (strkey[0] == '\0'))
     return;
-  union HashKey key;
+  union HashKey key = { 0 };
   // Copy the key because union_hash_delete() may use it after the HashElem is freed.
   key.strkey = mutt_str_dup(strkey);
   union_hash_delete(table, key, data);
@@ -447,7 +447,7 @@ void mutt_hash_int_delete(struct HashTable *table, unsigned int intkey, const vo
 {
   if (!table)
     return;
-  union HashKey key;
+  union HashKey key = { 0 };
   key.intkey = intkey;
   union_hash_delete(table, key, data);
 }

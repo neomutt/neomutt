@@ -182,7 +182,7 @@ static short pgp_mic_from_packet(unsigned char *p, size_t len)
  */
 static short pgp_find_hash(const char *fname)
 {
-  size_t l;
+  size_t l = 0;
   short rc = -1;
 
   FILE *fp_in = NULL;

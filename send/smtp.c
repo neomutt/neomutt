@@ -145,7 +145,7 @@ static bool valid_smtp_code(char *buf, int *n)
  */
 static int smtp_get_resp(struct SmtpAccountData *adata)
 {
-  int n;
+  int n = 0;
   char buf[1024] = { 0 };
 
   do
@@ -527,7 +527,7 @@ static int smtp_auth_gsasl(struct SmtpAccountData *adata, const char *mechlist)
 {
   Gsasl_session *gsasl_session = NULL;
   struct Buffer *input_buf = NULL, *output_buf = NULL, *smtp_response_buf = NULL;
-  int rc = SMTP_AUTH_FAIL, gsasl_rc = GSASL_OK, smtp_rc;
+  int rc = SMTP_AUTH_FAIL, gsasl_rc = GSASL_OK, smtp_rc = 0;
   bool first_response = true;
 
   const char *chosen_mech = mutt_gsasl_get_mech(mechlist, adata->auth_mechs);

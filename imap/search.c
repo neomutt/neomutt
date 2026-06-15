@@ -108,7 +108,7 @@ static bool compile_search_children(const struct ImapAccountData *adata,
 
   buf_addch(buf, '(');
 
-  struct Pattern *c;
+  struct Pattern *c = NULL;
   SLIST_FOREACH(c, pat->child, entries)
   {
     if (!check_pattern(c))
@@ -259,7 +259,7 @@ bool imap_search(struct Mailbox *m, const struct PatternList *pat)
  */
 void cmd_parse_search(struct ImapAccountData *adata, const char *s)
 {
-  unsigned int uid;
+  unsigned int uid = 0;
   struct Email *e = NULL;
 
   if (!adata->mailbox)

@@ -94,7 +94,7 @@ int log_disp_curses(time_t stamp, const char *file, int line, const char *functi
 
   char buf[LOG_LINE_MAX_LEN] = { 0 };
 
-  va_list ap;
+  va_list ap = { 0 };
   va_start(ap, format);
   int rc = vsnprintf(buf, sizeof(buf), format, ap);
   va_end(ap);

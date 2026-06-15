@@ -313,7 +313,7 @@ struct Url *url_parse(const char *src)
   {
     url->src[mutt_regmatch_end(port)] = '\0';
     const char *ports = url->src + mutt_regmatch_start(port);
-    unsigned short num;
+    unsigned short num = 0;
     if (!mutt_str_atous_full(ports, &num))
     {
       goto err;

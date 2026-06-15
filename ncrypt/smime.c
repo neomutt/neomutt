@@ -1635,7 +1635,7 @@ int smime_class_verify_one(struct Body *b, struct State *state, const char *temp
     else
     {
       char *line = NULL;
-      size_t linelen;
+      size_t linelen = 0;
 
       fflush(fp_smime_err);
       rewind(fp_smime_err);
@@ -1890,7 +1890,7 @@ static struct Body *smime_handle_entity(struct Body *b, struct State *state, FIL
   if (type & SEC_SIGNOPAQUE)
   {
     char *line = NULL;
-    size_t linelen;
+    size_t linelen = 0;
 
     rewind(fp_smime_err);
 

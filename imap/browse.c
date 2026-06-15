@@ -198,7 +198,7 @@ int imap_browse(const char *path, struct BrowserState *state)
   struct ImapAccountData *adata = NULL;
   struct ImapList list = { 0 };
   struct ConnAccount cac = { { 0 } };
-  char buf[PATH_MAX + 16];
+  char buf[PATH_MAX + 16] = { 0 };
   char mbox[PATH_MAX] = { 0 };
   char munged_mbox[PATH_MAX] = { 0 };
   const char *list_cmd = NULL;

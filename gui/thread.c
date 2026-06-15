@@ -1747,7 +1747,7 @@ int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, enum MessageInTh
   if (!m || !e)
     return 1;
 
-  struct MuttThread *threads[2];
+  struct MuttThread *threads[2] = { 0 };
   int rc;
 
   const enum UseThreads threaded = mutt_thread_style();

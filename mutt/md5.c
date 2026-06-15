@@ -64,7 +64,7 @@ static const unsigned char fillbuf[64] = { 0x80, 0 /* , 0, 0, ... */ };
  */
 static void mutt_md5_process_block(const void *buffer, size_t len, struct Md5Ctx *md5ctx)
 {
-  md5_uint32 correct_words[16];
+  md5_uint32 correct_words[16] = { 0 };
   const md5_uint32 *words = buffer;
   size_t nwords = len / sizeof(md5_uint32);
   const md5_uint32 *endp = words + nwords;

@@ -62,7 +62,10 @@
 pid_t filter_create_fd(const char *cmd, FILE **fp_in, FILE **fp_out, FILE **fp_err,
                        int fdin, int fdout, int fderr, char **envlist)
 {
-  int pin[2], pout[2], perr[2], pid;
+  int pin[2] = { 0 };
+  int pout[2] = { 0 };
+  int perr[2] = { 0 };
+  int pid;
 
   /* Create pipes for each requested I/O stream (stdin, stdout, stderr).
    * On failure, clean up any already-created pipes before returning. */

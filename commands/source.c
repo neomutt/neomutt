@@ -76,7 +76,7 @@ int source_rc(const char *rcfile_path, struct ParseContext *pc, struct ParseErro
   char *currentline = NULL;
   char rcfile[PATH_MAX + 1] = { 0 };
   size_t linelen = 0;
-  pid_t pid;
+  pid_t pid = 0;
 
   mutt_str_copy(rcfile, rcfile_path, sizeof(rcfile));
 

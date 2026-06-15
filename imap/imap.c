@@ -610,7 +610,7 @@ int imap_rename_mailbox(struct ImapAccountData *adata, char *oldname, const char
  */
 int imap_delete_mailbox(struct Mailbox *m, char *path)
 {
-  char buf[PATH_MAX + 7];
+  char buf[PATH_MAX + 7] = { 0 };
   char mbox[PATH_MAX] = { 0 };
 
   struct ImapAccountData *adata = imap_adata_get(m);
@@ -704,7 +704,7 @@ void imap_logout_all(void)
 int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
                       unsigned long bytes, struct Progress *progress)
 {
-  char c;
+  char c = 0;
   bool r = false;
   struct Buffer buf = { 0 }; // Do not allocate, maybe it won't be used
 
@@ -2420,7 +2420,7 @@ static bool imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   if (rc == -1)
     return false;
 
-  char buf[PATH_MAX + 64];
+  char buf[PATH_MAX + 64] = { 0 };
   snprintf(buf, sizeof(buf), _("Create %s?"), mdata->name);
   const bool c_confirm_create = cs_subset_bool(NeoMutt->sub, "confirm_create");
   if (c_confirm_create &&

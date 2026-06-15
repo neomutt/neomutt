@@ -1064,10 +1064,10 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
   unsigned char *buf = NULL, *fmt = NULL;
   size_t buflen = 0;
   unsigned char *buf_ptr = NULL;
-  int ch, vch, col, cnt, b_read;
+  int ch = 0, vch = 0, col = 0, cnt, b_read;
   int buf_ready = 0;
   bool change_last = false;
-  int special;
+  int special = 0;
   int offset;
   const struct AttrColor *def_color = NULL;
   int m;

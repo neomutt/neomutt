@@ -390,7 +390,7 @@ static int pop_fetch_headers(struct Mailbox *m)
 
   if (rc == 0)
   {
-    int i, deleted;
+    int i = 0, deleted;
     for (i = 0, deleted = 0; i < old_count; i++)
     {
       struct PopEmailData *edata = pop_edata_get(m->emails[i]);

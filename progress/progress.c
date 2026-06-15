@@ -170,7 +170,7 @@ void progress_set_message(struct Progress *progress, const char *fmt, ...)
   // Decloak an opaque pointer
   struct MuttWindow *win = (struct MuttWindow *) progress;
 
-  va_list ap;
+  va_list ap = { 0 };
   va_start(ap, fmt);
 
   if (win)

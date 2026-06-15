@@ -193,7 +193,7 @@ int state_printf(struct State *state, const char *fmt, ...)
     return -1;
 
   int rc;
-  va_list ap;
+  va_list ap = { 0 };
 
   va_start(ap, fmt);
   rc = vfprintf(state->fp_out, fmt, ap);

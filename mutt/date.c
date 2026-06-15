@@ -437,11 +437,11 @@ int mutt_date_check_month(const char *s)
 
   char buf[4] = { 0 };
   memcpy(buf, s, 3);
-  uint32_t sv;
+  uint32_t sv = 0;
   memcpy(&sv, buf, sizeof(sv));
   for (int i = 0; i < countof(Months); i++)
   {
-    uint32_t mv;
+    uint32_t mv = 0;
     memcpy(&mv, Months[i], sizeof(mv));
     if (sv == mv)
       return i;

@@ -57,7 +57,8 @@ struct TunnelSockData
  */
 static int tunnel_socket_open(struct Connection *conn)
 {
-  int pin[2], pout[2];
+  int pin[2] = { 0 };
+  int pout[2] = { 0 };
 
   struct TunnelSockData *tunnel = MUTT_MEM_MALLOC(1, struct TunnelSockData);
   conn->sockdata = tunnel;
@@ -218,7 +219,7 @@ static int tunnel_socket_close(struct Connection *conn)
     return 0;
   }
 
-  int status;
+  int status = 0;
 
   close(tunnel->fd_read);
   close(tunnel->fd_write);

@@ -1894,7 +1894,7 @@ bool mutt_parse_mailto(struct Envelope *env, char **body, const char *src)
   struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
   ASSERT(mod_data);
 
-  struct UrlQuery *np;
+  struct UrlQuery *np = NULL;
   STAILQ_FOREACH(np, &url->query_strings, entries)
   {
     mutt_filter_commandline_header_tag(np->name);

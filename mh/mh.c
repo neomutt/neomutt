@@ -244,7 +244,7 @@ static int mh_commit_msg(struct Mailbox *m, struct Message *msg, struct Email *e
 {
   struct dirent *de = NULL;
   char *cp = NULL, *dep = NULL;
-  unsigned int n, hi = 0;
+  unsigned int n = 0, hi = 0;
   char path[PATH_MAX] = { 0 };
   char tmp[16] = { 0 };
 

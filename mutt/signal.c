@@ -74,7 +74,7 @@ volatile sig_atomic_t SigWinch; ///< true after SIGWINCH is received
  */
 static void exit_print_uint(unsigned int n)
 {
-  char digit;
+  char digit = 0;
 
   if (n > 9)
     exit_print_uint(n / 10);

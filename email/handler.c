@@ -128,7 +128,7 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *st
   char bufo[BUFO_SIZE] = { 0 };
   const char *ib = NULL;
   char *ob = NULL;
-  size_t ibl, obl;
+  size_t ibl = 0, obl = 0;
 
   if (!bufi)
   {
@@ -316,7 +316,7 @@ static void decode_quoted(struct State *state, long len, bool istext, iconv_t cd
   char line[256] = { 0 };
   char decline[512] = { 0 };
   size_t l = 0;
-  size_t l3;
+  size_t l3 = 0;
 
   if (istext)
     state_set_prefix(state);

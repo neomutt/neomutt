@@ -245,7 +245,7 @@ static bool check_count(struct AttachCtx *actx)
  */
 static char *gen_cid(void)
 {
-  char rndid[MUTT_RANDTAG_LEN + 1];
+  char rndid[MUTT_RANDTAG_LEN + 1] = { 0 };
 
   mutt_rand_base32(rndid, sizeof(rndid) - 1);
   rndid[MUTT_RANDTAG_LEN] = 0;

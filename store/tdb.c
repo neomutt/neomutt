@@ -68,8 +68,8 @@ static void *store_tdb_fetch(StoreHandle *store, const char *key, size_t klen, s
 
   // Decloak an opaque pointer
   TDB_CONTEXT *db = store;
-  TDB_DATA dkey;
-  TDB_DATA data;
+  TDB_DATA dkey = { 0 };
+  TDB_DATA data = { 0 };
 
   dkey.dptr = (unsigned char *) key;
   dkey.dsize = klen;
@@ -98,8 +98,8 @@ static int store_tdb_store(StoreHandle *store, const char *key, size_t klen,
 
   // Decloak an opaque pointer
   TDB_CONTEXT *db = store;
-  TDB_DATA dkey;
-  TDB_DATA databuf;
+  TDB_DATA dkey = { 0 };
+  TDB_DATA databuf = { 0 };
 
   dkey.dptr = (unsigned char *) key;
   dkey.dsize = klen;
@@ -120,7 +120,7 @@ static int store_tdb_delete_record(StoreHandle *store, const char *key, size_t k
 
   // Decloak an opaque pointer
   TDB_CONTEXT *db = store;
-  TDB_DATA dkey;
+  TDB_DATA dkey = { 0 };
 
   dkey.dptr = (unsigned char *) key;
   dkey.dsize = klen;

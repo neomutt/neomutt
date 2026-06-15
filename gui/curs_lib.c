@@ -319,7 +319,7 @@ done:
  */
 int mutt_addwch(struct MuttWindow *win, wchar_t wc)
 {
-  char buf[MB_LEN_MAX * 2];
+  char buf[MB_LEN_MAX * 2] = { 0 };
   mbstate_t mbstate = { 0 };
   size_t n1, n2;
 

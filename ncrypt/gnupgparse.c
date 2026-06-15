@@ -296,7 +296,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
         }
         else /* gpg 2.0.10+ uses seconds since 1970-01-01 */
         {
-          unsigned long long secs;
+          unsigned long long secs = 0;
 
           if (!mutt_str_atoull(p, &secs))
             goto bail;

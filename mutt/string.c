@@ -778,7 +778,7 @@ int mutt_str_asprintf(char **strp, const char *fmt, ...)
   if (!strp || !fmt)
     return -1;
 
-  va_list ap;
+  va_list ap = { 0 };
   int n;
 
   va_start(ap, fmt);

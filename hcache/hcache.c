@@ -383,7 +383,7 @@ static void hcache_per_folder(struct HeaderCache *hc, struct Buffer *hcpath,
   }
   else
   {
-    unsigned char m[16]; /* binary md5sum */
+    unsigned char m[16] = { 0 }; /* binary md5sum */
     struct Buffer *name = buf_pool_get();
 
 #ifdef USE_HCACHE_COMPRESSION
@@ -438,7 +438,7 @@ static unsigned int generate_hcachever(void)
   {
     unsigned char charval[16]; ///< MD5 digest as a string
     unsigned int intval;       ///< MD5 digest as an integer
-  } digest;
+  } digest = { 0 };
   struct Md5Ctx md5ctx = { 0 };
 
   mutt_md5_init_ctx(&md5ctx);

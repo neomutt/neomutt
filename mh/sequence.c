@@ -121,7 +121,7 @@ void mh_seq_add_one(struct Mailbox *m, int n, bool unseen, bool flagged, bool re
   char seq_flagged[256] = { 0 };
 
   char *buf = NULL;
-  size_t sz;
+  size_t sz = 0;
 
   FILE *fp_new = NULL;
   if (!mh_mkstemp(m, &fp_new, &tmpfname))
@@ -239,7 +239,7 @@ void mh_seq_update(struct Mailbox *m)
   char *tmpfname = NULL;
   char *buf = NULL;
   char *p = NULL;
-  size_t s;
+  size_t s = 0;
   int seq_num = 0;
 
   int unseen = 0;
@@ -383,7 +383,7 @@ int mh_seq_read(struct MhSequences *mhs, const char *path)
   size_t sz = 0;
 
   MhSeqFlags flags;
-  int first, last, rc = 0;
+  int first = 0, last = 0, rc = 0;
 
   char pathname[PATH_MAX] = { 0 };
   snprintf(pathname, sizeof(pathname), "%s/.mh_sequences", path);

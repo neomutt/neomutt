@@ -256,7 +256,7 @@ static int pgp_copy_checksig(FILE *fp_in, FILE *fp_out)
   if (c_pgp_good_sign && c_pgp_good_sign->regex)
   {
     char *line = NULL;
-    size_t linelen;
+    size_t linelen = 0;
 
     while ((line = mutt_file_read_line(line, &linelen, fp_in, NULL, MUTT_RL_NONE)))
     {
@@ -305,7 +305,7 @@ static int pgp_check_pgp_decryption_okay_regex(FILE *fp_in)
   if (c_pgp_decryption_okay && c_pgp_decryption_okay->regex)
   {
     char *line = NULL;
-    size_t linelen;
+    size_t linelen = 0;
 
     while ((line = mutt_file_read_line(line, &linelen, fp_in, NULL, MUTT_RL_NONE)))
     {
@@ -355,7 +355,7 @@ static int pgp_check_decryption_okay(FILE *fp_in)
 {
   int rc = -1;
   char *line = NULL, *s = NULL;
-  size_t linelen;
+  size_t linelen = 0;
   int inside_decrypt = 0;
 
   const bool c_pgp_check_gpg_decrypt_status_fd = cs_subset_bool(NeoMutt->sub, "pgp_check_gpg_decrypt_status_fd");

@@ -68,7 +68,7 @@ static int socket_connect(int fd, struct sockaddr *sa)
 {
   int sa_size;
   int save_errno;
-  sigset_t set;
+  sigset_t set = { 0 };
   struct sigaction oldalrm = { 0 };
   struct sigaction act = { 0 };
 

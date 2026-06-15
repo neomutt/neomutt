@@ -194,7 +194,7 @@ int mutt_file_copy_bytes(FILE *fp_in, FILE *fp_out, size_t size)
   if (!fp_in || !fp_out)
     return -1;
 
-  char buf[2048];
+  char buf[2048] = { 0 };
   while (size > 0)
   {
     size_t chunk = (size > sizeof(buf)) ? sizeof(buf) : size;
@@ -586,7 +586,7 @@ void mutt_file_sanitize_filename(char *path, bool slash)
 
   size_t size = strlen(path);
 
-  wchar_t c;
+  wchar_t c = 0;
   mbstate_t mbstate = { 0 };
   for (size_t consumed; size && (consumed = mbrtowc(&c, path, size, &mbstate));
        size -= consumed, path += consumed)

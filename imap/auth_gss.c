@@ -64,9 +64,9 @@
  */
 static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
 {
-  OM_uint32 maj_stat, min_stat;
+  OM_uint32 maj_stat, min_stat = 0;
   OM_uint32 msg_ctx = 0;
-  gss_buffer_desc status_string;
+  gss_buffer_desc status_string = { 0 };
   char buf_maj[512] = { 0 };
   char buf_min[512] = { 0 };
 
@@ -104,16 +104,16 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
  */
 enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method)
 {
-  gss_buffer_desc request_buf, send_token;
-  gss_buffer_t sec_token;
-  gss_name_t target_name;
-  gss_ctx_id_t context;
-  gss_OID mech_name;
+  gss_buffer_desc request_buf = { 0 }, send_token = { 0 };
+  gss_buffer_t sec_token = NULL;
+  gss_name_t target_name = NULL;
+  gss_ctx_id_t context = NULL;
+  gss_OID mech_name = NULL;
   char server_conf_flags;
-  gss_qop_t quality;
-  int cflags;
-  OM_uint32 maj_stat, min_stat;
-  unsigned long buf_size;
+  gss_qop_t quality = 0;
+  int cflags = 0;
+  OM_uint32 maj_stat, min_stat = 0;
+  unsigned long buf_size = 0;
   int rc2, rc = IMAP_AUTH_FAILURE;
 
   if (!(adata->capabilities & IMAP_CAP_AUTH_GSSAPI))

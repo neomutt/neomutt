@@ -80,8 +80,8 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
   struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   size_t used = 0;
   LOFF_T startpos;
-  unsigned char ctb;
-  unsigned char b;
+  unsigned char ctb = 0;
+  unsigned char b = 0;
   size_t material;
 
   startpos = ftello(fp);
@@ -143,7 +143,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
       }
       else /* b == 255 */
       {
-        unsigned char buf[4];
+        unsigned char buf[4] = { 0 };
         if (fread(buf, 4, 1, fp) < 1)
         {
           mutt_perror("fread");

@@ -199,10 +199,10 @@ static char *parse_encoded_word(char *str, enum ContentEncoding *enc, char **cha
 static size_t try_block(const char *d, size_t dlen, const char *fromcode,
                         const char *tocode, encoder_t *encoder, size_t *wlen)
 {
-  char buf[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1];
+  char buf[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1] = { 0 };
   const char *ib = NULL;
   char *ob = NULL;
-  size_t ibl, obl;
+  size_t ibl = 0, obl = 0;
   int count, len, len_b, len_q;
 
   if (fromcode)
@@ -291,7 +291,7 @@ static size_t encode_block(char *str, char *buf, size_t buflen, const char *from
   ASSERT(iconv_t_valid(cd));
   const char *ib = buf;
   size_t ibl = buflen;
-  char tmp[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1];
+  char tmp[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1] = { 0 };
   char *ob = tmp;
   size_t obl = sizeof(tmp) - strlen(tocode);
   const size_t n1 = iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl);
@@ -676,7 +676,7 @@ void rfc2047_decode(char **pd)
   char *beg = NULL;                     // Begin of encoded word
   enum ContentEncoding enc = ENC_OTHER; // ENC_BASE64 or ENC_QUOTED_PRINTABLE
   char *charset = NULL;                 // Which charset
-  size_t charsetlen;                    // Length of the charset
+  size_t charsetlen = 0;                // Length of the charset
   char *text = NULL;                    // Encoded text
   size_t textlen = 0;                   // Length of encoded text
 

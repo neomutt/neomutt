@@ -237,7 +237,7 @@ int mutt_socket_readchar(struct Connection *conn, char *c)
  */
 int mutt_socket_readln_d(char *buf, size_t buflen, struct Connection *conn, int dbg)
 {
-  char ch;
+  char ch = 0;
   int i;
 
   for (i = 0; i < buflen - 1; i++)
@@ -327,7 +327,7 @@ void mutt_socket_empty(struct Connection *conn)
  */
 int mutt_socket_buffer_readln_d(struct Buffer *buf, struct Connection *conn, int dbg)
 {
-  char ch;
+  char ch = 0;
   bool has_cr = false;
 
   buf_reset(buf);

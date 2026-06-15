@@ -483,7 +483,7 @@ static void cmd_parse_vanished(struct ImapAccountData *adata, char *s)
  */
 static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
 {
-  unsigned int msn, uid;
+  unsigned int msn = 0, uid = 0;
   struct Email *e = NULL;
   char *flags = NULL;
   int uid_checked = 0;
@@ -669,7 +669,7 @@ static void cmd_parse_list(struct ImapAccountData *adata, char *s)
 {
   struct ImapList *list = NULL;
   struct ImapList lb = { 0 };
-  unsigned int litlen;
+  unsigned int litlen = 0;
 
   if (adata->cmdresult)
     list = adata->cmdresult;

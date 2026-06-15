@@ -573,7 +573,7 @@ static void run_mime_type_query(struct Body *b, struct ConfigSubset *sub)
 {
   FILE *fp = NULL, *fp_err = NULL;
   char *buf = NULL;
-  size_t buflen;
+  size_t buflen = 0;
   pid_t pid;
   struct Buffer *cmd = buf_pool_get();
 

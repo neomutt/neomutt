@@ -218,13 +218,12 @@ size_t mutt_convert_file_from_to(FILE *fp, const struct Slist *fromcodes,
 {
   char **tcode = NULL;
   size_t rc;
-  int cn;
+  int cn = 0;
   struct ListNode *np = NULL;
 
   /* Copy them */
   tcode = MUTT_MEM_CALLOC(tocodes->count, char *);
   np = NULL;
-  cn = 0;
   STAILQ_FOREACH(np, &tocodes->head, entries)
   {
     tcode[cn++] = mutt_str_dup(np->data);

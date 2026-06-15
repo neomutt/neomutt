@@ -140,7 +140,7 @@ static int buf_vaprintf(struct Buffer *buf, const char *fmt, va_list ap)
   size_t doff = buf->dptr - buf->data;
   size_t blen = buf->dsize - doff;
 
-  va_list ap_retry;
+  va_list ap_retry = { 0 };
   va_copy(ap_retry, ap);
 
   int len = vsnprintf(buf->dptr, blen, fmt, ap);
@@ -170,7 +170,7 @@ int buf_printf(struct Buffer *buf, const char *fmt, ...)
   if (!buf || !fmt)
     return -1;
 
-  va_list ap;
+  va_list ap = { 0 };
 
   va_start(ap, fmt);
   buf_reset(buf);
@@ -213,7 +213,7 @@ int buf_add_printf(struct Buffer *buf, const char *fmt, ...)
   if (!buf || !fmt)
     return -1;
 
-  va_list ap;
+  va_list ap = { 0 };
 
   va_start(ap, fmt);
   int len = buf_vaprintf(buf, fmt, ap);

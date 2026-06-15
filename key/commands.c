@@ -821,7 +821,7 @@ enum CommandResult parse_exec(const struct Command *cmd, struct Buffer *line,
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  int ops[128];
+  int ops[128] = { 0 };
   int nops = 0;
   char *function = NULL;
 

@@ -416,7 +416,7 @@ static bool match_tags(struct Pattern *pat, struct TagList *tags)
  */
 static int match_addrlist(struct Pattern *pat, bool match_personal, int n, ...)
 {
-  va_list ap;
+  va_list ap = { 0 };
 
   va_start(ap, n);
   while (n-- > 0)
@@ -520,7 +520,7 @@ bool mutt_is_list_recipient(bool all_addr, struct Envelope *env)
  */
 static int match_user(bool all_addr, int n, ...)
 {
-  va_list ap;
+  va_list ap = { 0 };
 
   va_start(ap, n);
   while (n-- > 0)

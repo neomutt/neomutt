@@ -250,7 +250,7 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
   char charset[256] = { 0 };
 
   bool encoded;
-  int index;
+  int index = 0;
   bool dirty = false; /* set when we may have created empty parameters. */
 
   purge_empty_parameters(pl);

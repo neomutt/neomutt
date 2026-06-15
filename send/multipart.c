@@ -92,7 +92,7 @@ static bool check_boundary(const char *boundary, struct Body *b, int depth)
  */
 void mutt_generate_boundary(struct ParameterList *pl)
 {
-  char rs[MUTT_RANDTAG_LEN + 1];
+  char rs[MUTT_RANDTAG_LEN + 1] = { 0 };
 
   mutt_rand_base32(rs, sizeof(rs) - 1);
   rs[MUTT_RANDTAG_LEN] = 0;

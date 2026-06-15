@@ -89,8 +89,8 @@ static void alarm_handler(int sig)
 static int send_msg(const char *path, struct StringArray *args, const char *msg,
                     char **tempfile, int wait_time)
 {
-  sigset_t set;
-  int st;
+  sigset_t set = { 0 };
+  int st = 0;
   struct SendModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_SEND);
 
   mutt_sig_block_system();

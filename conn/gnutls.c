@@ -316,7 +316,7 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
                              gnutls_certificate_status_t certstat, const char *hostname,
                              int chainidx, int *certerr, int *savedcert)
 {
-  gnutls_x509_crt_t cert;
+  gnutls_x509_crt_t cert = NULL;
 
   *certerr = CERTERR_VALID;
   *savedcert = 0;
@@ -474,8 +474,8 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
                                      const char *hostname, int idx, size_t len)
 {
   struct StringArray carr = ARRAY_HEAD_INITIALIZER;
-  int certerr, savedcert;
-  gnutls_x509_crt_t cert;
+  int certerr = 0, savedcert = 0;
+  gnutls_x509_crt_t cert = NULL;
   struct Buffer *fpbuf = NULL;
   time_t t;
   char datestr[30] = { 0 };
@@ -629,8 +629,8 @@ static int tls_check_certificate(struct Connection *conn)
   gnutls_session_t session = data->session;
   const gnutls_datum_t *cert_list = NULL;
   unsigned int cert_list_size = 0;
-  gnutls_certificate_status_t certstat;
-  int certerr, savedcert, rc = 0;
+  gnutls_certificate_status_t certstat = 0;
+  int certerr = 0, savedcert = 0, rc = 0;
   int max_preauth_pass = -1;
 
   /* tls_verify_peers() calls gnutls_certificate_verify_peers2(),
@@ -710,7 +710,7 @@ static int tls_check_certificate(struct Connection *conn)
 static void tls_get_client_cert(struct Connection *conn)
 {
   struct TlsSockData *data = conn->sockdata;
-  gnutls_x509_crt_t clientcrt;
+  gnutls_x509_crt_t clientcrt = NULL;
   char *cn = NULL;
   size_t cnlen = 0;
   int rc;

@@ -1616,8 +1616,8 @@ char *nm_url_from_query(struct Mailbox *m, char *buf, size_t buflen)
 {
   mutt_debug(LL_DEBUG2, "(%s)\n", buf);
   struct NmMboxData *mdata = nm_mdata_get(m);
-  char url[PATH_MAX + 1024 + 32]; /* path to DB + query + URL "decoration" */
-  int added;
+  char url[PATH_MAX + 1024 + 32] = { 0 }; /* path to DB + query + URL "decoration" */
+  int added = 0;
   bool using_default_data = false;
 
   // No existing data. Try to get a default NmMboxData.
@@ -2317,7 +2317,8 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
   int mh_sync_errors = 0;
   for (int i = 0; i < m->msg_count; i++)
   {
-    char old_file[PATH_MAX], new_file[PATH_MAX];
+    char old_file[PATH_MAX] = { 0 };
+    char new_file[PATH_MAX] = { 0 };
     struct Email *e = m->emails[i];
     if (!e)
       break;
@@ -2327,9 +2328,6 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
       continue;
 
     progress_update(progress, i, -1);
-
-    *old_file = '\0';
-    *new_file = '\0';
 
     if (edata->oldpath)
     {

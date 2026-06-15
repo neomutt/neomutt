@@ -679,7 +679,7 @@ static int reopen_mailbox(struct Mailbox *m)
        * appended at the end; the heuristic is that old messages have then
        * "advanced" towards the beginning of the folder, so we begin the
        * search at index "i" */
-      int j;
+      int j = 0;
       for (j = i; j < old_msg_count; j++)
       {
         if (!e_old[j])

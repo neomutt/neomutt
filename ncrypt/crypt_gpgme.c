@@ -431,7 +431,7 @@ static gpgme_data_t body_to_data_object(struct Body *b, bool convert)
   if (convert)
   {
     int c, hadcr = 0;
-    unsigned char buf[1];
+    unsigned char buf[1] = { 0 };
 
     data = create_gpgme_data();
     rewind(fp_tmp);
@@ -743,7 +743,7 @@ static int set_signer(gpgme_ctx_t ctx, const struct AddressList *al, bool for_sm
   /* Try getting the signing key from the From line */
   if (al)
   {
-    struct Address *a;
+    struct Address *a = NULL;
     TAILQ_FOREACH(a, al, entries)
     {
       if (a->mailbox && set_signer_from_address(ctx, buf_string(a->mailbox), for_smime))
@@ -2000,7 +2000,7 @@ bail:
 int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **b_dec)
 {
   struct State state = { 0 };
-  int is_signed;
+  int is_signed = 0;
   LOFF_T saved_b_offset;
   size_t saved_b_length;
 
@@ -2772,7 +2772,7 @@ int pgp_gpgme_application_handler(struct Body *b, struct State *state)
  */
 int pgp_gpgme_encrypted_handler(struct Body *b, struct State *state)
 {
-  int is_signed;
+  int is_signed = 0;
   int rc = 0;
 
   mutt_debug(LL_DEBUG2, "Entering handler\n");

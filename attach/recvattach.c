@@ -538,7 +538,7 @@ static void query_pipe_attachment(const char *command, FILE *fp, struct Body *b,
 
   if (filter)
   {
-    char warning[PATH_MAX + 256];
+    char warning[PATH_MAX + 256] = { 0 };
     snprintf(warning, sizeof(warning),
              _("WARNING!  You are about to overwrite %s, continue?"), b->filename);
     if (query_yesorno(warning, MUTT_NO) != MUTT_YES)

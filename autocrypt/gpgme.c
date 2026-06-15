@@ -86,7 +86,7 @@ static int export_keydata(gpgme_ctx_t ctx, gpgme_key_t key, struct Buffer *keyda
   int rc = -1;
   gpgme_data_t dh = NULL;
   gpgme_key_t export_keys[2] = { 0 };
-  size_t export_data_len;
+  size_t export_data_len = 0;
 
   if (gpgme_data_new(&dh))
     goto cleanup;

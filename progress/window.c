@@ -77,7 +77,7 @@ static void message_bar(struct MuttWindow *win, int percent, const char *fmt, ..
   if (!fmt || !win || !win->wdata)
     return;
 
-  va_list ap;
+  va_list ap = { 0 };
   char buf[1024] = { 0 };
   struct Buffer *buf2 = buf_pool_get();
   int w = (percent * win->state.cols) / 100;

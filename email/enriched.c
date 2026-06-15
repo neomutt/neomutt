@@ -487,7 +487,7 @@ int text_enriched_handler(struct Body *b_email, struct State *state)
   struct EnrichedState enriched = { 0 };
   wint_t wc = 0;
   int tag_len = 0;
-  wchar_t tag[1024 + 1];
+  wchar_t tag[1024 + 1] = { 0 };
 
   enriched.state = state;
   enriched.wrap_margin = ((state->wraplen > 4) &&

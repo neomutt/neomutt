@@ -412,7 +412,7 @@ int mutt_window_addstr(struct MuttWindow *win, const char *str)
  */
 int mutt_window_printf(struct MuttWindow *win, const char *fmt, ...)
 {
-  va_list ap;
+  va_list ap = { 0 };
   va_start(ap, fmt);
   int rc = vw_printw(stdscr, fmt, ap);
   va_end(ap);

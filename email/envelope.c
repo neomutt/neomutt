@@ -72,7 +72,7 @@ void mutt_env_set_subject(struct Envelope *env, const char *subj)
 
   if (env->subject)
   {
-    regmatch_t match;
+    regmatch_t match = { 0 };
     const struct Regex *c_reply_regex = cs_subset_regex(NeoMutt->sub, "reply_regex");
     if (mutt_regex_capture(c_reply_regex, env->subject, 1, &match))
     {

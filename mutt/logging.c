@@ -264,7 +264,7 @@ int log_disp_file(time_t stamp, const char *file, int line, const char *function
   rc += fprintf(LogFileFP, "[%s]<%c> %s() ", timestamp(stamp),
                 LogLevelAbbr[level + 3], function);
 
-  va_list ap;
+  va_list ap = { 0 };
   va_start(ap, format);
   rc += vfprintf(LogFileFP, format, ap);
   va_end(ap);
@@ -387,7 +387,7 @@ int log_disp_queue(time_t stamp, const char *file, int line, const char *functio
   char buf[LOG_LINE_MAX_LEN] = { 0 };
   int err = errno;
 
-  va_list ap;
+  va_list ap = { 0 };
   va_start(ap, format);
   int rc = vsnprintf(buf, sizeof(buf), format, ap);
   va_end(ap);
@@ -429,7 +429,7 @@ int log_disp_terminal(time_t stamp, const char *file, int line, const char *func
 {
   char buf[LOG_LINE_MAX_LEN] = { 0 };
 
-  va_list ap;
+  va_list ap = { 0 };
   va_start(ap, format);
   int rc = vsnprintf(buf, sizeof(buf), format, ap);
   va_end(ap);

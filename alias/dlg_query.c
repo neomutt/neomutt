@@ -190,7 +190,7 @@ int query_run(const char *s, bool verbose, struct AliasArray *aa,
 {
   FILE *fp = NULL;
   char *buf = NULL;
-  size_t buflen;
+  size_t buflen = 0;
   char *msg = NULL;
   size_t msglen = 0;
   char *tok = NULL;
