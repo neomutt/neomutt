@@ -135,7 +135,8 @@ static void *compr_lz4_compress(ComprHandle *handle, const char *data,
 /**
  * compr_lz4_decompress - Decompress header cache data - Implements ComprOps::decompress() - @ingroup compress_decompress
  */
-static void *compr_lz4_decompress(ComprHandle *handle, const char *cbuf, size_t clen)
+static void *compr_lz4_decompress(ComprHandle *handle, const char *cbuf,
+                                  size_t clen, size_t *dlen)
 {
   if (!handle)
     return NULL;
@@ -153,7 +154,11 @@ static void *compr_lz4_decompress(ComprHandle *handle, const char *cbuf, size_t 
   if (ulen > INT_MAX)
     return NULL; // LCOV_EXCL_LINE
   if (ulen == 0)
+  {
+    if (dlen)
+      *dlen = 0;
     return (void *) cbuf;
+  }
 
   mutt_mem_realloc(&cdata->buf, ulen);
   void *ubuf = cdata->buf;
@@ -161,6 +166,9 @@ static void *compr_lz4_decompress(ComprHandle *handle, const char *cbuf, size_t 
   int rc = LZ4_decompress_safe(data + 4, ubuf, clen - 4, ulen);
   if (rc < 0)
     return NULL;
+
+  if (dlen)
+    *dlen = rc;
 
   return ubuf;
 }

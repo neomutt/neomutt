@@ -100,16 +100,17 @@ struct ComprOps
    * @ingroup compress_api
    *
    * decompress - Decompress header cache data
-   * @param[in] handle Compression handle
-   * @param[in] cbuf   Data to be decompressed
-   * @param[in] clen   Length of the compressed input data
+   * @param[in]  handle Compression handle
+   * @param[in]  cbuf   Data to be decompressed
+   * @param[in]  clen   Length of the compressed input data
+   * @param[out] dlen   Length of the decompressed output data
    * @retval ptr  Success, pointer to decompressed data
    * @retval NULL Otherwise
    *
    * @note This function returns a pointer to data, which will be freed by the
    *       close() function.
    */
-  void *(*decompress)(ComprHandle *handle, const char *cbuf, size_t clen);
+  void *(*decompress)(ComprHandle *handle, const char *cbuf, size_t clen, size_t *dlen);
 
   /**
    * @defgroup compress_close close()
