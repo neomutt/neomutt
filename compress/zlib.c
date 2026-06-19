@@ -133,7 +133,8 @@ static void *compr_zlib_compress(ComprHandle *handle, const char *data,
 /**
  * compr_zlib_decompress - Decompress header cache data - Implements ComprOps::decompress() - @ingroup compress_decompress
  */
-static void *compr_zlib_decompress(ComprHandle *handle, const char *cbuf, size_t clen)
+static void *compr_zlib_decompress(ComprHandle *handle, const char *cbuf,
+                                   size_t clen, size_t *dlen)
 {
   if (!handle)
     return NULL;
@@ -155,6 +156,9 @@ static void *compr_zlib_decompress(ComprHandle *handle, const char *cbuf, size_t
   int rc = uncompress(ubuf, &ulen, cs + 4, clen - 4);
   if (rc != Z_OK)
     return NULL;
+
+  if (dlen)
+    *dlen = ulen;
 
   return ubuf;
 }

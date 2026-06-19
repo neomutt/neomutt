@@ -261,49 +261,64 @@ static void *dump_email(struct HeaderCache *hc, const struct Email *e, int *off,
 
 /**
  * restore_email - Restore an Email from data retrieved from the cache
- * @param d Data retrieved using hcache_fetch_email()
- * @retval ptr Success, the restored header (can't be NULL)
+ * @param d    Data retrieved using hcache_fetch_email()
+ * @param dlen Length of the retrieved data
+ * @retval ptr  Success, the restored header
+ * @retval NULL The entry was truncated or corrupt
  *
  * @note The returned Email must be free'd by caller code with
  *       email_free()
  */
-static struct Email *restore_email(const unsigned char *d)
+static struct Email *restore_email(const unsigned char *d, size_t dlen)
 {
   int off = 0;
   struct Email *e = email_new();
   bool convert = !CharsetIsUtf8;
+  uint32_t packed = 0;
+  uint64_t big = 0;
+  unsigned int num = 0;
 
   off += sizeof(uint32_t);     // skip validate
   off += sizeof(unsigned int); // skip crc
 
-  uint32_t packed = 0;
-  serial_restore_uint32_t(&packed, d, &off);
+  if (!serial_restore_uint32_t(&packed, d, &off, dlen))
+    goto fail;
   email_unpack_flags(e, packed);
 
   packed = 0;
-  serial_restore_uint32_t(&packed, d, &off);
+  if (!serial_restore_uint32_t(&packed, d, &off, dlen))
+    goto fail;
   email_unpack_timezone(e, packed);
 
-  uint64_t big = 0;
-  serial_restore_uint64_t(&big, d, &off);
+  if (!serial_restore_uint64_t(&big, d, &off, dlen))
+    goto fail;
   e->date_sent = big;
 
   big = 0;
-  serial_restore_uint64_t(&big, d, &off);
+  if (!serial_restore_uint64_t(&big, d, &off, dlen))
+    goto fail;
   e->received = big;
 
-  unsigned int num = 0;
-  serial_restore_int(&num, d, &off);
+  if (!serial_restore_int(&num, d, &off, dlen))
+    goto fail;
   e->lines = num;
 
   e->env = mutt_env_new();
-  serial_restore_envelope(e->env, d, &off, convert);
+  if (!serial_restore_envelope(e->env, d, &off, dlen, convert))
+    goto fail;
 
   e->body = mutt_body_new();
-  serial_restore_body(e->body, d, &off, convert);
-  serial_restore_tags(&e->tags, d, &off);
+  if (!serial_restore_body(e->body, d, &off, dlen, convert))
+    goto fail;
+
+  if (!serial_restore_tags(&e->tags, d, &off, dlen))
+    goto fail;
 
   return e;
+
+fail:
+  email_free(&e);
+  return NULL;
 }
 
 /**
@@ -589,8 +604,8 @@ struct HCacheEntry hcache_fetch_email(struct HeaderCache *hc, const char *key,
     goto end;
   }
   int off = 0;
-  serial_restore_uint32_t(&hce.uidvalidity, data, &off);
-  serial_restore_int(&hce.crc, data, &off);
+  serial_restore_uint32_t(&hce.uidvalidity, data, &off, dlen);
+  serial_restore_int(&hce.crc, data, &off, dlen);
   ASSERT((size_t) off == hlen);
   if ((hce.crc != hc->crc) || ((uidvalidity != 0) && (uidvalidity != hce.uidvalidity)))
   {
@@ -600,17 +615,19 @@ struct HCacheEntry hcache_fetch_email(struct HeaderCache *hc, const char *key,
 #ifdef USE_HCACHE_COMPRESSION
   if (hc->compr_ops)
   {
-    void *dblob = hc->compr_ops->decompress(hc->compr_handle,
-                                            (char *) data + hlen, dlen - hlen);
+    size_t ulen = 0;
+    void *dblob = hc->compr_ops->decompress(hc->compr_handle, (char *) data + hlen,
+                                            dlen - hlen, &ulen);
     if (!dblob)
     {
       goto end;
     }
     data = (char *) dblob - hlen; /* restore skips uidvalidity and crc */
+    dlen = hlen + ulen;
   }
 #endif
 
-  hce.email = restore_email(data);
+  hce.email = restore_email(data, dlen);
 
 end:
   free_raw(hc, &to_free);

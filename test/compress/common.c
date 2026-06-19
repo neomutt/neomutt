@@ -122,10 +122,14 @@ static void one_test(const struct ComprOps *compr_ops, short level, size_t size)
   void *copy = MUTT_MEM_MALLOC(clen, char);
   memcpy(copy, cdata, clen);
 
-  void *ddata = compr_ops->decompress(compr_handle, copy, clen);
+  size_t dlen = 0;
+  void *ddata = compr_ops->decompress(compr_handle, copy, clen, &dlen);
   FREE(&copy);
 
   if (!TEST_CHECK(ddata != NULL))
+    return;
+
+  if (!TEST_CHECK(dlen == size))
     return;
 
   if (!TEST_CHECK(memcmp(compress_test_data, ddata, size) == 0))

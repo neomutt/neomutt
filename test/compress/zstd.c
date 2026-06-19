@@ -38,7 +38,7 @@ void test_compress_zstd(void)
 {
   // ComprHandle *open(short level);
   // void *compress(ComprHandle *handle, const char *data, size_t dlen, size_t *clen);
-  // void *decompress(ComprHandle *handle, const char *cbuf, size_t clen);
+  // void *decompress(ComprHandle *handle, const char *cbuf, size_t clen, size_t *dlen);
   // void close(ComprHandle **ptr);
 
   const struct ComprOps *compr_ops = compress_get_ops("zstd");
@@ -48,7 +48,7 @@ void test_compress_zstd(void)
   {
     // Degenerate tests
     TEST_CHECK(compr_ops->compress(NULL, NULL, 0, NULL) == NULL);
-    TEST_CHECK(compr_ops->decompress(NULL, NULL, 0) == NULL);
+    TEST_CHECK(compr_ops->decompress(NULL, NULL, 0, NULL) == NULL);
     ComprHandle *compr_handle = NULL;
     compr_ops->close(NULL);
     TEST_CHECK_(1, "compr_ops->close(NULL)");
@@ -83,7 +83,7 @@ void test_compress_zstd(void)
 
     const char zeroes[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-    void *result = compr_ops->decompress(compr_handle, zeroes, sizeof(zeroes));
+    void *result = compr_ops->decompress(compr_handle, zeroes, sizeof(zeroes), NULL);
     TEST_CHECK(result == NULL);
 
     compr_ops->close(&compr_handle);

@@ -136,7 +136,8 @@ static void *compr_zstd_compress(ComprHandle *handle, const char *data,
 /**
  * compr_zstd_decompress - Decompress header cache data - Implements ComprOps::decompress() - @ingroup compress_decompress
  */
-static void *compr_zstd_decompress(ComprHandle *handle, const char *cbuf, size_t clen)
+static void *compr_zstd_decompress(ComprHandle *handle, const char *cbuf,
+                                   size_t clen, size_t *dlen)
 {
   if (!handle)
     return NULL;
@@ -156,6 +157,9 @@ static void *compr_zstd_decompress(ComprHandle *handle, const char *cbuf, size_t
   size_t rc = ZSTD_decompressDCtx(cdata->dctx, cdata->buf, len, cbuf, clen);
   if (ZSTD_isError(rc))
     return NULL; // LCOV_EXCL_LINE
+
+  if (dlen)
+    *dlen = rc;
 
   return cdata->buf;
 }

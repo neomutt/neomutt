@@ -50,17 +50,17 @@ unsigned char *serial_dump_uint64_t (const uint64_t s,               unsigned ch
 unsigned char *serial_dump_parameter(const struct ParameterList *pl, unsigned char *d, int *off, bool convert);
 unsigned char *serial_dump_stailq   (const struct ListHead *l,       unsigned char *d, int *off, bool convert);
 
-void serial_restore_address  (struct AddressList *al,   const unsigned char *d, int *off, bool convert);
-void serial_restore_body     (struct Body *b,           const unsigned char *d, int *off, bool convert);
-void serial_restore_tags     (struct TagList *tl,       const unsigned char *d, int *off);
-void serial_restore_buffer   (struct Buffer *buf,       const unsigned char *d, int *off, bool convert);
-void serial_restore_char     (char **c,                 const unsigned char *d, int *off, bool convert);
-void serial_restore_envelope (struct Envelope *env,     const unsigned char *d, int *off, bool convert);
-void serial_restore_int      (unsigned int *i,          const unsigned char *d, int *off);
-void serial_restore_uint32_t (uint32_t *s,              const unsigned char *d, int *off);
-void serial_restore_uint64_t (uint64_t *s,              const unsigned char *d, int *off);
-void serial_restore_parameter(struct ParameterList *pl, const unsigned char *d, int *off, bool convert);
-void serial_restore_stailq   (struct ListHead *l,       const unsigned char *d, int *off, bool convert);
+bool serial_restore_address  (struct AddressList *al,   const unsigned char *d, int *off, size_t dlen, bool convert);
+bool serial_restore_body     (struct Body *b,           const unsigned char *d, int *off, size_t dlen, bool convert);
+bool serial_restore_tags     (struct TagList *tl,       const unsigned char *d, int *off, size_t dlen);
+bool serial_restore_buffer   (struct Buffer *buf,       const unsigned char *d, int *off, size_t dlen, bool convert);
+bool serial_restore_char     (char **c,                 const unsigned char *d, int *off, size_t dlen, bool convert);
+bool serial_restore_envelope (struct Envelope *env,     const unsigned char *d, int *off, size_t dlen, bool convert);
+bool serial_restore_int      (unsigned int *i,          const unsigned char *d, int *off, size_t dlen);
+bool serial_restore_uint32_t (uint32_t *s,              const unsigned char *d, int *off, size_t dlen);
+bool serial_restore_uint64_t (uint64_t *s,              const unsigned char *d, int *off, size_t dlen);
+bool serial_restore_parameter(struct ParameterList *pl, const unsigned char *d, int *off, size_t dlen, bool convert);
+bool serial_restore_stailq   (struct ListHead *l,       const unsigned char *d, int *off, size_t dlen, bool convert);
 
 void lazy_realloc(void *ptr, size_t size);
 

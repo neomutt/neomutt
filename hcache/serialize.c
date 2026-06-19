@@ -48,6 +48,22 @@
 #define SERIAL_MAX_LIST_COUNT 1024
 
 /**
+ * serial_in_bounds - Does a read stay within the serialized blob?
+ * @param off  Current offset into the blob
+ * @param need Number of bytes about to be read
+ * @param dlen Total length of the blob
+ * @retval true The read is fully contained in the blob
+ *
+ * The restore helpers walk a blob whose length is only known to the caller.
+ * A truncated or crafted cache entry can claim fields that extend past the
+ * end of the fetched data, so every read is checked against @a dlen first.
+ */
+static bool serial_in_bounds(int off, size_t need, size_t dlen)
+{
+  return (off >= 0) && (need <= dlen) && ((size_t) off <= (dlen - need));
+}
+
+/**
  * lazy_realloc - Reallocate some memory
  * @param[in] ptr Pointer to resize
  * @param[in] size Minimum size
@@ -114,38 +130,59 @@ unsigned char *serial_dump_uint64_t(const uint64_t s, unsigned char *d, int *off
 
 /**
  * serial_restore_int - Unpack an integer from a binary blob
- * @param[in]     i   Integer to write to
- * @param[in]     d   Binary blob to read from
- * @param[in,out] off Offset into the blob
+ * @param[in]     i    Integer to write to
+ * @param[in]     d    Binary blob to read from
+ * @param[in,out] off  Offset into the blob
+ * @param[in]     dlen Length of the binary blob
+ * @retval true  The integer was read
+ * @retval false The read would leave the blob
  */
-void serial_restore_int(unsigned int *i, const unsigned char *d, int *off)
+bool serial_restore_int(unsigned int *i, const unsigned char *d, int *off, size_t dlen)
 {
+  if (!serial_in_bounds(*off, sizeof(int), dlen))
+    return false;
+
   memcpy(i, d + *off, sizeof(int));
   (*off) += sizeof(int);
+  return true;
 }
 
 /**
  * serial_restore_uint32_t - Unpack an uint32_t from a binary blob
- * @param[in]     s   uint32_t to write to
- * @param[in]     d   Binary blob to read from
- * @param[in,out] off Offset into the blob
+ * @param[in]     s    uint32_t to write to
+ * @param[in]     d    Binary blob to read from
+ * @param[in,out] off  Offset into the blob
+ * @param[in]     dlen Length of the binary blob
+ * @retval true  The uint32_t was read
+ * @retval false The read would leave the blob
  */
-void serial_restore_uint32_t(uint32_t *s, const unsigned char *d, int *off)
+bool serial_restore_uint32_t(uint32_t *s, const unsigned char *d, int *off, size_t dlen)
 {
+  if (!serial_in_bounds(*off, sizeof(uint32_t), dlen))
+    return false;
+
   memcpy(s, d + *off, sizeof(uint32_t));
   (*off) += sizeof(uint32_t);
+  return true;
 }
 
 /**
  * serial_restore_uint64_t - Unpack an uint64_t from a binary blob
- * @param[in]     s   uint64_t to write to
- * @param[in]     d   Binary blob to read from
- * @param[in,out] off Offset into the blob
+ * @param[in]     s    uint64_t to write to
+ * @param[in]     d    Binary blob to read from
+ * @param[in,out] off  Offset into the blob
+ * @param[in]     dlen Length of the binary blob
+ * @retval true  The uint64_t was read
+ * @retval false The read would leave the blob
  */
-void serial_restore_uint64_t(uint64_t *s, const unsigned char *d, int *off)
+bool serial_restore_uint64_t(uint64_t *s, const unsigned char *d, int *off, size_t dlen)
 {
+  if (!serial_in_bounds(*off, sizeof(uint64_t), dlen))
+    return false;
+
   memcpy(s, d + *off, sizeof(uint64_t));
   (*off) += sizeof(uint64_t);
+  return true;
 }
 
 /**
@@ -204,18 +241,24 @@ unsigned char *serial_dump_char(const char *c, unsigned char *d, int *off, bool 
  * @param[out]    c       Store the unpacked string here
  * @param[in]     d       Binary blob to read from
  * @param[in,out] off     Offset into the blob
+ * @param[in]     dlen    Length of the binary blob
  * @param[in]     convert If true, the strings will be converted to utf-8
+ * @retval true  The string was read (an empty string yields a NULL @a c)
+ * @retval false The read would leave the blob
  */
-void serial_restore_char(char **c, const unsigned char *d, int *off, bool convert)
+bool serial_restore_char(char **c, const unsigned char *d, int *off, size_t dlen, bool convert)
 {
-  unsigned int size = 0;
-  serial_restore_int(&size, d, off);
+  *c = NULL;
 
-  if ((size == 0) || (size > SERIAL_MAX_CHAR_SIZE))
-  {
-    *c = NULL;
-    return;
-  }
+  unsigned int size = 0;
+  if (!serial_restore_int(&size, d, off, dlen))
+    return false;
+
+  if (size == 0)
+    return true;
+
+  if ((size > SERIAL_MAX_CHAR_SIZE) || !serial_in_bounds(*off, size, dlen))
+    return false;
 
   *c = MUTT_MEM_MALLOC(size, char);
   memcpy(*c, d + *off, size);
@@ -233,6 +276,7 @@ void serial_restore_char(char **c, const unsigned char *d, int *off, bool conver
     }
   }
   *off += size;
+  return true;
 }
 
 /**
@@ -270,42 +314,51 @@ unsigned char *serial_dump_address(const struct AddressList *al,
  * @param[out]    al      Store the unpacked AddressList here
  * @param[in]     d       Binary blob to read from
  * @param[in,out] off     Offset into the blob
+ * @param[in]     dlen    Length of the binary blob
  * @param[in]     convert If true, the strings will be converted from utf-8
+ * @retval true  The AddressList was read
+ * @retval false A read would leave the blob, or the count is out of range
  */
-void serial_restore_address(struct AddressList *al, const unsigned char *d,
-                            int *off, bool convert)
+bool serial_restore_address(struct AddressList *al, const unsigned char *d,
+                            int *off, size_t dlen, bool convert)
 {
   unsigned int counter = 0;
   unsigned int g = 0;
 
-  serial_restore_int(&counter, d, off);
+  if (!serial_restore_int(&counter, d, off, dlen))
+    return false;
 
   if (counter > SERIAL_MAX_LIST_COUNT)
-    return;
+    return false;
 
   while (counter > 0)
   {
     struct Address *a = mutt_addr_new();
+    mutt_addrlist_append(al, a);
 
     a->personal = buf_new(NULL);
-    serial_restore_buffer(a->personal, d, off, convert);
+    if (!serial_restore_buffer(a->personal, d, off, dlen, convert))
+      return false;
     if (buf_is_empty(a->personal))
     {
       buf_free(&a->personal);
     }
 
     a->mailbox = buf_new(NULL);
-    serial_restore_buffer(a->mailbox, d, off, false);
+    if (!serial_restore_buffer(a->mailbox, d, off, dlen, false))
+      return false;
     if (buf_is_empty(a->mailbox))
     {
       buf_free(&a->mailbox);
     }
 
-    serial_restore_int(&g, d, off);
+    if (!serial_restore_int(&g, d, off, dlen))
+      return false;
     a->group = !!g;
-    mutt_addrlist_append(al, a);
     counter--;
   }
+
+  return true;
 }
 
 /**
@@ -341,24 +394,32 @@ unsigned char *serial_dump_stailq(const struct ListHead *l, unsigned char *d,
  * @param[in]     l       List to add to
  * @param[in]     d       Binary blob to read from
  * @param[in,out] off     Offset into the blob
+ * @param[in]     dlen    Length of the binary blob
  * @param[in]     convert If true, the strings will be converted from utf-8
+ * @retval true  The list was read
+ * @retval false A read would leave the blob, or the count is out of range
  */
-void serial_restore_stailq(struct ListHead *l, const unsigned char *d, int *off, bool convert)
+bool serial_restore_stailq(struct ListHead *l, const unsigned char *d, int *off,
+                           size_t dlen, bool convert)
 {
   unsigned int counter = 0;
 
-  serial_restore_int(&counter, d, off);
+  if (!serial_restore_int(&counter, d, off, dlen))
+    return false;
 
   if (counter > SERIAL_MAX_LIST_COUNT)
-    return;
+    return false;
 
   struct ListNode *np = NULL;
   while (counter > 0)
   {
     np = mutt_list_insert_tail(l, NULL);
-    serial_restore_char(&np->data, d, off, convert);
+    if (!serial_restore_char(&np->data, d, off, dlen, convert))
+      return false;
     counter--;
   }
+
+  return true;
 }
 
 /**
@@ -390,22 +451,29 @@ unsigned char *serial_dump_buffer(const struct Buffer *buf, unsigned char *d,
  * @param[out]    buf     Store the unpacked Buffer here
  * @param[in]     d       Binary blob to read from
  * @param[in,out] off     Offset into the blob
+ * @param[in]     dlen    Length of the binary blob
  * @param[in]     convert If true, the strings will be converted from utf-8
+ * @retval true  The Buffer was read
+ * @retval false A read would leave the blob
  */
-void serial_restore_buffer(struct Buffer *buf, const unsigned char *d, int *off, bool convert)
+bool serial_restore_buffer(struct Buffer *buf, const unsigned char *d, int *off,
+                           size_t dlen, bool convert)
 {
   buf_alloc(buf, 1);
 
   unsigned int used = 0;
-  serial_restore_int(&used, d, off);
+  if (!serial_restore_int(&used, d, off, dlen))
+    return false;
   if (used == 0)
-    return;
+    return true;
 
   char *str = NULL;
-  serial_restore_char(&str, d, off, convert);
+  if (!serial_restore_char(&str, d, off, dlen, convert))
+    return false;
 
   buf_addstr(buf, str);
   FREE(&str);
+  return true;
 }
 
 /**
@@ -442,27 +510,35 @@ unsigned char *serial_dump_parameter(const struct ParameterList *pl,
  * @param[in]     pl      Store the unpacked Parameter here
  * @param[in]     d       Binary blob to read from
  * @param[in,out] off     Offset into the blob
+ * @param[in]     dlen    Length of the binary blob
  * @param[in]     convert If true, the strings will be converted from utf-8
+ * @retval true  The Parameter was read
+ * @retval false A read would leave the blob, or the count is out of range
  */
-void serial_restore_parameter(struct ParameterList *pl, const unsigned char *d,
-                              int *off, bool convert)
+bool serial_restore_parameter(struct ParameterList *pl, const unsigned char *d,
+                              int *off, size_t dlen, bool convert)
 {
   unsigned int counter = 0;
 
-  serial_restore_int(&counter, d, off);
+  if (!serial_restore_int(&counter, d, off, dlen))
+    return false;
 
   if (counter > SERIAL_MAX_LIST_COUNT)
-    return;
+    return false;
 
   struct Parameter *np = NULL;
   while (counter > 0)
   {
     np = mutt_param_new();
-    serial_restore_char(&np->attribute, d, off, false);
-    serial_restore_char(&np->value, d, off, convert);
     TAILQ_INSERT_TAIL(pl, np, entries);
+    if (!serial_restore_char(&np->attribute, d, off, dlen, false))
+      return false;
+    if (!serial_restore_char(&np->value, d, off, dlen, convert))
+      return false;
     counter--;
   }
+
+  return true;
 }
 
 /**
@@ -562,33 +638,50 @@ unsigned char *serial_dump_body(const struct Body *b, unsigned char *d, int *off
  * @param[in]     b       Store the unpacked Body here
  * @param[in]     d       Binary blob to read from
  * @param[in,out] off     Offset into the blob
+ * @param[in]     dlen    Length of the binary blob
  * @param[in]     convert If true, the strings will be converted from utf-8
+ * @retval true  The Body was read
+ * @retval false A read would leave the blob
  */
-void serial_restore_body(struct Body *b, const unsigned char *d, int *off, bool convert)
+bool serial_restore_body(struct Body *b, const unsigned char *d, int *off,
+                         size_t dlen, bool convert)
 {
   uint32_t packed = 0;
-  serial_restore_uint32_t(&packed, d, off);
+  if (!serial_restore_uint32_t(&packed, d, off, dlen))
+    return false;
   body_unpack_flags(b, packed);
 
   uint64_t big = 0;
-  serial_restore_uint64_t(&big, d, off);
+  if (!serial_restore_uint64_t(&big, d, off, dlen))
+    return false;
   b->offset = big;
 
   big = 0;
-  serial_restore_uint64_t(&big, d, off);
+  if (!serial_restore_uint64_t(&big, d, off, dlen))
+    return false;
   b->length = big;
 
-  serial_restore_char(&b->xtype, d, off, false);
-  serial_restore_char(&b->subtype, d, off, false);
+  if (!serial_restore_char(&b->xtype, d, off, dlen, false))
+    return false;
+  if (!serial_restore_char(&b->subtype, d, off, dlen, false))
+    return false;
 
   TAILQ_INIT(&b->parameter);
-  serial_restore_parameter(&b->parameter, d, off, convert);
+  if (!serial_restore_parameter(&b->parameter, d, off, dlen, convert))
+    return false;
 
-  serial_restore_char(&b->description, d, off, convert);
-  serial_restore_char(&b->content_id, d, off, convert);
-  serial_restore_char(&b->form_name, d, off, convert);
-  serial_restore_char(&b->filename, d, off, convert);
-  serial_restore_char(&b->d_filename, d, off, convert);
+  if (!serial_restore_char(&b->description, d, off, dlen, convert))
+    return false;
+  if (!serial_restore_char(&b->content_id, d, off, dlen, convert))
+    return false;
+  if (!serial_restore_char(&b->form_name, d, off, dlen, convert))
+    return false;
+  if (!serial_restore_char(&b->filename, d, off, dlen, convert))
+    return false;
+  if (!serial_restore_char(&b->d_filename, d, off, dlen, convert))
+    return false;
+
+  return true;
 }
 
 /**
@@ -645,31 +738,43 @@ unsigned char *serial_dump_envelope(const struct Envelope *env,
  * @param[in]     env     Store the unpacked Envelope here
  * @param[in]     d       Binary blob to read from
  * @param[in,out] off     Offset into the blob
+ * @param[in]     dlen    Length of the binary blob
  * @param[in]     convert If true, the strings will be converted from utf-8
+ * @retval true  The Envelope was read
+ * @retval false A read would leave the blob
  */
-void serial_restore_envelope(struct Envelope *env, const unsigned char *d, int *off, bool convert)
+bool serial_restore_envelope(struct Envelope *env, const unsigned char *d,
+                             int *off, size_t dlen, bool convert)
 {
   int real_subj_off = 0;
 
-  serial_restore_address(&env->return_path, d, off, convert);
-  serial_restore_address(&env->from, d, off, convert);
-  serial_restore_address(&env->to, d, off, convert);
-  serial_restore_address(&env->cc, d, off, convert);
-  serial_restore_address(&env->bcc, d, off, convert);
-  serial_restore_address(&env->sender, d, off, convert);
-  serial_restore_address(&env->reply_to, d, off, convert);
-  serial_restore_address(&env->mail_followup_to, d, off, convert);
+  if (!serial_restore_address(&env->return_path, d, off, dlen, convert) ||
+      !serial_restore_address(&env->from, d, off, dlen, convert) ||
+      !serial_restore_address(&env->to, d, off, dlen, convert) ||
+      !serial_restore_address(&env->cc, d, off, dlen, convert) ||
+      !serial_restore_address(&env->bcc, d, off, dlen, convert) ||
+      !serial_restore_address(&env->sender, d, off, dlen, convert) ||
+      !serial_restore_address(&env->reply_to, d, off, dlen, convert) ||
+      !serial_restore_address(&env->mail_followup_to, d, off, dlen, convert))
+  {
+    return false;
+  }
 
-  serial_restore_char(&env->list_post, d, off, convert);
-  serial_restore_char(&env->list_subscribe, d, off, convert);
-  serial_restore_char(&env->list_unsubscribe, d, off, convert);
+  if (!serial_restore_char(&env->list_post, d, off, dlen, convert) ||
+      !serial_restore_char(&env->list_subscribe, d, off, dlen, convert) ||
+      !serial_restore_char(&env->list_unsubscribe, d, off, dlen, convert))
+  {
+    return false;
+  }
 
   const bool c_auto_subscribe = cs_subset_bool(NeoMutt->sub, "auto_subscribe");
   if (c_auto_subscribe)
     mutt_auto_subscribe(env->list_post);
 
-  serial_restore_char((char **) &env->subject, d, off, convert);
-  serial_restore_int((unsigned int *) (&real_subj_off), d, off);
+  if (!serial_restore_char((char **) &env->subject, d, off, dlen, convert))
+    return false;
+  if (!serial_restore_int((unsigned int *) (&real_subj_off), d, off, dlen))
+    return false;
 
   size_t len = mutt_str_len(env->subject);
   if ((real_subj_off < 0) || (real_subj_off >= len))
@@ -677,21 +782,33 @@ void serial_restore_envelope(struct Envelope *env, const unsigned char *d, int *
   else
     *(char **) &env->real_subj = env->subject + real_subj_off;
 
-  serial_restore_char(&env->message_id, d, off, false);
-  serial_restore_char(&env->supersedes, d, off, false);
-  serial_restore_char(&env->date, d, off, false);
-  serial_restore_char(&env->x_label, d, off, convert);
-  serial_restore_char(&env->organization, d, off, convert);
+  if (!serial_restore_char(&env->message_id, d, off, dlen, false) ||
+      !serial_restore_char(&env->supersedes, d, off, dlen, false) ||
+      !serial_restore_char(&env->date, d, off, dlen, false) ||
+      !serial_restore_char(&env->x_label, d, off, dlen, convert) ||
+      !serial_restore_char(&env->organization, d, off, dlen, convert))
+  {
+    return false;
+  }
 
-  serial_restore_buffer(&env->spam, d, off, convert);
+  if (!serial_restore_buffer(&env->spam, d, off, dlen, convert))
+    return false;
 
-  serial_restore_stailq(&env->references, d, off, false);
-  serial_restore_stailq(&env->in_reply_to, d, off, false);
-  serial_restore_stailq(&env->userhdrs, d, off, convert);
+  if (!serial_restore_stailq(&env->references, d, off, dlen, false) ||
+      !serial_restore_stailq(&env->in_reply_to, d, off, dlen, false) ||
+      !serial_restore_stailq(&env->userhdrs, d, off, dlen, convert))
+  {
+    return false;
+  }
 
-  serial_restore_char(&env->xref, d, off, false);
-  serial_restore_char(&env->followup_to, d, off, false);
-  serial_restore_char(&env->x_comment_to, d, off, convert);
+  if (!serial_restore_char(&env->xref, d, off, dlen, false) ||
+      !serial_restore_char(&env->followup_to, d, off, dlen, false) ||
+      !serial_restore_char(&env->x_comment_to, d, off, dlen, convert))
+  {
+    return false;
+  }
+
+  return true;
 }
 
 /**
@@ -725,21 +842,28 @@ unsigned char *serial_dump_tags(const struct TagList *tl, unsigned char *d, int 
  * @param[in]     tl   TagList to unpack
  * @param[in]     d    Binary blob to add to
  * @param[in,out] off  Offset into the blob
+ * @param[in]     dlen Length of the binary blob
+ * @retval true  The TagList was read
+ * @retval false A read would leave the blob, or the count is out of range
  */
-void serial_restore_tags(struct TagList *tl, const unsigned char *d, int *off)
+bool serial_restore_tags(struct TagList *tl, const unsigned char *d, int *off, size_t dlen)
 {
   unsigned int counter = 0;
 
-  serial_restore_int(&counter, d, off);
+  if (!serial_restore_int(&counter, d, off, dlen))
+    return false;
 
   if (counter > SERIAL_MAX_LIST_COUNT)
-    return;
+    return false;
 
   while (counter > 0)
   {
     char *name = NULL;
-    serial_restore_char(&name, d, off, false);
+    if (!serial_restore_char(&name, d, off, dlen, false))
+      return false;
     driver_tags_add(tl, name);
     counter--;
   }
+
+  return true;
 }
