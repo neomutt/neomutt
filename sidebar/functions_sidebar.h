@@ -55,7 +55,7 @@ typedef int (*sidebar_function_t)(struct SidebarFunctionData *fdata, const struc
  */
 struct SidebarFunction
 {
-  int op;                      ///< Op code, e.g. OP_SIDEBAR_NEXT
+  int op;                      ///< Op code, e.g. OP_SIDEBAR_SELECT_NEXT_ENTRY
   sidebar_function_t function; ///< Function to call
 };
 
