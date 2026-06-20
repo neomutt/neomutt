@@ -672,6 +672,33 @@ static MenuRedrawFlags selection_redraw_flags(size_t count)
 }
 
 /**
+ * resolve_attachment - Advance the Attachment List selection after an action
+ * @param menu  Menu
+ * @param sub   Config subset
+ * @param index Original menu index, before the action
+ * @param num   Number of selected attachment entries operated on
+ *
+ * If `$resolve` is set, move the selection on by the number of items that were
+ * acted upon.  Overruns are silently capped at the end of the list.
+ *
+ * Nothing is moved when operating on a tag-prefix selection.
+ */
+static void resolve_attachment(struct Menu *menu, const struct ConfigSubset *sub,
+                               int index, int num)
+{
+  if (!menu || menu->tag_prefix || (num <= 0))
+    return;
+
+  const bool c_resolve = cs_subset_bool(sub, "resolve");
+  if (!c_resolve)
+    return;
+
+  const int new_index = index + num;
+  if (new_index < menu->max)
+    menu_set_index(menu, new_index);
+}
+
+/**
  * move_attachment - Move attachments in the attachment list
  * @param shared Shared compose data
  * @param up     If true, move up, otherwise move down
@@ -1335,10 +1362,12 @@ static int op_attach_edit_content_id(struct ComposeFunctionData *fdata,
 
   int rc = FR_NO_ACTION;
   struct Menu *menu = shared->adata->menu;
+  const int index = menu_get_index(menu);
   struct Buffer *buf = buf_pool_get();
   struct Buffer *cid = buf_pool_get();
   struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
   ba_add_selection(&ba, actx, menu, menu->tag_prefix, event->count);
+  const int num = ARRAY_SIZE(&ba);
 
   struct AttachPtr *cur_att = current_attachment(actx, menu);
 
@@ -1385,6 +1414,7 @@ static int op_attach_edit_content_id(struct ComposeFunctionData *fdata,
       if (changed)
       {
         menu_queue_redraw(menu, selection_redraw_flags(ARRAY_SIZE(&ba)));
+        resolve_attachment(menu, shared->sub, index, num);
         notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
         exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
         rc = FR_SUCCESS;
@@ -1420,6 +1450,7 @@ static int op_attach_edit_description(struct ComposeFunctionData *fdata,
 
   int rc = FR_NO_ACTION;
   struct Menu *menu = shared->adata->menu;
+  const int index = menu_get_index(menu);
   struct Buffer *buf = buf_pool_get();
   struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
 
@@ -1430,6 +1461,7 @@ static int op_attach_edit_description(struct ComposeFunctionData *fdata,
   if (mw_get_field("Description: ", buf, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) == 0)
   {
     ba_add_selection(&ba, actx, menu, menu->tag_prefix, event->count);
+    const int num = ARRAY_SIZE(&ba);
 
     bool changed = false;
     struct Body **bp = NULL;
@@ -1445,6 +1477,7 @@ static int op_attach_edit_description(struct ComposeFunctionData *fdata,
     if (changed)
     {
       menu_queue_redraw(menu, selection_redraw_flags(ARRAY_SIZE(&ba)));
+      resolve_attachment(menu, shared->sub, index, num);
       exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
       rc = FR_SUCCESS;
     }
@@ -1468,6 +1501,7 @@ static int op_attach_edit_encoding(struct ComposeFunctionData *fdata,
 
   int rc = FR_NO_ACTION;
   struct Menu *menu = shared->adata->menu;
+  const int index = menu_get_index(menu);
   struct Buffer *buf = buf_pool_get();
   struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
 
@@ -1482,6 +1516,7 @@ static int op_attach_edit_encoding(struct ComposeFunctionData *fdata,
     if ((enc != ENC_OTHER) && (enc != ENC_UUENCODED))
     {
       ba_add_selection(&ba, actx, menu, menu->tag_prefix, event->count);
+      const int num = ARRAY_SIZE(&ba);
 
       bool changed = false;
       struct Body **bp = NULL;
@@ -1497,6 +1532,7 @@ static int op_attach_edit_encoding(struct ComposeFunctionData *fdata,
       if (changed)
       {
         menu_queue_redraw(menu, selection_redraw_flags(ARRAY_SIZE(&ba)));
+        resolve_attachment(menu, shared->sub, index, num);
         notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
         mutt_clear_error();
         exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
@@ -1528,6 +1564,7 @@ static int op_attach_edit_language(struct ComposeFunctionData *fdata,
 
   int rc = FR_NO_ACTION;
   struct Menu *menu = shared->adata->menu;
+  const int index = menu_get_index(menu);
   struct Buffer *buf = buf_pool_get();
   struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
   struct AttachPtr *cur_att = current_attachment(actx, menu);
@@ -1536,6 +1573,7 @@ static int op_attach_edit_language(struct ComposeFunctionData *fdata,
   if (mw_get_field("Content-Language: ", buf, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) == 0)
   {
     ba_add_selection(&ba, actx, menu, menu->tag_prefix, event->count);
+    const int num = ARRAY_SIZE(&ba);
 
     bool changed = false;
     struct Body **bp = NULL;
@@ -1551,6 +1589,7 @@ static int op_attach_edit_language(struct ComposeFunctionData *fdata,
     if (changed)
     {
       menu_queue_redraw(menu, selection_redraw_flags(ARRAY_SIZE(&ba)));
+      resolve_attachment(menu, shared->sub, index, num);
       notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
       exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
       rc = FR_SUCCESS;
@@ -1580,8 +1619,10 @@ static int op_attach_edit_mime(struct ComposeFunctionData *fdata, const struct K
 
   int rc = FR_NO_ACTION;
   struct Menu *menu = shared->adata->menu;
+  const int index = menu_get_index(menu);
   struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
   ba_add_selection(&ba, actx, menu, menu->tag_prefix, event->count);
+  const int num = ARRAY_SIZE(&ba);
   if (ARRAY_EMPTY(&ba))
     goto done;
 
@@ -1599,6 +1640,7 @@ static int op_attach_edit_mime(struct ComposeFunctionData *fdata, const struct K
     goto done;
 
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
+  resolve_attachment(menu, shared->sub, index, num);
   exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
 
 done:
@@ -1642,8 +1684,10 @@ static int op_attach_filter(struct ComposeFunctionData *fdata, const struct KeyE
     return FR_ERROR;
 
   struct Menu *menu = shared->adata->menu;
+  const int index = menu_get_index(menu);
   struct AttachPtrArray aa = ARRAY_HEAD_INITIALIZER;
   aa_add_selection(&aa, actx, menu, menu->tag_prefix, event->count);
+  const int num = ARRAY_SIZE(&aa);
   struct AttachPtr **app = NULL;
   ARRAY_FOREACH(app, &aa)
   {
@@ -1661,6 +1705,7 @@ static int op_attach_filter(struct ComposeFunctionData *fdata, const struct KeyE
   {
     menu_queue_redraw(menu, selection_redraw_flags(ARRAY_SIZE(&aa)));
   }
+  resolve_attachment(menu, shared->sub, index, num);
   ARRAY_FREE(&aa);
   notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
@@ -1680,8 +1725,10 @@ static int op_attach_get_attachment(struct ComposeFunctionData *fdata,
 
   int rc = FR_ERROR;
   struct Menu *menu = shared->adata->menu;
+  const int index = menu_get_index(menu);
   struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
   ba_add_selection(&ba, actx, menu, menu->tag_prefix, event->count);
+  const int num = ARRAY_SIZE(&ba);
   if (ARRAY_EMPTY(&ba))
     goto done;
 
@@ -1701,6 +1748,7 @@ static int op_attach_get_attachment(struct ComposeFunctionData *fdata,
   if (got_attachment)
   {
     menu_queue_redraw(menu, MENU_REDRAW_FULL);
+    resolve_attachment(menu, shared->sub, index, num);
     rc = FR_SUCCESS;
   }
 
@@ -2000,8 +2048,10 @@ static int op_attach_print(struct ComposeFunctionData *fdata, const struct KeyEv
     return FR_ERROR;
 
   struct Menu *menu = shared->adata->menu;
+  const int index = menu_get_index(menu);
   struct AttachPtrArray aa = ARRAY_HEAD_INITIALIZER;
   aa_add_selection(&aa, actx, menu, menu->tag_prefix, event->count);
+  const int num = ARRAY_SIZE(&aa);
   struct AttachPtr **app = NULL;
   ARRAY_FOREACH(app, &aa)
   {
@@ -2015,6 +2065,7 @@ static int op_attach_print(struct ComposeFunctionData *fdata, const struct KeyEv
 
   mutt_print_attachment_list(&aa);
   ARRAY_FREE(&aa);
+  resolve_attachment(menu, shared->sub, index, num);
   /* no send2hook, since this doesn't modify the message */
   return FR_SUCCESS;
 }
@@ -2061,8 +2112,10 @@ static int op_attach_save(struct ComposeFunctionData *fdata, const struct KeyEve
     return FR_ERROR;
 
   struct Menu *menu = shared->adata->menu;
+  const int index = menu_get_index(menu);
   struct AttachPtrArray aa = ARRAY_HEAD_INITIALIZER;
   aa_add_selection(&aa, actx, menu, menu->tag_prefix, event->count);
+  const int num = ARRAY_SIZE(&aa);
   struct AttachPtr **app = NULL;
   ARRAY_FOREACH(app, &aa)
   {
@@ -2076,6 +2129,7 @@ static int op_attach_save(struct ComposeFunctionData *fdata, const struct KeyEve
 
   mutt_save_attachment_list(&aa, NULL, menu);
   ARRAY_FREE(&aa);
+  resolve_attachment(menu, shared->sub, index, num);
   /* no send2hook, since this doesn't modify the message */
   return FR_SUCCESS;
 }
@@ -2094,8 +2148,10 @@ static int op_attach_toggle_disposition(struct ComposeFunctionData *fdata,
 
   int rc = FR_NO_ACTION;
   struct Menu *menu = shared->adata->menu;
+  const int index = menu_get_index(menu);
   struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
   ba_add_selection(&ba, actx, menu, menu->tag_prefix, event->count);
+  const int num = ARRAY_SIZE(&ba);
 
   struct Body **bp = NULL;
   ARRAY_FOREACH(bp, &ba)
@@ -2105,7 +2161,10 @@ static int op_attach_toggle_disposition(struct ComposeFunctionData *fdata,
   }
 
   if (rc == FR_SUCCESS)
+  {
     menu_queue_redraw(menu, selection_redraw_flags(ARRAY_SIZE(&ba)));
+    resolve_attachment(menu, shared->sub, index, num);
+  }
 
   ARRAY_FREE(&ba);
   notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
@@ -2125,8 +2184,10 @@ static int op_attach_toggle_recode(struct ComposeFunctionData *fdata,
 
   int rc = FR_NO_ACTION;
   struct Menu *menu = shared->adata->menu;
+  const int index = menu_get_index(menu);
   struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
   ba_add_selection(&ba, actx, menu, menu->tag_prefix, event->count);
+  const int num = ARRAY_SIZE(&ba);
 
   struct Body **bp = NULL;
   ARRAY_FOREACH(bp, &ba)
@@ -2159,6 +2220,7 @@ static int op_attach_toggle_recode(struct ComposeFunctionData *fdata,
   }
 
   menu_queue_redraw(menu, selection_redraw_flags(ARRAY_SIZE(&ba)));
+  resolve_attachment(menu, shared->sub, index, num);
   ARRAY_FREE(&ba);
   exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
   return FR_SUCCESS;
@@ -2177,8 +2239,10 @@ static int op_attach_toggle_unlink(struct ComposeFunctionData *fdata,
 
   int rc = FR_NO_ACTION;
   struct Menu *menu = shared->adata->menu;
+  const int index = menu_get_index(menu);
   struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
   ba_add_selection(&ba, actx, menu, menu->tag_prefix, event->count);
+  const int num = ARRAY_SIZE(&ba);
 
   struct Body **bp = NULL;
   ARRAY_FOREACH(bp, &ba)
@@ -2188,7 +2252,10 @@ static int op_attach_toggle_unlink(struct ComposeFunctionData *fdata,
   }
 
   if (rc == FR_SUCCESS)
+  {
     menu_queue_redraw(menu, MENU_REDRAW_INDEX);
+    resolve_attachment(menu, shared->sub, index, num);
+  }
 
   ARRAY_FREE(&ba);
   /* No send2hook since this doesn't change the message. */
@@ -2271,8 +2338,10 @@ static int op_attach_update_encoding(struct ComposeFunctionData *fdata,
 
   int rc = FR_NO_ACTION;
   struct Menu *menu = shared->adata->menu;
+  const int index = menu_get_index(menu);
   struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
   ba_add_selection(&ba, actx, menu, menu->tag_prefix, event->count);
+  const int num = ARRAY_SIZE(&ba);
   if (ARRAY_EMPTY(&ba))
     goto done;
 
@@ -2283,6 +2352,7 @@ static int op_attach_update_encoding(struct ComposeFunctionData *fdata,
   }
 
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
+  resolve_attachment(menu, shared->sub, index, num);
   notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
   rc = FR_SUCCESS;

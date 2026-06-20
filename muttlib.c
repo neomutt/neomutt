@@ -537,10 +537,10 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
     if (directory)
     {
       switch (mw_multi_choice(
-              /* L10N: Means "The path you specified as the destination file is a directory."
+          /* L10N: Means "The path you specified as the destination file is a directory."
                  See the msgid "Save to file: " (alias.c, recvattach.c)
                  These three letters correspond to the choices in the string.  */
-            _("File is a directory, save under it: (y)es, (n)o, (a)ll?"), _("yna")))
+          _("File is a directory, save under it: (y)es, (n)o, (a)ll?"), _("yna")))
       {
         case 3: /* all */
           mutt_str_replace(directory, buf_string(fname));
