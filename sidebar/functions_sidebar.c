@@ -235,6 +235,173 @@ static struct SbEntry **sb_prev_new(struct SidebarWindowData *wdata, size_t begi
   return prev;
 }
 
+/**
+ * sb_screen_row_index - Find the entry shown at a given row of the visible page
+ * @param wdata      Sidebar data
+ * @param wanted_row Row within the page (0 = top)
+ * @retval num Index into wdata->entries
+ * @retval -1  No entry found
+ *
+ * If the requested row is beyond the last visible entry, the last visible
+ * entry on the page is returned.
+ */
+static int sb_screen_row_index(struct SidebarWindowData *wdata, int wanted_row)
+{
+  if ((wdata->top_index < 0) || (wanted_row < 0))
+    return -1;
+
+  const int page_size = wdata->win->state.rows;
+  int row = 0;
+  int last = -1;
+
+  struct SbEntry **sbep = NULL;
+  ARRAY_FOREACH_FROM(sbep, &wdata->entries, wdata->top_index)
+  {
+    if (row >= page_size)
+      break;
+    if ((*sbep)->is_hidden)
+      continue;
+
+    last = ARRAY_FOREACH_IDX_sbep;
+    if (row == wanted_row)
+      return last;
+    row++;
+  }
+
+  return last; // clamp to the last visible entry on the page
+}
+
+/**
+ * sb_index_visible_before - Find the entry N unhidden entries before another
+ * @param wdata Sidebar data
+ * @param index Starting index
+ * @param count Number of unhidden entries to move up
+ * @retval num Index into wdata->entries (capped at the first unhidden entry)
+ */
+static int sb_index_visible_before(struct SidebarWindowData *wdata, int index, int count)
+{
+  int top = index;
+  for (int i = 0; i < count; i++)
+  {
+    int prev = -1;
+    struct SbEntry **sbep = NULL;
+    ARRAY_FOREACH_TO(sbep, &wdata->entries, top)
+    {
+      if (!(*sbep)->is_hidden)
+        prev = ARRAY_FOREACH_IDX_sbep;
+    }
+
+    if (prev < 0)
+      break;
+    top = prev;
+  }
+
+  return top;
+}
+
+/**
+ * sb_index_visible_after - Find the entry N unhidden entries after another
+ * @param wdata Sidebar data
+ * @param index Starting index
+ * @param count Number of unhidden entries to move down
+ * @retval num Index into wdata->entries (capped at the last unhidden entry)
+ */
+static int sb_index_visible_after(struct SidebarWindowData *wdata, int index, int count)
+{
+  int pos = index;
+  for (int i = 0; i < count; i++)
+  {
+    int next = -1;
+    struct SbEntry **sbep = NULL;
+    ARRAY_FOREACH_FROM(sbep, &wdata->entries, pos + 1)
+    {
+      if (!(*sbep)->is_hidden)
+      {
+        next = ARRAY_FOREACH_IDX_sbep;
+        break;
+      }
+    }
+
+    if (next < 0)
+      break;
+    pos = next;
+  }
+
+  return pos;
+}
+
+/**
+ * sb_last_visible - Find the last unhidden entry
+ * @param wdata Sidebar data
+ * @retval num Index into wdata->entries
+ * @retval -1  No visible entry found
+ */
+static int sb_last_visible(struct SidebarWindowData *wdata)
+{
+  int last = -1;
+  struct SbEntry **sbep = NULL;
+  ARRAY_FOREACH(sbep, &wdata->entries)
+  {
+    if (!(*sbep)->is_hidden)
+      last = ARRAY_FOREACH_IDX_sbep;
+  }
+
+  return last;
+}
+
+/**
+ * sb_scroll_view - Scroll the viewport, dragging the selection into view
+ * @param fdata Sidebar function data
+ * @param delta Number of visible entries to scroll (negative = up)
+ * @retval enum #FunctionRetval
+ *
+ * Move the viewport (top_index) by @a delta visible entries.  The selection
+ * (highlight) is left unchanged unless it would fall off the screen, in which
+ * case it is dragged to the nearest visible row.  This mirrors the Menu.
+ */
+static int sb_scroll_view(struct SidebarFunctionData *fdata, int delta)
+{
+  struct SidebarWindowData *wdata = fdata->wdata;
+  if (!mutt_window_is_visible(wdata->win))
+    return FR_NO_ACTION;
+
+  if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0) || (wdata->top_index < 0))
+    return FR_NO_ACTION;
+
+  const int page_size = wdata->win->state.rows;
+
+  int new_top;
+  if (delta < 0)
+    new_top = sb_index_visible_before(wdata, wdata->top_index, -delta);
+  else
+    new_top = sb_index_visible_after(wdata, wdata->top_index, delta);
+
+  /* Tie the last entry to the bottom of the screen (don't scroll into space) */
+  const int last = sb_last_visible(wdata);
+  if (last >= 0)
+  {
+    const int max_top = sb_index_visible_before(wdata, last, page_size - 1);
+    if (new_top > max_top)
+      new_top = max_top;
+  }
+
+  if (new_top == wdata->top_index)
+    return FR_NO_ACTION;
+
+  wdata->top_index = new_top;
+
+  /* Drag the selection into the visible range */
+  const int first = sb_screen_row_index(wdata, 0);
+  const int bottom = sb_screen_row_index(wdata, page_size - 1);
+  if ((first >= 0) && (wdata->hil_index < first))
+    wdata->hil_index = first;
+  else if ((bottom >= 0) && (wdata->hil_index > bottom))
+    wdata->hil_index = bottom;
+
+  wdata->win->actions |= WA_RECALC;
+  return FR_SUCCESS;
+}
+
 // -----------------------------------------------------------------------------
 
 /**
@@ -375,68 +542,6 @@ int op_sidebar_open(struct SidebarFunctionData *fdata, const struct KeyEvent *ev
 }
 
 /**
- * op_sidebar_page_down - Selects the first entry in the next page of mailboxes - Implements ::sidebar_function_t - @ingroup sidebar_function_api
- */
-int op_sidebar_page_down(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
-{
-  struct SidebarWindowData *wdata = fdata->wdata;
-  if (!mutt_window_is_visible(wdata->win))
-    return FR_NO_ACTION;
-
-  if (ARRAY_EMPTY(&wdata->entries) || (wdata->bot_index < 0))
-    return FR_NO_ACTION;
-
-  int orig_hil_index = wdata->hil_index;
-  const int page_size = wdata->win->state.rows;
-  const int count = MAX(event->count, 1);
-
-  if (!sb_next_n(wdata, count * page_size))
-    return FR_NO_ACTION;
-
-  /* If we landed on a hidden entry, go up to the last unhidden one */
-  if ((*ARRAY_GET(&wdata->entries, wdata->hil_index))->is_hidden)
-    sb_prev(wdata);
-
-  if (orig_hil_index == wdata->hil_index)
-    return FR_NO_ACTION;
-
-  wdata->repage = true;
-  wdata->win->actions |= WA_RECALC;
-  return FR_SUCCESS;
-}
-
-/**
- * op_sidebar_page_up - Selects the last entry in the previous page of mailboxes - Implements ::sidebar_function_t - @ingroup sidebar_function_api
- */
-int op_sidebar_page_up(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
-{
-  struct SidebarWindowData *wdata = fdata->wdata;
-  if (!mutt_window_is_visible(wdata->win))
-    return FR_NO_ACTION;
-
-  if (ARRAY_EMPTY(&wdata->entries) || (wdata->top_index < 0))
-    return FR_NO_ACTION;
-
-  int orig_hil_index = wdata->hil_index;
-  const int page_size = wdata->win->state.rows;
-  const int count = MAX(event->count, 1);
-
-  if (!sb_prev_n(wdata, count * page_size))
-    return FR_NO_ACTION;
-
-  /* If we landed on a hidden entry, go down to the last unhidden one */
-  if ((*ARRAY_GET(&wdata->entries, wdata->hil_index))->is_hidden)
-    sb_next(wdata);
-
-  if (orig_hil_index == wdata->hil_index)
-    return FR_NO_ACTION;
-
-  wdata->repage = true;
-  wdata->win->actions |= WA_RECALC;
-  return FR_SUCCESS;
-}
-
-/**
  * op_sidebar_prev - Selects the previous unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
 int op_sidebar_prev(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
@@ -509,6 +614,181 @@ static int op_sidebar_prev_new(struct SidebarFunctionData *fdata, const struct K
 }
 
 /**
+ * op_sidebar_select_page_top - Selects the entry at the top of the visible page - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+static int op_sidebar_select_page_top(struct SidebarFunctionData *fdata,
+                                      const struct KeyEvent *event)
+{
+  struct SidebarWindowData *wdata = fdata->wdata;
+  if (!mutt_window_is_visible(wdata->win))
+    return FR_NO_ACTION;
+
+  if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0) || (wdata->top_index < 0))
+    return FR_NO_ACTION;
+
+  const int index = sb_screen_row_index(wdata, 0);
+  if ((index < 0) || (index == wdata->hil_index))
+    return FR_NO_ACTION;
+
+  wdata->hil_index = index;
+  wdata->win->actions |= WA_RECALC;
+  return FR_SUCCESS;
+}
+
+/**
+ * op_sidebar_select_page_middle - Selects the entry at the middle of the visible page - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+static int op_sidebar_select_page_middle(struct SidebarFunctionData *fdata,
+                                         const struct KeyEvent *event)
+{
+  struct SidebarWindowData *wdata = fdata->wdata;
+  if (!mutt_window_is_visible(wdata->win))
+    return FR_NO_ACTION;
+
+  if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0) || (wdata->top_index < 0))
+    return FR_NO_ACTION;
+
+  const int index = sb_screen_row_index(wdata, wdata->win->state.rows / 2);
+  if ((index < 0) || (index == wdata->hil_index))
+    return FR_NO_ACTION;
+
+  wdata->hil_index = index;
+  wdata->win->actions |= WA_RECALC;
+  return FR_SUCCESS;
+}
+
+/**
+ * op_sidebar_select_page_bottom - Selects the entry at the bottom of the visible page - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+static int op_sidebar_select_page_bottom(struct SidebarFunctionData *fdata,
+                                         const struct KeyEvent *event)
+{
+  struct SidebarWindowData *wdata = fdata->wdata;
+  if (!mutt_window_is_visible(wdata->win))
+    return FR_NO_ACTION;
+
+  if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0) || (wdata->top_index < 0))
+    return FR_NO_ACTION;
+
+  const int index = sb_screen_row_index(wdata, wdata->win->state.rows - 1);
+  if ((index < 0) || (index == wdata->hil_index))
+    return FR_NO_ACTION;
+
+  wdata->hil_index = index;
+  wdata->win->actions |= WA_RECALC;
+  return FR_SUCCESS;
+}
+
+/**
+ * op_sidebar_scroll_half_down - Scrolls down by half a page - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+static int op_sidebar_scroll_half_down(struct SidebarFunctionData *fdata,
+                                       const struct KeyEvent *event)
+{
+  const int half_page = MAX(fdata->wdata->win->state.rows / 2, 1);
+  return sb_scroll_view(fdata, MAX(event->count, 1) * half_page);
+}
+
+/**
+ * op_sidebar_scroll_half_up - Scrolls up by half a page - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+static int op_sidebar_scroll_half_up(struct SidebarFunctionData *fdata,
+                                     const struct KeyEvent *event)
+{
+  const int half_page = MAX(fdata->wdata->win->state.rows / 2, 1);
+  return sb_scroll_view(fdata, 0 - MAX(event->count, 1) * half_page);
+}
+
+/**
+ * op_sidebar_scroll_line_down - Scrolls down by one line - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+static int op_sidebar_scroll_line_down(struct SidebarFunctionData *fdata,
+                                       const struct KeyEvent *event)
+{
+  return sb_scroll_view(fdata, MAX(event->count, 1));
+}
+
+/**
+ * op_sidebar_scroll_line_up - Scrolls up by one line - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+static int op_sidebar_scroll_line_up(struct SidebarFunctionData *fdata,
+                                     const struct KeyEvent *event)
+{
+  return sb_scroll_view(fdata, 0 - MAX(event->count, 1));
+}
+
+/**
+ * op_sidebar_scroll_page_down - Scrolls down by one page - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+int op_sidebar_scroll_page_down(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
+{
+  const int page = MAX(fdata->wdata->win->state.rows, 1);
+  return sb_scroll_view(fdata, MAX(event->count, 1) * page);
+}
+
+/**
+ * op_sidebar_scroll_page_up - Scrolls up by one page - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+int op_sidebar_scroll_page_up(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
+{
+  const int page = MAX(fdata->wdata->win->state.rows, 1);
+  return sb_scroll_view(fdata, 0 - MAX(event->count, 1) * page);
+}
+
+/**
+ * sb_scroll_selection_to_row - Scroll the view so the selection is at a given row
+ * @param fdata      Sidebar function data
+ * @param wanted_row Row at which the selection should appear (0 = top)
+ * @retval enum #FunctionRetval
+ *
+ * The current selection (highlight) is unchanged; only the view is moved.
+ */
+static int sb_scroll_selection_to_row(struct SidebarFunctionData *fdata, int wanted_row)
+{
+  struct SidebarWindowData *wdata = fdata->wdata;
+  if (!mutt_window_is_visible(wdata->win))
+    return FR_NO_ACTION;
+
+  if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
+    return FR_NO_ACTION;
+
+  const int new_top = sb_index_visible_before(wdata, wdata->hil_index, wanted_row);
+  if (new_top == wdata->top_index)
+    return FR_NO_ACTION;
+
+  wdata->top_index = new_top;
+  wdata->win->actions |= WA_RECALC;
+  return FR_SUCCESS;
+}
+
+/**
+ * op_sidebar_scroll_selection_to_top - Scrolls so the selection is at the top of the screen - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+static int op_sidebar_scroll_selection_to_top(struct SidebarFunctionData *fdata,
+                                              const struct KeyEvent *event)
+{
+  return sb_scroll_selection_to_row(fdata, 0);
+}
+
+/**
+ * op_sidebar_scroll_selection_to_middle - Scrolls so the selection is at the middle of the screen - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+static int op_sidebar_scroll_selection_to_middle(struct SidebarFunctionData *fdata,
+                                                 const struct KeyEvent *event)
+{
+  return sb_scroll_selection_to_row(fdata, fdata->wdata->win->state.rows / 2);
+}
+
+/**
+ * op_sidebar_scroll_selection_to_bottom - Scrolls so the selection is at the bottom of the screen - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+static int op_sidebar_scroll_selection_to_bottom(struct SidebarFunctionData *fdata,
+                                                 const struct KeyEvent *event)
+{
+  return sb_scroll_selection_to_row(fdata, fdata->wdata->win->state.rows - 1);
+}
+
+/**
  * op_sidebar_toggle_visible - Make the sidebar (in)visible - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
 static int op_sidebar_toggle_visible(struct SidebarFunctionData *fdata,
@@ -535,18 +815,28 @@ static int op_sidebar_toggle_virtual(struct SidebarFunctionData *fdata,
  */
 static const struct SidebarFunction SidebarFunctions[] = {
   // clang-format off
-  { OP_SIDEBAR_FIRST,          op_sidebar_first },
-  { OP_SIDEBAR_LAST,           op_sidebar_last },
-  { OP_SIDEBAR_NEXT,           op_sidebar_next },
-  { OP_SIDEBAR_NEXT_NEW,       op_sidebar_next_new },
-  { OP_SIDEBAR_OPEN,           op_sidebar_open },
-  { OP_SIDEBAR_PAGE_DOWN,      op_sidebar_page_down },
-  { OP_SIDEBAR_PAGE_UP,        op_sidebar_page_up },
-  { OP_SIDEBAR_PREV,           op_sidebar_prev },
-  { OP_SIDEBAR_PREV_NEW,       op_sidebar_prev_new },
-  { OP_SIDEBAR_START_SEARCH,   op_sidebar_start_search },
-  { OP_SIDEBAR_TOGGLE_VIRTUAL, op_sidebar_toggle_virtual },
-  { OP_SIDEBAR_TOGGLE_VISIBLE, op_sidebar_toggle_visible },
+  { OP_SIDEBAR_FIRST,                        op_sidebar_first },
+  { OP_SIDEBAR_LAST,                         op_sidebar_last },
+  { OP_SIDEBAR_NEXT,                         op_sidebar_next },
+  { OP_SIDEBAR_NEXT_NEW,                     op_sidebar_next_new },
+  { OP_SIDEBAR_OPEN,                         op_sidebar_open },
+  { OP_SIDEBAR_PAGE_DOWN,                    op_sidebar_scroll_page_down },
+  { OP_SIDEBAR_PAGE_UP,                      op_sidebar_scroll_page_up },
+  { OP_SIDEBAR_PREV,                         op_sidebar_prev },
+  { OP_SIDEBAR_PREV_NEW,                     op_sidebar_prev_new },
+  { OP_SIDEBAR_SCROLL_HALF_DOWN,             op_sidebar_scroll_half_down },
+  { OP_SIDEBAR_SCROLL_HALF_UP,               op_sidebar_scroll_half_up },
+  { OP_SIDEBAR_SCROLL_LINE_DOWN,             op_sidebar_scroll_line_down },
+  { OP_SIDEBAR_SCROLL_LINE_UP,               op_sidebar_scroll_line_up },
+  { OP_SIDEBAR_SCROLL_SELECTION_TO_BOTTOM,   op_sidebar_scroll_selection_to_bottom },
+  { OP_SIDEBAR_SCROLL_SELECTION_TO_MIDDLE,   op_sidebar_scroll_selection_to_middle },
+  { OP_SIDEBAR_SCROLL_SELECTION_TO_TOP,      op_sidebar_scroll_selection_to_top },
+  { OP_SIDEBAR_SELECT_PAGE_BOTTOM,           op_sidebar_select_page_bottom },
+  { OP_SIDEBAR_SELECT_PAGE_MIDDLE,           op_sidebar_select_page_middle },
+  { OP_SIDEBAR_SELECT_PAGE_TOP,              op_sidebar_select_page_top },
+  { OP_SIDEBAR_START_SEARCH,                 op_sidebar_start_search },
+  { OP_SIDEBAR_TOGGLE_VIRTUAL,               op_sidebar_toggle_virtual },
+  { OP_SIDEBAR_TOGGLE_VISIBLE,               op_sidebar_toggle_visible },
   { 0, NULL },
   // clang-format on
 };
