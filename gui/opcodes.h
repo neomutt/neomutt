@@ -294,7 +294,7 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Generic function: <half-up> */ \
   _fmt(OP_HALF_UP,                            N_("Scroll up 1/2 page")) \
   /* L10N: Help for Editor, Generic function: <help> */ \
-  _fmt(OP_HELP,                               N_("This screen")) \
+  _fmt(OP_HELP,                               N_("Help screen")) \
   /* L10N: Help for Generic function: <jump> */ \
   _fmt(OP_JUMP,                               N_("Jump to an index number")) \
   /* L10N: Help for Generic function: <last-entry> */ \

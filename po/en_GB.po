@@ -3829,8 +3829,8 @@ msgstr "Scroll up 1/2 page"
 
 #. L10N: Help for Editor, Generic function: <help>
 #: gui/opcodes.h:297
-msgid "This screen"
-msgstr "This screen"
+msgid "Help screen"
+msgstr "Help screen"
 
 #. L10N: Help for Generic function: <jump>
 #: gui/opcodes.h:299
@@ -6076,9 +6076,8 @@ msgid "Unable to read mailing list headers"
 msgstr "Unable to read mailing list headers"
 
 #: mlist/dlg_mlist.c:152
-#, fuzzy
 msgid "No mailing list actions available"
-msgstr "No list action available for %s"
+msgstr "No mailing list actions available"
 
 #: mlist/dlg_mlist.c:169
 msgid "Available mailing list actions"
@@ -6089,9 +6088,8 @@ msgid "Archives"
 msgstr "Archives"
 
 #: mlist/functions.c:132
-#, fuzzy
 msgid "No list action available"
-msgstr "No list action available for %s"
+msgstr "No list action available"
 
 #: mlist/functions.c:146
 msgid "Could not parse mailto: URI"

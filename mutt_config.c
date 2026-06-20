@@ -549,7 +549,7 @@ struct ConfigDef MainVars[] = {
     "Folder to save 'sent' messages"
   },
   { "resolve", DT_BOOL, true, 0, NULL,
-    "Move to the next email whenever a command modifies an email"
+    "Move to the next item in the list whenever a function modifies that item"
   },
   { "resume_edited_draft_files", DT_BOOL, true, 0, NULL,
     "Resume editing previously saved draft files"

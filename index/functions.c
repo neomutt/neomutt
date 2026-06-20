@@ -3731,7 +3731,7 @@ static int op_main_entire_thread(struct IndexFunctionData *fdata, const struct K
  *
  * This function handles:
  * - OP_MAIN_VFOLDER_FROM_QUERY
- * - OP_MAIN_VFOLDER_FROM_QUERY_READONLY op_main_vfolder_from_query
+ * - OP_MAIN_VFOLDER_FROM_QUERY_READONLY
  */
 static int op_main_vfolder_from_query(struct IndexFunctionData *fdata,
                                       const struct KeyEvent *event)
