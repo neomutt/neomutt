@@ -106,7 +106,6 @@ static const struct MenuFuncOp OpCompose[] = { /* map: compose */
   { "edit-type",                     OP_ATTACH_EDIT_TYPE },
   { "edit-x-comment-to",             OP_ENVELOPE_EDIT_X_COMMENT_TO },
   { "filter-entry",                  OP_ATTACH_FILTER },
-  { "forget-passphrase",             OP_FORGET_PASSPHRASE },
   { "get-attachment",                OP_ATTACH_GET_ATTACHMENT },
   { "group-alternatives",            OP_ATTACH_GROUP_ALTS },
   { "group-multilingual",            OP_ATTACH_GROUP_LINGUAL },
@@ -2643,15 +2642,6 @@ static int op_quit(struct ComposeFunctionData *fdata, const struct KeyEvent *eve
   return op_compose_postpone_message(fdata, event);
 }
 
-/**
- * op_forget_passphrase - Wipe passphrases from memory - Implements ::compose_function_t - @ingroup compose_function_api
- */
-static int op_forget_passphrase(struct ComposeFunctionData *fdata, const struct KeyEvent *event)
-{
-  crypt_forget_passphrase();
-  return FR_SUCCESS;
-}
-
 // -----------------------------------------------------------------------------
 
 /**
@@ -2700,7 +2690,6 @@ static const struct ComposeFunction ComposeFunctions[] = {
   { OP_DISPLAY_HEADERS,            op_display_headers           },
   { OP_ENVELOPE_EDIT_HEADERS,      op_envelope_edit_headers     },
   { OP_EXIT,                       op_quit                      },
-  { OP_FORGET_PASSPHRASE,          op_forget_passphrase         },
   { OP_PIPE,                       op_attach_filter             },
   { OP_QUIT,                       op_quit                      },
   { 0, NULL },

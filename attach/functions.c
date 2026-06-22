@@ -66,7 +66,6 @@ static const struct MenuFuncOp OpAttach[] = { /* map: attach */
   { "edit-type",                     OP_ATTACH_EDIT_TYPE },
   { "extract-keys",                  OP_EXTRACT_KEYS },
   { "followup-message",              OP_FOLLOWUP },
-  { "forget-passphrase",             OP_FORGET_PASSPHRASE },
   { "forward-message",               OP_FORWARD_MESSAGE },
   { "forward-to-group",              OP_FORWARD_TO_GROUP },
   { "group-chat-reply",              OP_GROUP_CHAT_REPLY },
@@ -638,15 +637,6 @@ static int op_extract_keys(struct AttachFunctionData *fdata, const struct KeyEve
 }
 
 /**
- * op_forget_passphrase - wipe passphrases from memory - Implements ::attach_function_t - @ingroup attach_function_api
- */
-static int op_forget_passphrase(struct AttachFunctionData *fdata, const struct KeyEvent *event)
-{
-  crypt_forget_passphrase();
-  return FR_SUCCESS;
-}
-
-/**
  * op_forward_message - forward a message with comments - Implements ::attach_function_t - @ingroup attach_function_api
  */
 static int op_forward_message(struct AttachFunctionData *fdata, const struct KeyEvent *event)
@@ -807,7 +797,6 @@ static const struct AttachFunction AttachFunctions[] = {
   { OP_EXIT,                op_quit                },
   { OP_EXTRACT_KEYS,        op_extract_keys        },
   { OP_FOLLOWUP,            op_followup            },
-  { OP_FORGET_PASSPHRASE,   op_forget_passphrase   },
   { OP_FORWARD_MESSAGE,     op_forward_message     },
   { OP_FORWARD_TO_GROUP,    op_forward_to_group    },
   { OP_GROUP_CHAT_REPLY,    op_reply               },

@@ -36,6 +36,7 @@
 #include "global.h"
 #include "index/lib.h"
 #include "key/lib.h"
+#include "ncrypt/lib.h"
 #include "pager/lib.h"
 #include "curs_lib.h"
 #include "external.h"
@@ -62,6 +63,15 @@ static int op_enter_command(struct MuttWindow *win, const struct KeyEvent *event
 {
   mutt_enter_command(win);
   window_redraw(NULL);
+  return FR_SUCCESS;
+}
+
+/**
+ * op_forget_passphrase - Wipe passphrases from memory - Implements ::global_function_t - @ingroup global_function_api
+ */
+static int op_forget_passphrase(struct MuttWindow *win, const struct KeyEvent *event)
+{
+  crypt_forget_passphrase();
   return FR_SUCCESS;
 }
 
@@ -165,6 +175,7 @@ static const struct GlobalFunction GlobalFunctions[] = {
   // clang-format off
   { OP_CHECK_STATS,           op_check_stats },
   { OP_ENTER_COMMAND,         op_enter_command },
+  { OP_FORGET_PASSPHRASE,     op_forget_passphrase },
   { OP_REDRAW,                op_redraw },
   { OP_SHELL_ESCAPE,          op_shell_escape },
   { OP_SHOW_LOG_MESSAGES,     op_show_log_messages },

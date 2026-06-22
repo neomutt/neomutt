@@ -71,6 +71,7 @@ static const struct MenuFuncOp OpGeneric[] = { /* map: generic */
   { "enter-command",                 OP_ENTER_COMMAND },
   { "exit",                          OP_EXIT },
   { "first-entry",                   OP_FIRST_ENTRY },
+  { "forget-passphrase",             OP_FORGET_PASSPHRASE },
   { "half-down",                     OP_HALF_DOWN },
   { "half-up",                       OP_HALF_UP },
   { "help",                          OP_HELP },

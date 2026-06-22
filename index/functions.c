@@ -132,7 +132,6 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "fetch-mail",                    OP_MAIN_FETCH_MAIL },
   { "flag-message",                  OP_FLAG_MESSAGE },
   { "followup-message",              OP_FOLLOWUP },
-  { "forget-passphrase",             OP_FORGET_PASSPHRASE },
   { "forward-message",               OP_FORWARD_MESSAGE },
   { "forward-to-group",              OP_FORWARD_TO_GROUP },
   { "get-children",                  OP_GET_CHILDREN },
@@ -1198,15 +1197,6 @@ static int op_flag_message(struct IndexFunctionData *fdata, const struct KeyEven
       menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
 
-  return FR_SUCCESS;
-}
-
-/**
- * op_forget_passphrase - Wipe passphrases from memory - Implements ::index_function_t - @ingroup index_function_api
- */
-static int op_forget_passphrase(struct IndexFunctionData *fdata, const struct KeyEvent *event)
-{
-  crypt_forget_passphrase();
   return FR_SUCCESS;
 }
 
@@ -3930,7 +3920,6 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_EXTRACT_KEYS,                     op_extract_keys,             CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_FLAG_MESSAGE,                     op_flag_message,             CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_FOLLOWUP,                         op_post,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_FORGET_PASSPHRASE,                op_forget_passphrase,        CHECK_NONE },
   { OP_FORWARD_MESSAGE,                  op_forward_message,          CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_FORWARD_TO_GROUP,                 op_post,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_GET_CHILDREN,                     op_get_children,             CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
