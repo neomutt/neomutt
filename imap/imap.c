@@ -2113,6 +2113,8 @@ static int imap_select_and_poll(struct Mailbox *m, int *countp)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
+  if (!mdata)
+    return -1;
 
   imap_mbox_select(m);
 
