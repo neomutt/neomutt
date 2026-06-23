@@ -28,7 +28,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
 
     - name: Checkout Code
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         path: main
 
@@ -41,7 +41,7 @@ jobs:
       working-directory: main
 
     - name: Checkout xunused
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         repository: mgehre/xunused
         path: xunused
