@@ -457,6 +457,59 @@ static void update_entries_visibility(struct SidebarWindowData *wdata)
 }
 
 /**
+ * sb_first_visible - Find the first visible entry at or after an index
+ * @param wdata Sidebar data
+ * @param index Starting index
+ * @retval num Index of the first visible entry
+ * @retval -1  No visible entry found
+ */
+static int sb_first_visible(struct SidebarWindowData *wdata, int index)
+{
+  if (index < 0)
+    index = 0;
+
+  struct SbEntry **sbep = NULL;
+  ARRAY_FOREACH_FROM(sbep, &wdata->entries, index)
+  {
+    if (!(*sbep)->is_hidden)
+      return ARRAY_FOREACH_IDX_sbep;
+  }
+
+  return -1;
+}
+
+/**
+ * sb_page_bottom - Find the last entry visible on a page
+ * @param wdata     Sidebar data
+ * @param top       Index of the entry at the top of the view
+ * @param page_size Number of lines on a page
+ * @retval num Index of the last visible entry on the page
+ * @retval -1  No visible entry found
+ */
+static int sb_page_bottom(struct SidebarWindowData *wdata, int top, int page_size)
+{
+  if (top < 0)
+    return -1;
+
+  int row = 0;
+  int last = -1;
+
+  struct SbEntry **sbep = NULL;
+  ARRAY_FOREACH_FROM(sbep, &wdata->entries, top)
+  {
+    if (row >= page_size)
+      break;
+    if ((*sbep)->is_hidden)
+      continue;
+
+    last = ARRAY_FOREACH_IDX_sbep;
+    row++;
+  }
+
+  return last;
+}
+
+/**
  * prepare_sidebar - Prepare the list of SbEntry's for the sidebar display
  * @param wdata     Sidebar data
  * @param page_size Number of lines on a page
@@ -475,13 +528,13 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
     return false;
 
   struct SbEntry **sbep = NULL;
-  const bool c_sidebar_new_mail_only = cs_subset_bool(NeoMutt->sub, "sidebar_new_mail_only");
-  const bool c_sidebar_non_empty_mailbox_only = cs_subset_bool(NeoMutt->sub, "sidebar_non_empty_mailbox_only");
 
   sbep = (wdata->opn_index >= 0) ? ARRAY_GET(&wdata->entries, wdata->opn_index) : NULL;
   const struct SbEntry *opn_entry = sbep ? *sbep : NULL;
   sbep = (wdata->hil_index >= 0) ? ARRAY_GET(&wdata->entries, wdata->hil_index) : NULL;
   const struct SbEntry *hil_entry = sbep ? *sbep : NULL;
+  sbep = (wdata->top_index >= 0) ? ARRAY_GET(&wdata->entries, wdata->top_index) : NULL;
+  const struct SbEntry *top_entry = sbep ? *sbep : NULL;
 
   update_entries_visibility(wdata);
   const enum EmailSortType c_sidebar_sort = cs_subset_sort(NeoMutt->sub, "sidebar_sort");
@@ -514,12 +567,33 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
     }
   }
 
-  /* Set the Top and Bottom to frame the wdata->hil_index in groups of page_size */
-
-  /* If `$sidebar_new_mail_only` or `$sidebar_non_empty_mailbox_only` is set,
-   * some entries may be hidden so we need to scan for the framing interval */
-  if (c_sidebar_new_mail_only || c_sidebar_non_empty_mailbox_only || wdata->repage)
+  /* The viewport (top_index) is persistent: it is preserved across recalcs so
+   * that scrolling (<sidebar-scroll-*>) and recentring
+   * (<sidebar-scroll-selection-to-*>) survive a later repaint.  Restore the
+   * remembered top entry after the re-sort, then snap it to a visible entry. */
+  if (top_entry)
   {
+    ARRAY_FOREACH(sbep, &wdata->entries)
+    {
+      if ((top_entry == *sbep) && (*sbep)->mailbox->visible)
+      {
+        wdata->top_index = ARRAY_FOREACH_IDX_sbep;
+        break;
+      }
+    }
+  }
+  wdata->top_index = sb_first_visible(wdata, wdata->top_index);
+
+  /* Is the selection within the current viewport? */
+  int bot = sb_page_bottom(wdata, wdata->top_index, page_size);
+  const bool hil_in_view = (wdata->top_index >= 0) &&
+                           (wdata->hil_index >= wdata->top_index) &&
+                           (wdata->hil_index <= bot);
+
+  if (wdata->repage || !hil_in_view)
+  {
+    /* Reframe the view, paging so that the selection is visible.  Entries may
+     * be hidden ($sidebar_new_mail_only, etc.) so we count visible entries. */
     wdata->top_index = -1;
     wdata->bot_index = -1;
     while (wdata->bot_index < wdata->hil_index)
@@ -535,12 +609,12 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
           page_entries++;
       }
     }
+    wdata->repage = false;
   }
   else
   {
-    /* Otherwise we can just calculate the interval */
-    wdata->top_index = (wdata->hil_index / page_size) * page_size;
-    wdata->bot_index = wdata->top_index + page_size - 1;
+    /* Keep the persistent viewport, just recompute the bottom */
+    wdata->bot_index = bot;
   }
 
   if (wdata->bot_index > (ARRAY_SIZE(&wdata->entries) - 1))

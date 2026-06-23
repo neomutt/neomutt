@@ -59,12 +59,12 @@ struct SidebarFunction
   sidebar_function_t function; ///< Function to call
 };
 
-int op_sidebar_first    (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
-int op_sidebar_last     (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
-int op_sidebar_next     (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
-int op_sidebar_open     (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
-int op_sidebar_page_down(struct SidebarFunctionData *fdata, const struct KeyEvent *event);
-int op_sidebar_page_up  (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
-int op_sidebar_prev     (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
+int op_sidebar_first           (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
+int op_sidebar_last            (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
+int op_sidebar_next            (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
+int op_sidebar_open            (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
+int op_sidebar_scroll_page_down(struct SidebarFunctionData *fdata, const struct KeyEvent *event);
+int op_sidebar_scroll_page_up  (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
+int op_sidebar_prev            (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
 
 #endif /* MUTT_SIDEBAR_FUNCTIONS_SIDEBAR_H */

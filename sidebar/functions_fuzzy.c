@@ -68,9 +68,9 @@ static const struct SidebarFunction FuzzyFunctions[] = {
   { OP_FIRST_ENTRY,          op_sidebar_first },
   { OP_LAST_ENTRY,           op_sidebar_last },
   { OP_NEXT_ENTRY,           op_sidebar_next },
-  { OP_NEXT_PAGE,            op_sidebar_page_down },
+  { OP_NEXT_PAGE,            op_sidebar_scroll_page_down },
   { OP_PREV_ENTRY,           op_sidebar_prev },
-  { OP_PREV_PAGE,            op_sidebar_page_up },
+  { OP_PREV_PAGE,            op_sidebar_scroll_page_up },
   { 0, NULL },
   // clang-format on
 };
