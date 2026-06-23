@@ -262,6 +262,16 @@ static int attach_recalc(struct MuttWindow *win)
 }
 
 /**
+ * attach_recalc_simple - Recalculate the Window data - Implements MuttWindow::recalc() - @ingroup window_recalc
+ */
+int attach_recalc_simple(struct MuttWindow *win)
+{
+  win->actions |= WA_REPAINT;
+  mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
+  return 0;
+}
+
+/**
  * attach_new - Create the Attachments Menu
  * @param parent     Parent Window
  * @param shared     Shared compose data
@@ -318,5 +328,5 @@ void attachment_size_max(struct MuttWindow *win)
     return;
 
   win->size = MUTT_WIN_SIZE_MAXIMISE;
-  win->recalc = NULL;
+  win->recalc = attach_recalc_simple;
 }

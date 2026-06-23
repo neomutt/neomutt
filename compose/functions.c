@@ -1300,6 +1300,9 @@ static int op_attach_detach(struct ComposeFunctionData *fdata, const struct KeyE
     rc = FR_SUCCESS;
   }
 
+  if (rc == FR_SUCCESS)
+    menu_queue_redraw(menu, selection_redraw_flags(event->count));
+
   menu->num_tagged = 0;
   for (int i = 0; i < actx->idxlen; i++)
   {
