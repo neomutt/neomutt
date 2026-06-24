@@ -65,6 +65,7 @@ enum ExpandoDataSidebar
   ED_SID_FUZZY_SCORE,          ///< SbEntry.score
   ED_SID_NEW_MAIL,             ///< Mailbox.has_new
   ED_SID_NOTIFY,               ///< Mailbox.notify_user
+  ED_SID_NUMBER,               ///< SbEntry number (line)
   ED_SID_OLD_COUNT,            ///< Mailbox.msg_unread, Mailbox.msg_new
   ED_SID_POLL,                 ///< Mailbox.poll_new_mail
   ED_SID_READ_COUNT,           ///< Mailbox.msg_count, Mailbox.msg_unread

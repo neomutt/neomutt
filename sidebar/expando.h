@@ -34,6 +34,7 @@ struct SidebarData
 {
   struct SbEntry *entry;          ///< Info about a folder
   struct IndexSharedData *shared; ///< Shared Index Data
+  int index;                      ///< Index of the entry (0-based, absolute)
 };
 
 #endif /* MUTT_SIDEBAR_EXPANDO_H */

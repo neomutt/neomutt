@@ -350,16 +350,17 @@ void sb_entry_set_display_name(struct SbEntry *entry)
  * @param[in]  width   Desired width in screen cells
  * @param[in]  sbe     Mailbox object
  * @param[in]  shared  Shared Index Data
+ * @param[in]  index   Index of the entry (0-based, absolute)
  *
  * Take all the relevant mailbox data and the desired screen width and then get
  * expando_render() to do the actual work.
  *
  * @sa $sidebar_format
  */
-static void make_sidebar_entry(char *buf, size_t buflen, int width,
-                               struct SbEntry *sbe, struct IndexSharedData *shared)
+static void make_sidebar_entry(char *buf, size_t buflen, int width, struct SbEntry *sbe,
+                               struct IndexSharedData *shared, int index)
 {
-  struct SidebarData sdata = { sbe, shared };
+  struct SidebarData sdata = { sbe, shared, index };
 
   struct Buffer *tmp = buf_pool_get();
   const struct Expando *c_sidebar_format = cs_subset_expando(NeoMutt->sub, "sidebar_format");
@@ -690,7 +691,7 @@ int sb_recalc(struct MuttWindow *win)
     }
 
     sb_entry_set_display_name(entry);
-    make_sidebar_entry(entry->display, sizeof(entry->display), width, entry, shared);
+    make_sidebar_entry(entry->display, sizeof(entry->display), width, entry, shared, entryidx);
     row++;
   }
 

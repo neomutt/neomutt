@@ -75,6 +75,7 @@ static const struct ExpandoDefinition SidebarFormatDef[] = {
   { "D", "description",   ED_SIDEBAR, ED_SID_DESCRIPTION,   NULL },
   { "f", "fuzzy-score",   ED_SIDEBAR, ED_SID_FUZZY_SCORE,   NULL },
   { "F", "flagged-count", ED_SIDEBAR, ED_SID_FLAGGED_COUNT, NULL },
+  { "i", "number",        ED_SIDEBAR, ED_SID_NUMBER,        NULL },
   { "L", "limited-count", ED_SIDEBAR, ED_SID_LIMITED_COUNT, NULL },
   { "n", "new-mail",      ED_SIDEBAR, ED_SID_NEW_MAIL,      NULL },
   { "N", "unread-count",  ED_SIDEBAR, ED_SID_UNREAD_COUNT,  NULL },

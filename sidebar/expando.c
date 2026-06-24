@@ -204,6 +204,16 @@ static long sidebar_new_mail_num(const struct ExpandoNode *node, void *data, Mut
 }
 
 /**
+ * sidebar_number_num - Sidebar: Line number - Implements ::get_number_t - @ingroup expando_get_number_api
+ */
+static long sidebar_number_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct SidebarData *sdata = data;
+
+  return sdata->index + 1;
+}
+
+/**
  * sidebar_notify_num - Sidebar: Alert for new mail - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long sidebar_notify_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
@@ -311,6 +321,7 @@ const struct ExpandoRenderCallback SidebarRenderCallbacks[] = {
   { ED_SIDEBAR, ED_SID_NAME,          sidebar_name,        NULL },
   { ED_SIDEBAR, ED_SID_NEW_MAIL,      sidebar_new_mail,    sidebar_new_mail_num },
   { ED_SIDEBAR, ED_SID_NOTIFY,        NULL,                sidebar_notify_num },
+  { ED_SIDEBAR, ED_SID_NUMBER,        NULL,                sidebar_number_num },
   { ED_SIDEBAR, ED_SID_OLD_COUNT,     NULL,                sidebar_old_count_num },
   { ED_SIDEBAR, ED_SID_POLL,          NULL,                sidebar_poll_num },
   { ED_SIDEBAR, ED_SID_READ_COUNT,    NULL,                sidebar_read_count_num },

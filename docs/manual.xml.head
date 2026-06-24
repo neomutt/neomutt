@@ -764,6 +764,14 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
                     </entry>
                   </row>
                   <row>
+                    <entry>%i</entry>
+                    <entry></entry>
+                    <entry>
+                      Line number of the entry (1-based, counting hidden
+                      entries)
+                    </entry>
+                  </row>
+                  <row>
                     <entry>%L</entry>
                     <entry>* ‡</entry>
                     <entry>
