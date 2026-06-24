@@ -111,16 +111,16 @@ static int menu_dialog_translate_op(int op)
 {
   switch (op)
   {
-    case OP_SELECT_NEXT_ENTRY:
-      return OP_SCROLL_LINE_DOWN;
-    case OP_SELECT_PREVIOUS_ENTRY:
-      return OP_SCROLL_LINE_UP;
-    case OP_SCROLL_SELECTION_TO_TOP:
-      return OP_SELECT_PAGE_TOP;
     case OP_SCROLL_SELECTION_TO_BOTTOM:
       return OP_SELECT_PAGE_BOTTOM;
     case OP_SCROLL_SELECTION_TO_MIDDLE:
       return OP_SELECT_PAGE_MIDDLE;
+    case OP_SCROLL_SELECTION_TO_TOP:
+      return OP_SELECT_PAGE_TOP;
+    case OP_SELECT_NEXT_ENTRY:
+      return OP_SCROLL_LINE_DOWN;
+    case OP_SELECT_PREVIOUS_ENTRY:
+      return OP_SCROLL_LINE_UP;
   }
 
   return op;
@@ -269,10 +269,10 @@ int dlg_certificate(const char *title, struct StringArray *carr, bool allow_alwa
         mutt_error(_("Jumping is not implemented for dialogs"));
         continue;
 
+      case OP_SEARCH_BACKWARD:
       case OP_SEARCH_FORWARD:
       case OP_SEARCH_NEXT:
       case OP_SEARCH_PREVIOUS:
-      case OP_SEARCH_BACKWARD:
         mutt_error(_("Search is not implemented for this menu"));
         continue;
     }

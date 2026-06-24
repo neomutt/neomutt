@@ -201,7 +201,7 @@ static const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_PREVIEW_SCROLL_PAGE_DOWN,           "<pagedown>" },
   { OP_PREVIEW_SCROLL_PAGE_UP,             "<pageup>" },
   { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
-  { OP_TAG_ENTRY,                                "T" },
+  { OP_TAG_ENTRY,                          "T" },
   { 0, NULL },
 };
 // clang-format on

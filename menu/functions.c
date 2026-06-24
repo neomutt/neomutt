@@ -147,22 +147,22 @@ done:
  * menu_movement - Handle all the common Menu movements - Implements ::menu_function_t - @ingroup menu_function_api
  *
  * This function handles:
- * - OP_SELECT_PAGE_BOTTOM
+ * - OP_SCROLL_HALF_DOWN
+ * - OP_SCROLL_HALF_UP
+ * - OP_SCROLL_LINE_DOWN
+ * - OP_SCROLL_LINE_UP
+ * - OP_SCROLL_PAGE_DOWN
+ * - OP_SCROLL_PAGE_UP
  * - OP_SCROLL_SELECTION_TO_BOTTOM
  * - OP_SCROLL_SELECTION_TO_MIDDLE
  * - OP_SCROLL_SELECTION_TO_TOP
  * - OP_SELECT_FIRST_ENTRY
- * - OP_SCROLL_HALF_DOWN
- * - OP_SCROLL_HALF_UP
  * - OP_SELECT_LAST_ENTRY
- * - OP_SELECT_PAGE_MIDDLE
  * - OP_SELECT_NEXT_ENTRY
- * - OP_SCROLL_LINE_DOWN
- * - OP_SCROLL_PAGE_DOWN
- * - OP_SELECT_PREVIOUS_ENTRY
- * - OP_SCROLL_LINE_UP
- * - OP_SCROLL_PAGE_UP
+ * - OP_SELECT_PAGE_BOTTOM
+ * - OP_SELECT_PAGE_MIDDLE
  * - OP_SELECT_PAGE_TOP
+ * - OP_SELECT_PREVIOUS_ENTRY
  */
 static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -174,9 +174,35 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
   const int count = event->count;
   switch (event->op)
   {
-    case OP_SELECT_PAGE_BOTTOM:
-      flags = menu_bottom_page(menu);
-      return (menu->max == 0) ? FR_ERROR : FR_SUCCESS;
+    case OP_SCROLL_HALF_DOWN:
+      menu_half_down(menu, count);
+      return FR_SUCCESS;
+
+    case OP_SCROLL_HALF_UP:
+      menu_half_up(menu, count);
+      return FR_SUCCESS;
+
+    case OP_SCROLL_LINE_DOWN:
+      flags = menu_next_line(menu, count);
+      return ((flags == MENU_REDRAW_NONE) && (menu->top == old_top) &&
+              (menu->current == old_current)) ?
+                 FR_ERROR :
+                 FR_SUCCESS;
+
+    case OP_SCROLL_LINE_UP:
+      flags = menu_prev_line(menu, count);
+      return ((flags == MENU_REDRAW_NONE) && (menu->top == old_top) &&
+              (menu->current == old_current)) ?
+                 FR_ERROR :
+                 FR_SUCCESS;
+
+    case OP_SCROLL_PAGE_DOWN:
+      menu_next_page(menu, count);
+      return FR_SUCCESS;
+
+    case OP_SCROLL_PAGE_UP:
+      menu_prev_page(menu, count);
+      return FR_SUCCESS;
 
     case OP_SCROLL_SELECTION_TO_BOTTOM:
       flags = menu_current_bottom(menu);
@@ -194,20 +220,8 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
       flags = menu_first_entry(menu, count);
       return (menu->max == 0) ? FR_ERROR : FR_SUCCESS;
 
-    case OP_SCROLL_HALF_DOWN:
-      menu_half_down(menu, count);
-      return FR_SUCCESS;
-
-    case OP_SCROLL_HALF_UP:
-      menu_half_up(menu, count);
-      return FR_SUCCESS;
-
     case OP_SELECT_LAST_ENTRY:
       flags = menu_last_entry(menu, count);
-      return (menu->max == 0) ? FR_ERROR : FR_SUCCESS;
-
-    case OP_SELECT_PAGE_MIDDLE:
-      flags = menu_middle_page(menu);
       return (menu->max == 0) ? FR_ERROR : FR_SUCCESS;
 
     case OP_SELECT_NEXT_ENTRY:
@@ -217,15 +231,16 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
                  FR_ERROR :
                  FR_SUCCESS;
 
-    case OP_SCROLL_LINE_DOWN:
-      flags = menu_next_line(menu, count);
-      return ((flags == MENU_REDRAW_NONE) && (menu->top == old_top) &&
-              (menu->current == old_current)) ?
-                 FR_ERROR :
-                 FR_SUCCESS;
+    case OP_SELECT_PAGE_BOTTOM:
+      flags = menu_bottom_page(menu);
+      return (menu->max == 0) ? FR_ERROR : FR_SUCCESS;
 
-    case OP_SCROLL_PAGE_DOWN:
-      menu_next_page(menu, count);
+    case OP_SELECT_PAGE_MIDDLE:
+      flags = menu_middle_page(menu);
+      return (menu->max == 0) ? FR_ERROR : FR_SUCCESS;
+
+    case OP_SELECT_PAGE_TOP:
+      menu_top_page(menu);
       return FR_SUCCESS;
 
     case OP_SELECT_PREVIOUS_ENTRY:
@@ -234,21 +249,6 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
               (menu->current == old_current)) ?
                  FR_ERROR :
                  FR_SUCCESS;
-
-    case OP_SCROLL_LINE_UP:
-      flags = menu_prev_line(menu, count);
-      return ((flags == MENU_REDRAW_NONE) && (menu->top == old_top) &&
-              (menu->current == old_current)) ?
-                 FR_ERROR :
-                 FR_SUCCESS;
-
-    case OP_SCROLL_PAGE_UP:
-      menu_prev_page(menu, count);
-      return FR_SUCCESS;
-
-    case OP_SELECT_PAGE_TOP:
-      menu_top_page(menu);
-      return FR_SUCCESS;
 
     default:
       return FR_UNKNOWN;
@@ -259,10 +259,10 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
  * menu_search - Handle Menu searching - Implements ::menu_function_t - @ingroup menu_function_api
  *
  * This function handles:
+ * - OP_SEARCH_BACKWARD
  * - OP_SEARCH_FORWARD
  * - OP_SEARCH_NEXT
  * - OP_SEARCH_PREVIOUS
- * - OP_SEARCH_BACKWARD
  */
 static int menu_search(struct MenuFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -336,28 +336,28 @@ done:
  */
 static const struct MenuFunction MenuFunctions[] = {
   // clang-format off
-  { OP_SELECT_PAGE_BOTTOM,            menu_movement },
-  { OP_SCROLL_SELECTION_TO_BOTTOM,         menu_movement },
-  { OP_SCROLL_SELECTION_TO_MIDDLE,         menu_movement },
-  { OP_SCROLL_SELECTION_TO_TOP,            menu_movement },
-  { OP_SELECT_FIRST_ENTRY,            menu_movement },
-  { OP_SCROLL_HALF_DOWN,              menu_movement },
-  { OP_SCROLL_HALF_UP,                menu_movement },
-  { OP_SHOW_HELP,                   op_help },
-  { OP_SELECT_ENTRY_BY_NUMBER,                   op_jump },
-  { OP_SELECT_LAST_ENTRY,             menu_movement },
-  { OP_SELECT_PAGE_MIDDLE,            menu_movement },
-  { OP_SELECT_NEXT_ENTRY,             menu_movement },
-  { OP_SCROLL_LINE_DOWN,              menu_movement },
-  { OP_SCROLL_PAGE_DOWN,              menu_movement },
-  { OP_SELECT_PREVIOUS_ENTRY,             menu_movement },
+  { OP_SCROLL_HALF_DOWN,            menu_movement },
+  { OP_SCROLL_HALF_UP,              menu_movement },
+  { OP_SCROLL_LINE_DOWN,            menu_movement },
   { OP_SCROLL_LINE_UP,              menu_movement },
+  { OP_SCROLL_PAGE_DOWN,            menu_movement },
   { OP_SCROLL_PAGE_UP,              menu_movement },
-  { OP_SEARCH_FORWARD,                 menu_search },
-  { OP_SEARCH_NEXT,            menu_search },
-  { OP_SEARCH_PREVIOUS,        menu_search },
-  { OP_SEARCH_BACKWARD,         menu_search },
-  { OP_SELECT_PAGE_TOP,               menu_movement },
+  { OP_SCROLL_SELECTION_TO_BOTTOM,  menu_movement },
+  { OP_SCROLL_SELECTION_TO_MIDDLE,  menu_movement },
+  { OP_SCROLL_SELECTION_TO_TOP,     menu_movement },
+  { OP_SEARCH_BACKWARD,             menu_search },
+  { OP_SEARCH_FORWARD,              menu_search },
+  { OP_SEARCH_NEXT,                 menu_search },
+  { OP_SEARCH_PREVIOUS,             menu_search },
+  { OP_SELECT_ENTRY_BY_NUMBER,      op_jump },
+  { OP_SELECT_FIRST_ENTRY,          menu_movement },
+  { OP_SELECT_LAST_ENTRY,           menu_movement },
+  { OP_SELECT_NEXT_ENTRY,           menu_movement },
+  { OP_SELECT_PAGE_BOTTOM,          menu_movement },
+  { OP_SELECT_PAGE_MIDDLE,          menu_movement },
+  { OP_SELECT_PAGE_TOP,             menu_movement },
+  { OP_SELECT_PREVIOUS_ENTRY,       menu_movement },
+  { OP_SHOW_HELP,                   op_help },
   { 0, NULL },
   // clang-format on
 };

@@ -57,7 +57,7 @@ static const struct MenuFuncOp OpPostpone[] = { /* map: postpone */
  */
 static const struct MenuOpSeq PostponeDefaultBindings[] = { /* map: postpone */
   { OP_DELETE,                             "d" },
-  { OP_TAG_ENTRY,                                "t" },
+  { OP_TAG_ENTRY,                          "t" },
   { OP_UNDELETE,                           "u" },
   { 0, NULL },
 };
@@ -225,10 +225,10 @@ static int op_generic_select_entry(struct PostponeData *pd, const struct KeyEven
  * op_search - Search for a regular expression - Implements ::postpone_function_t - @ingroup postpone_function_api
  *
  * This function handles:
+ * - OP_SEARCH_BACKWARD
  * - OP_SEARCH_FORWARD
  * - OP_SEARCH_NEXT
  * - OP_SEARCH_PREVIOUS
- * - OP_SEARCH_BACKWARD
  */
 static int op_search(struct PostponeData *pd, const struct KeyEvent *event)
 {
@@ -268,12 +268,12 @@ static const struct PostponeFunction PostponeFunctions[] = {
   // clang-format off
   { OP_DELETE,                 op_delete },
   { OP_EXIT,                   op_quit },
-  { OP_ACTIVATE_ENTRY,   op_generic_select_entry },
+  { OP_ACTIVATE_ENTRY,         op_generic_select_entry },
   { OP_QUIT,                   op_quit },
-  { OP_SEARCH_FORWARD,                 op_search },
+  { OP_SEARCH_FORWARD,         op_search },
   { OP_SEARCH_NEXT,            op_search },
   { OP_SEARCH_PREVIOUS,        op_search },
-  { OP_SEARCH_BACKWARD,         op_search },
+  { OP_SEARCH_BACKWARD,        op_search },
   { OP_UNDELETE,               op_delete },
   { 0, NULL },
   // clang-format on
