@@ -50,9 +50,9 @@ static int op_quit(struct SmimeData *sd, const struct KeyEvent *event)
 }
 
 /**
- * op_generic_select_entry - Select the current entry - Implements ::smime_function_t - @ingroup smime_function_api
+ * op_activate_entry - Select the current entry - Implements ::smime_function_t - @ingroup smime_function_api
  */
-static int op_generic_select_entry(struct SmimeData *sd, const struct KeyEvent *event)
+static int op_activate_entry(struct SmimeData *sd, const struct KeyEvent *event)
 {
   const int index = menu_get_index(sd->menu);
   struct SmimeKey **pkey = ARRAY_GET(sd->ska, index);
@@ -99,7 +99,7 @@ static int op_generic_select_entry(struct SmimeData *sd, const struct KeyEvent *
  */
 static const struct SmimeFunction SmimeFunctions[] = {
   // clang-format off
-  { OP_ACTIVATE_ENTRY,         op_generic_select_entry },
+  { OP_ACTIVATE_ENTRY,         op_activate_entry },
   { OP_EXIT,                   op_quit },
   { OP_QUIT,                   op_quit },
   { 0, NULL },

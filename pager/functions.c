@@ -220,9 +220,9 @@ bool jump_to_bottom(struct PagerPrivateData *priv, struct PagerView *pview)
 // -----------------------------------------------------------------------------
 
 /**
- * op_first_entry - Move to the first entry - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_select_first_entry - Move to the first entry - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_first_entry(struct PagerFunctionData *fdata, const struct KeyEvent *event)
+static int op_select_first_entry(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
   struct PagerPrivateData *priv = fdata->priv;
   if (priv->top_line == 0)
@@ -240,9 +240,9 @@ static int op_first_entry(struct PagerFunctionData *fdata, const struct KeyEvent
 }
 
 /**
- * op_last_entry - Move to the last entry - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_select_last_entry - Move to the last entry - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_last_entry(struct PagerFunctionData *fdata, const struct KeyEvent *event)
+static int op_select_last_entry(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
   struct PagerPrivateData *priv = fdata->priv;
   if (!jump_to_bottom(priv, priv->pview))
@@ -255,9 +255,9 @@ static int op_last_entry(struct PagerFunctionData *fdata, const struct KeyEvent 
 }
 
 /**
- * op_pager_half_down - Scroll down 1/2 page - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_scroll_half_down - Scroll down 1/2 page - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_pager_half_down(struct PagerFunctionData *fdata, const struct KeyEvent *event)
+static int op_scroll_half_down(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
   struct PagerPrivateData *priv = fdata->priv;
   const bool c_pager_stop = cs_subset_bool(fdata->n->sub, "pager_stop");
@@ -294,9 +294,9 @@ static int op_pager_half_down(struct PagerFunctionData *fdata, const struct KeyE
 }
 
 /**
- * op_pager_half_up - Scroll up 1/2 page - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_scroll_half_up - Scroll up 1/2 page - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_pager_half_up(struct PagerFunctionData *fdata, const struct KeyEvent *event)
+static int op_scroll_half_up(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
   struct PagerPrivateData *priv = fdata->priv;
   const int old_top_line = priv->top_line;
@@ -337,9 +337,9 @@ static int op_pager_hide_quoted(struct PagerFunctionData *fdata, const struct Ke
 }
 
 /**
- * op_pager_next_line - Scroll down one line - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_scroll_line_down - Scroll down one line - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_pager_next_line(struct PagerFunctionData *fdata, const struct KeyEvent *event)
+static int op_scroll_line_down(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
   struct PagerPrivateData *priv = fdata->priv;
   if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
@@ -358,9 +358,9 @@ static int op_pager_next_line(struct PagerFunctionData *fdata, const struct KeyE
 }
 
 /**
- * op_pager_next_page - Move to the next page - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_scroll_page_down - Move to the next page - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_pager_next_page(struct PagerFunctionData *fdata, const struct KeyEvent *event)
+static int op_scroll_page_down(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
   struct PagerPrivateData *priv = fdata->priv;
   const bool c_pager_stop = cs_subset_bool(fdata->n->sub, "pager_stop");
@@ -398,9 +398,9 @@ static int op_pager_next_page(struct PagerFunctionData *fdata, const struct KeyE
 }
 
 /**
- * op_pager_prev_line - Scroll up one line - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_scroll_line_up - Scroll up one line - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_pager_prev_line(struct PagerFunctionData *fdata, const struct KeyEvent *event)
+static int op_scroll_line_up(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
   struct PagerPrivateData *priv = fdata->priv;
   if (priv->top_line)
@@ -418,9 +418,9 @@ static int op_pager_prev_line(struct PagerFunctionData *fdata, const struct KeyE
 }
 
 /**
- * op_pager_prev_page - Move to the previous page - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_scroll_page_up - Move to the previous page - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_pager_prev_page(struct PagerFunctionData *fdata, const struct KeyEvent *event)
+static int op_scroll_page_up(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
   struct PagerPrivateData *priv = fdata->priv;
   if (priv->top_line == 0)
@@ -890,9 +890,9 @@ static int op_quit(struct PagerFunctionData *fdata, const struct KeyEvent *event
 }
 
 /**
- * op_help - Help screen - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_show_help - Help screen - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_help(struct PagerFunctionData *fdata, const struct KeyEvent *event)
+static int op_show_help(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
   struct PagerPrivateData *priv = fdata->priv;
   if (priv->pview->mode == PAGER_MODE_HELP)
@@ -1023,20 +1023,20 @@ static const struct PagerFunction PagerFunctions[] = {
   { OP_PAGER_SKIP_QUOTED,      op_pager_skip_quoted },
   { OP_QUIT,                   op_quit },
   { OP_SAVE,                   op_save },
-  { OP_SCROLL_HALF_DOWN,       op_pager_half_down },
-  { OP_SCROLL_HALF_UP,         op_pager_half_up },
-  { OP_SCROLL_LINE_DOWN,       op_pager_next_line },
-  { OP_SCROLL_LINE_UP,         op_pager_prev_line },
-  { OP_SCROLL_PAGE_DOWN,       op_pager_next_page },
-  { OP_SCROLL_PAGE_UP,         op_pager_prev_page },
+  { OP_SCROLL_HALF_DOWN,       op_scroll_half_down },
+  { OP_SCROLL_HALF_UP,         op_scroll_half_up },
+  { OP_SCROLL_LINE_DOWN,       op_scroll_line_down },
+  { OP_SCROLL_LINE_UP,         op_scroll_line_up },
+  { OP_SCROLL_PAGE_DOWN,       op_scroll_page_down },
+  { OP_SCROLL_PAGE_UP,         op_scroll_page_up },
   { OP_SEARCH_BACKWARD,        op_pager_search },
   { OP_SEARCH_FORWARD,         op_pager_search },
   { OP_SEARCH_NEXT,            op_pager_search_next },
   { OP_SEARCH_PREVIOUS,        op_pager_search_next },
   { OP_SEARCH_TOGGLE,          op_search_toggle },
-  { OP_SELECT_FIRST_ENTRY,     op_first_entry },
-  { OP_SELECT_LAST_ENTRY,      op_last_entry },
-  { OP_SHOW_HELP,              op_help },
+  { OP_SELECT_FIRST_ENTRY,     op_select_first_entry },
+  { OP_SELECT_LAST_ENTRY,      op_select_last_entry },
+  { OP_SHOW_HELP,              op_show_help },
   { OP_VIEW_ATTACHMENTS,       op_view_attachments },
 
   // OpGeneric - Ignore
