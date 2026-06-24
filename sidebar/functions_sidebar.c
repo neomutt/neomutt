@@ -38,6 +38,7 @@
 #include "functions_sidebar.h"
 #include "lib.h"
 #include "editor/lib.h"
+#include "history/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
@@ -65,6 +66,7 @@ static const struct MenuFuncOp OpSidebar[] = { /* map: sidebar */
   { "sidebar-scroll-selection-to-bottom",  OP_SIDEBAR_SCROLL_SELECTION_TO_BOTTOM },
   { "sidebar-scroll-selection-to-middle",  OP_SIDEBAR_SCROLL_SELECTION_TO_MIDDLE },
   { "sidebar-scroll-selection-to-top",     OP_SIDEBAR_SCROLL_SELECTION_TO_TOP },
+  { "sidebar-select-entry-by-number",      OP_SIDEBAR_SELECT_ENTRY_BY_NUMBER },
   { "sidebar-select-page-bottom",          OP_SIDEBAR_SELECT_PAGE_BOTTOM },
   { "sidebar-select-page-middle",          OP_SIDEBAR_SELECT_PAGE_MIDDLE },
   { "sidebar-select-page-top",             OP_SIDEBAR_SELECT_PAGE_TOP },
@@ -428,6 +430,63 @@ int op_sidebar_first(struct SidebarFunctionData *fdata, const struct KeyEvent *e
 
   wdata->win->actions |= WA_RECALC;
   return FR_SUCCESS;
+}
+
+/**
+ * op_sidebar_select_entry_by_number - Jump to a specific mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+static int op_sidebar_select_entry_by_number(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
+{
+  struct SidebarWindowData *wdata = fdata->wdata;
+  if (!mutt_window_is_visible(wdata->win))
+    return FR_NO_ACTION;
+
+  if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
+  {
+    mutt_error(_("There are no mailboxes"));
+    return FR_ERROR;
+  }
+
+  const int count = ARRAY_SIZE(&wdata->entries);
+  struct Buffer *buf = buf_pool_get();
+  int rc = FR_ERROR;
+
+  int num = event->count;
+  if (num == 0)
+  {
+    if ((mw_get_field(_("Jump to: "), buf, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) != 0) ||
+        buf_is_empty(buf))
+    {
+      rc = FR_NO_ACTION;
+      goto done;
+    }
+
+    if (!mutt_str_atoi_full(buf_string(buf), &num))
+    {
+      mutt_error(_("Invalid index number"));
+      goto done;
+    }
+  }
+
+  if ((num < 1) || (num > count))
+  {
+    mutt_error(_("Invalid index number"));
+    goto done;
+  }
+
+  if ((num - 1) == wdata->hil_index)
+  {
+    rc = FR_NO_ACTION;
+    goto done;
+  }
+
+  wdata->hil_index = num - 1; // entry numbers are 1-based
+  wdata->win->actions |= WA_RECALC;
+  rc = op_sidebar_open(fdata, event);
+
+done:
+  buf_pool_release(&buf);
+  return rc;
 }
 
 /**
@@ -831,6 +890,7 @@ static const struct SidebarFunction SidebarFunctions[] = {
   { OP_SIDEBAR_SCROLL_SELECTION_TO_BOTTOM,   op_sidebar_scroll_selection_to_bottom },
   { OP_SIDEBAR_SCROLL_SELECTION_TO_MIDDLE,   op_sidebar_scroll_selection_to_middle },
   { OP_SIDEBAR_SCROLL_SELECTION_TO_TOP,      op_sidebar_scroll_selection_to_top },
+  { OP_SIDEBAR_SELECT_ENTRY_BY_NUMBER,       op_sidebar_select_entry_by_number },
   { OP_SIDEBAR_SELECT_PAGE_BOTTOM,           op_sidebar_select_page_bottom },
   { OP_SIDEBAR_SELECT_PAGE_MIDDLE,           op_sidebar_select_page_middle },
   { OP_SIDEBAR_SELECT_PAGE_TOP,              op_sidebar_select_page_top },

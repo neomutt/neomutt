@@ -596,25 +596,27 @@ const char *opcodes_get_name       (int op);
 
 #define OPS_SIDEBAR(_fmt) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-half-down> */ \
-  _fmt(OP_SIDEBAR_SCROLL_HALF_DOWN,          N_("Scroll down 1/2 page")) \
+  _fmt(OP_SIDEBAR_SCROLL_HALF_DOWN,           N_("Scroll down 1/2 page")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-half-up> */ \
-  _fmt(OP_SIDEBAR_SCROLL_HALF_UP,            N_("Scroll up 1/2 page")) \
+  _fmt(OP_SIDEBAR_SCROLL_HALF_UP,             N_("Scroll up 1/2 page")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-line-down> */ \
-  _fmt(OP_SIDEBAR_SCROLL_LINE_DOWN,          N_("Scroll down one line")) \
+  _fmt(OP_SIDEBAR_SCROLL_LINE_DOWN,           N_("Scroll down one line")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-line-up> */ \
-  _fmt(OP_SIDEBAR_SCROLL_LINE_UP,            N_("Scroll up one line")) \
+  _fmt(OP_SIDEBAR_SCROLL_LINE_UP,             N_("Scroll up one line")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-page-down> */ \
-  _fmt(OP_SIDEBAR_SCROLL_PAGE_DOWN,          N_("Scroll the sidebar down 1 page")) \
+  _fmt(OP_SIDEBAR_SCROLL_PAGE_DOWN,           N_("Scroll the sidebar down 1 page")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-page-up> */ \
-  _fmt(OP_SIDEBAR_SCROLL_PAGE_UP,            N_("Scroll the sidebar up 1 page")) \
+  _fmt(OP_SIDEBAR_SCROLL_PAGE_UP,             N_("Scroll the sidebar up 1 page")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-selection-to-bottom> */ \
   _fmt(OP_SIDEBAR_SCROLL_SELECTION_TO_BOTTOM, N_("Move entry to bottom of screen")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-selection-to-middle> */ \
   _fmt(OP_SIDEBAR_SCROLL_SELECTION_TO_MIDDLE, N_("Move entry to middle of screen")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-selection-to-top> */ \
-  _fmt(OP_SIDEBAR_SCROLL_SELECTION_TO_TOP,   N_("Move entry to top of screen")) \
+  _fmt(OP_SIDEBAR_SCROLL_SELECTION_TO_TOP,    N_("Move entry to top of screen")) \
   /* L10N: Help for Sidebar function: <sidebar-first> */ \
   _fmt(OP_SIDEBAR_FIRST,                      N_("Move the highlight to the first mailbox")) \
+  /* L10N: Help for Sidebar function: <sidebar-select-entry-by-number> */ \
+  _fmt(OP_SIDEBAR_SELECT_ENTRY_BY_NUMBER,     N_("Jump to a specific mailbox")) \
   /* L10N: Help for Sidebar function: <sidebar-last> */ \
   _fmt(OP_SIDEBAR_LAST,                       N_("Move the highlight to the last mailbox")) \
   /* L10N: Help for Sidebar function: <sidebar-next> */ \
@@ -622,11 +624,11 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Sidebar function: <sidebar-next-new> */ \
   _fmt(OP_SIDEBAR_NEXT_NEW,                   N_("Move the highlight to next mailbox with new mail")) \
   /* L10N: Help for Sidebar function: <sidebar-select-page-bottom> */ \
-  _fmt(OP_SIDEBAR_SELECT_PAGE_BOTTOM,        N_("Move the highlight to the bottom of the page")) \
+  _fmt(OP_SIDEBAR_SELECT_PAGE_BOTTOM,         N_("Move the highlight to the bottom of the page")) \
   /* L10N: Help for Sidebar function: <sidebar-select-page-middle> */ \
-  _fmt(OP_SIDEBAR_SELECT_PAGE_MIDDLE,        N_("Move the highlight to the middle of the page")) \
+  _fmt(OP_SIDEBAR_SELECT_PAGE_MIDDLE,         N_("Move the highlight to the middle of the page")) \
   /* L10N: Help for Sidebar function: <sidebar-select-page-top> */ \
-  _fmt(OP_SIDEBAR_SELECT_PAGE_TOP,           N_("Move the highlight to the top of the page")) \
+  _fmt(OP_SIDEBAR_SELECT_PAGE_TOP,            N_("Move the highlight to the top of the page")) \
   /* L10N: Help for Sidebar function: <sidebar-open> */ \
   _fmt(OP_SIDEBAR_OPEN,                       N_("Open highlighted mailbox")) \
   /* L10N: Help for Sidebar function: <sidebar-page-down> */ \

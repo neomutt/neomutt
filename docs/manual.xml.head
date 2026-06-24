@@ -18435,6 +18435,11 @@ set browser_sort = "reverse-size"
               </row>
               <row>
                 <entry>index,pager</entry>
+                <entry><literal>&lt;sidebar-select-entry-by-number&gt;</literal></entry>
+                <entry>Jump to a specific mailbox</entry>
+              </row>
+              <row>
+                <entry>index,pager</entry>
                 <entry><literal>&lt;sidebar-toggle-visible&gt;</literal></entry>
                 <entry>Make the Sidebar (in)visible</entry>
               </row>
