@@ -65,7 +65,7 @@
 static const struct Mapping VerifyHelp[] = {
   // clang-format off
   { N_("Exit"), OP_EXIT },
-  { N_("Help"), OP_HELP },
+  { N_("Help"), OP_SHOW_HELP },
   { NULL, 0 },
   // clang-format on
 };
@@ -104,23 +104,23 @@ static int menu_dialog_dokey(struct Menu *menu, int *id)
 
 /**
  * menu_dialog_translate_op - Convert menubar movement to scrolling
- * @param op Action requested, e.g. OP_NEXT_ENTRY
- * @retval num Action to perform, e.g. OP_NEXT_LINE
+ * @param op Action requested, e.g. OP_SELECT_NEXT_ENTRY
+ * @retval num Action to perform, e.g. OP_SCROLL_LINE_DOWN
  */
 static int menu_dialog_translate_op(int op)
 {
   switch (op)
   {
-    case OP_NEXT_ENTRY:
-      return OP_NEXT_LINE;
-    case OP_PREV_ENTRY:
-      return OP_PREV_LINE;
-    case OP_CURRENT_TOP:
-      return OP_TOP_PAGE;
-    case OP_CURRENT_BOTTOM:
-      return OP_BOTTOM_PAGE;
-    case OP_CURRENT_MIDDLE:
-      return OP_MIDDLE_PAGE;
+    case OP_SELECT_NEXT_ENTRY:
+      return OP_SCROLL_LINE_DOWN;
+    case OP_SELECT_PREVIOUS_ENTRY:
+      return OP_SCROLL_LINE_UP;
+    case OP_SCROLL_SELECTION_TO_TOP:
+      return OP_SELECT_PAGE_TOP;
+    case OP_SCROLL_SELECTION_TO_BOTTOM:
+      return OP_SELECT_PAGE_BOTTOM;
+    case OP_SCROLL_SELECTION_TO_MIDDLE:
+      return OP_SELECT_PAGE_MIDDLE;
   }
 
   return op;
@@ -265,14 +265,14 @@ int dlg_certificate(const char *title, struct StringArray *carr, bool allow_alwa
         choice = 4;
         break;
 
-      case OP_JUMP:
+      case OP_SELECT_ENTRY_BY_NUMBER:
         mutt_error(_("Jumping is not implemented for dialogs"));
         continue;
 
-      case OP_SEARCH:
+      case OP_SEARCH_FORWARD:
       case OP_SEARCH_NEXT:
-      case OP_SEARCH_OPPOSITE:
-      case OP_SEARCH_REVERSE:
+      case OP_SEARCH_PREVIOUS:
+      case OP_SEARCH_BACKWARD:
         mutt_error(_("Search is not implemented for this menu"));
         continue;
     }

@@ -57,7 +57,7 @@ static const struct MenuFuncOp OpPostpone[] = { /* map: postpone */
  */
 static const struct MenuOpSeq PostponeDefaultBindings[] = { /* map: postpone */
   { OP_DELETE,                             "d" },
-  { OP_TAG,                                "t" },
+  { OP_TAG_ENTRY,                                "t" },
   { OP_UNDELETE,                           "u" },
   { 0, NULL },
 };
@@ -225,27 +225,27 @@ static int op_generic_select_entry(struct PostponeData *pd, const struct KeyEven
  * op_search - Search for a regular expression - Implements ::postpone_function_t - @ingroup postpone_function_api
  *
  * This function handles:
- * - OP_SEARCH
+ * - OP_SEARCH_FORWARD
  * - OP_SEARCH_NEXT
- * - OP_SEARCH_OPPOSITE
- * - OP_SEARCH_REVERSE
+ * - OP_SEARCH_PREVIOUS
+ * - OP_SEARCH_BACKWARD
  */
 static int op_search(struct PostponeData *pd, const struct KeyEvent *event)
 {
   SearchFlags flags = SEARCH_NONE;
   switch (event->op)
   {
-    case OP_SEARCH:
+    case OP_SEARCH_FORWARD:
       flags |= SEARCH_PROMPT;
       pd->search_state->reverse = false;
       break;
-    case OP_SEARCH_REVERSE:
+    case OP_SEARCH_BACKWARD:
       flags |= SEARCH_PROMPT;
       pd->search_state->reverse = true;
       break;
     case OP_SEARCH_NEXT:
       break;
-    case OP_SEARCH_OPPOSITE:
+    case OP_SEARCH_PREVIOUS:
       flags |= SEARCH_OPPOSITE;
       break;
   }
@@ -268,12 +268,12 @@ static const struct PostponeFunction PostponeFunctions[] = {
   // clang-format off
   { OP_DELETE,                 op_delete },
   { OP_EXIT,                   op_quit },
-  { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },
+  { OP_ACTIVATE_ENTRY,   op_generic_select_entry },
   { OP_QUIT,                   op_quit },
-  { OP_SEARCH,                 op_search },
+  { OP_SEARCH_FORWARD,                 op_search },
   { OP_SEARCH_NEXT,            op_search },
-  { OP_SEARCH_OPPOSITE,        op_search },
-  { OP_SEARCH_REVERSE,         op_search },
+  { OP_SEARCH_PREVIOUS,        op_search },
+  { OP_SEARCH_BACKWARD,         op_search },
   { OP_UNDELETE,               op_delete },
   { 0, NULL },
   // clang-format on

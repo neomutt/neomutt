@@ -113,7 +113,7 @@ static const struct Mapping FolderHelp[] = {
   { N_("Chdir"), OP_CHANGE_DIRECTORY },
   { N_("Goto"),  OP_BROWSER_GOTO_FOLDER },
   { N_("Mask"),  OP_ENTER_MASK },
-  { N_("Help"),  OP_HELP },
+  { N_("Help"),  OP_SHOW_HELP },
   { NULL, 0 },
   // clang-format on
 };
@@ -127,7 +127,7 @@ static const struct Mapping FolderNewsHelp[] = {
   { N_("Unsubscribe"), OP_BROWSER_UNSUBSCRIBE },
   { N_("Catchup"),     OP_CATCHUP },
   { N_("Mask"),        OP_ENTER_MASK },
-  { N_("Help"),        OP_HELP },
+  { N_("Help"),        OP_SHOW_HELP },
   { NULL, 0 },
   // clang-format on
 };

@@ -65,12 +65,12 @@ struct MenuDefinition *sb_fuzzy_init_menu(void)
  */
 static const struct SidebarFunction FuzzyFunctions[] = {
   // clang-format off
-  { OP_FIRST_ENTRY,          op_sidebar_first },
-  { OP_LAST_ENTRY,           op_sidebar_last },
-  { OP_NEXT_ENTRY,           op_sidebar_next },
-  { OP_NEXT_PAGE,            op_sidebar_scroll_page_down },
-  { OP_PREV_ENTRY,           op_sidebar_prev },
-  { OP_PREV_PAGE,            op_sidebar_scroll_page_up },
+  { OP_SELECT_FIRST_ENTRY,          op_sidebar_first },
+  { OP_SELECT_LAST_ENTRY,           op_sidebar_last },
+  { OP_SELECT_NEXT_ENTRY,           op_sidebar_next },
+  { OP_SCROLL_PAGE_DOWN,            op_sidebar_scroll_page_down },
+  { OP_SELECT_PREVIOUS_ENTRY,           op_sidebar_prev },
+  { OP_SCROLL_PAGE_UP,            op_sidebar_scroll_page_up },
   { 0, NULL },
   // clang-format on
 };

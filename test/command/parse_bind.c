@@ -59,7 +59,7 @@ static const struct MenuFuncOp OpPager[] = {
   // clang-format off
   { "next-undeleted",         OP_MAIN_NEXT_UNDELETED },
   { "sidebar-toggle-visible", OP_SIDEBAR_TOGGLE_VISIBLE },
-  { "help",                   OP_HELP },
+  { "help",                   OP_SHOW_HELP },
   { NULL, 0 },
   // clang-format on
 };

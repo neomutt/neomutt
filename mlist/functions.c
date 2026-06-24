@@ -205,7 +205,7 @@ static int op_select_action(struct ListData *ld, const struct KeyEvent *event)
 {
   const struct ListEntry *entry = NULL;
 
-  if (event && (event->op != OP_GENERIC_SELECT_ENTRY))
+  if (event && (event->op != OP_ACTIVATE_ENTRY))
   {
     int first_match = -1;
     int num_matches = 0;
@@ -251,7 +251,7 @@ static int op_select_action(struct ListData *ld, const struct KeyEvent *event)
 static const struct MlistFunction MlistFunctions[] = {
   // clang-format off
   { OP_EXIT,                 op_quit          },
-  { OP_GENERIC_SELECT_ENTRY, op_select_action },
+  { OP_ACTIVATE_ENTRY, op_select_action },
   { OP_LIST_ARCHIVE,         op_select_action },
   { OP_LIST_HELP,            op_select_action },
   { OP_LIST_OWNER,           op_select_action },

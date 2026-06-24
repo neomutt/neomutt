@@ -917,7 +917,7 @@ static int op_jump(struct BrowserPrivateData *priv, const struct KeyEvent *event
  *
  * This function handles:
  * - OP_DESCEND_DIRECTORY
- * - OP_GENERIC_SELECT_ENTRY
+ * - OP_ACTIVATE_ENTRY
  */
 static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
@@ -934,7 +934,7 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct
   const int op = event->op;
   int index = menu_get_index(priv->menu);
   struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
-  if ((priv->menu->tag_prefix) && (op == OP_GENERIC_SELECT_ENTRY))
+  if ((priv->menu->tag_prefix) && (op == OP_ACTIVATE_ENTRY))
   {
     // Do nothing
   }
@@ -1416,7 +1416,7 @@ static const struct BrowserFunction BrowserFunctions[] = {
   { OP_DESCEND_DIRECTORY,    op_generic_select_entry },
   { OP_ENTER_MASK,           op_enter_mask },
   { OP_EXIT,                 op_quit },
-  { OP_GENERIC_SELECT_ENTRY, op_generic_select_entry },
+  { OP_ACTIVATE_ENTRY, op_generic_select_entry },
   { OP_GOTO_PARENT,          op_change_directory },
   { OP_LOAD_ACTIVE,          op_load_active },
   { OP_MAILBOX_LIST,         op_mailbox_list },

@@ -100,7 +100,7 @@ static int op_generic_select_entry(struct SmimeData *sd, const struct KeyEvent *
 static const struct SmimeFunction SmimeFunctions[] = {
   // clang-format off
   { OP_EXIT,                   op_quit },
-  { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },
+  { OP_ACTIVATE_ENTRY,   op_generic_select_entry },
   { OP_QUIT,                   op_quit },
   { 0, NULL },
   // clang-format on

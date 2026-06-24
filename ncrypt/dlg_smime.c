@@ -73,8 +73,8 @@
 static const struct Mapping SmimeHelp[] = {
   // clang-format off
   { N_("Exit"),   OP_EXIT },
-  { N_("Select"), OP_GENERIC_SELECT_ENTRY },
-  { N_("Help"),   OP_HELP },
+  { N_("Select"), OP_ACTIVATE_ENTRY },
+  { N_("Help"),   OP_SHOW_HELP },
   { NULL, 0 },
   // clang-format on
 };

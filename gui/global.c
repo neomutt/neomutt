@@ -174,13 +174,13 @@ static int op_what_key(struct MuttWindow *win, const struct KeyEvent *event)
 static const struct GlobalFunction GlobalFunctions[] = {
   // clang-format off
   { OP_CHECK_STATS,           op_check_stats },
-  { OP_ENTER_COMMAND,         op_enter_command },
+  { OP_RUN_COMMAND,         op_enter_command },
   { OP_FORGET_PASSPHRASE,     op_forget_passphrase },
-  { OP_REDRAW,                op_redraw },
-  { OP_SHELL_ESCAPE,          op_shell_escape },
-  { OP_SHOW_LOG_MESSAGES,     op_show_log_messages },
-  { OP_VERSION,               op_version },
-  { OP_WHAT_KEY,              op_what_key },
+  { OP_REDRAW_SCREEN,                op_redraw },
+  { OP_RUN_SHELL_COMMAND,          op_shell_escape },
+  { OP_SHOW_LOG,     op_show_log_messages },
+  { OP_SHOW_VERSION,               op_version },
+  { OP_SHOW_KEYCODE,              op_what_key },
   { 0, NULL },
   // clang-format on
 };
