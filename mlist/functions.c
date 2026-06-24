@@ -250,8 +250,8 @@ static int op_select_action(struct ListData *ld, const struct KeyEvent *event)
  */
 static const struct MlistFunction MlistFunctions[] = {
   // clang-format off
-  { OP_EXIT,                 op_quit          },
   { OP_ACTIVATE_ENTRY, op_select_action },
+  { OP_EXIT,                 op_quit          },
   { OP_LIST_ARCHIVE,         op_select_action },
   { OP_LIST_HELP,            op_select_action },
   { OP_LIST_OWNER,           op_select_action },

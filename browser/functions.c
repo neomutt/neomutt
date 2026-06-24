@@ -960,8 +960,8 @@ static int op_jump(struct BrowserPrivateData *priv, const struct KeyEvent *event
  * op_generic_select_entry - Select the current entry - Implements ::browser_function_t - @ingroup browser_function_api
  *
  * This function handles:
- * - OP_DESCEND_DIRECTORY
  * - OP_ACTIVATE_ENTRY
+ * - OP_DESCEND_DIRECTORY
  */
 static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
@@ -1445,6 +1445,7 @@ static int op_toggle_mailboxes(struct BrowserPrivateData *priv, const struct Key
  */
 static const struct BrowserFunction BrowserFunctions[] = {
   // clang-format off
+  { OP_ACTIVATE_ENTRY,       op_generic_select_entry },
   { OP_BROWSER_GOTO_FOLDER,  op_toggle_mailboxes },
   { OP_BROWSER_LIMIT,        op_browser_limit },
   { OP_BROWSER_NEW_FILE,     op_browser_new_file },
@@ -1460,7 +1461,6 @@ static const struct BrowserFunction BrowserFunctions[] = {
   { OP_DELETE_MAILBOX,       op_delete_mailbox },
   { OP_DESCEND_DIRECTORY,    op_generic_select_entry },
   { OP_EXIT,                 op_quit },
-  { OP_ACTIVATE_ENTRY, op_generic_select_entry },
   { OP_GOTO_HOME,            op_change_directory },
   { OP_GOTO_PARENT,          op_change_directory },
   { OP_GOTO_ROOT,            op_change_directory },

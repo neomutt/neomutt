@@ -115,8 +115,8 @@ static const struct MenuOpSeq EditorDefaultBindings[] = { /* map: editor */
   { OP_EDITOR_MAILBOX_CYCLE,               " " },              // <Space>
   { OP_EDITOR_QUOTE_CHAR,                  "\026" },           // <Ctrl-V>
   { OP_EDITOR_UPCASE_WORD,                 "\033u" },          // <Alt-u>
-  { OP_SHOW_HELP,                               "\033?" },          // <Alt-?>
-  { OP_REDRAW_SCREEN,                             "\014" },           // <Ctrl-L>
+  { OP_REDRAW_SCREEN,                      "\014" },           // <Ctrl-L>
+  { OP_SHOW_HELP,                          "\033?" },          // <Alt-?>
   { 0, NULL },
 };
 // clang-format on
@@ -523,8 +523,8 @@ static const struct EnterFunction EnterFunctions[] = {
   { OP_EDITOR_QUOTE_CHAR,         op_editor_quote_char },
   { OP_EDITOR_TRANSPOSE_CHARS,    op_editor_transpose_chars },
   { OP_EDITOR_UPCASE_WORD,        op_editor_capitalize_word },
-  { OP_SHOW_HELP,                      op_help },
-  { OP_REDRAW_SCREEN,                    op_redraw },
+  { OP_REDRAW_SCREEN,             op_redraw },
+  { OP_SHOW_HELP,                 op_help },
   { 0, NULL },
   // clang-format on
 };

@@ -54,12 +54,12 @@ static const struct MenuFuncOp OpFuzzy[] = { /* map: fuzzy */
  * FuzzyDefaultBindings - Key bindings for the Fuzzy Window
  */
 const struct MenuOpSeq FuzzyDefaultBindings[] = { /* map: fuzzy */
-  { OP_SELECT_FIRST_ENTRY,                        "<home>" },
-  { OP_SELECT_LAST_ENTRY,                         "<end>" },
-  { OP_SELECT_NEXT_ENTRY,                         "<down>" },
-  { OP_SCROLL_PAGE_DOWN,                          "<pagedown>" },
-  { OP_SELECT_PREVIOUS_ENTRY,                         "<up>" },
-  { OP_SCROLL_PAGE_UP,                          "<pageup>" },
+  { OP_SCROLL_PAGE_DOWN,               "<pagedown>" },
+  { OP_SCROLL_PAGE_UP,                 "<pageup>" },
+  { OP_SELECT_FIRST_ENTRY,             "<home>" },
+  { OP_SELECT_LAST_ENTRY,              "<end>" },
+  { OP_SELECT_NEXT_ENTRY,              "<down>" },
+  { OP_SELECT_PREVIOUS_ENTRY,          "<up>" },
   { 0, NULL },
 };
 // clang-format on

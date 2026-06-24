@@ -250,9 +250,6 @@ int menu_tagging_dispatcher(struct MuttWindow *win, const struct KeyEvent *event
 
   switch (op)
   {
-    case OP_APPLY_TO_TAGGED_END:
-      rc = op_end_cond(menu, op);
-      break;
     case OP_TAG_ENTRY:
       rc = op_tag(menu, op, event->count);
       break;
@@ -261,6 +258,9 @@ int menu_tagging_dispatcher(struct MuttWindow *win, const struct KeyEvent *event
       break;
     case OP_APPLY_TO_TAGGED_BEGIN:
       rc = op_tag_prefix_cond(menu, op);
+      break;
+    case OP_APPLY_TO_TAGGED_END:
+      rc = op_end_cond(menu, op);
       break;
     case OP_ABORT:
       rc = menu_abort(menu);
