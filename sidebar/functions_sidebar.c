@@ -50,29 +50,41 @@
  * OpSidebar - Functions for the Sidebar Window
  */
 static const struct MenuFuncOp OpSidebar[] = { /* map: sidebar */
-  { "sidebar-first",                       OP_SIDEBAR_FIRST },
-  { "sidebar-last",                        OP_SIDEBAR_LAST },
-  { "sidebar-next",                        OP_SIDEBAR_NEXT },
-  { "sidebar-next-new",                    OP_SIDEBAR_NEXT_NEW },
-  { "sidebar-open",                        OP_SIDEBAR_OPEN },
-  { "sidebar-page-down",                   OP_SIDEBAR_PAGE_DOWN },
-  { "sidebar-page-up",                     OP_SIDEBAR_PAGE_UP },
-  { "sidebar-prev",                        OP_SIDEBAR_PREV },
-  { "sidebar-prev-new",                    OP_SIDEBAR_PREV_NEW },
+  { "sidebar-activate-entry",              OP_SIDEBAR_ACTIVATE_ENTRY },
   { "sidebar-scroll-half-down",            OP_SIDEBAR_SCROLL_HALF_DOWN },
   { "sidebar-scroll-half-up",              OP_SIDEBAR_SCROLL_HALF_UP },
   { "sidebar-scroll-line-down",            OP_SIDEBAR_SCROLL_LINE_DOWN },
   { "sidebar-scroll-line-up",              OP_SIDEBAR_SCROLL_LINE_UP },
+  { "sidebar-scroll-page-down",            OP_SIDEBAR_SCROLL_PAGE_DOWN },
+  { "sidebar-scroll-page-up",              OP_SIDEBAR_SCROLL_PAGE_UP },
   { "sidebar-scroll-selection-to-bottom",  OP_SIDEBAR_SCROLL_SELECTION_TO_BOTTOM },
   { "sidebar-scroll-selection-to-middle",  OP_SIDEBAR_SCROLL_SELECTION_TO_MIDDLE },
   { "sidebar-scroll-selection-to-top",     OP_SIDEBAR_SCROLL_SELECTION_TO_TOP },
+  { "sidebar-search",                      OP_SIDEBAR_SEARCH },
   { "sidebar-select-entry-by-number",      OP_SIDEBAR_SELECT_ENTRY_BY_NUMBER },
+  { "sidebar-select-first-entry",          OP_SIDEBAR_SELECT_FIRST_ENTRY },
+  { "sidebar-select-last-entry",           OP_SIDEBAR_SELECT_LAST_ENTRY },
+  { "sidebar-select-next-entry",           OP_SIDEBAR_SELECT_NEXT_ENTRY },
+  { "sidebar-select-next-entry-new",       OP_SIDEBAR_SELECT_NEXT_ENTRY_NEW },
   { "sidebar-select-page-bottom",          OP_SIDEBAR_SELECT_PAGE_BOTTOM },
   { "sidebar-select-page-middle",          OP_SIDEBAR_SELECT_PAGE_MIDDLE },
   { "sidebar-select-page-top",             OP_SIDEBAR_SELECT_PAGE_TOP },
-  { "sidebar-start-search",                OP_SIDEBAR_START_SEARCH },
+  { "sidebar-select-previous-entry",       OP_SIDEBAR_SELECT_PREVIOUS_ENTRY },
+  { "sidebar-select-previous-entry-new",   OP_SIDEBAR_SELECT_PREVIOUS_ENTRY_NEW },
   { "sidebar-toggle-virtual",              OP_SIDEBAR_TOGGLE_VIRTUAL },
   { "sidebar-toggle-visible",              OP_SIDEBAR_TOGGLE_VISIBLE },
+
+  // Deprecated
+  { "sidebar-first",          OP_SIDEBAR_SELECT_FIRST_ENTRY,          MFF_DEPRECATED },
+  { "sidebar-last",           OP_SIDEBAR_SELECT_LAST_ENTRY,           MFF_DEPRECATED },
+  { "sidebar-next",           OP_SIDEBAR_SELECT_NEXT_ENTRY,           MFF_DEPRECATED },
+  { "sidebar-next-new",       OP_SIDEBAR_SELECT_NEXT_ENTRY_NEW,       MFF_DEPRECATED },
+  { "sidebar-open",           OP_SIDEBAR_ACTIVATE_ENTRY,              MFF_DEPRECATED },
+  { "sidebar-page-down",      OP_SIDEBAR_SCROLL_PAGE_DOWN,            MFF_DEPRECATED },
+  { "sidebar-page-up",        OP_SIDEBAR_SCROLL_PAGE_UP,              MFF_DEPRECATED },
+  { "sidebar-prev",           OP_SIDEBAR_SELECT_PREVIOUS_ENTRY,       MFF_DEPRECATED },
+  { "sidebar-prev-new",       OP_SIDEBAR_SELECT_PREVIOUS_ENTRY_NEW,   MFF_DEPRECATED },
+  { "sidebar-start-search",   OP_SIDEBAR_SEARCH,                      MFF_DEPRECATED },
   { NULL, 0 },
 };
 
@@ -407,9 +419,10 @@ static int sb_scroll_view(struct SidebarFunctionData *fdata, int delta)
 // -----------------------------------------------------------------------------
 
 /**
- * op_sidebar_first - Selects the first unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ * op_sidebar_select_first_entry - Selects the first unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
-int op_sidebar_first(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
+int op_sidebar_select_first_entry(struct SidebarFunctionData *fdata,
+                                  const struct KeyEvent *event)
 {
   struct SidebarWindowData *wdata = fdata->wdata;
   if (!mutt_window_is_visible(wdata->win))
@@ -483,7 +496,7 @@ static int op_sidebar_select_entry_by_number(struct SidebarFunctionData *fdata,
 
   wdata->hil_index = num - 1; // entry numbers are 1-based
   wdata->win->actions |= WA_RECALC;
-  rc = op_sidebar_open(fdata, event);
+  rc = op_sidebar_activate_entry(fdata, event);
 
 done:
   buf_pool_release(&buf);
@@ -491,9 +504,9 @@ done:
 }
 
 /**
- * op_sidebar_last - Selects the last unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ * op_sidebar_select_last_entry - Selects the last unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
-int op_sidebar_last(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
+int op_sidebar_select_last_entry(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
 {
   struct SidebarWindowData *wdata = fdata->wdata;
   if (!mutt_window_is_visible(wdata->win))
@@ -516,9 +529,9 @@ int op_sidebar_last(struct SidebarFunctionData *fdata, const struct KeyEvent *ev
 }
 
 /**
- * op_sidebar_next - Selects the next unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ * op_sidebar_select_next_entry - Selects the next unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
-int op_sidebar_next(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
+int op_sidebar_select_next_entry(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
 {
   struct SidebarWindowData *wdata = fdata->wdata;
   if (!mutt_window_is_visible(wdata->win))
@@ -547,11 +560,12 @@ int op_sidebar_next(struct SidebarFunctionData *fdata, const struct KeyEvent *ev
 }
 
 /**
- * op_sidebar_next_new - Selects the next new mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ * op_sidebar_select_next_entry_new - Selects the next new mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  *
  * Search down the list of mail folders for one containing new mail.
  */
-static int op_sidebar_next_new(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
+static int op_sidebar_select_next_entry_new(struct SidebarFunctionData *fdata,
+                                            const struct KeyEvent *event)
 {
   struct SidebarWindowData *wdata = fdata->wdata;
   if (!mutt_window_is_visible(wdata->win))
@@ -587,9 +601,9 @@ static int op_sidebar_next_new(struct SidebarFunctionData *fdata, const struct K
 }
 
 /**
- * op_sidebar_open - Open highlighted mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ * op_sidebar_activate_entry - Open highlighted mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
-int op_sidebar_open(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
+int op_sidebar_activate_entry(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
 {
   struct SidebarWindowData *wdata = fdata->wdata;
   struct MuttWindow *win_sidebar = wdata->win;
@@ -602,9 +616,10 @@ int op_sidebar_open(struct SidebarFunctionData *fdata, const struct KeyEvent *ev
 }
 
 /**
- * op_sidebar_prev - Selects the previous unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ * op_sidebar_select_previous_entry - Selects the previous unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
-int op_sidebar_prev(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
+int op_sidebar_select_previous_entry(struct SidebarFunctionData *fdata,
+                                     const struct KeyEvent *event)
 {
   struct SidebarWindowData *wdata = fdata->wdata;
   if (!mutt_window_is_visible(wdata->win))
@@ -633,11 +648,12 @@ int op_sidebar_prev(struct SidebarFunctionData *fdata, const struct KeyEvent *ev
 }
 
 /**
- * op_sidebar_prev_new - Selects the previous new mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ * op_sidebar_select_previous_entry_new - Selects the previous new mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  *
  * Search up the list of mail folders for one containing new mail.
  */
-static int op_sidebar_prev_new(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
+static int op_sidebar_select_previous_entry_new(struct SidebarFunctionData *fdata,
+                                                const struct KeyEvent *event)
 {
   struct SidebarWindowData *wdata = fdata->wdata;
   if (!mutt_window_is_visible(wdata->win))
@@ -875,27 +891,27 @@ static int op_sidebar_toggle_virtual(struct SidebarFunctionData *fdata,
  */
 static const struct SidebarFunction SidebarFunctions[] = {
   // clang-format off
-  { OP_SIDEBAR_FIRST,                        op_sidebar_first },
-  { OP_SIDEBAR_LAST,                         op_sidebar_last },
-  { OP_SIDEBAR_NEXT,                         op_sidebar_next },
-  { OP_SIDEBAR_NEXT_NEW,                     op_sidebar_next_new },
-  { OP_SIDEBAR_OPEN,                         op_sidebar_open },
-  { OP_SIDEBAR_PAGE_DOWN,                    op_sidebar_scroll_page_down },
-  { OP_SIDEBAR_PAGE_UP,                      op_sidebar_scroll_page_up },
-  { OP_SIDEBAR_PREV,                         op_sidebar_prev },
-  { OP_SIDEBAR_PREV_NEW,                     op_sidebar_prev_new },
+  { OP_SIDEBAR_ACTIVATE_ENTRY,               op_sidebar_activate_entry },
   { OP_SIDEBAR_SCROLL_HALF_DOWN,             op_sidebar_scroll_half_down },
   { OP_SIDEBAR_SCROLL_HALF_UP,               op_sidebar_scroll_half_up },
   { OP_SIDEBAR_SCROLL_LINE_DOWN,             op_sidebar_scroll_line_down },
   { OP_SIDEBAR_SCROLL_LINE_UP,               op_sidebar_scroll_line_up },
+  { OP_SIDEBAR_SCROLL_PAGE_DOWN,             op_sidebar_scroll_page_down },
+  { OP_SIDEBAR_SCROLL_PAGE_UP,               op_sidebar_scroll_page_up },
   { OP_SIDEBAR_SCROLL_SELECTION_TO_BOTTOM,   op_sidebar_scroll_selection_to_bottom },
   { OP_SIDEBAR_SCROLL_SELECTION_TO_MIDDLE,   op_sidebar_scroll_selection_to_middle },
   { OP_SIDEBAR_SCROLL_SELECTION_TO_TOP,      op_sidebar_scroll_selection_to_top },
+  { OP_SIDEBAR_SEARCH,                       op_sidebar_search },
   { OP_SIDEBAR_SELECT_ENTRY_BY_NUMBER,       op_sidebar_select_entry_by_number },
+  { OP_SIDEBAR_SELECT_FIRST_ENTRY,           op_sidebar_select_first_entry },
+  { OP_SIDEBAR_SELECT_LAST_ENTRY,            op_sidebar_select_last_entry },
+  { OP_SIDEBAR_SELECT_NEXT_ENTRY,            op_sidebar_select_next_entry },
+  { OP_SIDEBAR_SELECT_NEXT_ENTRY_NEW,        op_sidebar_select_next_entry_new },
   { OP_SIDEBAR_SELECT_PAGE_BOTTOM,           op_sidebar_select_page_bottom },
   { OP_SIDEBAR_SELECT_PAGE_MIDDLE,           op_sidebar_select_page_middle },
   { OP_SIDEBAR_SELECT_PAGE_TOP,              op_sidebar_select_page_top },
-  { OP_SIDEBAR_START_SEARCH,                 op_sidebar_start_search },
+  { OP_SIDEBAR_SELECT_PREVIOUS_ENTRY,        op_sidebar_select_previous_entry },
+  { OP_SIDEBAR_SELECT_PREVIOUS_ENTRY_NEW,    op_sidebar_select_previous_entry_new },
   { OP_SIDEBAR_TOGGLE_VIRTUAL,               op_sidebar_toggle_virtual },
   { OP_SIDEBAR_TOGGLE_VISIBLE,               op_sidebar_toggle_visible },
   { 0, NULL },

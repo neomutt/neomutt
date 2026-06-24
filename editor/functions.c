@@ -240,8 +240,7 @@ static int op_history_select_next_entry(struct EnterFunctionData *fdata,
 /**
  * op_history_search - Search through the history list - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_history_search(struct EnterFunctionData *fdata,
-                                    const struct KeyEvent *event)
+static int op_history_search(struct EnterFunctionData *fdata, const struct KeyEvent *event)
 {
   struct EnterWindowData *wdata = fdata->wdata;
   if (wdata->hclass == HC_NONE)
