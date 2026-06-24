@@ -49,7 +49,7 @@ enum FunctionRetval complete_file_mbox(struct EnterWindowData *wdata, int op)
 
   struct FileCompletionData *cdata = wdata->cdata;
 
-  if (op == OP_EDITOR_MAILBOX_CYCLE)
+  if (op == OP_EDITOR_COMPLETE_MAILBOX)
   {
     wdata->first = true; /* clear input if user types a real key later */
     buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);

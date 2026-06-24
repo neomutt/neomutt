@@ -303,6 +303,8 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_EDITOR_CAPITALIZE_WORD,             N_("Capitalize the word")) \
   /* L10N: Help for Editor function: <complete> */ \
   _fmt(OP_EDITOR_COMPLETE,                    N_("Complete filename or alias")) \
+  /* L10N: Help for Editor function: <mailbox-cycle> */ \
+  _fmt(OP_EDITOR_COMPLETE_MAILBOX,            N_("Cycle among incoming mailboxes")) \
   /* L10N: Help for Editor function: <complete-query> */ \
   _fmt(OP_EDITOR_COMPLETE_QUERY,              N_("Complete address with query")) \
   /* L10N: Help for Editor function: <delete-char> */ \
@@ -316,11 +318,11 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Editor function: <forward-word> */ \
   _fmt(OP_EDITOR_FORWARD_WORD,                N_("Move the cursor to the end of the word")) \
   /* L10N: Help for Editor function: <history-down> */ \
-  _fmt(OP_EDITOR_HISTORY_DOWN,                N_("Scroll down through the history list")) \
+  _fmt(OP_HISTORY_SELECT_NEXT_ENTRY,          N_("Scroll down through the history list")) \
   /* L10N: Help for Editor function: <history-search> */ \
-  _fmt(OP_EDITOR_HISTORY_SEARCH,              N_("Search through the history list")) \
+  _fmt(OP_HISTORY_SEARCH,                     N_("Search through the history list")) \
   /* L10N: Help for Editor function: <history-up> */ \
-  _fmt(OP_EDITOR_HISTORY_UP,                  N_("Scroll up through the history list")) \
+  _fmt(OP_HISTORY_SELECT_PREVIOUS_ENTRY,      N_("Scroll up through the history list")) \
   /* L10N: Help for Editor function: <kill-eol> */ \
   _fmt(OP_EDITOR_KILL_EOL,                    N_("Delete chars from cursor to end of line")) \
   /* L10N: Help for Editor function: <kill-eow> */ \
@@ -331,8 +333,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_EDITOR_KILL_WHOLE_LINE,             N_("Delete all chars on the line")) \
   /* L10N: Help for Editor function: <kill-word> */ \
   _fmt(OP_EDITOR_KILL_WORD,                   N_("Delete the word in front of the cursor")) \
-  /* L10N: Help for Editor function: <mailbox-cycle> */ \
-  _fmt(OP_EDITOR_MAILBOX_CYCLE,               N_("Cycle among incoming mailboxes")) \
   /* L10N: Help for Editor function: <quote-char> */ \
   _fmt(OP_EDITOR_QUOTE_CHAR,                  N_("Quote the next typed key")) \
   /* L10N: Help for Editor function: <transpose-chars> */ \
