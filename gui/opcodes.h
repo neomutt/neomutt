@@ -49,75 +49,75 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_FORGET_PASSPHRASE,                  N_("Wipe passphrases from memory")) \
   /* L10N: Help for Editor, Generic function: <redraw-screen> */ \
   _fmt(OP_REDRAW,                             N_("Clear and redraw the screen")) \
-  /* L10N: Help for Generic function: <enter-command> */ \
+  /* L10N: Help for Generic function: <run-command> */ \
   _fmt(OP_ENTER_COMMAND,                      N_("Enter a neomuttrc command")) \
-  /* L10N: Help for Generic function: <shell-escape> */ \
+  /* L10N: Help for Generic function: <run-shell-command> */ \
   _fmt(OP_SHELL_ESCAPE,                       N_("Invoke a command in a subshell")) \
-  /* L10N: Help for Editor, Generic function: <help> */ \
+  /* L10N: Help for Editor, Generic function: <show-help> */ \
   _fmt(OP_HELP,                               N_("Help screen")) \
-  /* L10N: Help for Generic function: <what-key> */ \
+  /* L10N: Help for Generic function: <show-keycode> */ \
   _fmt(OP_WHAT_KEY,                           N_("Display the keycode for a key press")) \
-  /* L10N: Help for Generic function: <show-log-messages> */ \
+  /* L10N: Help for Generic function: < */ \
   _fmt(OP_SHOW_LOG_MESSAGES,                  N_("Show log (and debug) messages")) \
   /* L10N: Help for Generic function: <show-version> */ \
   _fmt(OP_VERSION,                            N_("Show the NeoMutt version number and date")) \
 
 #define OPS_SCROLL(_fmt) \
-  /* L10N: Help for Generic function: <half-down> */ \
+  /* L10N: Help for Generic function: <scroll-half-down> */ \
   _fmt(OP_HALF_DOWN,                          N_("Scroll down 1/2 page")) \
-  /* L10N: Help for Generic function: <half-up> */ \
+  /* L10N: Help for Generic function: <scroll-half-up> */ \
   _fmt(OP_HALF_UP,                            N_("Scroll up 1/2 page")) \
-  /* L10N: Help for Generic function: <next-line> */ \
+  /* L10N: Help for Generic function: <scroll-line-down> */ \
   _fmt(OP_NEXT_LINE,                          N_("Scroll down one line")) \
-  /* L10N: Help for Generic function: <previous-line> */ \
+  /* L10N: Help for Generic function: <scroll-line-up> */ \
   _fmt(OP_PREV_LINE,                          N_("Scroll up one line")) \
-  /* L10N: Help for Generic function: <next-page> */ \
+  /* L10N: Help for Generic function: <scroll-page-down> */ \
   _fmt(OP_NEXT_PAGE,                          N_("Move to the next page")) \
-  /* L10N: Help for Generic function: <previous-page> */ \
+  /* L10N: Help for Generic function: <scroll-page-up> */ \
   _fmt(OP_PREV_PAGE,                          N_("Move to the previous page")) \
-  /* L10N: Help for Generic function: <current-bottom> */ \
+  /* L10N: Help for Generic function: <scroll-selection-to-bottom> */ \
   _fmt(OP_CURRENT_BOTTOM,                     N_("Move entry to bottom of screen")) \
-  /* L10N: Help for Generic function: <current-middle> */ \
+  /* L10N: Help for Generic function: <scroll-selection-to-middle> */ \
   _fmt(OP_CURRENT_MIDDLE,                     N_("Move entry to middle of screen")) \
-  /* L10N: Help for Generic function: <current-top> */ \
+  /* L10N: Help for Generic function: <scroll-selection-to-top> */ \
   _fmt(OP_CURRENT_TOP,                        N_("Move entry to top of screen")) \
 
 #define OPS_SEARCH(_fmt) \
-  /* L10N: Help for Generic function: <search-reverse> */ \
+  /* L10N: Help for Generic function: <search-backward> */ \
   _fmt(OP_SEARCH_REVERSE,                     N_("Search backwards for a regular expression")) \
-  /* L10N: Help for Generic function: <search> */ \
+  /* L10N: Help for Generic function: <search-forward> */ \
   _fmt(OP_SEARCH,                             N_("Search for a regular expression")) \
   /* L10N: Help for Generic function: <search-next> */ \
   _fmt(OP_SEARCH_NEXT,                        N_("Search for next match")) \
-  /* L10N: Help for Generic function: <search-opposite> */ \
+  /* L10N: Help for Generic function: <search-previous> */ \
   _fmt(OP_SEARCH_OPPOSITE,                    N_("Search for next match in opposite direction")) \
 
 #define OPS_SELECT(_fmt) \
-  /* L10N: Help for Generic function: <select-entry> */ \
+  /* L10N: Help for Generic function: <activate-entry> */ \
   _fmt(OP_GENERIC_SELECT_ENTRY,               N_("Select the current entry")) \
-  /* L10N: Help for Generic function: <jump> */ \
+  /* L10N: Help for Generic function: <select-entry-by-number> */ \
   _fmt(OP_JUMP,                               N_("Jump to an index number")) \
-  /* L10N: Help for Generic function: <first-entry> */ \
+  /* L10N: Help for Generic function: <select-first-entry> */ \
   _fmt(OP_FIRST_ENTRY,                        N_("Move to the first entry")) \
-  /* L10N: Help for Generic function: <last-entry> */ \
+  /* L10N: Help for Generic function: <select-last-entry> */ \
   _fmt(OP_LAST_ENTRY,                         N_("Move to the last entry")) \
-  /* L10N: Help for Generic function: <next-entry> */ \
+  /* L10N: Help for Generic function: <select-next-entry> */ \
   _fmt(OP_NEXT_ENTRY,                         N_("Move to the next entry")) \
-  /* L10N: Help for Generic function: <bottom-page> */ \
+  /* L10N: Help for Generic function: <select-page-bottom> */ \
   _fmt(OP_BOTTOM_PAGE,                        N_("Move to the bottom of the page")) \
-  /* L10N: Help for Generic function: <middle-page> */ \
+  /* L10N: Help for Generic function: <select-page-middle> */ \
   _fmt(OP_MIDDLE_PAGE,                        N_("Move to the middle of the page")) \
-  /* L10N: Help for Generic function: <top-page> */ \
+  /* L10N: Help for Generic function: <select-page-top> */ \
   _fmt(OP_TOP_PAGE,                           N_("Move to the top of the page")) \
-  /* L10N: Help for Generic function: <previous-entry> */ \
+  /* L10N: Help for Generic function: <select-previous-entry> */ \
   _fmt(OP_PREV_ENTRY,                         N_("Move to the previous entry")) \
 
 #define OPS_TAG(_fmt) \
-  /* L10N: Help for Generic function: <tag-prefix> */ \
+  /* L10N: Help for Generic function: <apply-to-tagged> */ \
   _fmt(OP_TAG_PREFIX,                         N_("Apply next function to tagged messages")) \
-  /* L10N: Help for Generic function: <tag-prefix-cond> */ \
+  /* L10N: Help for Generic function: <apply-to-tagged-begin> */ \
   _fmt(OP_TAG_PREFIX_COND,                    N_("Apply next function ONLY to tagged messages")) \
-  /* L10N: Help for Generic function: <end-cond> */ \
+  /* L10N: Help for Generic function: <apply-to-tagged-end> */ \
   _fmt(OP_END_COND,                           N_("End of conditional execution (noop)")) \
   /* L10N: Help for Generic function: <tag-entry> */ \
   _fmt(OP_TAG,                                N_("Tag the current entry")) \
