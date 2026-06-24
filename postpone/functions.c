@@ -209,9 +209,9 @@ static int op_quit(struct PostponeData *pd, const struct KeyEvent *event)
 }
 
 /**
- * op_generic_select_entry - Select the current entry - Implements ::postpone_function_t - @ingroup postpone_function_api
+ * op_activate_entry - Select the current entry - Implements ::postpone_function_t - @ingroup postpone_function_api
  */
-static int op_generic_select_entry(struct PostponeData *pd, const struct KeyEvent *event)
+static int op_activate_entry(struct PostponeData *pd, const struct KeyEvent *event)
 {
   int index = menu_get_index(pd->menu);
   struct MailboxView *mv = pd->mailbox_view;
@@ -268,7 +268,7 @@ static const struct PostponeFunction PostponeFunctions[] = {
   // clang-format off
   { OP_DELETE,                 op_delete },
   { OP_EXIT,                   op_quit },
-  { OP_ACTIVATE_ENTRY,         op_generic_select_entry },
+  { OP_ACTIVATE_ENTRY,         op_activate_entry },
   { OP_QUIT,                   op_quit },
   { OP_SEARCH_FORWARD,         op_search },
   { OP_SEARCH_NEXT,            op_search },

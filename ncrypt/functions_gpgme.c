@@ -748,9 +748,9 @@ static int op_quit(struct GpgmeData *gd, const struct KeyEvent *event)
 }
 
 /**
- * op_generic_select_entry - Select the current entry - Implements ::gpgme_function_t - @ingroup gpgme_function_api
+ * op_activate_entry - Select the current entry - Implements ::gpgme_function_t - @ingroup gpgme_function_api
  */
-static int op_generic_select_entry(struct GpgmeData *gd, const struct KeyEvent *event)
+static int op_activate_entry(struct GpgmeData *gd, const struct KeyEvent *event)
 {
   const int index = menu_get_index(gd->menu);
   struct CryptKeyInfo **pkey = ARRAY_GET(gd->key_table, index);
@@ -850,7 +850,7 @@ static int op_view_id(struct GpgmeData *gd, const struct KeyEvent *event)
  */
 static const struct GpgmeFunction GpgmeFunctions[] = {
   // clang-format off
-  { OP_ACTIVATE_ENTRY,         op_generic_select_entry },
+  { OP_ACTIVATE_ENTRY,         op_activate_entry },
   { OP_EXIT,                   op_quit },
   { OP_QUIT,                   op_quit },
   { OP_VERIFY_KEY,             op_verify_key },

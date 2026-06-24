@@ -36,9 +36,9 @@
 #include "menu/lib.h"
 
 /**
- * op_generic_select_entry - Select the current entry - Implements ::history_function_t - @ingroup history_function_api
+ * op_activate_entry - Select the current entry - Implements ::history_function_t - @ingroup history_function_api
  */
-static int op_generic_select_entry(struct HistoryData *hd, const struct KeyEvent *event)
+static int op_activate_entry(struct HistoryData *hd, const struct KeyEvent *event)
 {
   const int index = menu_get_index(hd->menu);
 
@@ -72,7 +72,7 @@ static int op_quit(struct HistoryData *hd, const struct KeyEvent *event)
  */
 static const struct HistoryFunction HistoryFunctions[] = {
   // clang-format off
-  { OP_ACTIVATE_ENTRY,         op_generic_select_entry },
+  { OP_ACTIVATE_ENTRY,         op_activate_entry },
   { OP_EXIT,                   op_quit },
   { OP_QUIT,                   op_quit },
   { 0, NULL },

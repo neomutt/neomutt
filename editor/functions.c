@@ -471,18 +471,18 @@ static int op_editor_transpose_chars(struct EnterFunctionData *fdata,
 }
 
 /**
- * op_help - Display Help - Implements ::enter_function_t - @ingroup enter_function_api
+ * op_show_help - Display Help - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_help(struct EnterFunctionData *fdata, const struct KeyEvent *event)
+static int op_show_help(struct EnterFunctionData *fdata, const struct KeyEvent *event)
 {
   mutt_help(fdata->mod_data->md_editor);
   return FR_SUCCESS;
 }
 
 /**
- * op_redraw - Redraw the screen - Implements ::enter_function_t - @ingroup enter_function_api
+ * op_redraw_screen - Redraw the screen - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_redraw(struct EnterFunctionData *fdata, const struct KeyEvent *event)
+static int op_redraw_screen(struct EnterFunctionData *fdata, const struct KeyEvent *event)
 {
   mutt_clear_error();
   clearok(stdscr, true);
@@ -523,8 +523,8 @@ static const struct EnterFunction EnterFunctions[] = {
   { OP_EDITOR_QUOTE_CHAR,         op_editor_quote_char },
   { OP_EDITOR_TRANSPOSE_CHARS,    op_editor_transpose_chars },
   { OP_EDITOR_UPCASE_WORD,        op_editor_capitalize_word },
-  { OP_REDRAW_SCREEN,             op_redraw },
-  { OP_SHOW_HELP,                 op_help },
+  { OP_REDRAW_SCREEN,             op_redraw_screen },
+  { OP_SHOW_HELP,                 op_show_help },
   { 0, NULL },
   // clang-format on
 };

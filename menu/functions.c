@@ -279,9 +279,9 @@ static int menu_search(struct MenuFunctionData *fdata, const struct KeyEvent *ev
 }
 
 /**
- * op_help - Show the help screen - Implements ::menu_function_t - @ingroup menu_function_api
+ * op_show_help - Show the help screen - Implements ::menu_function_t - @ingroup menu_function_api
  */
-static int op_help(struct MenuFunctionData *fdata, const struct KeyEvent *event)
+static int op_show_help(struct MenuFunctionData *fdata, const struct KeyEvent *event)
 {
   struct Menu *menu = fdata->menu;
   mutt_help(menu->md);
@@ -290,9 +290,10 @@ static int op_help(struct MenuFunctionData *fdata, const struct KeyEvent *event)
 }
 
 /**
- * op_jump - Jump to an index number - Implements ::menu_function_t - @ingroup menu_function_api
+ * op_select_entry_by_number - Jump to an index number - Implements ::menu_function_t - @ingroup menu_function_api
  */
-static int op_jump(struct MenuFunctionData *fdata, const struct KeyEvent *event)
+static int op_select_entry_by_number(struct MenuFunctionData *fdata,
+                                     const struct KeyEvent *event)
 {
   struct Menu *menu = fdata->menu;
   if (menu->max == 0)
@@ -349,7 +350,7 @@ static const struct MenuFunction MenuFunctions[] = {
   { OP_SEARCH_FORWARD,              menu_search },
   { OP_SEARCH_NEXT,                 menu_search },
   { OP_SEARCH_PREVIOUS,             menu_search },
-  { OP_SELECT_ENTRY_BY_NUMBER,      op_jump },
+  { OP_SELECT_ENTRY_BY_NUMBER,      op_select_entry_by_number },
   { OP_SELECT_FIRST_ENTRY,          menu_movement },
   { OP_SELECT_LAST_ENTRY,           menu_movement },
   { OP_SELECT_NEXT_ENTRY,           menu_movement },
@@ -357,7 +358,7 @@ static const struct MenuFunction MenuFunctions[] = {
   { OP_SELECT_PAGE_MIDDLE,          menu_movement },
   { OP_SELECT_PAGE_TOP,             menu_movement },
   { OP_SELECT_PREVIOUS_ENTRY,       menu_movement },
-  { OP_SHOW_HELP,                   op_help },
+  { OP_SHOW_HELP,                   op_show_help },
   { 0, NULL },
   // clang-format on
 };

@@ -383,9 +383,9 @@ static int alias_select_entries(struct AliasMenuData *mdata, int count)
 }
 
 /**
- * op_generic_select_entry - select the current entry - Implements ::alias_function_t - @ingroup alias_function_api
+ * op_activate_entry - select the current entry - Implements ::alias_function_t - @ingroup alias_function_api
  */
-static int op_generic_select_entry(struct AliasFunctionData *fdata, const struct KeyEvent *event)
+static int op_activate_entry(struct AliasFunctionData *fdata, const struct KeyEvent *event)
 {
   if (event->count > 0)
     return op_jump(fdata, event);
@@ -609,7 +609,7 @@ static int op_sort(struct AliasFunctionData *fdata, const struct KeyEvent *event
  */
 static const struct AliasFunction AliasFunctions[] = {
   // clang-format off
-  { OP_ACTIVATE_ENTRY,         op_generic_select_entry },
+  { OP_ACTIVATE_ENTRY,         op_activate_entry },
   { OP_CREATE_ALIAS,           op_create_alias },
   { OP_DELETE,                 op_delete },
   { OP_EXIT,                   op_quit },
