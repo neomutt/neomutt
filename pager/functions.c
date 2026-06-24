@@ -70,12 +70,12 @@ static const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "toggle-quoted",                 OP_PAGER_HIDE_QUOTED },
 
   // Deprecated
-  { "bottom",                        OP_LAST_ENTRY,        MFF_DEPRECATED },
+  { "bottom",                        OP_SELECT_LAST_ENTRY,        MFF_DEPRECATED },
   { "buffy-list",                    OP_MAILBOX_LIST,      MFF_DEPRECATED },
-  { "error-history",                 OP_SHOW_LOG_MESSAGES, MFF_DEPRECATED },
+  { "error-history",                 OP_SHOW_LOG, MFF_DEPRECATED },
   { "mark-as-new",                   OP_TOGGLE_NEW,        MFF_DEPRECATED },
-  { "tag-message",                   OP_TAG,               MFF_DEPRECATED },
-  { "top",                           OP_FIRST_ENTRY,       MFF_DEPRECATED },
+  { "tag-message",                   OP_TAG_ENTRY,               MFF_DEPRECATED },
+  { "top",                           OP_SELECT_FIRST_ENTRY,       MFF_DEPRECATED },
   { NULL, 0 },
 };
 
@@ -86,16 +86,16 @@ static const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { OP_EXIT,                               "q" },
   { OP_MAIN_NEXT_UNDELETED,                "<right>" },
   { OP_MAIN_PREV_UNDELETED,                "<left>" },
-  { OP_NEXT_LINE,                          "<keypadenter>" },
-  { OP_NEXT_LINE,                          "\n" },             // <Enter>
-  { OP_NEXT_LINE,                          "\r" },             // <Return>
-  { OP_NEXT_PAGE,                          " " },              // <Space>
+  { OP_SCROLL_LINE_DOWN,                          "<keypadenter>" },
+  { OP_SCROLL_LINE_DOWN,                          "\n" },             // <Enter>
+  { OP_SCROLL_LINE_DOWN,                          "\r" },             // <Return>
+  { OP_SCROLL_PAGE_DOWN,                          " " },              // <Space>
   { OP_PAGER_HIDE_QUOTED,                  "T" },
   { OP_PAGER_SKIP_HEADERS,                 "H" },
   { OP_PAGER_SKIP_QUOTED,                  "S" },
-  { OP_FIRST_ENTRY,                        "^" },
-  { OP_PREV_LINE,                          "<backspace>" },
-  { OP_PREV_PAGE,                          "-" },
+  { OP_SELECT_FIRST_ENTRY,                        "^" },
+  { OP_SCROLL_LINE_UP,                          "<backspace>" },
+  { OP_SCROLL_PAGE_UP,                          "-" },
   { OP_QUIT,                               "Q" },
   { OP_SEARCH_TOGGLE,                      "\\" },             // <Backslash>
   { 0, NULL },
@@ -445,8 +445,8 @@ static int op_pager_prev_page(struct PagerFunctionData *fdata, const struct KeyE
  * op_pager_search - Search for a regular expression - Implements ::pager_function_t - @ingroup pager_function_api
  *
  * This function handles:
- * - OP_SEARCH
- * - OP_SEARCH_REVERSE
+ * - OP_SEARCH_FORWARD
+ * - OP_SEARCH_BACKWARD
  */
 static int op_pager_search(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -458,7 +458,9 @@ static int op_pager_search(struct PagerFunctionData *fdata, const struct KeyEven
 
   buf_strcpy(buf, priv->search_str);
   const int op = event->op;
-  if (mw_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
+  if (mw_get_field(((op == OP_SEARCH_FORWARD) || (op == OP_SEARCH_NEXT)) ?
+                       _("Search for: ") :
+                       _("Reverse search for: "),
                    buf, MUTT_COMP_CLEAR, HC_PATTERN, &CompletePatternOps, NULL) != 0)
   {
     goto done;
@@ -471,10 +473,10 @@ static int op_pager_search(struct PagerFunctionData *fdata, const struct KeyEven
       struct KeyEvent event_s = { 0, OP_NULL };
 
       /* do an implicit search-next */
-      if (op == OP_SEARCH)
+      if (op == OP_SEARCH_FORWARD)
         event_s.op = OP_SEARCH_NEXT;
       else
-        event_s.op = OP_SEARCH_OPPOSITE;
+        event_s.op = OP_SEARCH_PREVIOUS;
 
       priv->wrapped = false;
       op_pager_search_next(fdata, &event_s);
@@ -487,9 +489,9 @@ static int op_pager_search(struct PagerFunctionData *fdata, const struct KeyEven
   mutt_str_copy(priv->search_str, buf_string(buf), sizeof(priv->search_str));
 
   /* leave search_back alone if op == OP_SEARCH_NEXT */
-  if (op == OP_SEARCH)
+  if (op == OP_SEARCH_FORWARD)
     priv->search_back = false;
-  else if (op == OP_SEARCH_REVERSE)
+  else if (op == OP_SEARCH_BACKWARD)
     priv->search_back = true;
 
   if (priv->search_compiled)
@@ -598,7 +600,7 @@ done:
  *
  * This function handles:
  * - OP_SEARCH_NEXT
- * - OP_SEARCH_OPPOSITE
+ * - OP_SEARCH_PREVIOUS
  */
 static int op_pager_search_next(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -618,7 +620,7 @@ static int op_pager_search_next(struct PagerFunctionData *fdata, const struct Ke
 
   search_next:
     if ((!priv->search_back && (op == OP_SEARCH_NEXT)) ||
-        (priv->search_back && (op == OP_SEARCH_OPPOSITE)))
+        (priv->search_back && (op == OP_SEARCH_PREVIOUS)))
     {
       /* searching forward */
       int i;
@@ -1016,35 +1018,35 @@ static int op_ignore(struct PagerFunctionData *fdata, const struct KeyEvent *eve
 static const struct PagerFunction PagerFunctions[] = {
   // clang-format off
   { OP_EXIT,                   op_exit },
-  { OP_FIRST_ENTRY,            op_first_entry },
-  { OP_HALF_DOWN,              op_pager_half_down },
-  { OP_HALF_UP,                op_pager_half_up },
-  { OP_HELP,                   op_help },
-  { OP_LAST_ENTRY,             op_last_entry },
-  { OP_NEXT_LINE,              op_pager_next_line },
-  { OP_NEXT_PAGE,              op_pager_next_page },
+  { OP_SELECT_FIRST_ENTRY,            op_first_entry },
+  { OP_SCROLL_HALF_DOWN,              op_pager_half_down },
+  { OP_SCROLL_HALF_UP,                op_pager_half_up },
+  { OP_SHOW_HELP,                   op_help },
+  { OP_SELECT_LAST_ENTRY,             op_last_entry },
+  { OP_SCROLL_LINE_DOWN,              op_pager_next_line },
+  { OP_SCROLL_PAGE_DOWN,              op_pager_next_page },
   { OP_PAGER_HIDE_QUOTED,      op_pager_hide_quoted },
   { OP_PAGER_SKIP_HEADERS,     op_pager_skip_headers },
   { OP_PAGER_SKIP_QUOTED,      op_pager_skip_quoted },
-  { OP_PREV_LINE,              op_pager_prev_line },
-  { OP_PREV_PAGE,              op_pager_prev_page },
+  { OP_SCROLL_LINE_UP,              op_pager_prev_line },
+  { OP_SCROLL_PAGE_UP,              op_pager_prev_page },
   { OP_QUIT,                   op_quit },
   { OP_SAVE,                   op_save },
-  { OP_SEARCH,                 op_pager_search },
+  { OP_SEARCH_FORWARD,                 op_pager_search },
   { OP_SEARCH_NEXT,            op_pager_search_next },
-  { OP_SEARCH_OPPOSITE,        op_pager_search_next },
-  { OP_SEARCH_REVERSE,         op_pager_search },
+  { OP_SEARCH_PREVIOUS,        op_pager_search_next },
+  { OP_SEARCH_BACKWARD,         op_pager_search },
   { OP_SEARCH_TOGGLE,          op_search_toggle },
   { OP_VIEW_ATTACHMENTS,       op_view_attachments },
 
   // OpGeneric - Ignore
-  { OP_CURRENT_MIDDLE,         op_ignore },
-  { OP_CURRENT_TOP,            op_ignore },
-  { OP_CURRENT_BOTTOM,         op_ignore },
-  { OP_BOTTOM_PAGE,            op_ignore },
-  { OP_MIDDLE_PAGE,            op_ignore },
-  { OP_GENERIC_SELECT_ENTRY,   op_ignore },
-  { OP_TOP_PAGE,               op_ignore },
+  { OP_SCROLL_SELECTION_TO_MIDDLE,         op_ignore },
+  { OP_SCROLL_SELECTION_TO_TOP,            op_ignore },
+  { OP_SCROLL_SELECTION_TO_BOTTOM,         op_ignore },
+  { OP_SELECT_PAGE_BOTTOM,            op_ignore },
+  { OP_SELECT_PAGE_MIDDLE,            op_ignore },
+  { OP_ACTIVATE_ENTRY,   op_ignore },
+  { OP_SELECT_PAGE_TOP,               op_ignore },
   { 0, NULL },
   // clang-format on
 };

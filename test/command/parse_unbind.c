@@ -286,23 +286,23 @@ static void test_parse_unbind_behaviour(void)
 
   TEST_CASE("unbind * y removes one regular binding from all menus");
   init_menus();
-  km_bind(menu_find_by_name("generic"), "y", OP_HELP, NULL, NULL, NULL);
+  km_bind(menu_find_by_name("generic"), "y", OP_SHOW_HELP, NULL, NULL, NULL);
   km_bind(menu_find_by_name("index"), "y", OP_DISPLAY_MESSAGE, NULL, NULL, NULL);
   km_bind(menu_find_by_name("pager"), "y", OP_EXIT, NULL, NULL, NULL);
   km_bind(menu_find_by_name("index"), "x", OP_MACRO, "<exit>", NULL, NULL);
   km_bind(menu_find_by_name("pager"), "x", OP_MACRO, "<exit>", NULL, NULL);
-  TEST_CHECK(has_keymap("generic", "y", OP_HELP));
+  TEST_CHECK(has_keymap("generic", "y", OP_SHOW_HELP));
   TEST_CHECK(has_keymap("index", "y", OP_DISPLAY_MESSAGE));
   TEST_CHECK(has_keymap("pager", "y", OP_EXIT));
   TEST_CHECK(has_keymap("index", "x", OP_MACRO));
   TEST_CHECK(has_keymap("pager", "x", OP_MACRO));
   run_unbind_command(&UnBind, line, pc, pe, "* y");
-  TEST_CHECK(!has_keymap("generic", "y", OP_HELP));
+  TEST_CHECK(!has_keymap("generic", "y", OP_SHOW_HELP));
   TEST_CHECK(!has_keymap("index", "y", OP_DISPLAY_MESSAGE));
   TEST_CHECK(!has_keymap("pager", "y", OP_EXIT));
   TEST_CHECK(has_keymap("index", "x", OP_MACRO));
   TEST_CHECK(has_keymap("pager", "x", OP_MACRO));
-  TEST_CHECK(has_binding("generic", OP_HELP));
+  TEST_CHECK(has_binding("generic", OP_SHOW_HELP));
   km_cleanup(neomutt_get_module_data(NeoMutt, MODULE_ID_KEY));
 
   parse_context_free(&pc);
@@ -318,36 +318,36 @@ static void test_parse_unbind_restore_defaults(void)
 
   TEST_CASE("unbind * restores fallback bindings");
   init_menus();
-  TEST_CHECK(has_binding("generic", OP_HELP));
+  TEST_CHECK(has_binding("generic", OP_SHOW_HELP));
   TEST_CHECK(has_binding("index", OP_MAIN_NEXT_UNDELETED));
   parse_error_reset(pe);
   buf_strcpy(line, "*");
   buf_seek(line, 0);
   TEST_CHECK_NUM_EQ(parse_unbind(&UnBind, line, pc, pe), MUTT_CMD_SUCCESS);
-  TEST_CHECK(has_binding("generic", OP_HELP));
+  TEST_CHECK(has_binding("generic", OP_SHOW_HELP));
   TEST_CHECK(has_binding("index", OP_DISPLAY_MESSAGE));
   TEST_CHECK(!has_binding("index", OP_MAIN_NEXT_UNDELETED));
   km_cleanup(neomutt_get_module_data(NeoMutt, MODULE_ID_KEY));
 
   TEST_CASE("unbind * * removes fallback bindings too");
   init_menus();
-  TEST_CHECK(has_binding("generic", OP_HELP));
+  TEST_CHECK(has_binding("generic", OP_SHOW_HELP));
   parse_error_reset(pe);
   buf_strcpy(line, "* *");
   buf_seek(line, 0);
   TEST_CHECK_NUM_EQ(parse_unbind(&UnBind, line, pc, pe), MUTT_CMD_SUCCESS);
-  TEST_CHECK(!has_binding("generic", OP_HELP));
+  TEST_CHECK(!has_binding("generic", OP_SHOW_HELP));
   TEST_CHECK(!has_binding("index", OP_DISPLAY_MESSAGE));
   km_cleanup(neomutt_get_module_data(NeoMutt, MODULE_ID_KEY));
 
   TEST_CASE("unmacro * does not remove bindings");
   init_menus();
-  TEST_CHECK(has_binding("generic", OP_HELP));
+  TEST_CHECK(has_binding("generic", OP_SHOW_HELP));
   parse_error_reset(pe);
   buf_strcpy(line, "*");
   buf_seek(line, 0);
   TEST_CHECK_NUM_EQ(parse_unbind(&UnMacro, line, pc, pe), MUTT_CMD_SUCCESS);
-  TEST_CHECK(has_binding("generic", OP_HELP));
+  TEST_CHECK(has_binding("generic", OP_SHOW_HELP));
   TEST_CHECK(has_binding("index", OP_DISPLAY_MESSAGE));
   km_cleanup(neomutt_get_module_data(NeoMutt, MODULE_ID_KEY));
 
@@ -369,13 +369,13 @@ static void test_parse_unbind_restore_defaults(void)
   buf_strcpy(line, "* *");
   buf_seek(line, 0);
   TEST_CHECK_NUM_EQ(parse_unbind(&UnBind, line, pc, pe), MUTT_CMD_SUCCESS);
-  TEST_CHECK(!has_binding("generic", OP_HELP));
+  TEST_CHECK(!has_binding("generic", OP_SHOW_HELP));
   TEST_CHECK(!has_binding("index", OP_DISPLAY_MESSAGE));
   parse_error_reset(pe);
   buf_strcpy(line, "*");
   buf_seek(line, 0);
   TEST_CHECK_NUM_EQ(parse_unbind(&UnBind, line, pc, pe), MUTT_CMD_SUCCESS);
-  TEST_CHECK(has_binding("generic", OP_HELP));
+  TEST_CHECK(has_binding("generic", OP_SHOW_HELP));
   TEST_CHECK(has_binding("index", OP_DISPLAY_MESSAGE));
   km_cleanup(neomutt_get_module_data(NeoMutt, MODULE_ID_KEY));
 

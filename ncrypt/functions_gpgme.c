@@ -851,7 +851,7 @@ static int op_view_id(struct GpgmeData *gd, const struct KeyEvent *event)
 static const struct GpgmeFunction GpgmeFunctions[] = {
   // clang-format off
   { OP_EXIT,                   op_quit },
-  { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },
+  { OP_ACTIVATE_ENTRY,   op_generic_select_entry },
   { OP_QUIT,                   op_quit },
   { OP_VERIFY_KEY,             op_verify_key },
   { OP_VIEW_ID,                op_view_id },

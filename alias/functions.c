@@ -91,7 +91,7 @@ static const struct MenuOpSeq AliasDefaultBindings[] = { /* map: alias */
   { OP_MAIN_UNTAG_PATTERN,                 "\024" },           // <Ctrl-T>
   { OP_SORT,                               "o" },
   { OP_SORT_REVERSE,                       "O" },
-  { OP_TAG,                                "<space>" },
+  { OP_TAG_ENTRY,                                "<space>" },
   { OP_UNDELETE,                           "u" },
   { 0, NULL },
 };
@@ -109,7 +109,7 @@ static const struct MenuOpSeq QueryDefaultBindings[] = { /* map: query */
   { OP_QUERY_APPEND,                       "A" },
   { OP_SORT,                               "o" },
   { OP_SORT_REVERSE,                       "O" },
-  { OP_TAG,                                "<space>" },
+  { OP_TAG_ENTRY,                                "<space>" },
   { 0, NULL },
 };
 // clang-format on
@@ -511,10 +511,10 @@ static int op_query(struct AliasFunctionData *fdata, const struct KeyEvent *even
  * op_search - search for a regular expression - Implements ::alias_function_t - @ingroup alias_function_api
  *
  * This function handles:
- * - OP_SEARCH
+ * - OP_SEARCH_FORWARD
  * - OP_SEARCH_NEXT
- * - OP_SEARCH_OPPOSITE
- * - OP_SEARCH_REVERSE
+ * - OP_SEARCH_PREVIOUS
+ * - OP_SEARCH_BACKWARD
  */
 static int op_search(struct AliasFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -522,17 +522,17 @@ static int op_search(struct AliasFunctionData *fdata, const struct KeyEvent *eve
   SearchFlags flags = SEARCH_NONE;
   switch (event->op)
   {
-    case OP_SEARCH:
+    case OP_SEARCH_FORWARD:
       flags |= SEARCH_PROMPT;
       mdata->search_state->reverse = false;
       break;
-    case OP_SEARCH_REVERSE:
+    case OP_SEARCH_BACKWARD:
       flags |= SEARCH_PROMPT;
       mdata->search_state->reverse = true;
       break;
     case OP_SEARCH_NEXT:
       break;
-    case OP_SEARCH_OPPOSITE:
+    case OP_SEARCH_PREVIOUS:
       flags |= SEARCH_OPPOSITE;
       break;
   }
@@ -612,7 +612,7 @@ static const struct AliasFunction AliasFunctions[] = {
   { OP_CREATE_ALIAS,           op_create_alias },
   { OP_DELETE,                 op_delete },
   { OP_EXIT,                   op_quit },
-  { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },
+  { OP_ACTIVATE_ENTRY,   op_generic_select_entry },
   { OP_MAIL,                   op_mail },
   { OP_MAIN_LIMIT,             op_main_limit },
   { OP_MAIN_TAG_PATTERN,       op_main_tag_pattern },
@@ -620,10 +620,10 @@ static const struct AliasFunction AliasFunctions[] = {
   { OP_QUERY,                  op_query },
   { OP_QUERY_APPEND,           op_query },
   { OP_QUIT,                   op_quit },
-  { OP_SEARCH,                 op_search },
+  { OP_SEARCH_FORWARD,                 op_search },
   { OP_SEARCH_NEXT,            op_search },
-  { OP_SEARCH_OPPOSITE,        op_search },
-  { OP_SEARCH_REVERSE,         op_search },
+  { OP_SEARCH_PREVIOUS,        op_search },
+  { OP_SEARCH_BACKWARD,         op_search },
   { OP_SORT,                   op_sort },
   { OP_SORT_REVERSE,           op_sort },
   { OP_UNDELETE,               op_delete },

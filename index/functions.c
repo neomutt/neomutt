@@ -290,9 +290,9 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_MAIN_UNDELETE_PATTERN,              "U" },
   { OP_MAIN_UNTAG_PATTERN,                 "\024" },           // <Ctrl-T>
   { OP_MARK_MSG,                           "~" },
-  { OP_NEXT_ENTRY,                         "J" },
+  { OP_SELECT_NEXT_ENTRY,                         "J" },
   { OP_PIPE,                               "|" },
-  { OP_PREV_ENTRY,                         "K" },
+  { OP_SELECT_PREVIOUS_ENTRY,                         "K" },
   { OP_PRINT,                              "p" },
   { OP_QUERY,                              "Q" },
   { OP_QUIT,                               "q" },
@@ -300,7 +300,7 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_REPLY,                              "r" },
   { OP_RESEND,                             "\033e" },          // <Alt-e>
   { OP_SAVE,                               "s" },
-  { OP_SHOW_LOG_MESSAGES,                  "M" },
+  { OP_SHOW_LOG,                  "M" },
   { OP_SORT,                               "o" },
   { OP_SORT_REVERSE,                       "O" },
   { OP_TAG_THREAD,                         "\033t" },          // <Alt-t>
@@ -941,7 +941,7 @@ static int op_display_address(struct IndexFunctionData *fdata, const struct KeyE
  * This function handles:
  * - OP_DISPLAY_HEADERS
  * - OP_DISPLAY_MESSAGE
- * - OP_GENERIC_SELECT_ENTRY
+ * - OP_ACTIVATE_ENTRY
  */
 static int op_display_message(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -2958,10 +2958,10 @@ static int op_save(struct IndexFunctionData *fdata, const struct KeyEvent *event
  * op_search - Search for a regular expression - Implements ::index_function_t - @ingroup index_function_api
  *
  * This function handles:
- * - OP_SEARCH
+ * - OP_SEARCH_FORWARD
  * - OP_SEARCH_NEXT
- * - OP_SEARCH_OPPOSITE
- * - OP_SEARCH_REVERSE
+ * - OP_SEARCH_PREVIOUS
+ * - OP_SEARCH_BACKWARD
  */
 static int op_search(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -2970,17 +2970,17 @@ static int op_search(struct IndexFunctionData *fdata, const struct KeyEvent *eve
   SearchFlags flags = SEARCH_NONE;
   switch (event->op)
   {
-    case OP_SEARCH:
+    case OP_SEARCH_FORWARD:
       flags |= SEARCH_PROMPT;
       shared->search_state->reverse = false;
       break;
-    case OP_SEARCH_REVERSE:
+    case OP_SEARCH_BACKWARD:
       flags |= SEARCH_PROMPT;
       shared->search_state->reverse = true;
       break;
     case OP_SEARCH_NEXT:
       break;
-    case OP_SEARCH_OPPOSITE:
+    case OP_SEARCH_PREVIOUS:
       flags |= SEARCH_OPPOSITE;
       break;
   }
@@ -3924,7 +3924,7 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_EDIT_LABEL,                       op_edit_label,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_EDIT_OR_VIEW_RAW_MESSAGE,         op_edit_raw_message,         CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_EDIT_RAW_MESSAGE,                 op_edit_raw_message,         CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
-  { OP_END_COND,                         op_end_cond,                 CHECK_NONE },
+  { OP_APPLY_TO_TAGGED_END,                         op_end_cond,                 CHECK_NONE },
   { OP_EXIT,                             op_exit,                     CHECK_NONE },
   { OP_EXTRACT_KEYS,                     op_extract_keys,             CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_FLAG_MESSAGE,                     op_flag_message,             CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
@@ -3934,10 +3934,10 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_GET_CHILDREN,                     op_get_children,             CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_GET_MESSAGE,                      op_get_message,              CHECK_ATTACH | CHECK_IN_MAILBOX },
   { OP_GET_PARENT,                       op_get_message,              CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_GENERIC_SELECT_ENTRY,             op_display_message,          CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_ACTIVATE_ENTRY,             op_display_message,          CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_GROUP_CHAT_REPLY,                 op_group_reply,              CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_GROUP_REPLY,                      op_group_reply,              CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_JUMP,                             op_jump,                     CHECK_IN_MAILBOX },
+  { OP_SELECT_ENTRY_BY_NUMBER,                             op_jump,                     CHECK_IN_MAILBOX },
   { OP_LIMIT_CURRENT_THREAD,             op_main_limit,               CHECK_IN_MAILBOX },
   { OP_LIST_ACTION,                      op_list_action,              CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_LIST_REPLY,                       op_list_reply,               CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
@@ -3994,10 +3994,10 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_MAIN_UNDELETE_PATTERN,            op_main_undelete_pattern,    CHECK_IN_MAILBOX | CHECK_READONLY },
   { OP_MAIN_UNTAG_PATTERN,               op_main_untag_pattern,       CHECK_IN_MAILBOX },
   { OP_MARK_MSG,                         op_mark_msg,                 CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_NEXT_ENTRY,                       op_next_entry,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_SELECT_NEXT_ENTRY,                       op_next_entry,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_PIPE,                             op_pipe,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_POST,                             op_post,                     CHECK_ATTACH | CHECK_IN_MAILBOX },
-  { OP_PREV_ENTRY,                       op_prev_entry,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_SELECT_PREVIOUS_ENTRY,                       op_prev_entry,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_PRINT,                            op_print,                    CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_PURGE_MESSAGE,                    op_delete,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_PURGE_THREAD,                     op_delete_thread,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
@@ -4008,13 +4008,13 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_REPLY,                            op_reply,                    CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_RESEND,                           op_resend,                   CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_SAVE,                             op_save,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_SEARCH,                           op_search,                   CHECK_IN_MAILBOX },
+  { OP_SEARCH_FORWARD,                           op_search,                   CHECK_IN_MAILBOX },
   { OP_SEARCH_NEXT,                      op_search,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_SEARCH_OPPOSITE,                  op_search,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_SEARCH_REVERSE,                   op_search,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_SEARCH_PREVIOUS,                  op_search,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_SEARCH_BACKWARD,                   op_search,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_SORT,                             op_sort,                     CHECK_NONE },
   { OP_SORT_REVERSE,                     op_sort,                     CHECK_NONE },
-  { OP_TAG,                              op_tag,                      CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_TAG_ENTRY,                              op_tag,                      CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_TAG_SUBTHREAD,                    op_tag_thread,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_TAG_THREAD,                       op_tag_thread,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_TOGGLE_NEW,                       op_toggle_new,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },

@@ -77,7 +77,7 @@ static int op_quit(struct PatternFunctionData *fdata, const struct KeyEvent *eve
  */
 static const struct PatternFunction PatternFunctions[] = {
   // clang-format off
-  { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },
+  { OP_ACTIVATE_ENTRY,   op_generic_select_entry },
   { OP_QUIT,                   op_quit },
   { OP_EXIT,                   op_quit },
   { 0, NULL },

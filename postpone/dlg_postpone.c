@@ -90,8 +90,8 @@ static const struct Mapping PostponeHelp[] = {
   { N_("Exit"),  OP_EXIT },
   { N_("Del"),   OP_DELETE },
   { N_("Undel"), OP_UNDELETE },
-  { N_("Tag"),   OP_TAG },
-  { N_("Help"),  OP_HELP },
+  { N_("Tag"),   OP_TAG_ENTRY },
+  { N_("Help"),  OP_SHOW_HELP },
   { NULL, 0 },
   // clang-format on
 };

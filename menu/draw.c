@@ -481,7 +481,7 @@ void menu_redraw_current(struct Menu *menu)
  * menu_redraw - Redraw the parts of the screen that have been flagged to be redrawn
  * @param menu Menu to redraw
  * @retval OP_NULL   Menu was redrawn
- * @retval OP_REDRAW Full redraw required
+ * @retval OP_REDRAW_SCREEN Full redraw required
  */
 int menu_redraw(struct Menu *menu)
 {

@@ -72,7 +72,7 @@ static int op_quit(struct HistoryData *hd, const struct KeyEvent *event)
  */
 static const struct HistoryFunction HistoryFunctions[] = {
   // clang-format off
-  { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },
+  { OP_ACTIVATE_ENTRY,   op_generic_select_entry },
   { OP_QUIT,                   op_quit },
   { OP_EXIT,                   op_quit },
   { 0, NULL },
