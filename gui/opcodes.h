@@ -64,23 +64,23 @@ const char *opcodes_get_name       (int op);
 
 #define OPS_SCROLL(_fmt) \
   /* L10N: Help for Generic function: <scroll-half-down> */ \
-  _fmt(OP_SCROLL_HALF_DOWN,                   N_("Scroll down 1/2 page")) \
+  _fmt(OP_SCROLL_HALF_DOWN,                   N_("Scroll down half a page")) \
   /* L10N: Help for Generic function: <scroll-half-up> */ \
-  _fmt(OP_SCROLL_HALF_UP,                     N_("Scroll up 1/2 page")) \
+  _fmt(OP_SCROLL_HALF_UP,                     N_("Scroll up half a page")) \
   /* L10N: Help for Generic function: <scroll-line-down> */ \
   _fmt(OP_SCROLL_LINE_DOWN,                   N_("Scroll down one line")) \
   /* L10N: Help for Generic function: <scroll-line-up> */ \
   _fmt(OP_SCROLL_LINE_UP,                     N_("Scroll up one line")) \
   /* L10N: Help for Generic function: <scroll-page-down> */ \
-  _fmt(OP_SCROLL_PAGE_DOWN,                   N_("Move to the next page")) \
+  _fmt(OP_SCROLL_PAGE_DOWN,                   N_("Scroll down one page")) \
   /* L10N: Help for Generic function: <scroll-page-up> */ \
-  _fmt(OP_SCROLL_PAGE_UP,                     N_("Move to the previous page")) \
+  _fmt(OP_SCROLL_PAGE_UP,                     N_("Scroll up one page")) \
   /* L10N: Help for Generic function: <scroll-selection-to-bottom> */ \
-  _fmt(OP_SCROLL_SELECTION_TO_BOTTOM,         N_("Move entry to bottom of screen")) \
+  _fmt(OP_SCROLL_SELECTION_TO_BOTTOM,         N_("Scroll the selection to the bottom of the page")) \
   /* L10N: Help for Generic function: <scroll-selection-to-middle> */ \
-  _fmt(OP_SCROLL_SELECTION_TO_MIDDLE,         N_("Move entry to middle of screen")) \
+  _fmt(OP_SCROLL_SELECTION_TO_MIDDLE,         N_("Scroll the selection to the middle of the page")) \
   /* L10N: Help for Generic function: <scroll-selection-to-top> */ \
-  _fmt(OP_SCROLL_SELECTION_TO_TOP,            N_("Move entry to top of screen")) \
+  _fmt(OP_SCROLL_SELECTION_TO_TOP,            N_("Scroll the selection to the top of the page")) \
 
 #define OPS_SEARCH(_fmt) \
   /* L10N: Help for Generic function: <search-backward> */ \
@@ -94,23 +94,23 @@ const char *opcodes_get_name       (int op);
 
 #define OPS_SELECT(_fmt) \
   /* L10N: Help for Generic function: <activate-entry> */ \
-  _fmt(OP_ACTIVATE_ENTRY,                     N_("Select the current entry")) \
+  _fmt(OP_ACTIVATE_ENTRY,                     N_("Activate the current entry")) \
   /* L10N: Help for Generic function: <select-entry-by-number> */ \
-  _fmt(OP_SELECT_ENTRY_BY_NUMBER,             N_("Jump to an index number")) \
+  _fmt(OP_SELECT_ENTRY_BY_NUMBER,             N_("Select an entry by its index number")) \
   /* L10N: Help for Generic function: <select-first-entry> */ \
-  _fmt(OP_SELECT_FIRST_ENTRY,                 N_("Move to the first entry")) \
+  _fmt(OP_SELECT_FIRST_ENTRY,                 N_("Select the first entry")) \
   /* L10N: Help for Generic function: <select-last-entry> */ \
-  _fmt(OP_SELECT_LAST_ENTRY,                  N_("Move to the last entry")) \
+  _fmt(OP_SELECT_LAST_ENTRY,                  N_("Select the last entry")) \
   /* L10N: Help for Generic function: <select-next-entry> */ \
-  _fmt(OP_SELECT_NEXT_ENTRY,                  N_("Move to the next entry")) \
+  _fmt(OP_SELECT_NEXT_ENTRY,                  N_("Select the next entry")) \
   /* L10N: Help for Generic function: <select-page-bottom> */ \
-  _fmt(OP_SELECT_PAGE_BOTTOM,                 N_("Move to the bottom of the page")) \
+  _fmt(OP_SELECT_PAGE_BOTTOM,                 N_("Select the entry at the bottom of the page")) \
   /* L10N: Help for Generic function: <select-page-middle> */ \
-  _fmt(OP_SELECT_PAGE_MIDDLE,                 N_("Move to the middle of the page")) \
+  _fmt(OP_SELECT_PAGE_MIDDLE,                 N_("Select the entry in the middle of the page")) \
   /* L10N: Help for Generic function: <select-page-top> */ \
-  _fmt(OP_SELECT_PAGE_TOP,                    N_("Move to the top of the page")) \
+  _fmt(OP_SELECT_PAGE_TOP,                    N_("Select the entry at the top of the page")) \
   /* L10N: Help for Generic function: <select-previous-entry> */ \
-  _fmt(OP_SELECT_PREVIOUS_ENTRY,              N_("Move to the previous entry")) \
+  _fmt(OP_SELECT_PREVIOUS_ENTRY,              N_("Select the previous entry")) \
 
 #define OPS_TAG(_fmt) \
   /* L10N: Help for Generic function: <apply-to-tagged> */ \
@@ -624,45 +624,45 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Sidebar function: <sidebar-activate-entry> */ \
   _fmt(OP_SIDEBAR_ACTIVATE_ENTRY,             N_("Open highlighted mailbox")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-half-down> */ \
-  _fmt(OP_SIDEBAR_SCROLL_HALF_DOWN,           N_("Scroll down 1/2 page")) \
+  _fmt(OP_SIDEBAR_SCROLL_HALF_DOWN,           N_("Scroll down half a page")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-half-up> */ \
-  _fmt(OP_SIDEBAR_SCROLL_HALF_UP,             N_("Scroll up 1/2 page")) \
+  _fmt(OP_SIDEBAR_SCROLL_HALF_UP,             N_("Scroll up half a page")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-line-down> */ \
   _fmt(OP_SIDEBAR_SCROLL_LINE_DOWN,           N_("Scroll down one line")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-line-up> */ \
   _fmt(OP_SIDEBAR_SCROLL_LINE_UP,             N_("Scroll up one line")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-page-down> */ \
-  _fmt(OP_SIDEBAR_SCROLL_PAGE_DOWN,           N_("Scroll the sidebar down 1 page")) \
+  _fmt(OP_SIDEBAR_SCROLL_PAGE_DOWN,           N_("Scroll down one page")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-page-up> */ \
-  _fmt(OP_SIDEBAR_SCROLL_PAGE_UP,             N_("Scroll the sidebar up 1 page")) \
+  _fmt(OP_SIDEBAR_SCROLL_PAGE_UP,             N_("Scroll up one page")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-selection-to-bottom> */ \
-  _fmt(OP_SIDEBAR_SCROLL_SELECTION_TO_BOTTOM, N_("Move entry to bottom of screen")) \
+  _fmt(OP_SIDEBAR_SCROLL_SELECTION_TO_BOTTOM, N_("Scroll the selection to the bottom of the page")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-selection-to-middle> */ \
-  _fmt(OP_SIDEBAR_SCROLL_SELECTION_TO_MIDDLE, N_("Move entry to middle of screen")) \
+  _fmt(OP_SIDEBAR_SCROLL_SELECTION_TO_MIDDLE, N_("Scroll the selection to the middle of the page")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-selection-to-top> */ \
-  _fmt(OP_SIDEBAR_SCROLL_SELECTION_TO_TOP,    N_("Move entry to top of screen")) \
+  _fmt(OP_SIDEBAR_SCROLL_SELECTION_TO_TOP,    N_("Scroll the selection to the top of the page")) \
   /* L10N: Help for Sidebar function: <sidebar-search> */ \
   _fmt(OP_SIDEBAR_SEARCH,                     N_("Fuzzy search the sidebar")) \
   /* L10N: Help for Sidebar function: <sidebar-select-entry-by-number> */ \
-  _fmt(OP_SIDEBAR_SELECT_ENTRY_BY_NUMBER,     N_("Jump to a specific mailbox")) \
+  _fmt(OP_SIDEBAR_SELECT_ENTRY_BY_NUMBER,     N_("Select a mailbox by its index number")) \
   /* L10N: Help for Sidebar function: <sidebar-select-first-entry> */ \
-  _fmt(OP_SIDEBAR_SELECT_FIRST_ENTRY,         N_("Move the highlight to the first mailbox")) \
+  _fmt(OP_SIDEBAR_SELECT_FIRST_ENTRY,         N_("Highlight the first mailbox")) \
   /* L10N: Help for Sidebar function: <sidebar-select-last-entry> */ \
-  _fmt(OP_SIDEBAR_SELECT_LAST_ENTRY,          N_("Move the highlight to the last mailbox")) \
+  _fmt(OP_SIDEBAR_SELECT_LAST_ENTRY,          N_("Highlight the last mailbox")) \
   /* L10N: Help for Sidebar function: <sidebar-select-next-entry-new> */ \
-  _fmt(OP_SIDEBAR_SELECT_NEXT_ENTRY_NEW,      N_("Move the highlight to next mailbox with new mail")) \
+  _fmt(OP_SIDEBAR_SELECT_NEXT_ENTRY_NEW,      N_("Highlight the next mailbox with new mail")) \
   /* L10N: Help for Sidebar function: <sidebar-select-next-entry> */ \
-  _fmt(OP_SIDEBAR_SELECT_NEXT_ENTRY,          N_("Move the highlight to next mailbox")) \
+  _fmt(OP_SIDEBAR_SELECT_NEXT_ENTRY,          N_("Highlight the next mailbox")) \
   /* L10N: Help for Sidebar function: <sidebar-select-page-bottom> */ \
-  _fmt(OP_SIDEBAR_SELECT_PAGE_BOTTOM,         N_("Move the highlight to the bottom of the page")) \
+  _fmt(OP_SIDEBAR_SELECT_PAGE_BOTTOM,         N_("Highlight the mailbox at the bottom of the page")) \
   /* L10N: Help for Sidebar function: <sidebar-select-page-middle> */ \
-  _fmt(OP_SIDEBAR_SELECT_PAGE_MIDDLE,         N_("Move the highlight to the middle of the page")) \
+  _fmt(OP_SIDEBAR_SELECT_PAGE_MIDDLE,         N_("Highlight the mailbox in the middle of the page")) \
   /* L10N: Help for Sidebar function: <sidebar-select-page-top> */ \
-  _fmt(OP_SIDEBAR_SELECT_PAGE_TOP,            N_("Move the highlight to the top of the page")) \
+  _fmt(OP_SIDEBAR_SELECT_PAGE_TOP,            N_("Highlight the mailbox at the top of the page")) \
   /* L10N: Help for Sidebar function: <sidebar-select-previous-entry-new> */ \
-  _fmt(OP_SIDEBAR_SELECT_PREVIOUS_ENTRY_NEW,  N_("Move the highlight to previous mailbox with new mail")) \
+  _fmt(OP_SIDEBAR_SELECT_PREVIOUS_ENTRY_NEW,  N_("Highlight the previous mailbox with new mail")) \
   /* L10N: Help for Sidebar function: <sidebar-select-previous-entry> */ \
-  _fmt(OP_SIDEBAR_SELECT_PREVIOUS_ENTRY,      N_("Move the highlight to previous mailbox")) \
+  _fmt(OP_SIDEBAR_SELECT_PREVIOUS_ENTRY,      N_("Highlight the previous mailbox")) \
   /* L10N: Help for Sidebar function: <sidebar-toggle-virtual> */ \
   _fmt(OP_SIDEBAR_TOGGLE_VIRTUAL,             N_("Toggle between mailboxes and virtual mailboxes")) \
   /* L10N: Help for Sidebar function: <sidebar-toggle-visible> */ \
