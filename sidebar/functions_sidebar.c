@@ -71,7 +71,6 @@ static const struct MenuFuncOp OpSidebar[] = { /* map: sidebar */
   { "sidebar-select-page-top",             OP_SIDEBAR_SELECT_PAGE_TOP },
   { "sidebar-select-previous-entry",       OP_SIDEBAR_SELECT_PREVIOUS_ENTRY },
   { "sidebar-select-previous-entry-new",   OP_SIDEBAR_SELECT_PREVIOUS_ENTRY_NEW },
-  { "sidebar-toggle-virtual",              OP_SIDEBAR_TOGGLE_VIRTUAL },
   { "sidebar-toggle-visible",              OP_SIDEBAR_TOGGLE_VISIBLE },
 
   // Deprecated
@@ -85,6 +84,7 @@ static const struct MenuFuncOp OpSidebar[] = { /* map: sidebar */
   { "sidebar-prev",           OP_SIDEBAR_SELECT_PREVIOUS_ENTRY,       MFF_DEPRECATED },
   { "sidebar-prev-new",       OP_SIDEBAR_SELECT_PREVIOUS_ENTRY_NEW,   MFF_DEPRECATED },
   { "sidebar-start-search",   OP_SIDEBAR_SEARCH,                      MFF_DEPRECATED },
+  { "sidebar-toggle-virtual", OP_SIDEBAR_TOGGLE_VIRTUAL,              MFF_DEPRECATED },
   { NULL, 0 },
 };
 
