@@ -382,8 +382,8 @@ void mutt_emails_set_flag(struct Mailbox *m, struct EmailArray *ea,
 int mutt_thread_set_flag(struct Mailbox *m, struct Email *e,
                          enum MessageType flag, bool bf, bool subthread)
 {
-  struct MuttThread *start = NULL;
-  struct MuttThread *cur = e->thread;
+  if (!e)
+    return -1;
 
   if (!mutt_using_threads())
   {
@@ -391,11 +391,16 @@ int mutt_thread_set_flag(struct Mailbox *m, struct Email *e,
     return -1;
   }
 
+  struct MuttThread *cur = e->thread;
+
+  if (!cur)
+    return -1;
+
   if (!subthread)
     while (cur->parent)
       cur = cur->parent;
 
-  start = cur;
+  struct MuttThread *start = cur;
 
   if (cur->message && (cur != e->thread))
     mutt_set_flag(m, cur->message, flag, bf, true);
