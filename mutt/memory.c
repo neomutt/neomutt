@@ -37,6 +37,9 @@
 #include "memory.h"
 #include "exit.h"
 #include "logging2.h"
+#ifndef HAVE_REALLOCARRAY
+#include <stdint.h>
+#endif
 
 /**
  * reallocarray - reallocarray(3) implementation
