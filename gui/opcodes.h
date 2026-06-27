@@ -636,11 +636,11 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Sidebar function: <sidebar-scroll-page-up> */ \
   _fmt(OP_SIDEBAR_SCROLL_PAGE_UP,             N_("Scroll up one page")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-selection-to-bottom> */ \
-  _fmt(OP_SIDEBAR_SCROLL_SELECTION_TO_BOTTOM, N_("Scroll the selection to the bottom of the page")) \
+  _fmt(OP_SIDEBAR_SCROLL_SELECTION_TO_BOTTOM, N_("Scroll the highlight to the bottom of the page")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-selection-to-middle> */ \
-  _fmt(OP_SIDEBAR_SCROLL_SELECTION_TO_MIDDLE, N_("Scroll the selection to the middle of the page")) \
+  _fmt(OP_SIDEBAR_SCROLL_SELECTION_TO_MIDDLE, N_("Scroll the highlight to the middle of the page")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-selection-to-top> */ \
-  _fmt(OP_SIDEBAR_SCROLL_SELECTION_TO_TOP,    N_("Scroll the selection to the top of the page")) \
+  _fmt(OP_SIDEBAR_SCROLL_SELECTION_TO_TOP,    N_("Scroll the highlight to the top of the page")) \
   /* L10N: Help for Sidebar function: <sidebar-search> */ \
   _fmt(OP_SIDEBAR_SEARCH,                     N_("Fuzzy search the sidebar")) \
   /* L10N: Help for Sidebar function: <sidebar-select-entry-by-number> */ \
@@ -649,24 +649,24 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_SIDEBAR_SELECT_FIRST_ENTRY,         N_("Highlight the first mailbox")) \
   /* L10N: Help for Sidebar function: <sidebar-select-last-entry> */ \
   _fmt(OP_SIDEBAR_SELECT_LAST_ENTRY,          N_("Highlight the last mailbox")) \
-  /* L10N: Help for Sidebar function: <sidebar-select-next-entry-new> */ \
-  _fmt(OP_SIDEBAR_SELECT_NEXT_ENTRY_NEW,      N_("Highlight the next mailbox with new mail")) \
   /* L10N: Help for Sidebar function: <sidebar-select-next-entry> */ \
   _fmt(OP_SIDEBAR_SELECT_NEXT_ENTRY,          N_("Highlight the next mailbox")) \
+  /* L10N: Help for Sidebar function: <sidebar-select-next-new-entry> */ \
+  _fmt(OP_SIDEBAR_SELECT_NEXT_NEW_ENTRY,      N_("Highlight the next mailbox with new mail")) \
   /* L10N: Help for Sidebar function: <sidebar-select-page-bottom> */ \
   _fmt(OP_SIDEBAR_SELECT_PAGE_BOTTOM,         N_("Highlight the mailbox at the bottom of the page")) \
   /* L10N: Help for Sidebar function: <sidebar-select-page-middle> */ \
   _fmt(OP_SIDEBAR_SELECT_PAGE_MIDDLE,         N_("Highlight the mailbox in the middle of the page")) \
   /* L10N: Help for Sidebar function: <sidebar-select-page-top> */ \
   _fmt(OP_SIDEBAR_SELECT_PAGE_TOP,            N_("Highlight the mailbox at the top of the page")) \
-  /* L10N: Help for Sidebar function: <sidebar-select-previous-entry-new> */ \
-  _fmt(OP_SIDEBAR_SELECT_PREVIOUS_ENTRY_NEW,  N_("Highlight the previous mailbox with new mail")) \
   /* L10N: Help for Sidebar function: <sidebar-select-previous-entry> */ \
   _fmt(OP_SIDEBAR_SELECT_PREVIOUS_ENTRY,      N_("Highlight the previous mailbox")) \
+  /* L10N: Help for Sidebar function: <sidebar-select-previous-new-entry> */ \
+  _fmt(OP_SIDEBAR_SELECT_PREVIOUS_NEW_ENTRY,  N_("Highlight the previous mailbox with new mail")) \
   /* L10N: Help for Sidebar function: <sidebar-toggle-virtual> */ \
   _fmt(OP_SIDEBAR_TOGGLE_VIRTUAL,             N_("Toggle between mailboxes and virtual mailboxes")) \
   /* L10N: Help for Sidebar function: <sidebar-toggle-visible> */ \
-  _fmt(OP_SIDEBAR_TOGGLE_VISIBLE,             N_("Make the sidebar (in)visible")) \
+  _fmt(OP_SIDEBAR_TOGGLE_VISIBLE,             N_("Show/hide the sidebar")) \
 
 #define OPS_SMIME(_fmt) \
   /* L10N: Help for Compose function: <smime-menu> */ \

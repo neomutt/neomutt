@@ -65,24 +65,24 @@ static const struct MenuFuncOp OpSidebar[] = { /* map: sidebar */
   { "sidebar-select-first-entry",          OP_SIDEBAR_SELECT_FIRST_ENTRY },
   { "sidebar-select-last-entry",           OP_SIDEBAR_SELECT_LAST_ENTRY },
   { "sidebar-select-next-entry",           OP_SIDEBAR_SELECT_NEXT_ENTRY },
-  { "sidebar-select-next-entry-new",       OP_SIDEBAR_SELECT_NEXT_ENTRY_NEW },
+  { "sidebar-select-next-new-entry",       OP_SIDEBAR_SELECT_NEXT_NEW_ENTRY },
   { "sidebar-select-page-bottom",          OP_SIDEBAR_SELECT_PAGE_BOTTOM },
   { "sidebar-select-page-middle",          OP_SIDEBAR_SELECT_PAGE_MIDDLE },
   { "sidebar-select-page-top",             OP_SIDEBAR_SELECT_PAGE_TOP },
   { "sidebar-select-previous-entry",       OP_SIDEBAR_SELECT_PREVIOUS_ENTRY },
-  { "sidebar-select-previous-entry-new",   OP_SIDEBAR_SELECT_PREVIOUS_ENTRY_NEW },
+  { "sidebar-select-previous-new-entry",   OP_SIDEBAR_SELECT_PREVIOUS_NEW_ENTRY },
   { "sidebar-toggle-visible",              OP_SIDEBAR_TOGGLE_VISIBLE },
 
   // Deprecated
   { "sidebar-first",          OP_SIDEBAR_SELECT_FIRST_ENTRY,          MFF_DEPRECATED },
   { "sidebar-last",           OP_SIDEBAR_SELECT_LAST_ENTRY,           MFF_DEPRECATED },
   { "sidebar-next",           OP_SIDEBAR_SELECT_NEXT_ENTRY,           MFF_DEPRECATED },
-  { "sidebar-next-new",       OP_SIDEBAR_SELECT_NEXT_ENTRY_NEW,       MFF_DEPRECATED },
+  { "sidebar-next-new",       OP_SIDEBAR_SELECT_NEXT_NEW_ENTRY,       MFF_DEPRECATED },
   { "sidebar-open",           OP_SIDEBAR_ACTIVATE_ENTRY,              MFF_DEPRECATED },
   { "sidebar-page-down",      OP_SIDEBAR_SCROLL_PAGE_DOWN,            MFF_DEPRECATED },
   { "sidebar-page-up",        OP_SIDEBAR_SCROLL_PAGE_UP,              MFF_DEPRECATED },
   { "sidebar-prev",           OP_SIDEBAR_SELECT_PREVIOUS_ENTRY,       MFF_DEPRECATED },
-  { "sidebar-prev-new",       OP_SIDEBAR_SELECT_PREVIOUS_ENTRY_NEW,   MFF_DEPRECATED },
+  { "sidebar-prev-new",       OP_SIDEBAR_SELECT_PREVIOUS_NEW_ENTRY,   MFF_DEPRECATED },
   { "sidebar-start-search",   OP_SIDEBAR_SEARCH,                      MFF_DEPRECATED },
   { "sidebar-toggle-virtual", OP_SIDEBAR_TOGGLE_VIRTUAL,              MFF_DEPRECATED },
   { NULL, 0 },
@@ -560,11 +560,11 @@ int op_sidebar_select_next_entry(struct SidebarFunctionData *fdata, const struct
 }
 
 /**
- * op_sidebar_select_next_entry_new - Selects the next new mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ * op_sidebar_select_next_new_entry - Selects the next new mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  *
  * Search down the list of mail folders for one containing new mail.
  */
-static int op_sidebar_select_next_entry_new(struct SidebarFunctionData *fdata,
+static int op_sidebar_select_next_new_entry(struct SidebarFunctionData *fdata,
                                             const struct KeyEvent *event)
 {
   struct SidebarWindowData *wdata = fdata->wdata;
@@ -648,11 +648,11 @@ int op_sidebar_select_previous_entry(struct SidebarFunctionData *fdata,
 }
 
 /**
- * op_sidebar_select_previous_entry_new - Selects the previous new mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ * op_sidebar_select_previous_new_entry - Selects the previous new mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  *
  * Search up the list of mail folders for one containing new mail.
  */
-static int op_sidebar_select_previous_entry_new(struct SidebarFunctionData *fdata,
+static int op_sidebar_select_previous_new_entry(struct SidebarFunctionData *fdata,
                                                 const struct KeyEvent *event)
 {
   struct SidebarWindowData *wdata = fdata->wdata;
@@ -906,12 +906,12 @@ static const struct SidebarFunction SidebarFunctions[] = {
   { OP_SIDEBAR_SELECT_FIRST_ENTRY,           op_sidebar_select_first_entry },
   { OP_SIDEBAR_SELECT_LAST_ENTRY,            op_sidebar_select_last_entry },
   { OP_SIDEBAR_SELECT_NEXT_ENTRY,            op_sidebar_select_next_entry },
-  { OP_SIDEBAR_SELECT_NEXT_ENTRY_NEW,        op_sidebar_select_next_entry_new },
+  { OP_SIDEBAR_SELECT_NEXT_NEW_ENTRY,        op_sidebar_select_next_new_entry },
   { OP_SIDEBAR_SELECT_PAGE_BOTTOM,           op_sidebar_select_page_bottom },
   { OP_SIDEBAR_SELECT_PAGE_MIDDLE,           op_sidebar_select_page_middle },
   { OP_SIDEBAR_SELECT_PAGE_TOP,              op_sidebar_select_page_top },
   { OP_SIDEBAR_SELECT_PREVIOUS_ENTRY,        op_sidebar_select_previous_entry },
-  { OP_SIDEBAR_SELECT_PREVIOUS_ENTRY_NEW,    op_sidebar_select_previous_entry_new },
+  { OP_SIDEBAR_SELECT_PREVIOUS_NEW_ENTRY,    op_sidebar_select_previous_new_entry },
   { OP_SIDEBAR_TOGGLE_VIRTUAL,               op_sidebar_toggle_virtual },
   { OP_SIDEBAR_TOGGLE_VISIBLE,               op_sidebar_toggle_visible },
   { 0, NULL },
