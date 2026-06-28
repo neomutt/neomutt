@@ -239,6 +239,7 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_DELETE_THREAD,                      "\004" },           // <Ctrl-D>
   { OP_DISPLAY_ADDRESS,                    "@" },
   { OP_DISPLAY_HEADERS,                    "h" },
+  { OP_DISPLAY_LOG,                        "M" },
   { OP_DISPLAY_MESSAGE,                    " " },              // <Space>
   { OP_DISPLAY_MESSAGE,                    "<keypadenter>" },
   { OP_DISPLAY_MESSAGE,                    "\n" },             // <Enter>
@@ -298,7 +299,6 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_SAVE,                               "s" },
   { OP_SELECT_NEXT_ENTRY,                  "J" },
   { OP_SELECT_PREVIOUS_ENTRY,              "K" },
-  { OP_SHOW_LOG,                           "M" },
   { OP_SORT,                               "o" },
   { OP_SORT_REVERSE,                       "O" },
   { OP_TAG_THREAD,                         "\033t" },          // <Alt-t>
@@ -3013,9 +3013,9 @@ static int op_sort(struct IndexFunctionData *fdata, const struct KeyEvent *event
 }
 
 /**
- * op_tag_entry - Tag the current entry - Implements ::index_function_t - @ingroup index_function_api
+ * op_toggle_tag - Tag the current entry - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_tag_entry(struct IndexFunctionData *fdata, const struct KeyEvent *event)
+static int op_toggle_tag(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
@@ -4004,11 +4004,11 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_SELECT_PREVIOUS_ENTRY,            op_select_previous_entry,    CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_SORT,                             op_sort,                     CHECK_NONE },
   { OP_SORT_REVERSE,                     op_sort,                     CHECK_NONE },
-  { OP_TAG_ENTRY,                        op_tag_entry,                CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_TAG_SUBTHREAD,                    op_tag_thread,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_TAG_THREAD,                       op_tag_thread,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_TOGGLE_NEW,                       op_toggle_new,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_TOGGLE_READ,                      op_main_limit,               CHECK_IN_MAILBOX },
+  { OP_TOGGLE_TAG,                       op_toggle_tag,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_TOGGLE_WRITE,                     op_toggle_write,             CHECK_IN_MAILBOX },
   { OP_UNDELETE,                         op_undelete,                 CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_UNDELETE_SUBTHREAD,               op_undelete_thread,          CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },

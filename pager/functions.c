@@ -72,9 +72,9 @@ static const struct MenuFuncOp OpPager[] = { /* map: pager */
   // Deprecated
   { "bottom",                        OP_SELECT_LAST_ENTRY,   MFF_DEPRECATED },
   { "buffy-list",                    OP_MAILBOX_LIST,        MFF_DEPRECATED },
-  { "error-history",                 OP_SHOW_LOG,            MFF_DEPRECATED },
+  { "error-history",                 OP_DISPLAY_LOG,         MFF_DEPRECATED },
   { "mark-as-new",                   OP_TOGGLE_NEW,          MFF_DEPRECATED },
-  { "tag-message",                   OP_TAG_ENTRY,           MFF_DEPRECATED },
+  { "tag-message",                   OP_TOGGLE_TAG,          MFF_DEPRECATED },
   { "top",                           OP_SELECT_FIRST_ENTRY,  MFF_DEPRECATED },
   { NULL, 0 },
 };
@@ -890,9 +890,9 @@ static int op_quit(struct PagerFunctionData *fdata, const struct KeyEvent *event
 }
 
 /**
- * op_show_help - Help screen - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_display_help - Help screen - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_show_help(struct PagerFunctionData *fdata, const struct KeyEvent *event)
+static int op_display_help(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
   struct PagerPrivateData *priv = fdata->priv;
   if (priv->pview->mode == PAGER_MODE_HELP)
@@ -1017,6 +1017,7 @@ static int op_ignore(struct PagerFunctionData *fdata, const struct KeyEvent *eve
  */
 static const struct PagerFunction PagerFunctions[] = {
   // clang-format off
+  { OP_DISPLAY_HELP,           op_display_help },
   { OP_EXIT,                   op_exit },
   { OP_PAGER_HIDE_QUOTED,      op_pager_hide_quoted },
   { OP_PAGER_SKIP_HEADERS,     op_pager_skip_headers },
@@ -1036,7 +1037,6 @@ static const struct PagerFunction PagerFunctions[] = {
   { OP_SEARCH_TOGGLE,          op_search_toggle },
   { OP_SELECT_FIRST_ENTRY,     op_select_first_entry },
   { OP_SELECT_LAST_ENTRY,      op_select_last_entry },
-  { OP_SHOW_HELP,              op_show_help },
   { OP_VIEW_ATTACHMENTS,       op_view_attachments },
 
   // OpGeneric - Ignore

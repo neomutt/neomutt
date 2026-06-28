@@ -74,7 +74,7 @@ typedef uint8_t MenuFuncFlags;
 struct KeyEvent
 {
   int ch;    ///< Raw key pressed
-  int op;    ///< Function opcode, e.g. OP_SHOW_HELP
+  int op;    ///< Function opcode, e.g. OP_DISPLAY_HELP
   int count; ///< Optional count prefix, e.g. 3 for `3j`
 };
 ARRAY_HEAD(KeyEventArray, struct KeyEvent);

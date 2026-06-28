@@ -65,7 +65,7 @@
 static const struct Mapping VerifyHelp[] = {
   // clang-format off
   { N_("Exit"), OP_EXIT },
-  { N_("Help"), OP_SHOW_HELP },
+  { N_("Help"), OP_DISPLAY_HELP },
   { NULL, 0 },
   // clang-format on
 };

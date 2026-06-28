@@ -94,11 +94,11 @@ static const struct MenuFuncOp OpGeneric[] = { /* map: generic */
   { "select-page-middle",            OP_SELECT_PAGE_MIDDLE },
   { "select-page-top",               OP_SELECT_PAGE_TOP },
   { "select-previous-entry",         OP_SELECT_PREVIOUS_ENTRY },
-  { "show-help",                     OP_SHOW_HELP },
-  { "show-keycode",                  OP_SHOW_KEYCODE },
-  { "show-log",                      OP_SHOW_LOG },
+  { "show-help",                     OP_DISPLAY_HELP },
+  { "show-keycode",                  OP_VIEW_KEYCODES },
+  { "show-log",                      OP_DISPLAY_LOG },
   { "show-version",                  OP_SHOW_VERSION },
-  { "tag-entry",                     OP_TAG_ENTRY },
+  { "tag-entry",                     OP_TOGGLE_TAG },
 
   // Deprecated
   { "bottom-page",                   OP_SELECT_PAGE_BOTTOM,                     MFF_DEPRECATED },
@@ -107,11 +107,11 @@ static const struct MenuFuncOp OpGeneric[] = { /* map: generic */
   { "current-top",                   OP_SCROLL_SELECTION_TO_TOP,                MFF_DEPRECATED },
   { "end-cond",                      OP_APPLY_TO_TAGGED_END,                    MFF_DEPRECATED },
   { "enter-command",                 OP_RUN_COMMAND,                            MFF_DEPRECATED },
-  { "error-history",                 OP_SHOW_LOG,                               MFF_DEPRECATED },
+  { "error-history",                 OP_DISPLAY_LOG,                            MFF_DEPRECATED },
   { "first-entry",                   OP_SELECT_FIRST_ENTRY,                     MFF_DEPRECATED },
   { "half-down",                     OP_SCROLL_HALF_DOWN,                       MFF_DEPRECATED },
   { "half-up",                       OP_SCROLL_HALF_UP,                         MFF_DEPRECATED },
-  { "help",                          OP_SHOW_HELP,                              MFF_DEPRECATED },
+  { "help",                          OP_DISPLAY_HELP,                           MFF_DEPRECATED },
   { "jump",                          OP_SELECT_ENTRY_BY_NUMBER,                 MFF_DEPRECATED },
   { "last-entry",                    OP_SELECT_LAST_ENTRY,                      MFF_DEPRECATED },
   { "middle-page",                   OP_SELECT_PAGE_MIDDLE,                     MFF_DEPRECATED },
@@ -128,11 +128,11 @@ static const struct MenuFuncOp OpGeneric[] = { /* map: generic */
   { "search-reverse",                OP_SEARCH_BACKWARD,                        MFF_DEPRECATED },
   { "select-entry",                  OP_ACTIVATE_ENTRY,                         MFF_DEPRECATED },
   { "shell-escape",                  OP_RUN_SHELL_COMMAND,                      MFF_DEPRECATED },
-  { "show-log-messages",             OP_SHOW_LOG,                               MFF_DEPRECATED },
+  { "show-log-messages",             OP_DISPLAY_LOG,                            MFF_DEPRECATED },
   { "tag-prefix",                    OP_APPLY_TO_TAGGED,                        MFF_DEPRECATED },
   { "tag-prefix-cond",               OP_APPLY_TO_TAGGED_BEGIN,                  MFF_DEPRECATED },
   { "top-page",                      OP_SELECT_PAGE_TOP,                        MFF_DEPRECATED },
-  { "what-key",                      OP_SHOW_KEYCODE,                           MFF_DEPRECATED },
+  { "what-key",                      OP_VIEW_KEYCODES,                          MFF_DEPRECATED },
   { NULL, 0 },
 };
 
@@ -144,6 +144,7 @@ static const struct MenuOpSeq GenericDefaultBindings[] = { /* map: generic */
   { OP_ACTIVATE_ENTRY,                     "\n" },             // <Enter>
   { OP_ACTIVATE_ENTRY,                     "\r" },             // <Return>
   { OP_APPLY_TO_TAGGED,                    ";" },
+  { OP_DISPLAY_HELP,                       "?" },
   { OP_QUIT,                               "q" },
   { OP_REDRAW_SCREEN,                      "\014" },           // <Ctrl-L>
   { OP_RUN_COMMAND,                        ":" },
@@ -172,9 +173,8 @@ static const struct MenuOpSeq GenericDefaultBindings[] = { /* map: generic */
   { OP_SELECT_PAGE_TOP,                    "H" },
   { OP_SELECT_PREVIOUS_ENTRY,              "<up>" },
   { OP_SELECT_PREVIOUS_ENTRY,              "k" },
-  { OP_SHOW_HELP,                          "?" },
   { OP_SHOW_VERSION,                       "V" },
-  { OP_TAG_ENTRY,                          "t" },
+  { OP_TOGGLE_TAG,                         "t" },
   { 0, NULL },
 };
 // clang-format on

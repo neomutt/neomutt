@@ -103,7 +103,7 @@ static const struct Mapping ComposeHelp[] = {
   { N_("Subj"),        OP_ENVELOPE_EDIT_SUBJECT },
   { N_("Attach file"), OP_ATTACH_ATTACH_FILE },
   { N_("Descrip"),     OP_ATTACH_EDIT_DESCRIPTION },
-  { N_("Help"),        OP_SHOW_HELP },
+  { N_("Help"),        OP_DISPLAY_HELP },
   { NULL, 0 },
   // clang-format on
 };
@@ -117,7 +117,7 @@ static const struct Mapping ComposeNewsHelp[] = {
   { N_("Subj"),        OP_ENVELOPE_EDIT_SUBJECT },
   { N_("Attach file"), OP_ATTACH_ATTACH_FILE },
   { N_("Descrip"),     OP_ATTACH_EDIT_DESCRIPTION },
-  { N_("Help"),        OP_SHOW_HELP },
+  { N_("Help"),        OP_DISPLAY_HELP },
   { NULL, 0 },
   // clang-format on
 };

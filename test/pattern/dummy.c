@@ -61,7 +61,7 @@ const struct MenuFuncOp OpBrowser[] = {
 };
 
 const struct MenuFuncOp OpIndex[] = {
-  { "help", OP_SHOW_HELP },
+  { "help", OP_DISPLAY_HELP },
   { "next-line", OP_SCROLL_LINE_DOWN },
   { "next-page", OP_SCROLL_PAGE_DOWN },
   { "next-undeleted", OP_MAIN_NEXT_UNDELETED },
@@ -72,7 +72,7 @@ const struct MenuFuncOp OpIndex[] = {
 };
 
 const struct MenuFuncOp OpPager[] = {
-  { "help", OP_SHOW_HELP },
+  { "help", OP_DISPLAY_HELP },
   { "next-line", OP_SCROLL_LINE_DOWN },
   { "next-page", OP_SCROLL_PAGE_DOWN },
   { "next-undeleted", OP_MAIN_NEXT_UNDELETED },

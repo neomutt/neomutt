@@ -330,7 +330,7 @@ void km_error_key(const struct MenuDefinition *md)
   if (!md)
     return;
 
-  struct Keymap *key = km_find_func(md, OP_SHOW_HELP);
+  struct Keymap *key = km_find_func(md, OP_DISPLAY_HELP);
   if (!key)
   {
     mutt_error(_("Key is not bound"));
