@@ -72,13 +72,13 @@ static const struct MenuFuncOp OpEditor[] = { /* map: editor */
   { "kill-word",                       OP_EDITOR_KILL_WORD },
   { "quote-char",                      OP_EDITOR_QUOTE_CHAR },
   { "redraw-screen",                   OP_REDRAW_SCREEN },
-  { "show-help",                       OP_SHOW_HELP },
+  { "show-help",                       OP_DISPLAY_HELP },
   { "transpose-chars",                 OP_EDITOR_TRANSPOSE_CHARS },
   { "upcase-word",                     OP_EDITOR_UPCASE_WORD },
 
   // Deprecated
   { "buffy-cycle",                     OP_EDITOR_COMPLETE_MAILBOX,        MFF_DEPRECATED },
-  { "help",                            OP_SHOW_HELP,                      MFF_DEPRECATED },
+  { "help",                            OP_DISPLAY_HELP,                   MFF_DEPRECATED },
   { "history-down",                    OP_HISTORY_SELECT_NEXT_ENTRY,      MFF_DEPRECATED },
   { "history-up",                      OP_HISTORY_SELECT_PREVIOUS_ENTRY,  MFF_DEPRECATED },
   { "mailbox-cycle",                   OP_EDITOR_COMPLETE_MAILBOX,        MFF_DEPRECATED },
@@ -121,7 +121,7 @@ static const struct MenuOpSeq EditorDefaultBindings[] = { /* map: editor */
   { OP_HISTORY_SELECT_PREVIOUS_ENTRY,      "<up>" },
   { OP_HISTORY_SELECT_PREVIOUS_ENTRY,      "\020" },           // <Ctrl-P>
   { OP_REDRAW_SCREEN,                      "\014" },           // <Ctrl-L>
-  { OP_SHOW_HELP,                          "\033?" },          // <Alt-?>
+  { OP_DISPLAY_HELP,                       "\033?" },          // <Alt-?>
   { 0, NULL },
 };
 // clang-format on
@@ -476,9 +476,9 @@ static int op_editor_transpose_chars(struct EnterFunctionData *fdata,
 }
 
 /**
- * op_show_help - Display Help - Implements ::enter_function_t - @ingroup enter_function_api
+ * op_display_help - Display Help - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_show_help(struct EnterFunctionData *fdata, const struct KeyEvent *event)
+static int op_display_help(struct EnterFunctionData *fdata, const struct KeyEvent *event)
 {
   mutt_help(fdata->mod_data->md_editor);
   return FR_SUCCESS;
@@ -504,6 +504,7 @@ static int op_redraw_screen(struct EnterFunctionData *fdata, const struct KeyEve
  */
 static const struct EnterFunction EnterFunctions[] = {
   // clang-format off
+  { OP_DISPLAY_HELP,                    op_display_help },
   { OP_EDITOR_BACKSPACE,                op_editor_backspace },
   { OP_EDITOR_BACKWARD_CHAR,            op_editor_backward_char },
   { OP_EDITOR_BACKWARD_WORD,            op_editor_backward_word },
@@ -529,7 +530,6 @@ static const struct EnterFunction EnterFunctions[] = {
   { OP_HISTORY_SELECT_NEXT_ENTRY,       op_history_select_next_entry },
   { OP_HISTORY_SELECT_PREVIOUS_ENTRY,   op_history_select_prev },
   { OP_REDRAW_SCREEN,                   op_redraw_screen },
-  { OP_SHOW_HELP,                       op_show_help },
   { 0, NULL },
   // clang-format on
 };

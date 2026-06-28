@@ -93,7 +93,7 @@ static const struct Mapping PgpHelp[] = {
   { N_("Exit"),      OP_EXIT },
   { N_("Select"),    OP_ACTIVATE_ENTRY },
   { N_("Check key"), OP_VERIFY_KEY },
-  { N_("Help"),      OP_SHOW_HELP },
+  { N_("Help"),      OP_DISPLAY_HELP },
   { NULL, 0 },
   // clang-format on
 };

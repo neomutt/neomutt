@@ -91,7 +91,7 @@ static const struct MenuOpSeq AliasDefaultBindings[] = { /* map: alias */
   { OP_MAIN_UNTAG_PATTERN,                 "\024" },           // <Ctrl-T>
   { OP_SORT,                               "o" },
   { OP_SORT_REVERSE,                       "O" },
-  { OP_TAG_ENTRY,                          "<space>" },
+  { OP_TOGGLE_TAG,                         "<space>" },
   { OP_UNDELETE,                           "u" },
   { 0, NULL },
 };
@@ -109,7 +109,7 @@ static const struct MenuOpSeq QueryDefaultBindings[] = { /* map: query */
   { OP_QUERY_APPEND,                       "A" },
   { OP_SORT,                               "o" },
   { OP_SORT_REVERSE,                       "O" },
-  { OP_TAG_ENTRY,                          "<space>" },
+  { OP_TOGGLE_TAG,                         "<space>" },
   { 0, NULL },
 };
 // clang-format on

@@ -80,7 +80,7 @@ static int op_end_cond(struct Menu *menu, int op)
 /**
  * op_tag - Tag the current entry
  * @param menu  Menu
- * @param op    Operation to perform, e.g. OP_TAG_ENTRY
+ * @param op    Operation to perform, e.g. OP_TOGGLE_TAG
  * @param count Repeat count for tagging multiple consecutive entries
  * @retval enum #FunctionRetval
  */
@@ -250,7 +250,7 @@ int menu_tagging_dispatcher(struct MuttWindow *win, const struct KeyEvent *event
 
   switch (op)
   {
-    case OP_TAG_ENTRY:
+    case OP_TOGGLE_TAG:
       rc = op_tag(menu, op, event->count);
       break;
     case OP_APPLY_TO_TAGGED:

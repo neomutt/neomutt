@@ -107,7 +107,7 @@ static const struct Mapping IndexHelp[] = {
   { N_("Mail"),  OP_MAIL },
   { N_("Reply"), OP_REPLY },
   { N_("Group"), OP_GROUP_REPLY },
-  { N_("Help"),  OP_SHOW_HELP },
+  { N_("Help"),  OP_DISPLAY_HELP },
   { NULL, 0 },
   // clang-format on
 };
@@ -122,7 +122,7 @@ const struct Mapping IndexNewsHelp[] = {
   { N_("Post"),     OP_POST },
   { N_("Followup"), OP_FOLLOWUP },
   { N_("Catchup"),  OP_CATCHUP },
-  { N_("Help"),     OP_SHOW_HELP },
+  { N_("Help"),     OP_DISPLAY_HELP },
   { NULL, 0 },
   // clang-format on
 };

@@ -105,7 +105,7 @@ static const struct Mapping QueryHelp[] = {
   { N_("Sort"),       OP_SORT },
   { N_("Rev-Sort"),   OP_SORT_REVERSE },
   { N_("Search"),     OP_SEARCH_FORWARD },
-  { N_("Help"),       OP_SHOW_HELP },
+  { N_("Help"),       OP_DISPLAY_HELP },
   { NULL, 0 },
   // clang-format on
 };

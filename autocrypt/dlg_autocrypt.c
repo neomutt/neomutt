@@ -107,7 +107,7 @@ static const struct Mapping AutocryptHelp[] = {
      It currently has the content:
      q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Encr  ?:Help */
   { N_("Prf Encr"),   OP_AUTOCRYPT_TOGGLE_PREFER },
-  { N_("Help"),       OP_SHOW_HELP },
+  { N_("Help"),       OP_DISPLAY_HELP },
   { NULL, 0 }
   // clang-format on
 };

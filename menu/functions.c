@@ -279,9 +279,9 @@ static int menu_search(struct MenuFunctionData *fdata, const struct KeyEvent *ev
 }
 
 /**
- * op_show_help - Show the help screen - Implements ::menu_function_t - @ingroup menu_function_api
+ * op_display_help - Show the help screen - Implements ::menu_function_t - @ingroup menu_function_api
  */
-static int op_show_help(struct MenuFunctionData *fdata, const struct KeyEvent *event)
+static int op_display_help(struct MenuFunctionData *fdata, const struct KeyEvent *event)
 {
   struct Menu *menu = fdata->menu;
   mutt_help(menu->md);
@@ -337,6 +337,7 @@ done:
  */
 static const struct MenuFunction MenuFunctions[] = {
   // clang-format off
+  { OP_DISPLAY_HELP,                op_display_help },
   { OP_SCROLL_HALF_DOWN,            menu_movement },
   { OP_SCROLL_HALF_UP,              menu_movement },
   { OP_SCROLL_LINE_DOWN,            menu_movement },
@@ -358,7 +359,6 @@ static const struct MenuFunction MenuFunctions[] = {
   { OP_SELECT_PAGE_MIDDLE,          menu_movement },
   { OP_SELECT_PAGE_TOP,             menu_movement },
   { OP_SELECT_PREVIOUS_ENTRY,       menu_movement },
-  { OP_SHOW_HELP,                   op_show_help },
   { 0, NULL },
   // clang-format on
 };

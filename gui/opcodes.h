@@ -38,29 +38,29 @@ const char *opcodes_get_name       (int op);
 // clang-format off
 #define OPS_DIALOG(_fmt) \
   /* L10N: Help for Generic function: <exit> */ \
-  _fmt(OP_EXIT,                               N_("Exit this menu")) \
+  _fmt(OP_EXIT,                               N_("Exit a menu")) \
   /* L10N: Help for Generic function: <quit> */ \
-  _fmt(OP_QUIT,                               N_("Save changes to mailbox and quit")) \
+  _fmt(OP_QUIT,                               N_("Save changes and quit")) \
 
 #define OPS_GLOBAL(_fmt) \
   /* L10N: Help for Generic function: <check-stats> */ \
   _fmt(OP_CHECK_STATS,                        N_("Calculate message statistics for all mailboxes")) \
+  /* L10N: Help for Editor, Generic function: <display-help> */ \
+  _fmt(OP_DISPLAY_HELP,                       N_("Display the help screen")) \
+  /* L10N: Help for Generic function: <display-log> */ \
+  _fmt(OP_DISPLAY_LOG,                        N_("Display log and debug messages")) \
   /* L10N: Help for Generic function: <forget-passphrase> */ \
   _fmt(OP_FORGET_PASSPHRASE,                  N_("Wipe passphrases from memory")) \
   /* L10N: Help for Editor, Generic function: <redraw-screen> */ \
   _fmt(OP_REDRAW_SCREEN,                      N_("Clear and redraw the screen")) \
   /* L10N: Help for Generic function: <run-command> */ \
-  _fmt(OP_RUN_COMMAND,                        N_("Enter a neomuttrc command")) \
+  _fmt(OP_RUN_COMMAND,                        N_("Execute a NeoMutt command")) \
   /* L10N: Help for Generic function: <run-shell-command> */ \
-  _fmt(OP_RUN_SHELL_COMMAND,                  N_("Invoke a command in a subshell")) \
-  /* L10N: Help for Editor, Generic function: <show-help> */ \
-  _fmt(OP_SHOW_HELP,                          N_("Help screen")) \
-  /* L10N: Help for Generic function: <show-keycode> */ \
-  _fmt(OP_SHOW_KEYCODE,                       N_("Display the keycode for a key press")) \
-  /* L10N: Help for Generic function: < */ \
-  _fmt(OP_SHOW_LOG,                  N_("Show log (and debug) messages")) \
+  _fmt(OP_RUN_SHELL_COMMAND,                  N_("Execute external command in a subshell")) \
   /* L10N: Help for Generic function: <show-version> */ \
   _fmt(OP_SHOW_VERSION,                       N_("Show the NeoMutt version number and date")) \
+  /* L10N: Help for Generic function: <view-keycodes> */ \
+  _fmt(OP_VIEW_KEYCODES,                      N_("Show the keycodes for key presses")) \
 
 #define OPS_SCROLL(_fmt) \
   /* L10N: Help for Generic function: <scroll-half-down> */ \
@@ -84,9 +84,9 @@ const char *opcodes_get_name       (int op);
 
 #define OPS_SEARCH(_fmt) \
   /* L10N: Help for Generic function: <search-backward> */ \
-  _fmt(OP_SEARCH_BACKWARD,                    N_("Search backwards for a regular expression")) \
+  _fmt(OP_SEARCH_BACKWARD,                    N_("Search backward for a regular expression")) \
   /* L10N: Help for Generic function: <search-forward> */ \
-  _fmt(OP_SEARCH_FORWARD,                     N_("Search for a regular expression")) \
+  _fmt(OP_SEARCH_FORWARD,                     N_("Search forward for a regular expression")) \
   /* L10N: Help for Generic function: <search-next> */ \
   _fmt(OP_SEARCH_NEXT,                        N_("Search for next match")) \
   /* L10N: Help for Generic function: <search-previous> */ \
@@ -114,13 +114,13 @@ const char *opcodes_get_name       (int op);
 
 #define OPS_TAG(_fmt) \
   /* L10N: Help for Generic function: <apply-to-tagged> */ \
-  _fmt(OP_APPLY_TO_TAGGED,                    N_("Apply next function to tagged messages")) \
+  _fmt(OP_APPLY_TO_TAGGED,                    N_("Apply the next function to tagged entries")) \
   /* L10N: Help for Generic function: <apply-to-tagged-begin> */ \
-  _fmt(OP_APPLY_TO_TAGGED_BEGIN,              N_("Apply next function ONLY to tagged messages")) \
+  _fmt(OP_APPLY_TO_TAGGED_BEGIN,              N_("Skip following commands if nothing is tagged")) \
   /* L10N: Help for Generic function: <apply-to-tagged-end> */ \
-  _fmt(OP_APPLY_TO_TAGGED_END,                N_("End of conditional execution (noop)")) \
-  /* L10N: Help for Generic function: <tag-entry> */ \
-  _fmt(OP_TAG_ENTRY,                          N_("Tag the current entry")) \
+  _fmt(OP_APPLY_TO_TAGGED_END,                N_("Resume normal macro execution")) \
+  /* L10N: Help for Generic function: <toggle-tag> */ \
+  _fmt(OP_TOGGLE_TAG,                         N_("Toggle tag on the current entry")) \
 
 #define OPS_EDITOR(_fmt) \
   /* L10N: Help for Editor function: <backspace> */ \

@@ -105,9 +105,9 @@ static int op_run_shell_command(struct MuttWindow *win, const struct KeyEvent *e
 }
 
 /**
- * op_show_log - Show log (and debug) messages - Implements ::global_function_t - @ingroup global_function_api
+ * op_display_log - Show log (and debug) messages - Implements ::global_function_t - @ingroup global_function_api
  */
-static int op_show_log(struct MuttWindow *win, const struct KeyEvent *event)
+static int op_display_log(struct MuttWindow *win, const struct KeyEvent *event)
 {
   struct Buffer *tempfile = buf_pool_get();
   buf_mktemp(tempfile);
@@ -158,9 +158,9 @@ static int op_show_version(struct MuttWindow *win, const struct KeyEvent *event)
 }
 
 /**
- * op_show_keycode - display the keycode for a key press - Implements ::global_function_t - @ingroup global_function_api
+ * op_view_keycodes - display the keycode for a key press - Implements ::global_function_t - @ingroup global_function_api
  */
-static int op_show_keycode(struct MuttWindow *win, const struct KeyEvent *event)
+static int op_view_keycodes(struct MuttWindow *win, const struct KeyEvent *event)
 {
   mw_what_key();
   return FR_SUCCESS;
@@ -174,13 +174,13 @@ static int op_show_keycode(struct MuttWindow *win, const struct KeyEvent *event)
 static const struct GlobalFunction GlobalFunctions[] = {
   // clang-format off
   { OP_CHECK_STATS,           op_check_stats },
+  { OP_DISPLAY_LOG,           op_display_log },
   { OP_FORGET_PASSPHRASE,     op_forget_passphrase },
   { OP_REDRAW_SCREEN,         op_redraw_screen },
   { OP_RUN_COMMAND,           op_run_command },
   { OP_RUN_SHELL_COMMAND,     op_run_shell_command },
-  { OP_SHOW_KEYCODE,          op_show_keycode },
-  { OP_SHOW_LOG,              op_show_log },
   { OP_SHOW_VERSION,          op_show_version },
+  { OP_VIEW_KEYCODES,         op_view_keycodes },
   { 0, NULL },
   // clang-format on
 };

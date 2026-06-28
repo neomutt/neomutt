@@ -47,7 +47,7 @@
 /// Help Bar for the Command Line Editor
 static const struct Mapping EditorHelp[] = {
   // clang-format off
-  { N_("Help"),        OP_SHOW_HELP },
+  { N_("Help"),        OP_DISPLAY_HELP },
   { N_("Complete"),    OP_EDITOR_COMPLETE },
   { N_("Hist Up"),     OP_HISTORY_SELECT_PREVIOUS_ENTRY },
   { N_("Hist Down"),   OP_HISTORY_SELECT_NEXT_ENTRY },

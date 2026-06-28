@@ -57,7 +57,7 @@ static const struct MenuFuncOp OpPostpone[] = { /* map: postpone */
  */
 static const struct MenuOpSeq PostponeDefaultBindings[] = { /* map: postpone */
   { OP_DELETE,                             "d" },
-  { OP_TAG_ENTRY,                          "t" },
+  { OP_TOGGLE_TAG,                         "t" },
   { OP_UNDELETE,                           "u" },
   { 0, NULL },
 };
