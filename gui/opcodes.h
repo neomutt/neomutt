@@ -130,37 +130,37 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Editor function: <backward-word> */ \
   _fmt(OP_EDITOR_BACKWARD_WORD,               N_("Move the cursor to the beginning of the word")) \
   /* L10N: Help for Editor function: <bol> */ \
-  _fmt(OP_EDITOR_BOL,                         N_("Jump to the beginning of the line")) \
+  _fmt(OP_EDITOR_BOL,                         N_("Move the cursor to the beginning of the line")) \
   /* L10N: Help for Editor function: <capitalize-word> */ \
-  _fmt(OP_EDITOR_CAPITALIZE_WORD,             N_("Capitalize the word")) \
+  _fmt(OP_EDITOR_CAPITALIZE_WORD,             N_("Capitalize the word in front of the cursor")) \
   /* L10N: Help for Editor function: <complete> */ \
-  _fmt(OP_EDITOR_COMPLETE,                    N_("Complete filename or alias")) \
-  /* L10N: Help for Editor function: <mailbox-cycle> */ \
-  _fmt(OP_EDITOR_COMPLETE_MAILBOX,            N_("Cycle among incoming mailboxes")) \
+  _fmt(OP_EDITOR_COMPLETE,                    N_("Auto-complete (general): aliases, mailboxes, files/dir")) \
+  /* L10N: Help for Editor function: <complete-mailbox> */ \
+  _fmt(OP_EDITOR_COMPLETE_MAILBOX,            N_("Auto-complete from mailboxes with new mail")) \
   /* L10N: Help for Editor function: <complete-query> */ \
-  _fmt(OP_EDITOR_COMPLETE_QUERY,              N_("Complete address with query")) \
+  _fmt(OP_EDITOR_COMPLETE_QUERY,              N_("Auto-complete from alias query (external command)")) \
   /* L10N: Help for Editor function: <delete-char> */ \
   _fmt(OP_EDITOR_DELETE_CHAR,                 N_("Delete the char under the cursor")) \
   /* L10N: Help for Editor function: <downcase-word> */ \
-  _fmt(OP_EDITOR_DOWNCASE_WORD,               N_("Convert the word to lower case")) \
+  _fmt(OP_EDITOR_DOWNCASE_WORD,               N_("Convert the word in front of the cursor to lower case")) \
   /* L10N: Help for Editor function: <eol> */ \
-  _fmt(OP_EDITOR_EOL,                         N_("Jump to the end of the line")) \
+  _fmt(OP_EDITOR_EOL,                         N_("Move the cursor to the end of the line")) \
   /* L10N: Help for Editor function: <forward-char> */ \
   _fmt(OP_EDITOR_FORWARD_CHAR,                N_("Move the cursor one character to the right")) \
   /* L10N: Help for Editor function: <forward-word> */ \
   _fmt(OP_EDITOR_FORWARD_WORD,                N_("Move the cursor to the end of the word")) \
-  /* L10N: Help for Editor function: <history-down> */ \
-  _fmt(OP_HISTORY_SELECT_NEXT_ENTRY,          N_("Scroll down through the history list")) \
   /* L10N: Help for Editor function: <history-search> */ \
-  _fmt(OP_HISTORY_SEARCH,                     N_("Search through the history list")) \
-  /* L10N: Help for Editor function: <history-up> */ \
-  _fmt(OP_HISTORY_SELECT_PREVIOUS_ENTRY,      N_("Scroll up through the history list")) \
+  _fmt(OP_HISTORY_SEARCH,                     N_("View the history list")) \
+  /* L10N: Help for Editor function: <history-select-next-entry> */ \
+  _fmt(OP_HISTORY_SELECT_NEXT_ENTRY,          N_("Select next newer entry in history list")) \
+  /* L10N: Help for Editor function: <history-select-previous-entry> */ \
+  _fmt(OP_HISTORY_SELECT_PREVIOUS_ENTRY,      N_("Select next older entry in history list")) \
   /* L10N: Help for Editor function: <kill-eol> */ \
-  _fmt(OP_EDITOR_KILL_EOL,                    N_("Delete chars from cursor to end of line")) \
+  _fmt(OP_EDITOR_KILL_EOL,                    N_("Delete chars from the cursor to end of line")) \
   /* L10N: Help for Editor function: <kill-eow> */ \
   _fmt(OP_EDITOR_KILL_EOW,                    N_("Delete chars from the cursor to the end of the word")) \
   /* L10N: Help for Editor function: <kill-line> */ \
-  _fmt(OP_EDITOR_KILL_LINE,                   N_("Delete chars from cursor to beginning the line")) \
+  _fmt(OP_EDITOR_KILL_LINE,                   N_("Delete chars from the cursor to beginning the line")) \
   /* L10N: Help for Editor function: <kill-whole-line> */ \
   _fmt(OP_EDITOR_KILL_WHOLE_LINE,             N_("Delete all chars on the line")) \
   /* L10N: Help for Editor function: <kill-word> */ \
@@ -168,9 +168,9 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Editor function: <quote-char> */ \
   _fmt(OP_EDITOR_QUOTE_CHAR,                  N_("Quote the next typed key")) \
   /* L10N: Help for Editor function: <transpose-chars> */ \
-  _fmt(OP_EDITOR_TRANSPOSE_CHARS,             N_("Transpose character under cursor with previous")) \
+  _fmt(OP_EDITOR_TRANSPOSE_CHARS,             N_("Transpose character under cursor with the previous one")) \
   /* L10N: Help for Editor function: <upcase-word> */ \
-  _fmt(OP_EDITOR_UPCASE_WORD,                 N_("Convert the word to upper case")) \
+  _fmt(OP_EDITOR_UPCASE_WORD,                 N_("Convert the word in front of the cursor to upper case")) \
 
 #define OPS_ATTACH(_fmt) \
   /* L10N: Help for Compose function: <attach-file> */ \
