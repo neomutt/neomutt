@@ -487,12 +487,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_MAIN_UNTAG_PATTERN,                 N_("Untag non-hidden messages matching a pattern")) \
   /* L10N: Help for Index function: <mark-message> */ \
   _fmt(OP_MARK_MSG,                           N_("Create a hotkey macro for the current message")) \
-  /* L10N: Help for Pager function: <toggle-quoted> */ \
-  _fmt(OP_PAGER_HIDE_QUOTED,                  N_("Toggle display of quoted text")) \
-  /* L10N: Help for Pager function: <skip-headers> */ \
-  _fmt(OP_PAGER_SKIP_HEADERS,                 N_("Jump to first line after headers")) \
-  /* L10N: Help for Pager function: <skip-quoted> */ \
-  _fmt(OP_PAGER_SKIP_QUOTED,                  N_("Skip beyond quoted text")) \
   /* L10N: Help for Attach, Compose, Index, Attach, Compose, Index function: <pipe-entry> */ \
   _fmt(OP_PIPE,                               N_("Pipe message/attachment to a shell command")) \
   /* L10N: Help for Index function: <post-message> */ \
@@ -519,8 +513,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_RESEND,                             N_("Use the current message as a template for a new one")) \
   /* L10N: Help for Index function: <save-message> */ \
   _fmt(OP_SAVE,                               N_("Save message/attachment to a mailbox/file")) \
-  /* L10N: Help for Pager function: <search-toggle> */ \
-  _fmt(OP_SEARCH_TOGGLE,                      N_("Toggle search pattern coloring")) \
   /* L10N: Help for Browser, Query, Alias, Index function: <sort> */ \
   _fmt(OP_SORT,                               N_("Sort messages")) \
   /* L10N: Help for Alias, Browser, Index, Query function: <sort-alias-reverse> */ \
@@ -606,6 +598,16 @@ const char *opcodes_get_name       (int op);
 #define OPS_NOTMUCH(_)
 #endif
 
+#define OPS_PAGER(_fmt) \
+  /* L10N: Help for Pager function: <skip-headers> */ \
+  _fmt(OP_PAGER_SKIP_HEADERS,                 N_("Scroll to first line after the headers")) \
+  /* L10N: Help for Pager function: <skip-quoted-text> */ \
+  _fmt(OP_PAGER_SKIP_QUOTED_TEXT,             N_("Scroll past the next quoted block")) \
+  /* L10N: Help for Pager function: <toggle-quoted-text> */ \
+  _fmt(OP_PAGER_TOGGLE_QUOTED_TEXT,           N_("Show/hide quoted text")) \
+  /* L10N: Help for Pager function: <toggle-search-highlighting> */ \
+  _fmt(OP_PAGER_TOGGLE_SEARCH_HIGHLIGHTING,   N_("Show/hide highlighting of search matches")) \
+
 #define OPS_PGP(_fmt) \
   /* L10N: Help for Compose function: <attach-key> */ \
   _fmt(OP_ATTACH_ATTACH_KEY,                  N_("Attach a PGP public key")) \
@@ -687,6 +689,7 @@ const char *opcodes_get_name       (int op);
   OPS_CRYPT(_fmt) \
   OPS_ENVELOPE(_fmt) \
   OPS_NOTMUCH(_fmt) \
+  OPS_PAGER(_fmt) \
   OPS_PGP(_fmt) \
   OPS_SIDEBAR(_fmt) \
   OPS_SMIME(_fmt) \
