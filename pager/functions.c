@@ -64,18 +64,22 @@ static int op_pager_search_next(struct PagerFunctionData *fdata, const struct Ke
  * OpPager - Functions for the Pager Menu
  */
 static const struct MenuFuncOp OpPager[] = { /* map: pager */
-  { "search-toggle",                 OP_SEARCH_TOGGLE },
   { "skip-headers",                  OP_PAGER_SKIP_HEADERS },
-  { "skip-quoted",                   OP_PAGER_SKIP_QUOTED },
-  { "toggle-quoted",                 OP_PAGER_HIDE_QUOTED },
+  { "skip-quoted-text",              OP_PAGER_SKIP_QUOTED_TEXT },
+  { "toggle-quoted-text",            OP_PAGER_TOGGLE_QUOTED_TEXT },
+  { "toggle-search-highlighting",    OP_PAGER_TOGGLE_SEARCH_HIGHLIGHTING },
+
 
   // Deprecated
-  { "bottom",                        OP_SELECT_LAST_ENTRY,   MFF_DEPRECATED },
-  { "buffy-list",                    OP_MAILBOX_LIST,        MFF_DEPRECATED },
-  { "error-history",                 OP_DISPLAY_LOG,         MFF_DEPRECATED },
-  { "mark-as-new",                   OP_TOGGLE_NEW,          MFF_DEPRECATED },
-  { "tag-message",                   OP_TOGGLE_TAG,          MFF_DEPRECATED },
-  { "top",                           OP_SELECT_FIRST_ENTRY,  MFF_DEPRECATED },
+  { "bottom",            OP_SELECT_LAST_ENTRY,                 MFF_DEPRECATED },
+  { "buffy-list",        OP_MAILBOX_LIST,                      MFF_DEPRECATED },
+  { "error-history",     OP_DISPLAY_LOG,                       MFF_DEPRECATED },
+  { "mark-as-new",       OP_TOGGLE_NEW,                        MFF_DEPRECATED },
+  { "search-toggle",     OP_PAGER_TOGGLE_SEARCH_HIGHLIGHTING,  MFF_DEPRECATED },
+  { "skip-quoted",       OP_PAGER_SKIP_QUOTED_TEXT,            MFF_DEPRECATED },
+  { "tag-message",       OP_TOGGLE_TAG,                        MFF_DEPRECATED },
+  { "toggle-quoted",     OP_PAGER_TOGGLE_QUOTED_TEXT,          MFF_DEPRECATED },
+  { "top",               OP_SELECT_FIRST_ENTRY,                MFF_DEPRECATED },
   { NULL, 0 },
 };
 
@@ -86,9 +90,10 @@ static const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { OP_EXIT,                               "q" },
   { OP_MAIN_NEXT_UNDELETED,                "<right>" },
   { OP_MAIN_PREV_UNDELETED,                "<left>" },
-  { OP_PAGER_HIDE_QUOTED,                  "T" },
   { OP_PAGER_SKIP_HEADERS,                 "H" },
-  { OP_PAGER_SKIP_QUOTED,                  "S" },
+  { OP_PAGER_SKIP_QUOTED_TEXT,             "S" },
+  { OP_PAGER_TOGGLE_QUOTED_TEXT,           "T" },
+  { OP_PAGER_TOGGLE_SEARCH_HIGHLIGHTING,   "\\" },             // <Backslash>
   { OP_QUIT,                               "Q" },
   { OP_SCROLL_LINE_DOWN,                   "<keypadenter>" },
   { OP_SCROLL_LINE_DOWN,                   "\n" },             // <Enter>
@@ -96,7 +101,6 @@ static const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { OP_SCROLL_LINE_UP,                     "<backspace>" },
   { OP_SCROLL_PAGE_DOWN,                   " " },              // <Space>
   { OP_SCROLL_PAGE_UP,                     "-" },
-  { OP_SEARCH_TOGGLE,                      "\\" },             // <Backslash>
   { OP_SELECT_FIRST_ENTRY,                 "^" },
   { 0, NULL },
 };
@@ -315,9 +319,10 @@ static int op_scroll_half_up(struct PagerFunctionData *fdata, const struct KeyEv
 }
 
 /**
- * op_pager_hide_quoted - Toggle display of quoted text - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_pager_toggle_quoted_text - Toggle display of quoted text - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_pager_hide_quoted(struct PagerFunctionData *fdata, const struct KeyEvent *event)
+static int op_pager_toggle_quoted_text(struct PagerFunctionData *fdata,
+                                       const struct KeyEvent *event)
 {
   struct PagerPrivateData *priv = fdata->priv;
   if (!priv->has_types)
@@ -966,9 +971,10 @@ done:
 }
 
 /**
- * op_search_toggle - Toggle search pattern coloring - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_pager_toggle_search_highlighting - Toggle search pattern coloring - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_search_toggle(struct PagerFunctionData *fdata, const struct KeyEvent *event)
+static int op_pager_toggle_search_highlighting(struct PagerFunctionData *fdata,
+                                               const struct KeyEvent *event)
 {
   struct PagerPrivateData *priv = fdata->priv;
   if (priv->search_compiled)
@@ -1017,27 +1023,27 @@ static int op_ignore(struct PagerFunctionData *fdata, const struct KeyEvent *eve
  */
 static const struct PagerFunction PagerFunctions[] = {
   // clang-format off
-  { OP_DISPLAY_HELP,           op_display_help },
-  { OP_EXIT,                   op_exit },
-  { OP_PAGER_HIDE_QUOTED,      op_pager_hide_quoted },
-  { OP_PAGER_SKIP_HEADERS,     op_pager_skip_headers },
-  { OP_PAGER_SKIP_QUOTED,      op_pager_skip_quoted },
-  { OP_QUIT,                   op_quit },
-  { OP_SAVE,                   op_save },
-  { OP_SCROLL_HALF_DOWN,       op_scroll_half_down },
-  { OP_SCROLL_HALF_UP,         op_scroll_half_up },
-  { OP_SCROLL_LINE_DOWN,       op_scroll_line_down },
-  { OP_SCROLL_LINE_UP,         op_scroll_line_up },
-  { OP_SCROLL_PAGE_DOWN,       op_scroll_page_down },
-  { OP_SCROLL_PAGE_UP,         op_scroll_page_up },
-  { OP_SEARCH_BACKWARD,        op_pager_search },
-  { OP_SEARCH_FORWARD,         op_pager_search },
-  { OP_SEARCH_NEXT,            op_pager_search_next },
-  { OP_SEARCH_PREVIOUS,        op_pager_search_next },
-  { OP_SEARCH_TOGGLE,          op_search_toggle },
-  { OP_SELECT_FIRST_ENTRY,     op_select_first_entry },
-  { OP_SELECT_LAST_ENTRY,      op_select_last_entry },
-  { OP_VIEW_ATTACHMENTS,       op_view_attachments },
+  { OP_DISPLAY_HELP,                     op_display_help },
+  { OP_EXIT,                             op_exit },
+  { OP_PAGER_SKIP_HEADERS,               op_pager_skip_headers },
+  { OP_PAGER_SKIP_QUOTED_TEXT,           op_pager_skip_quoted },
+  { OP_PAGER_TOGGLE_QUOTED_TEXT,         op_pager_toggle_quoted_text },
+  { OP_PAGER_TOGGLE_SEARCH_HIGHLIGHTING, op_pager_toggle_search_highlighting },
+  { OP_QUIT,                             op_quit },
+  { OP_SAVE,                             op_save },
+  { OP_SCROLL_HALF_DOWN,                 op_scroll_half_down },
+  { OP_SCROLL_HALF_UP,                   op_scroll_half_up },
+  { OP_SCROLL_LINE_DOWN,                 op_scroll_line_down },
+  { OP_SCROLL_LINE_UP,                   op_scroll_line_up },
+  { OP_SCROLL_PAGE_DOWN,                 op_scroll_page_down },
+  { OP_SCROLL_PAGE_UP,                   op_scroll_page_up },
+  { OP_SEARCH_BACKWARD,                  op_pager_search },
+  { OP_SEARCH_FORWARD,                   op_pager_search },
+  { OP_SEARCH_NEXT,                      op_pager_search_next },
+  { OP_SEARCH_PREVIOUS,                  op_pager_search_next },
+  { OP_SELECT_FIRST_ENTRY,               op_select_first_entry },
+  { OP_SELECT_LAST_ENTRY,                op_select_last_entry },
+  { OP_VIEW_ATTACHMENTS,                 op_view_attachments },
 
   // OpGeneric - Ignore
   { OP_ACTIVATE_ENTRY,                op_ignore },
