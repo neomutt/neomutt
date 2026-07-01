@@ -3512,6 +3512,9 @@ static struct CryptKeyInfo *crypt_ask_for_key(const char *tag, const char *whatf
       goto done;
     }
 
+    if (buf_is_empty(resp))
+      goto done;
+
     if (whatfor)
     {
       if (l)

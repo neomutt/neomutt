@@ -552,6 +552,9 @@ static struct SmimeKey *smime_ask_for_key(const char *prompt, KeyFlags abilities
       goto done;
     }
 
+    if (buf_is_empty(resp))
+      goto done;
+
     key = smime_get_key_by_str(buf_string(resp), abilities, only_public_key);
     if (key)
       goto done;
