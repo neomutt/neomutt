@@ -19,6 +19,131 @@
 #   along with this program; if not, write to the Free Software
 #   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #   02110-1301, USA.
+
+#
+# DESCRIPTION OF USE
+#
+#   This script interacts with OAuth2 endpoints (URLs) to obtain authorization
+#   and access tokens.  When first run, the user should pass `--authorize`
+#   triggering the script to obtain a new authorization, access, and refresh
+#   tokens.  Subsequent runs do not need this flag as they will use the
+#   tokens and info already provided to update the access token (if necessary)
+#   and write it to stdout for neomutt/mbsync to use.
+#
+#   When running the program for the first time, the user will need to specify
+#   several parameters.  If the user does not specify them as arguments, the
+#   program will prompt the user to input that information interactively.
+#
+#   This program takes a path to the *tokenfile*.  Once an authorization token
+#   is obtained, a table of parameters will be converted to JSON, passed through an
+#   encryption program (`gpg` by default) and written to the path specified for
+#   the tokenfile.
+#
+#   WARN: If the tokenfile exists, the data in it will override any user
+#         provided arguments.
+#
+#   In OAuth2, a user logs in and authorizes an application (this script or
+#   whatever application it's posing as via --client-id) and the permissions
+#   (a.k.a. scope) they request.  Once the provider authenticates the user and
+#   the user authorizes any permissions requested by the app (this script), the
+#   provider will generate an *authorization code* that the script will then
+#   trade in for an authorization token, refresh token, and some other data.
+#
+#   The way this script interacts with the provider changes depending on
+#   --authflow.  In all cases, the script will open the provider's authorization
+#   endpoint in a browser.  However, the way the provider passes the
+#   authorization code back to this script varies based on `--authflow`.  When
+#   using `localhostauthcode` or `devicecode` the script will start a web server
+#   to receive the authorization code.  The URL of our web server is passed as
+#   `redirect_uri` to the authorization endpoint.  With these two workflows, the
+#   script will complete the process of obtaining the access token and generate
+#   the tokenfile.
+#
+#   If you specify `authcode`, the script will prompt you for the address from
+#   your browser or the authorization code, which you must input.  Most of
+#   the time, you'll copy the contents of the address bar (of the failed request
+#   to the `redirect_uri`) and paste it into this script.
+#
+#   FYI, authorization codes look like:
+#
+#           M.C517_SN1.2.U.An7Ux3hV...
+#
+#   More detail is available at
+#
+#     https://github.com/neomutt/neomutt/blob/main/contrib/oauth2/README.md
+
+#
+# EXAMPLES
+#
+#   Obtain authorization, refresh, and access tokens:
+#
+#     rm -f ~/.mutt_oauth2-outlook.gpg; mutt_oauth2.py --authorize --verbose \
+#       --provider microsoft --tenant 'consumers' \
+#       --authflow authcode \
+#       --email 'bill@microsoft.com' \
+#       --client-id '9e5f94bc-e8a4-4e73-b8be-63364c29d753' \
+#       --client-secret '' \
+#       --redirect_uri 'https://localhost'
+#       ~/.mutt_oauth2-outlook.gpg
+#
+#   WARN: You'll likely run this program repeatedly to try and find the right
+#         combination of parameters.  If you don't remove the tokenfile first,
+#         the program will use the settings in the token file rather than the
+#         ones you specify.
+#
+#   NOTE: `--email` Some Microsoft accounts have a `preferred_username` and one
+#          or more aliases.  If Bill logs in with bill@microsoft.com but has an
+#          alias bill@outlook.com, he'd want to use bill@microsoft.com as the
+#          value of --email because microsoft (particularly SMTP) will REJECT
+#          SASL strings (created for --test only) with aliases in `user=`.  SASL
+#          strings look like:
+#
+#            user={user}\x01auth=Bearer {token}\x01\x01
+#
+#   NOTE: `--client-secret` being empty is not detectable by this script's
+#         argument parser.  It will prompt you, and you hit enter to leave
+#         blank (which works for Thunderbird, btw).
+#
+#   NOTE: `--redirect-uri` may not be necessary.  The Thunderbird client id
+#         that Mozilla maintains at Microsoft (used in the example) requires a
+#         redirect-uri of 'https://localhost'.  This forces authflow `authcode`
+#         since this script does not support an HTTPS server.
+#
+#   NOTE: `--tenant` is only applicable for the `microsoft` provider.  It will
+#         either be "common" (the default), "consumers", or the *Microsoft
+#         Entra* or "Directory" ID (UUID) of your work or school organization.
+#         When using `microsoft`, you may need to sign up with Azure to have a
+#         valid Entra ID.
+#
+#   NOTE: If you use authflow `devicecode` with provider `microsoft`, you visit
+#         the URL provided by the script, enter the code provided by the script,
+#         then it will prompt you for a login.  If the browser asks for a
+#         passkey, input the user and click *NEXT* first, or Microsoft will get
+#         confused and return an error.
+#
+#   Test access token with IMAP, POP, and SMTP:
+#
+#     mutt_oauth2.py ~/.mutt_oauth2-outlook.gpg --verbose --test
+#
+#   Use refresh token if necessary to obtain a new access token then output:
+#
+#     mutt_oauth2.py ~/.mutt_oauth2-outlook.gpg
+#
+#   Inspect tokenfile:
+#
+#     gpg --decrypt ~/.mutt_oauth2-outlook.gpg
+
+#
+# CONFIGURATION
+#
+#   Once this works, you'll configure neomutt with:
+#
+#     set my_oauth_script = "python3 /path/to/mutt_oauth2.py /path/to/.mutt_oauth2-outlook.gpg"
+#
+#   ... or mbsync with:
+#
+#     PassCmd "python3 /path/to/mutt_oauth2.py /path/to/.mutt_oauth2-outlook.gpg"
+
 '''Mutt OAuth2 token management'''
 
 import sys
@@ -26,6 +151,7 @@ import json
 import argparse
 import urllib.parse
 import urllib.request
+import urllib.error
 import imaplib
 import poplib
 import smtplib
@@ -39,6 +165,9 @@ import shlex
 import socket
 import http.server
 import subprocess
+import readline # Enables the input of long lines like the log URL returned in  authflow: authcode
+import webbrowser
+
 
 # The token file must be encrypted because it contains multi-use bearer tokens
 # whose usage does not require additional verification. Specify whichever
@@ -107,8 +236,12 @@ ap.add_argument('--client-id', type=str, default='',
                 help='Provider id from registration')
 ap.add_argument('--client-secret', type=str, default='',
                 help='(optional) Provider secret from registration')
+ap.add_argument('--redirect-uri', type=str, default='',
+                help='Specify redirect-uri (May need to match match app registration with provider).')
 ap.add_argument('--provider', type=str, choices=registrations.keys(),
                 help='Specify provider to use.')
+ap.add_argument('--tenant', type=str, default='common',
+                help='Specify tenant (common: Work on School, consumers - personal).')
 ap.add_argument('--email', type=str, help='Your email address.')
 args = ap.parse_args()
 
@@ -143,6 +276,7 @@ def writetokenfile():
 
 if args.debug:
     print('Obtained from token file:', json.dumps(token))
+
 if not token:
     if not args.authorize:
         sys.exit('You must run script with "--authorize" at least once.')
@@ -161,12 +295,29 @@ if not token:
     token['refresh_token'] = ''
     token['client_id'] = args.client_id or input('Client ID: ')
     token['client_secret'] = args.client_secret or input('Client secret: ')
+    if token['registration'] == "microsoft":
+        token['tenant'] = args.tenant
+    if args.redirect_uri:
+        # This overrides redirect_uri in registration
+        token['redirect_uri'] = args.redirect_uri
     writetokenfile()
 
 if token['registration'] not in registrations:
     sys.exit(f'ERROR: Unknown registration "{token["registration"]}". Delete token file '
              f'and start over.')
 registration = registrations[token['registration']]
+if token['registration'] == "microsoft":
+    if not 'tenant' in token:
+        # Existing token was not written with tenant.  Just default to common.
+        token['tenant'] = 'common'
+    # This only matters for microsoft registration
+    if token['tenant'] != "common":
+        registration['authorize_endpoint'] = registration['authorize_endpoint'].replace("common", token['tenant'], 1)
+        registration['devicecode_endpoint'] = registration['devicecode_endpoint'].replace("common", token['tenant'], 1)
+        registration['token_endpoint'] = registration['token_endpoint'].replace("common", token['tenant'], 1)
+        registration['redirect_uri'] = registration['redirect_uri'].replace("common", token['tenant'], 1)
+        registration['tenant'] = token['tenant']
+
 
 authflow = token['authflow']
 if args.authflow:
@@ -193,7 +344,52 @@ def update_tokens(r):
         token['refresh_token'] = r['refresh_token']
     writetokenfile()
     if args.verbose:
+        print()
         print(f'NOTICE: Obtained new access token, expires {token["access_token_expiration"]}.')
+        print()
+
+def osc52_copy(text: str):
+    """
+    Copies a string to the system clipboard using the OSC52 escape sequence.
+    """
+    text_bytes = text.encode('utf-8')
+    b64_bytes = base64.b64encode(text_bytes)
+    b64_string = b64_bytes.decode('utf-8')
+
+    # The OSC52 sequence
+    sys.stdout.write(f"\033]52;c;{b64_string}\007")
+    sys.stdout.flush()
+
+def open_url(url: str):
+    """
+    Opens a URL in the system's default browser.
+    Works on macOS, Linux, and Windows.
+    """
+    try:
+        # new=2 opens the URL in a new tab, if possible
+        success = webbrowser.open(url, new=2)
+
+        if not success:
+            print(f"Failed to open browser for: {url}", file=sys.stderr)
+            return False
+        return True
+
+    except Exception as e:
+        print(f"An error occurred: {e}", file=sys.stderr)
+        return False
+
+def extract_auth_code(s: str):
+    """
+    returns the auth code from a URI the string itself
+    """
+    if s.startswith("http"):
+        decoded_s = urllib.parse.unquote(s)
+        parsed_url = urllib.parse.urlparse(decoded_s)
+        query_params = urllib.parse.parse_qs(parsed_url.query)
+        code = query_params.get('code')
+        if code:
+            return code[0]  # Return the first instance of 'code'
+    return s
 
 
 if args.authorize:
@@ -204,6 +400,8 @@ if args.authorize:
         verifier = secrets.token_urlsafe(90)
         challenge = base64.urlsafe_b64encode(hashlib.sha256(verifier.encode()).digest())[:-1]
         redirect_uri = registration['redirect_uri']
+        if 'redirect_uri' in token: # Override if user specified
+            redirect_uri = token['redirect_uri']
         listen_port = 0
         if authflow == 'localhostauthcode':
             # Find an available port to listen on
@@ -212,23 +410,33 @@ if args.authorize:
             listen_port = s.getsockname()[1]
             s.close()
             redirect_uri = 'http://localhost:'+str(listen_port)+'/'
-            # Probably should edit the port number into the actual redirect URL.
+            # Probably should edit the port number into the actual redirect URI.
 
         p.update({'login_hint': token['email'],
                   'response_type': 'code',
                   'redirect_uri': redirect_uri,
                   'code_challenge': challenge,
                   'code_challenge_method': 'S256'})
-        print(registration["authorize_endpoint"] + '?' +
-              urllib.parse.urlencode(p, quote_via=urllib.parse.quote))
+
+        authorize_uri = registration["authorize_endpoint"] + '?' + \
+              urllib.parse.urlencode(p, quote_via=urllib.parse.quote)
+        open_url(authorize_uri)
+        print()
+        print("If your browser didn't open, visit the following URL (Ctrl-click in some terminals) to authenticate and authorize.")
+        print()
+        print('  '+authorize_uri)
+        print()
 
         authcode = ''
         if authflow == 'authcode':
-            authcode = input('Visit displayed URL to retrieve authorization code. Enter '
-                             'code from server (might be in browser address bar): ')
+            print("NOTE: This will likely end with 'This site can’t be reached'.  That's good!")
+            print("      Copy the URL from the address bar and paste it below.")
+            print()
+            user_input = input('URL (from address bar) or code > ')
+            authcode = extract_auth_code(user_input)
         else:
-            print('Visit displayed URL to authorize this application. Waiting...',
-                  end='', flush=True)
+            print("Starting a tiny web server to receive the authorization code...")
+            print()
 
             class MyHandler(http.server.BaseHTTPRequestHandler):
                 '''Handles the browser query resulting from redirect to redirect_uri.'''
@@ -248,15 +456,61 @@ if args.authorize:
                     querydict = urllib.parse.parse_qs(querystring)
                     if 'code' in querydict:
                         authcode = querydict['code'][0]
-                    self.do_HEAD()
-                    self.wfile.write(b'<html><head><title>Authorization result</title></head>')
-                    self.wfile.write(b'<body><p>Authorization redirect completed. You may '
-                                     b'close this window.</p></body></html>')
+                        self.do_HEAD()
+                        self.wfile.write(b'<html>')
+                        self.wfile.write(b'<head>')
+                        self.wfile.write(b'<title>mutt_oauth2</title>')
+                        self.wfile.write(b'<style>')
+                        self.wfile.write(b'  body {')
+                        self.wfile.write(b'    max-width: 100%;')
+                        self.wfile.write(b'    margin: 30px;')
+                        self.wfile.write(b'  }')
+                        self.wfile.write(b'</style>')
+                        self.wfile.write(b'</head>')
+                        self.wfile.write(b'<body>')
+                        self.wfile.write(b'<img src="https://neomutt.org/images/mutt-48x48.png">')
+                        self.wfile.write(b'<h1>Success!!</h1>')
+                        self.wfile.write(b'<p>mutt_oauth2.py has received the following authorization code from the provider.</p>')
+                        self.wfile.write(b'<textarea cols=80 rows=20>'+authcode.encode('utf-8')+b'</textarea>')
+                        self.wfile.write(b'<p>You may close this window.</p>')
+                        self.wfile.write(b'</body></html>')
+                    else:
+                        self.do_HEAD()
+                        self.wfile.write(b'<html>')
+                        self.wfile.write(b'<head>')
+                        self.wfile.write(b'<title>mutt_oauth2</title>')
+                        self.wfile.write(b'<style>')
+                        self.wfile.write(b'  body {')
+                        self.wfile.write(b'    max-width: 100%;')
+                        self.wfile.write(b'    margin: 30px;')
+                        self.wfile.write(b'  }')
+                        self.wfile.write(b'</style>')
+                        self.wfile.write(b'</head>')
+                        self.wfile.write(b'<body>')
+                        self.wfile.write(b'<img src="https://neomutt.org/images/mutt-48x48.png">')
+                        self.wfile.write(b'<h1>Error</h1>')
+                        self.wfile.write(b'<p>mutt_oauth2.py received the following from the provider.</p>')
+                        self.wfile.write(b'<dl>')
+                        for key in querydict.keys():
+                            values = querydict[key]
+                            self.wfile.write(b'<dt>'+key.encode("utf-8")+b'</dt>')
+                            self.wfile.write(b'<dd>')
+                            for v in values:
+                                self.wfile.write(v.encode('utf-8')+b'<br>')
+                            self.wfile.write(b'</dd>')
+                        self.wfile.write(b'</dl>')
+                        self.wfile.write(b'</body>')
+                        self.wfile.write(b'</html>')
+
+                        #http://localhost:60041/?error=invalid_request&error_description=The%20request%20is%20not%20valid%20for%20the%20application%27s%20%27userAudience%27%20configuration.%20In%20order%20to%20use%20/common/%20endpoint%2c%20the%20application%20must%20not%20be%20configured%20with%20%27Consumer%27%20as%20the%20user%20audience.%20The%20userAudience%20should%20be%20configured%20with%20%27All%27%20to%20use%20/common/%20endpoint.&sermeta=0x80049DCF%7c0x0%7cm
+
             with http.server.HTTPServer(('127.0.0.1', listen_port), MyHandler) as httpd:
                 try:
                     httpd.handle_request()
                 except KeyboardInterrupt:
                     pass
+
+        print()
 
         if not authcode:
             sys.exit('Did not obtain an authcode.')
@@ -300,6 +554,12 @@ if args.authorize:
             if 'error_description' in response:
                 print(response['error_description'])
             sys.exit(1)
+
+        print("Copying user_code ("+response['user_code']+") to the clipboard via OSC52")
+        osc52_copy(response['user_code'])
+
+        open_url(response['verification_uri'])
+
         print(response['message'])
         del p['scope']
         p.update({'grant_type': 'urn:ietf:params:oauth:grant-type:device_code',
