@@ -131,11 +131,14 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *m
     goto bail;
   }
 
-  if (mutt_b64_decode(adata->buf + 2, obuf->data, obuf->dsize) == -1)
+  int dlen = mutt_b64_decode(adata->buf + 2, obuf->data, obuf->dsize - 1);
+  if (dlen == -1)
   {
     mutt_debug(LL_DEBUG1, "Error decoding base64 response\n");
     goto bail;
   }
+  obuf->data[dlen] = '\0';
+  buf_fix_dptr(obuf);
 
   mutt_debug(LL_DEBUG2, "CRAM challenge: %s\n", buf_string(obuf));
 
