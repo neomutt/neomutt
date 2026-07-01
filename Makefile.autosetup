@@ -704,7 +704,8 @@ $(PWD)/mh:
 ###############################################################################
 # libmlist
 LIBMLIST=	libmlist.a
-LIBMLISTOBJS=	mlist/dlg_mlist.o mlist/functions.o mlist/module.o
+LIBMLISTOBJS=	mlist/config.o mlist/dlg_mlist.o mlist/expando.o \
+		mlist/functions.o mlist/module.o
 CLEANFILES+=	$(LIBMLIST) $(LIBMLISTOBJS)
 ALLOBJS+=	$(LIBMLISTOBJS)
 
