@@ -13690,15 +13690,51 @@ sendmailcmd = neomutt -C -H - &amp;&amp; true
             <tbody>
               <row>
                 <entry>compose</entry>
-                <entry><literal>&lt;preview-page-down&gt;</literal></entry>
+                <entry><literal>&lt;preview-scroll-half-down&gt;</literal></entry>
+                <entry>scroll down half a page</entry>
+                <entry></entry>
+              </row>
+              <row>
+                <entry>compose</entry>
+                <entry><literal>&lt;preview-scroll-half-up&gt;</literal></entry>
+                <entry>scroll up half a page</entry>
+                <entry></entry>
+              </row>
+              <row>
+                <entry>compose</entry>
+                <entry><literal>&lt;preview-scroll-line-down&gt;</literal></entry>
+                <entry>scroll down one line</entry>
+                <entry></entry>
+              </row>
+              <row>
+                <entry>compose</entry>
+                <entry><literal>&lt;preview-scroll-line-up&gt;</literal></entry>
+                <entry>scroll up one line</entry>
+                <entry></entry>
+              </row>
+              <row>
+                <entry>compose</entry>
+                <entry><literal>&lt;preview-scroll-page-down&gt;</literal></entry>
                 <entry>show the next page of the message</entry>
                 <entry><literal>&lt;PageDown&gt;</literal></entry>
               </row>
               <row>
                 <entry>compose</entry>
-                <entry><literal>&lt;preview-page-up&gt;</literal></entry>
+                <entry><literal>&lt;preview-scroll-page-up&gt;</literal></entry>
                 <entry>show the previous page of the message</entry>
                 <entry><literal>&lt;PageUp&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>compose</entry>
+                <entry><literal>&lt;preview-select-first-entry&gt;</literal></entry>
+                <entry>move to the first entry</entry>
+                <entry></entry>
+              </row>
+              <row>
+                <entry>compose</entry>
+                <entry><literal>&lt;preview-select-last-entry&gt;</literal></entry>
+                <entry>move to the last entry</entry>
+                <entry></entry>
               </row>
             </tbody>
           </tgroup>

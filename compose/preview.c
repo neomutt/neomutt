@@ -381,9 +381,9 @@ struct MuttWindow *preview_window_new(struct Email *e, struct MuttWindow *bar)
 }
 
 /**
- * preview_page_up - Show the previous page of the message - Implements ::preview_function_t - @ingroup preview_function_api
+ * preview_scroll_page_up - Show the previous page of the message - Implements ::preview_function_t - @ingroup preview_function_api
  */
-static int preview_page_up(struct PreviewWindowData *wdata, const struct KeyEvent *event)
+static int preview_scroll_page_up(struct PreviewWindowData *wdata, const struct KeyEvent *event)
 {
   if (wdata->scroll_offset <= 0)
   {
@@ -403,9 +403,10 @@ static int preview_page_up(struct PreviewWindowData *wdata, const struct KeyEven
 }
 
 /**
- * preview_page_down - Show the next page of the message - Implements ::preview_function_t - @ingroup preview_function_api
+ * preview_scroll_page_down - Show the next page of the message - Implements ::preview_function_t - @ingroup preview_function_api
  */
-static int preview_page_down(struct PreviewWindowData *wdata, const struct KeyEvent *event)
+static int preview_scroll_page_down(struct PreviewWindowData *wdata,
+                                    const struct KeyEvent *event)
 {
   if (!wdata->more_content)
   {
@@ -423,12 +424,141 @@ static int preview_page_down(struct PreviewWindowData *wdata, const struct KeyEv
 }
 
 /**
+ * preview_scroll_half_up - Scroll up half a page - Implements ::preview_function_t - @ingroup preview_function_api
+ */
+static int preview_scroll_half_up(struct PreviewWindowData *wdata, const struct KeyEvent *event)
+{
+  if (wdata->scroll_offset <= 0)
+  {
+    if (event->count == 0)
+      mutt_message(_("Top of message is shown"));
+    return FR_NO_ACTION;
+  }
+
+  const int count = MAX(event->count, 1);
+  const int half = MAX(wdata->win->state.rows / 2, 1);
+  wdata->scroll_offset -= count * half;
+  if (wdata->scroll_offset < 0)
+    wdata->scroll_offset = 0;
+  draw_preview(wdata->win, wdata);
+
+  return FR_SUCCESS;
+}
+
+/**
+ * preview_scroll_half_down - Scroll down half a page - Implements ::preview_function_t - @ingroup preview_function_api
+ */
+static int preview_scroll_half_down(struct PreviewWindowData *wdata,
+                                    const struct KeyEvent *event)
+{
+  if (!wdata->more_content)
+  {
+    if (event->count == 0)
+      mutt_message(_("Bottom of message is shown"));
+    return FR_NO_ACTION;
+  }
+
+  const int count = MAX(event->count, 1);
+  const int half = MAX(wdata->win->state.rows / 2, 1);
+  wdata->scroll_offset += count * half;
+  draw_preview(wdata->win, wdata);
+
+  return FR_SUCCESS;
+}
+
+/**
+ * preview_scroll_line_up - Scroll up one line - Implements ::preview_function_t - @ingroup preview_function_api
+ */
+static int preview_scroll_line_up(struct PreviewWindowData *wdata, const struct KeyEvent *event)
+{
+  if (wdata->scroll_offset <= 0)
+  {
+    if (event->count == 0)
+      mutt_message(_("Top of message is shown"));
+    return FR_NO_ACTION;
+  }
+
+  const int count = MAX(event->count, 1);
+  wdata->scroll_offset -= count;
+  if (wdata->scroll_offset < 0)
+    wdata->scroll_offset = 0;
+  draw_preview(wdata->win, wdata);
+
+  return FR_SUCCESS;
+}
+
+/**
+ * preview_scroll_line_down - Scroll down one line - Implements ::preview_function_t - @ingroup preview_function_api
+ */
+static int preview_scroll_line_down(struct PreviewWindowData *wdata,
+                                    const struct KeyEvent *event)
+{
+  if (!wdata->more_content)
+  {
+    if (event->count == 0)
+      mutt_message(_("Bottom of message is shown"));
+    return FR_NO_ACTION;
+  }
+
+  const int count = MAX(event->count, 1);
+  wdata->scroll_offset += count;
+  draw_preview(wdata->win, wdata);
+
+  return FR_SUCCESS;
+}
+
+/**
+ * preview_select_first_entry - Move to the first entry - Implements ::preview_function_t - @ingroup preview_function_api
+ */
+static int preview_select_first_entry(struct PreviewWindowData *wdata,
+                                      const struct KeyEvent *event)
+{
+  if (wdata->scroll_offset <= 0)
+  {
+    if (event->count == 0)
+      mutt_message(_("Top of message is shown"));
+    return FR_NO_ACTION;
+  }
+
+  wdata->scroll_offset = 0;
+  draw_preview(wdata->win, wdata);
+
+  return FR_SUCCESS;
+}
+
+/**
+ * preview_select_last_entry - Move to the last entry - Implements ::preview_function_t - @ingroup preview_function_api
+ */
+static int preview_select_last_entry(struct PreviewWindowData *wdata,
+                                     const struct KeyEvent *event)
+{
+  if (!wdata->more_content)
+  {
+    if (event->count == 0)
+      mutt_message(_("Bottom of message is shown"));
+    return FR_NO_ACTION;
+  }
+
+  // draw_preview() clamps the offset to the last visible page
+  wdata->scroll_offset = wdata->content_lines;
+  draw_preview(wdata->win, wdata);
+
+  return FR_SUCCESS;
+}
+
+/**
  * PreviewFunctions - All the functions that the preview window supports
  */
 static const struct PreviewFunction PreviewFunctions[] = {
   // clang-format off
-  { OP_PREVIEW_PAGE_DOWN, preview_page_down },
-  { OP_PREVIEW_PAGE_UP,   preview_page_up   },
+  { OP_PREVIEW_SCROLL_HALF_DOWN,     preview_scroll_half_down   },
+  { OP_PREVIEW_SCROLL_HALF_UP,       preview_scroll_half_up     },
+  { OP_PREVIEW_SCROLL_LINE_DOWN,     preview_scroll_line_down   },
+  { OP_PREVIEW_SCROLL_LINE_UP,       preview_scroll_line_up     },
+  { OP_PREVIEW_SCROLL_PAGE_DOWN,     preview_scroll_page_down   },
+  { OP_PREVIEW_SCROLL_PAGE_UP,       preview_scroll_page_up     },
+  { OP_PREVIEW_SELECT_FIRST_ENTRY,   preview_select_first_entry },
+  { OP_PREVIEW_SELECT_LAST_ENTRY,    preview_select_last_entry  },
   { 0, NULL },
   // clang-format on
 };

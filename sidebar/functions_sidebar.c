@@ -435,7 +435,8 @@ int op_sidebar_first(struct SidebarFunctionData *fdata, const struct KeyEvent *e
 /**
  * op_sidebar_select_entry_by_number - Jump to a specific mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
-static int op_sidebar_select_entry_by_number(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
+static int op_sidebar_select_entry_by_number(struct SidebarFunctionData *fdata,
+                                             const struct KeyEvent *event)
 {
   struct SidebarWindowData *wdata = fdata->wdata;
   if (!mutt_window_is_visible(wdata->win))
