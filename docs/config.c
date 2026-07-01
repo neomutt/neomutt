@@ -2253,6 +2253,8 @@
 ** .dt \fC%m\fP      .dd \fC%{message-count}\fP       .dd Total number of message in the mailbox
 ** .dt \fC%N\fP      .dd \fC%{score}\fP               .dd Message score
 ** .dt \fC%n\fP      .dd \fC%{name}\fP                .dd Author's real name (or address if missing)
+** .dt              .dd \fC%{relative-number}\fP      .dd Vim-style relative number: the current line shows its 1-based line number
+** .dt              .dd                               .dd and other lines show their absolute distance from the current selection
 ** .dt \fC%O\fP      .dd \fC%{save-folder}\fP         .dd Original save folder where NeoMutt would formerly have Stashed the message:
 ** .dt               .dd                              .dd list name or recipient name if not sent to a list
 ** .dt \fC%P\fP      .dd \fC%{percentage}\fP          .dd Progress indicator for the built-in pager (how much of the file has been displayed)
