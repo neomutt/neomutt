@@ -565,7 +565,8 @@ void mw_what_key(void)
       continue;
     }
 
-    msgwin_clear_text(win);
+    // Clear the text without hiding the Window
+    msgwin_set_text(win, NULL, MT_COLOR_NORMAL);
 
     buf_reset(key);
     keymap_get_name(ch, key);
