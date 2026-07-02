@@ -257,6 +257,8 @@ time_t mutt_date_make_time(struct tm *t, bool local)
 
   if ((t->tm_mday < 1) || (t->tm_mday > 31))
     return TIME_T_MIN;
+  if ((t->tm_mon < 0) || (t->tm_mon > 11))
+    return TIME_T_MIN;
   if ((t->tm_hour < 0) || (t->tm_hour > 23) || (t->tm_min < 0) ||
       (t->tm_min > 59) || (t->tm_sec < 0) || (t->tm_sec > 60))
   {
