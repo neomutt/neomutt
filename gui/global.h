@@ -46,7 +46,7 @@ typedef int (*global_function_t)(struct MuttWindow *win, const struct KeyEvent *
  */
 struct GlobalFunction
 {
-  int op;                     ///< Op code, e.g. OP_ENTER_COMMAND
+  int op;                     ///< Op code, e.g. OP_RUN_COMMAND
   global_function_t function; ///< Function to call
 };
 

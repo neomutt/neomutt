@@ -49,34 +49,39 @@
  * OpEditor - Functions for the Editor Menu
  */
 static const struct MenuFuncOp OpEditor[] = { /* map: editor */
-  { "backspace",                     OP_EDITOR_BACKSPACE },
-  { "backward-char",                 OP_EDITOR_BACKWARD_CHAR },
-  { "backward-word",                 OP_EDITOR_BACKWARD_WORD },
-  { "bol",                           OP_EDITOR_BOL },
-  { "capitalize-word",               OP_EDITOR_CAPITALIZE_WORD },
-  { "complete",                      OP_EDITOR_COMPLETE },
-  { "complete-query",                OP_EDITOR_COMPLETE_QUERY },
-  { "delete-char",                   OP_EDITOR_DELETE_CHAR },
-  { "downcase-word",                 OP_EDITOR_DOWNCASE_WORD },
-  { "eol",                           OP_EDITOR_EOL },
-  { "forward-char",                  OP_EDITOR_FORWARD_CHAR },
-  { "forward-word",                  OP_EDITOR_FORWARD_WORD },
-  { "help",                          OP_HELP },
-  { "history-down",                  OP_EDITOR_HISTORY_DOWN },
-  { "history-search",                OP_EDITOR_HISTORY_SEARCH },
-  { "history-up",                    OP_EDITOR_HISTORY_UP },
-  { "kill-eol",                      OP_EDITOR_KILL_EOL },
-  { "kill-eow",                      OP_EDITOR_KILL_EOW },
-  { "kill-line",                     OP_EDITOR_KILL_LINE },
-  { "kill-whole-line",               OP_EDITOR_KILL_WHOLE_LINE },
-  { "kill-word",                     OP_EDITOR_KILL_WORD },
-  { "mailbox-cycle",                 OP_EDITOR_MAILBOX_CYCLE },
-  { "quote-char",                    OP_EDITOR_QUOTE_CHAR },
-  { "redraw-screen",                 OP_REDRAW },
-  { "transpose-chars",               OP_EDITOR_TRANSPOSE_CHARS },
-  { "upcase-word",                   OP_EDITOR_UPCASE_WORD },
+  { "backspace",                       OP_EDITOR_BACKSPACE },
+  { "backward-char",                   OP_EDITOR_BACKWARD_CHAR },
+  { "backward-word",                   OP_EDITOR_BACKWARD_WORD },
+  { "bol",                             OP_EDITOR_BOL },
+  { "capitalize-word",                 OP_EDITOR_CAPITALIZE_WORD },
+  { "complete",                        OP_EDITOR_COMPLETE },
+  { "complete-mailbox",                OP_EDITOR_COMPLETE_MAILBOX },
+  { "complete-query",                  OP_EDITOR_COMPLETE_QUERY },
+  { "delete-char",                     OP_EDITOR_DELETE_CHAR },
+  { "downcase-word",                   OP_EDITOR_DOWNCASE_WORD },
+  { "eol",                             OP_EDITOR_EOL },
+  { "forward-char",                    OP_EDITOR_FORWARD_CHAR },
+  { "forward-word",                    OP_EDITOR_FORWARD_WORD },
+  { "history-search",                  OP_HISTORY_SEARCH },
+  { "history-select-next-entry",       OP_HISTORY_SELECT_NEXT_ENTRY },
+  { "history-select-previous-entry",   OP_HISTORY_SELECT_PREVIOUS_ENTRY },
+  { "kill-eol",                        OP_EDITOR_KILL_EOL },
+  { "kill-eow",                        OP_EDITOR_KILL_EOW },
+  { "kill-line",                       OP_EDITOR_KILL_LINE },
+  { "kill-whole-line",                 OP_EDITOR_KILL_WHOLE_LINE },
+  { "kill-word",                       OP_EDITOR_KILL_WORD },
+  { "quote-char",                      OP_EDITOR_QUOTE_CHAR },
+  { "redraw-screen",                   OP_REDRAW_SCREEN },
+  { "show-help",                       OP_DISPLAY_HELP },
+  { "transpose-chars",                 OP_EDITOR_TRANSPOSE_CHARS },
+  { "upcase-word",                     OP_EDITOR_UPCASE_WORD },
+
   // Deprecated
-  { "buffy-cycle",                   OP_EDITOR_MAILBOX_CYCLE, MFF_DEPRECATED },
+  { "buffy-cycle",                     OP_EDITOR_COMPLETE_MAILBOX,        MFF_DEPRECATED },
+  { "help",                            OP_DISPLAY_HELP,                   MFF_DEPRECATED },
+  { "history-down",                    OP_HISTORY_SELECT_NEXT_ENTRY,      MFF_DEPRECATED },
+  { "history-up",                      OP_HISTORY_SELECT_PREVIOUS_ENTRY,  MFF_DEPRECATED },
+  { "mailbox-cycle",                   OP_EDITOR_COMPLETE_MAILBOX,        MFF_DEPRECATED },
   { NULL, 0 },
 };
 
@@ -84,6 +89,7 @@ static const struct MenuFuncOp OpEditor[] = { /* map: editor */
  * EditorDefaultBindings - Key bindings for the Editor Menu
  */
 static const struct MenuOpSeq EditorDefaultBindings[] = { /* map: editor */
+  { OP_EDITOR_COMPLETE_MAILBOX,            " " },              // <Space>
   { OP_EDITOR_BACKSPACE,                   "<backspace>" },
   { OP_EDITOR_BACKSPACE,                   "\010" },           // <Ctrl-H>
   { OP_EDITOR_BACKSPACE,                   "\177" },           // <Backspace>
@@ -103,20 +109,19 @@ static const struct MenuOpSeq EditorDefaultBindings[] = { /* map: editor */
   { OP_EDITOR_FORWARD_CHAR,                "<right>" },
   { OP_EDITOR_FORWARD_CHAR,                "\006" },           // <Ctrl-F>
   { OP_EDITOR_FORWARD_WORD,                "\033f" },          // <Alt-f>
-  { OP_EDITOR_HISTORY_DOWN,                "<down>" },
-  { OP_EDITOR_HISTORY_DOWN,                "\016" },           // <Ctrl-N>
-  { OP_EDITOR_HISTORY_SEARCH,              "\022" },           // <Ctrl-R>
-  { OP_EDITOR_HISTORY_UP,                  "<up>" },
-  { OP_EDITOR_HISTORY_UP,                  "\020" },           // <Ctrl-P>
+  { OP_HISTORY_SEARCH,                     "\022" },           // <Ctrl-R>
   { OP_EDITOR_KILL_EOL,                    "\013" },           // <Ctrl-K>
   { OP_EDITOR_KILL_EOW,                    "\033d" },          // <Alt-d>
   { OP_EDITOR_KILL_LINE,                   "\025" },           // <Ctrl-U>
   { OP_EDITOR_KILL_WORD,                   "\027" },           // <Ctrl-W>
-  { OP_EDITOR_MAILBOX_CYCLE,               " " },              // <Space>
   { OP_EDITOR_QUOTE_CHAR,                  "\026" },           // <Ctrl-V>
   { OP_EDITOR_UPCASE_WORD,                 "\033u" },          // <Alt-u>
-  { OP_HELP,                               "\033?" },          // <Alt-?>
-  { OP_REDRAW,                             "\014" },           // <Ctrl-L>
+  { OP_HISTORY_SELECT_NEXT_ENTRY,          "<down>" },
+  { OP_HISTORY_SELECT_NEXT_ENTRY,          "\016" },           // <Ctrl-N>
+  { OP_HISTORY_SELECT_PREVIOUS_ENTRY,      "<up>" },
+  { OP_HISTORY_SELECT_PREVIOUS_ENTRY,      "\020" },           // <Ctrl-P>
+  { OP_REDRAW_SCREEN,                      "\014" },           // <Ctrl-L>
+  { OP_DISPLAY_HELP,                       "\033?" },          // <Alt-?>
   { 0, NULL },
 };
 // clang-format on
@@ -186,8 +191,8 @@ void replace_part(struct EnterState *es, size_t from, const char *buf)
  *
  * This function handles:
  * - OP_EDITOR_COMPLETE
+ * - OP_EDITOR_COMPLETE_MAILBOX
  * - OP_EDITOR_COMPLETE_QUERY
- * - OP_EDITOR_MAILBOX_CYCLE
  */
 static int op_editor_complete(struct EnterFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -212,9 +217,10 @@ static int op_editor_complete(struct EnterFunctionData *fdata, const struct KeyE
 // -----------------------------------------------------------------------------
 
 /**
- * op_editor_history_down - Scroll down through the history list - Implements ::enter_function_t - @ingroup enter_function_api
+ * op_history_select_next_entry - Scroll down through the history list - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_editor_history_down(struct EnterFunctionData *fdata, const struct KeyEvent *event)
+static int op_history_select_next_entry(struct EnterFunctionData *fdata,
+                                        const struct KeyEvent *event)
 {
   struct EnterWindowData *wdata = fdata->wdata;
   if (wdata->hclass == HC_NONE)
@@ -232,10 +238,9 @@ static int op_editor_history_down(struct EnterFunctionData *fdata, const struct 
 }
 
 /**
- * op_editor_history_search - Search through the history list - Implements ::enter_function_t - @ingroup enter_function_api
+ * op_history_search - Search through the history list - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_editor_history_search(struct EnterFunctionData *fdata,
-                                    const struct KeyEvent *event)
+static int op_history_search(struct EnterFunctionData *fdata, const struct KeyEvent *event)
 {
   struct EnterWindowData *wdata = fdata->wdata;
   if (wdata->hclass == HC_NONE)
@@ -249,9 +254,9 @@ static int op_editor_history_search(struct EnterFunctionData *fdata,
 }
 
 /**
- * op_editor_history_up - Scroll up through the history list - Implements ::enter_function_t - @ingroup enter_function_api
+ * op_history_select_prev - Scroll up through the history list - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_editor_history_up(struct EnterFunctionData *fdata, const struct KeyEvent *event)
+static int op_history_select_prev(struct EnterFunctionData *fdata, const struct KeyEvent *event)
 {
   struct EnterWindowData *wdata = fdata->wdata;
   if (wdata->hclass == HC_NONE)
@@ -471,18 +476,18 @@ static int op_editor_transpose_chars(struct EnterFunctionData *fdata,
 }
 
 /**
- * op_help - Display Help - Implements ::enter_function_t - @ingroup enter_function_api
+ * op_display_help - Display Help - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_help(struct EnterFunctionData *fdata, const struct KeyEvent *event)
+static int op_display_help(struct EnterFunctionData *fdata, const struct KeyEvent *event)
 {
   mutt_help(fdata->mod_data->md_editor);
   return FR_SUCCESS;
 }
 
 /**
- * op_redraw - Redraw the screen - Implements ::enter_function_t - @ingroup enter_function_api
+ * op_redraw_screen - Redraw the screen - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_redraw(struct EnterFunctionData *fdata, const struct KeyEvent *event)
+static int op_redraw_screen(struct EnterFunctionData *fdata, const struct KeyEvent *event)
 {
   mutt_clear_error();
   clearok(stdscr, true);
@@ -499,32 +504,32 @@ static int op_redraw(struct EnterFunctionData *fdata, const struct KeyEvent *eve
  */
 static const struct EnterFunction EnterFunctions[] = {
   // clang-format off
-  { OP_EDITOR_BACKSPACE,          op_editor_backspace },
-  { OP_EDITOR_BACKWARD_CHAR,      op_editor_backward_char },
-  { OP_EDITOR_BACKWARD_WORD,      op_editor_backward_word },
-  { OP_EDITOR_BOL,                op_editor_bol },
-  { OP_EDITOR_CAPITALIZE_WORD,    op_editor_capitalize_word },
-  { OP_EDITOR_COMPLETE,           op_editor_complete },
-  { OP_EDITOR_COMPLETE_QUERY,     op_editor_complete },
-  { OP_EDITOR_DELETE_CHAR,        op_editor_delete_char },
-  { OP_EDITOR_DOWNCASE_WORD,      op_editor_capitalize_word },
-  { OP_EDITOR_EOL,                op_editor_eol },
-  { OP_EDITOR_FORWARD_CHAR,       op_editor_forward_char },
-  { OP_EDITOR_FORWARD_WORD,       op_editor_forward_word },
-  { OP_EDITOR_HISTORY_DOWN,       op_editor_history_down },
-  { OP_EDITOR_HISTORY_SEARCH,     op_editor_history_search },
-  { OP_EDITOR_HISTORY_UP,         op_editor_history_up },
-  { OP_EDITOR_KILL_EOL,           op_editor_kill_eol },
-  { OP_EDITOR_KILL_EOW,           op_editor_kill_eow },
-  { OP_EDITOR_KILL_LINE,          op_editor_kill_line },
-  { OP_EDITOR_KILL_WHOLE_LINE,    op_editor_kill_whole_line },
-  { OP_EDITOR_KILL_WORD,          op_editor_kill_word },
-  { OP_EDITOR_MAILBOX_CYCLE,      op_editor_complete },
-  { OP_EDITOR_QUOTE_CHAR,         op_editor_quote_char },
-  { OP_EDITOR_TRANSPOSE_CHARS,    op_editor_transpose_chars },
-  { OP_EDITOR_UPCASE_WORD,        op_editor_capitalize_word },
-  { OP_HELP,                      op_help },
-  { OP_REDRAW,                    op_redraw },
+  { OP_DISPLAY_HELP,                    op_display_help },
+  { OP_EDITOR_BACKSPACE,                op_editor_backspace },
+  { OP_EDITOR_BACKWARD_CHAR,            op_editor_backward_char },
+  { OP_EDITOR_BACKWARD_WORD,            op_editor_backward_word },
+  { OP_EDITOR_BOL,                      op_editor_bol },
+  { OP_EDITOR_CAPITALIZE_WORD,          op_editor_capitalize_word },
+  { OP_EDITOR_COMPLETE,                 op_editor_complete },
+  { OP_EDITOR_COMPLETE_MAILBOX,         op_editor_complete },
+  { OP_EDITOR_COMPLETE_QUERY,           op_editor_complete },
+  { OP_EDITOR_DELETE_CHAR,              op_editor_delete_char },
+  { OP_EDITOR_DOWNCASE_WORD,            op_editor_capitalize_word },
+  { OP_EDITOR_EOL,                      op_editor_eol },
+  { OP_EDITOR_FORWARD_CHAR,             op_editor_forward_char },
+  { OP_EDITOR_FORWARD_WORD,             op_editor_forward_word },
+  { OP_EDITOR_KILL_EOL,                 op_editor_kill_eol },
+  { OP_EDITOR_KILL_EOW,                 op_editor_kill_eow },
+  { OP_EDITOR_KILL_LINE,                op_editor_kill_line },
+  { OP_EDITOR_KILL_WHOLE_LINE,          op_editor_kill_whole_line },
+  { OP_EDITOR_KILL_WORD,                op_editor_kill_word },
+  { OP_EDITOR_QUOTE_CHAR,               op_editor_quote_char },
+  { OP_EDITOR_TRANSPOSE_CHARS,          op_editor_transpose_chars },
+  { OP_EDITOR_UPCASE_WORD,              op_editor_capitalize_word },
+  { OP_HISTORY_SEARCH,                  op_history_search },
+  { OP_HISTORY_SELECT_NEXT_ENTRY,       op_history_select_next_entry },
+  { OP_HISTORY_SELECT_PREVIOUS_ENTRY,   op_history_select_prev },
+  { OP_REDRAW_SCREEN,                   op_redraw_screen },
   { 0, NULL },
   // clang-format on
 };

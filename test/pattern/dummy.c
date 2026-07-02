@@ -61,22 +61,22 @@ const struct MenuFuncOp OpBrowser[] = {
 };
 
 const struct MenuFuncOp OpIndex[] = {
-  { "help", OP_HELP },
-  { "next-line", OP_NEXT_LINE },
-  { "next-page", OP_NEXT_PAGE },
+  { "help", OP_DISPLAY_HELP },
+  { "next-line", OP_SCROLL_LINE_DOWN },
+  { "next-page", OP_SCROLL_PAGE_DOWN },
   { "next-undeleted", OP_MAIN_NEXT_UNDELETED },
-  { "previous-line", OP_PREV_LINE },
+  { "previous-line", OP_SCROLL_LINE_UP },
   { "previous-unread", OP_MAIN_PREV_UNREAD },
   { "sidebar-toggle-visible", OP_SIDEBAR_TOGGLE_VISIBLE },
   { NULL, OP_NULL },
 };
 
 const struct MenuFuncOp OpPager[] = {
-  { "help", OP_HELP },
-  { "next-line", OP_NEXT_LINE },
-  { "next-page", OP_NEXT_PAGE },
+  { "help", OP_DISPLAY_HELP },
+  { "next-line", OP_SCROLL_LINE_DOWN },
+  { "next-page", OP_SCROLL_PAGE_DOWN },
   { "next-undeleted", OP_MAIN_NEXT_UNDELETED },
-  { "previous-line", OP_PREV_LINE },
+  { "previous-line", OP_SCROLL_LINE_UP },
   { "sidebar-toggle-visible", OP_SIDEBAR_TOGGLE_VISIBLE },
   { NULL, OP_NULL },
 };

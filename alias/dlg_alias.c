@@ -104,8 +104,8 @@ static const struct Mapping AliasHelp[] = {
   { N_("Undel"),    OP_UNDELETE },
   { N_("Sort"),     OP_SORT },
   { N_("Rev-Sort"), OP_SORT_REVERSE },
-  { N_("Select"),   OP_GENERIC_SELECT_ENTRY },
-  { N_("Help"),     OP_HELP },
+  { N_("Select"),   OP_ACTIVATE_ENTRY },
+  { N_("Help"),     OP_DISPLAY_HELP },
   { NULL, 0 },
   // clang-format on
 };

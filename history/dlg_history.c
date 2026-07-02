@@ -75,9 +75,9 @@
 static const struct Mapping HistoryHelp[] = {
   // clang-format off
   { N_("Exit"),   OP_EXIT },
-  { N_("Select"), OP_GENERIC_SELECT_ENTRY },
-  { N_("Search"), OP_SEARCH },
-  { N_("Help"),   OP_HELP },
+  { N_("Select"), OP_ACTIVATE_ENTRY },
+  { N_("Search"), OP_SEARCH_FORWARD },
+  { N_("Help"),   OP_DISPLAY_HELP },
   { NULL, 0 },
   // clang-format on
 };

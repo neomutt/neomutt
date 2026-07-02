@@ -41,12 +41,12 @@
  * OpFuzzy - Functions for the Fuzzy Window
  */
 static const struct MenuFuncOp OpFuzzy[] = { /* map: fuzzy */
-  { "first-entry",                   OP_FIRST_ENTRY },
-  { "last-entry",                    OP_LAST_ENTRY },
-  { "next-entry",                    OP_NEXT_ENTRY },
-  { "next-page",                     OP_NEXT_PAGE },
-  { "previous-entry",                OP_PREV_ENTRY },
-  { "previous-page",                 OP_PREV_PAGE },
+  { "first-entry",                   OP_SELECT_FIRST_ENTRY },
+  { "last-entry",                    OP_SELECT_LAST_ENTRY },
+  { "next-entry",                    OP_SELECT_NEXT_ENTRY },
+  { "next-page",                     OP_SCROLL_PAGE_DOWN },
+  { "previous-entry",                OP_SELECT_PREVIOUS_ENTRY },
+  { "previous-page",                 OP_SCROLL_PAGE_UP },
   { NULL, 0 },
 };
 
@@ -54,12 +54,12 @@ static const struct MenuFuncOp OpFuzzy[] = { /* map: fuzzy */
  * FuzzyDefaultBindings - Key bindings for the Fuzzy Window
  */
 const struct MenuOpSeq FuzzyDefaultBindings[] = { /* map: fuzzy */
-  { OP_FIRST_ENTRY,                        "<home>" },
-  { OP_LAST_ENTRY,                         "<end>" },
-  { OP_NEXT_ENTRY,                         "<down>" },
-  { OP_NEXT_PAGE,                          "<pagedown>" },
-  { OP_PREV_ENTRY,                         "<up>" },
-  { OP_PREV_PAGE,                          "<pageup>" },
+  { OP_SCROLL_PAGE_DOWN,               "<pagedown>" },
+  { OP_SCROLL_PAGE_UP,                 "<pageup>" },
+  { OP_SELECT_FIRST_ENTRY,             "<home>" },
+  { OP_SELECT_LAST_ENTRY,              "<end>" },
+  { OP_SELECT_NEXT_ENTRY,              "<down>" },
+  { OP_SELECT_PREVIOUS_ENTRY,          "<up>" },
   { 0, NULL },
 };
 // clang-format on

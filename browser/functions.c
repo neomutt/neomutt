@@ -913,13 +913,13 @@ static int op_jump(struct BrowserPrivateData *priv, const struct KeyEvent *event
 }
 
 /**
- * op_generic_select_entry - Select the current entry - Implements ::browser_function_t - @ingroup browser_function_api
+ * op_activate_entry - Select the current entry - Implements ::browser_function_t - @ingroup browser_function_api
  *
  * This function handles:
+ * - OP_ACTIVATE_ENTRY
  * - OP_DESCEND_DIRECTORY
- * - OP_GENERIC_SELECT_ENTRY
  */
-static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct KeyEvent *event)
+static int op_activate_entry(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   if (event->count > 0)
     return op_jump(priv, event);
@@ -934,7 +934,7 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct
   const int op = event->op;
   int index = menu_get_index(priv->menu);
   struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
-  if ((priv->menu->tag_prefix) && (op == OP_GENERIC_SELECT_ENTRY))
+  if ((priv->menu->tag_prefix) && (op == OP_ACTIVATE_ENTRY))
   {
     // Do nothing
   }
@@ -1401,6 +1401,7 @@ static int op_toggle_mailboxes(struct BrowserPrivateData *priv, const struct Key
  */
 static const struct BrowserFunction BrowserFunctions[] = {
   // clang-format off
+  { OP_ACTIVATE_ENTRY,       op_activate_entry },
   { OP_BROWSER_GOTO_FOLDER,  op_toggle_mailboxes },
   { OP_BROWSER_NEW_FILE,     op_browser_new_file },
   { OP_BROWSER_SUBSCRIBE,    op_browser_subscribe },
@@ -1413,10 +1414,9 @@ static const struct BrowserFunction BrowserFunctions[] = {
   { OP_CHECK_NEW,            op_toggle_mailboxes },
   { OP_CREATE_MAILBOX,       op_create_mailbox },
   { OP_DELETE_MAILBOX,       op_delete_mailbox },
-  { OP_DESCEND_DIRECTORY,    op_generic_select_entry },
+  { OP_DESCEND_DIRECTORY,    op_activate_entry },
   { OP_ENTER_MASK,           op_enter_mask },
   { OP_EXIT,                 op_quit },
-  { OP_GENERIC_SELECT_ENTRY, op_generic_select_entry },
   { OP_GOTO_PARENT,          op_change_directory },
   { OP_LOAD_ACTIVE,          op_load_active },
   { OP_MAILBOX_LIST,         op_mailbox_list },

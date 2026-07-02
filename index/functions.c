@@ -79,7 +79,8 @@
 #include <libintl.h>
 #endif
 
-static int op_jump(struct IndexFunctionData *fdata, const struct KeyEvent *event);
+static int op_select_entry_by_number(struct IndexFunctionData *fdata,
+                                     const struct KeyEvent *event);
 
 // clang-format off
 /**
@@ -238,6 +239,7 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_DELETE_THREAD,                      "\004" },           // <Ctrl-D>
   { OP_DISPLAY_ADDRESS,                    "@" },
   { OP_DISPLAY_HEADERS,                    "h" },
+  { OP_DISPLAY_LOG,                        "M" },
   { OP_DISPLAY_MESSAGE,                    " " },              // <Space>
   { OP_DISPLAY_MESSAGE,                    "<keypadenter>" },
   { OP_DISPLAY_MESSAGE,                    "\n" },             // <Enter>
@@ -287,9 +289,7 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_MAIN_UNDELETE_PATTERN,              "U" },
   { OP_MAIN_UNTAG_PATTERN,                 "\024" },           // <Ctrl-T>
   { OP_MARK_MSG,                           "~" },
-  { OP_NEXT_ENTRY,                         "J" },
   { OP_PIPE,                               "|" },
-  { OP_PREV_ENTRY,                         "K" },
   { OP_PRINT,                              "p" },
   { OP_QUERY,                              "Q" },
   { OP_QUIT,                               "q" },
@@ -297,7 +297,8 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_REPLY,                              "r" },
   { OP_RESEND,                             "\033e" },          // <Alt-e>
   { OP_SAVE,                               "s" },
-  { OP_SHOW_LOG_MESSAGES,                  "M" },
+  { OP_SELECT_NEXT_ENTRY,                  "J" },
+  { OP_SELECT_PREVIOUS_ENTRY,              "K" },
   { OP_SORT,                               "o" },
   { OP_SORT_REVERSE,                       "O" },
   { OP_TAG_THREAD,                         "\033t" },          // <Alt-t>
@@ -936,9 +937,9 @@ static int op_display_address(struct IndexFunctionData *fdata, const struct KeyE
  * op_display_message - Display a message - Implements ::index_function_t - @ingroup index_function_api
  *
  * This function handles:
+ * - OP_ACTIVATE_ENTRY
  * - OP_DISPLAY_HEADERS
  * - OP_DISPLAY_MESSAGE
- * - OP_GENERIC_SELECT_ENTRY
  */
 static int op_display_message(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -948,7 +949,7 @@ static int op_display_message(struct IndexFunctionData *fdata, const struct KeyE
     return FR_NO_ACTION;
 
   if (event->count > 0)
-    return op_jump(fdata, event);
+    return op_select_entry_by_number(fdata, event);
 
   int op = event->op;
 
@@ -1112,9 +1113,9 @@ static int op_edit_raw_message(struct IndexFunctionData *fdata, const struct Key
 }
 
 /**
- * op_end_cond - End of conditional execution (noop) - Implements ::index_function_t - @ingroup index_function_api
+ * op_apply_to_tagged_end - End of conditional execution (noop) - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_end_cond(struct IndexFunctionData *fdata, const struct KeyEvent *event)
+static int op_apply_to_tagged_end(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
   return FR_SUCCESS;
 }
@@ -1262,9 +1263,9 @@ static int op_group_reply(struct IndexFunctionData *fdata, const struct KeyEvent
 }
 
 /**
- * op_jump - Jump to an index number - Implements ::index_function_t - @ingroup index_function_api
+ * op_select_entry_by_number - Jump to an index number - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_jump(struct IndexFunctionData *fdata, const struct KeyEvent *event)
+static int op_select_entry_by_number(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
@@ -2673,9 +2674,9 @@ static int op_mark_msg(struct IndexFunctionData *fdata, const struct KeyEvent *e
 }
 
 /**
- * op_next_entry - Move to the next entry - Implements ::index_function_t - @ingroup index_function_api
+ * op_select_last_entry - Move to the next entry - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_next_entry(struct IndexFunctionData *fdata, const struct KeyEvent *event)
+static int op_select_last_entry(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
@@ -2720,9 +2721,9 @@ static int op_pipe(struct IndexFunctionData *fdata, const struct KeyEvent *event
 }
 
 /**
- * op_prev_entry - Move to the previous entry - Implements ::index_function_t - @ingroup index_function_api
+ * op_select_previous_entry - Move to the previous entry - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_prev_entry(struct IndexFunctionData *fdata, const struct KeyEvent *event)
+static int op_select_previous_entry(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
@@ -2949,10 +2950,10 @@ static int op_save(struct IndexFunctionData *fdata, const struct KeyEvent *event
  * op_search - Search for a regular expression - Implements ::index_function_t - @ingroup index_function_api
  *
  * This function handles:
- * - OP_SEARCH
+ * - OP_SEARCH_BACKWARD
+ * - OP_SEARCH_FORWARD
  * - OP_SEARCH_NEXT
- * - OP_SEARCH_OPPOSITE
- * - OP_SEARCH_REVERSE
+ * - OP_SEARCH_PREVIOUS
  */
 static int op_search(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -2961,17 +2962,17 @@ static int op_search(struct IndexFunctionData *fdata, const struct KeyEvent *eve
   SearchFlags flags = SEARCH_NONE;
   switch (event->op)
   {
-    case OP_SEARCH:
-      flags |= SEARCH_PROMPT;
-      shared->search_state->reverse = false;
-      break;
-    case OP_SEARCH_REVERSE:
+    case OP_SEARCH_BACKWARD:
       flags |= SEARCH_PROMPT;
       shared->search_state->reverse = true;
       break;
+    case OP_SEARCH_FORWARD:
+      flags |= SEARCH_PROMPT;
+      shared->search_state->reverse = false;
+      break;
     case OP_SEARCH_NEXT:
       break;
-    case OP_SEARCH_OPPOSITE:
+    case OP_SEARCH_PREVIOUS:
       flags |= SEARCH_OPPOSITE;
       break;
   }
@@ -3012,9 +3013,9 @@ static int op_sort(struct IndexFunctionData *fdata, const struct KeyEvent *event
 }
 
 /**
- * op_tag - Tag the current entry - Implements ::index_function_t - @ingroup index_function_api
+ * op_toggle_tag - Tag the current entry - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_tag(struct IndexFunctionData *fdata, const struct KeyEvent *event)
+static int op_toggle_tag(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
@@ -3894,7 +3895,9 @@ static bool prereq(struct IndexSharedData *shared, struct Menu *menu, CheckFlags
  */
 static const struct IndexFunction IndexFunctions[] = {
   // clang-format off
+  { OP_ACTIVATE_ENTRY,                   op_display_message,          CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_ALIAS_DIALOG,                     op_alias_dialog,             CHECK_NONE },
+  { OP_APPLY_TO_TAGGED_END,              op_apply_to_tagged_end,      CHECK_NONE },
   { OP_ATTACH_EDIT_TYPE,                 op_attach_edit_type,         CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_BOUNCE_MESSAGE,                   op_bounce_message,           CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_CATCHUP,                          op_catchup,                  CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY },
@@ -3915,7 +3918,6 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_EDIT_LABEL,                       op_edit_label,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_EDIT_OR_VIEW_RAW_MESSAGE,         op_edit_raw_message,         CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_EDIT_RAW_MESSAGE,                 op_edit_raw_message,         CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
-  { OP_END_COND,                         op_end_cond,                 CHECK_NONE },
   { OP_EXIT,                             op_exit,                     CHECK_NONE },
   { OP_EXTRACT_KEYS,                     op_extract_keys,             CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_FLAG_MESSAGE,                     op_flag_message,             CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
@@ -3925,10 +3927,8 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_GET_CHILDREN,                     op_get_children,             CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_GET_MESSAGE,                      op_get_message,              CHECK_ATTACH | CHECK_IN_MAILBOX },
   { OP_GET_PARENT,                       op_get_message,              CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_GENERIC_SELECT_ENTRY,             op_display_message,          CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_GROUP_CHAT_REPLY,                 op_group_reply,              CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_GROUP_REPLY,                      op_group_reply,              CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_JUMP,                             op_jump,                     CHECK_IN_MAILBOX },
   { OP_LIMIT_CURRENT_THREAD,             op_main_limit,               CHECK_IN_MAILBOX },
   { OP_LIST_ACTION,                      op_list_action,              CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_LIST_REPLY,                       op_list_reply,               CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
@@ -3962,7 +3962,6 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_MAIN_NEXT_UNDELETED,              op_main_next_undeleted,      CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_NEXT_UNREAD,                 op_main_next_new,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_NEXT_UNREAD_MAILBOX,         op_main_next_unread_mailbox, CHECK_IN_MAILBOX },
-  { OP_MAIN_PREV_UNREAD_MAILBOX,         op_main_prev_unread_mailbox, CHECK_IN_MAILBOX },
   { OP_MAIN_OPEN_ALL_THREADS,            op_main_open_all_threads,    CHECK_IN_MAILBOX },
   { OP_MAIN_OPEN_THREAD,                 op_main_open_thread,         CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_PARENT_MESSAGE,              op_main_root_message,        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
@@ -3972,6 +3971,7 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_MAIN_PREV_THREAD,                 op_main_next_thread,         CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_PREV_UNDELETED,              op_main_prev_undeleted,      CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_PREV_UNREAD,                 op_main_next_new,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_MAIN_PREV_UNREAD_MAILBOX,         op_main_prev_unread_mailbox, CHECK_IN_MAILBOX },
   { OP_MAIN_QUASI_DELETE,                op_main_quasi_delete,        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_READ_SUBTHREAD,              op_main_read_thread,         CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_MAIN_READ_THREAD,                 op_main_read_thread,         CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
@@ -3983,10 +3983,8 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_MAIN_UNDELETE_PATTERN,            op_main_undelete_pattern,    CHECK_IN_MAILBOX | CHECK_READONLY },
   { OP_MAIN_UNTAG_PATTERN,               op_main_untag_pattern,       CHECK_IN_MAILBOX },
   { OP_MARK_MSG,                         op_mark_msg,                 CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_NEXT_ENTRY,                       op_next_entry,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_PIPE,                             op_pipe,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_POST,                             op_post,                     CHECK_ATTACH | CHECK_IN_MAILBOX },
-  { OP_PREV_ENTRY,                       op_prev_entry,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_PRINT,                            op_print,                    CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_PURGE_MESSAGE,                    op_delete,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_PURGE_THREAD,                     op_delete_thread,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
@@ -3997,17 +3995,20 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_REPLY,                            op_reply,                    CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_RESEND,                           op_resend,                   CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_SAVE,                             op_save,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_SEARCH,                           op_search,                   CHECK_IN_MAILBOX },
+  { OP_SEARCH_BACKWARD,                  op_search,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_SEARCH_FORWARD,                   op_search,                   CHECK_IN_MAILBOX },
   { OP_SEARCH_NEXT,                      op_search,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_SEARCH_OPPOSITE,                  op_search,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_SEARCH_REVERSE,                   op_search,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_SEARCH_PREVIOUS,                  op_search,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_SELECT_ENTRY_BY_NUMBER,           op_select_entry_by_number,   CHECK_IN_MAILBOX },
+  { OP_SELECT_NEXT_ENTRY,                op_select_last_entry,        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_SELECT_PREVIOUS_ENTRY,            op_select_previous_entry,    CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_SORT,                             op_sort,                     CHECK_NONE },
   { OP_SORT_REVERSE,                     op_sort,                     CHECK_NONE },
-  { OP_TAG,                              op_tag,                      CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_TAG_SUBTHREAD,                    op_tag_thread,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_TAG_THREAD,                       op_tag_thread,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_TOGGLE_NEW,                       op_toggle_new,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_TOGGLE_READ,                      op_main_limit,               CHECK_IN_MAILBOX },
+  { OP_TOGGLE_TAG,                       op_toggle_tag,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_TOGGLE_WRITE,                     op_toggle_write,             CHECK_IN_MAILBOX },
   { OP_UNDELETE,                         op_undelete,                 CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_UNDELETE_SUBTHREAD,               op_undelete_thread,          CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
