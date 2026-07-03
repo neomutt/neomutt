@@ -280,6 +280,43 @@ static void parse_content_disposition(const char *s, struct Body *b)
 }
 
 /**
+ * extract_message_id - Find a message-id in a string
+ * @param[in]  s   String to parse
+ * @param[out] len Number of bytes of s parsed (optional)
+ * @retval ptr  Message id found
+ * @retval NULL No more message ids
+ *
+ * @a len is an offset into @a s, so the caller may advance @a s by it to find
+ * the next message-id.  The string is scanned verbatim; decoding, if any, is
+ * the caller's responsibility.
+ *
+ * @note Caller must free returned string
+ */
+static char *extract_message_id(const char *s, size_t *len)
+{
+  if (!s)
+    return NULL;
+
+  for (const char *p = s, *beg = NULL; *p; p++)
+  {
+    if (*p == '<')
+    {
+      beg = p;
+      continue;
+    }
+
+    if (beg && (*p == '>'))
+    {
+      if (len)
+        *len = p - s + 1;
+      return mutt_strn_dup(beg, (p + 1) - beg);
+    }
+  }
+
+  return NULL;
+}
+
+/**
  * parse_references - Parse references from an email header
  * @param head List to receive the references
  * @param s    String to parse
@@ -289,11 +326,21 @@ static void parse_references(struct ListHead *head, const char *s)
   if (!head)
     return;
 
+  /* Decode once: mutt_extract_message_id() returns an offset into the decoded
+   * text, so the search and the advance must happen on the same string.
+   * Decoding can lengthen the text (e.g. a single-byte charset expanding to
+   * UTF-8), so applying that offset to the raw header would run off the end. */
+  char *decoded = mutt_str_dup(s);
+  rfc2047_decode(&decoded);
+
   char *m = NULL;
-  for (size_t off = 0; (m = mutt_extract_message_id(s, &off)); s += off)
+  const char *p = decoded;
+  for (size_t off = 0; (m = extract_message_id(p, &off)); p += off)
   {
     mutt_list_insert_head(head, m);
   }
+
+  FREE(&decoded);
 }
 
 /**
@@ -361,9 +408,11 @@ enum ContentType mutt_check_mime_type(const char *s)
 /**
  * mutt_extract_message_id - Find a Message-ID
  * @param[in]  s String to parse
- * @param[out] len Number of bytes of s parsed
+ * @param[out] len Number of bytes of s parsed (optional)
  * @retval ptr  Message id found
  * @retval NULL No more message ids
+ *
+ * @note Caller must free returned string
  */
 char *mutt_extract_message_id(const char *s, size_t *len)
 {
@@ -373,24 +422,7 @@ char *mutt_extract_message_id(const char *s, size_t *len)
   char *decoded = mutt_str_dup(s);
   rfc2047_decode(&decoded);
 
-  char *res = NULL;
-
-  for (const char *p = decoded, *beg = NULL; *p; p++)
-  {
-    if (*p == '<')
-    {
-      beg = p;
-      continue;
-    }
-
-    if (beg && (*p == '>'))
-    {
-      if (len)
-        *len = p - decoded + 1;
-      res = mutt_strn_dup(beg, (p + 1) - beg);
-      break;
-    }
-  }
+  char *res = extract_message_id(decoded, len);
 
   FREE(&decoded);
   return res;
