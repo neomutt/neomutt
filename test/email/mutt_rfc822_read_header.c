@@ -26,6 +26,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include "mutt/lib.h"
 #include "email/lib.h"
 #include "test_common.h"
 
@@ -69,5 +70,62 @@ void test_mutt_rfc822_read_header(void)
     mutt_env_free(&env);
     mutt_body_free(&e.body);
     fclose(fp);
+  }
+
+  {
+    // Two message-ids inside a single RFC2047 encoded-word.  The ids only
+    // appear after decoding, so parse_references() must decode before scanning.
+    // The old code advanced the raw header by an offset measured in the decoded
+    // copy, which dropped the second id.
+    char *hdr = NULL;
+    const char *ids = "<id1@example.com> <id2@example.com>";
+    char enc[128] = { 0 };
+    mutt_b64_encode(ids, strlen(ids), enc, sizeof(enc));
+    mutt_str_asprintf(&hdr, "References: =?utf-8?B?%s?=\n\n", enc);
+
+    FILE *fp = test_make_file_with_contents(hdr, strlen(hdr));
+    if (TEST_CHECK(fp != NULL))
+    {
+      struct Envelope *env = mutt_rfc822_read_header(fp, NULL, false, false);
+      TEST_CHECK(env != NULL);
+      // references are stored in reverse order
+      struct ListNode *np = STAILQ_FIRST(&env->references);
+      if (TEST_CHECK(np != NULL))
+      {
+        TEST_CHECK_STR_EQ(np->data, "<id2@example.com>");
+        np = STAILQ_NEXT(np, entries);
+        if (TEST_CHECK(np != NULL))
+          TEST_CHECK_STR_EQ(np->data, "<id1@example.com>");
+      }
+      mutt_env_free(&env);
+      fclose(fp);
+    }
+    FREE(&hdr);
+  }
+
+  {
+    // An In-Reply-To whose RFC2047 encoded-word decodes to a longer string than
+    // the raw header (single-byte charset -> UTF-8).  The header value is
+    // strdup'd into a tight buffer, so the old decoded-offset advance read past
+    // its end.
+    char raw[300];
+    char enc[512] = { 0 };
+    memset(raw, 0xE9, sizeof(raw)); // Latin-1 'e' acute -> 2 UTF-8 bytes each
+    mutt_b64_encode(raw, sizeof(raw), enc, sizeof(enc));
+
+    char *hdr = NULL;
+    mutt_str_asprintf(&hdr, "In-Reply-To: =?iso-8859-1?B?%s?= <id@example.com>\n\n", enc);
+
+    FILE *fp = test_make_file_with_contents(hdr, strlen(hdr));
+    if (TEST_CHECK(fp != NULL))
+    {
+      struct Envelope *env = mutt_rfc822_read_header(fp, NULL, false, false);
+      TEST_CHECK(env != NULL);
+      TEST_CHECK(!STAILQ_EMPTY(&env->in_reply_to));
+      TEST_CHECK_STR_EQ(STAILQ_FIRST(&env->in_reply_to)->data, "<id@example.com>");
+      mutt_env_free(&env);
+      fclose(fp);
+    }
+    FREE(&hdr);
   }
 }
