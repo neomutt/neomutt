@@ -1250,8 +1250,18 @@ int imap_cmd_step(struct ImapAccountData *adata)
   {
     if (len == adata->blen)
     {
-      MUTT_MEM_REALLOC(&adata->buf, adata->blen + IMAP_CMD_BUFSIZE, char);
-      adata->blen = adata->blen + IMAP_CMD_BUFSIZE;
+      /* Grow geometrically (double) once we're past the initial
+       * allocation, instead of by a fixed IMAP_CMD_BUFSIZE (512 byte)
+       * increment.  Each growth reallocs and copies everything read so
+       * far, so a fixed increment makes the copying cost O(n^2) in the
+       * length of the response line; doubling amortizes that to O(n).
+       * This is bounded the same way any other growable buffer here
+       * is: by safe_realloc()'s out-of-memory handling, and the buffer
+       * is already shrunk back down below once a large response has
+       * been consumed (see the shrink check below). */
+      size_t newlen = adata->blen ? adata->blen * 2 : IMAP_CMD_BUFSIZE;
+      MUTT_MEM_REALLOC(&adata->buf, newlen, char);
+      adata->blen = newlen;
       mutt_debug(LL_DEBUG3, "grew buffer to %zu bytes\n", adata->blen);
     }
 
