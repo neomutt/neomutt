@@ -728,9 +728,17 @@ char *mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, Rea
       else
       {
         ungetc(c, fp); /* undo our damage */
-        /* There wasn't room for the line -- increase "line" */
+        /* There wasn't room for the line -- increase "line".
+         *
+         * Grow geometrically (double) rather than by a fixed 256-byte
+         * increment.  Each growth reallocs and copies the entire buffer
+         * built up so far, so a fixed increment makes the total copying
+         * cost O(n^2) in the length of the (unterminated) line; doubling
+         * amortizes that to O(n).  This matters because the line length
+         * here is attacker-controlled input (eg a header field, or any
+         * other unterminated stream fed through mutt_file_read_line()). */
         offset = *size - 1; /* overwrite the terminating 0 */
-        *size += 256;
+        *size += *size;     /* double: avoid 0->0 if *size is somehow 0 */
         MUTT_MEM_REALLOC(&line, *size, char);
       }
     }
