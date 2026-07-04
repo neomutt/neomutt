@@ -514,13 +514,15 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
   char buf[1024] = { 0 };
   long pos = 0;
   size_t lenbuf = 0;
+  size_t inbuflen;
 
   mutt_str_copy(buf, query, sizeof(buf));
   int rc = pop_query(adata, buf, sizeof(buf));
   if (rc < 0)
     return rc;
 
-  char *inbuf = MUTT_MEM_MALLOC(sizeof(buf), char);
+  inbuflen = sizeof(buf);
+  char *inbuf = MUTT_MEM_MALLOC(inbuflen, char);
 
   while (true)
   {
@@ -540,6 +542,22 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
       p++;
     }
 
+    /* Grow inbuf geometrically (double capacity) instead of reallocing
+     * to fit exactly on every single line.  For a long logical line
+     * spanning many chunks (no CRLF seen for a while), reallocing to
+     * fit exactly makes the total copying cost O(n^2) in the line
+     * length; only growing (by doubling) when the buffer is actually
+     * too small amortizes that to O(n), the same fix applied to
+     * imap_cmd_step()/mutt_file_read_line() for the same class of
+     * issue. */
+    if (lenbuf + sizeof(buf) > inbuflen)
+    {
+      do
+        inbuflen *= 2;
+      while (lenbuf + sizeof(buf) > inbuflen);
+      MUTT_MEM_REALLOC(&inbuf, inbuflen, char);
+    }
+
     mutt_str_copy(inbuf + lenbuf, p, sizeof(buf));
     pos += chunk;
 
@@ -554,9 +572,16 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
       if ((rc == 0) && (callback(inbuf, data) < 0))
         rc = -3;
       lenbuf = 0;
-    }
 
-    MUTT_MEM_REALLOC(&inbuf, lenbuf + sizeof(buf), char);
+      /* Don't let one long line make inbuf hog memory for the rest of
+       * the fetch: shrink back to the base size once a full line has
+       * been handed off, same as imap_cmd_step() does for idata->buf. */
+      if (inbuflen > sizeof(buf))
+      {
+        inbuflen = sizeof(buf);
+        MUTT_MEM_REALLOC(&inbuf, inbuflen, char);
+      }
+    }
   }
 
   FREE(&inbuf);
