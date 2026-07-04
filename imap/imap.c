@@ -787,7 +787,23 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
     fputc(c, fp);
 
     if ((pos % 1024) == 0)
+    {
       progress_update(progress, pos, -1);
+
+      /* Check for a write failure (eg disk or quota full) periodically.
+       * A server can declare an arbitrarily large literal; without this
+       * check a full disk causes fputc() to fail silently and this loop
+       * spins through the rest of the declared byte count doing nothing
+       * useful. */
+      if (ferror(fp))
+      {
+        mutt_debug(LL_DEBUG1, "Literal write error at %lu/%lu bytes\n", pos, bytes);
+        mutt_error(_("Could not write literal data to temporary file"));
+        adata->status = IMAP_FATAL;
+        buf_dealloc(&buf);
+        return -1;
+      }
+    }
 
     /* Log progress every 10% for large transfers */
     if ((checkpoint > 0) && ((pos % checkpoint) == 0) && (pos > 0))
@@ -803,6 +819,15 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
 
     if (c_debug_level >= IMAP_LOG_LTRL)
       buf_addch(&buf, c);
+  }
+
+  if (ferror(fp))
+  {
+    mutt_debug(LL_DEBUG1, "Literal write error at completion\n");
+    mutt_error(_("Could not write literal data to temporary file"));
+    adata->status = IMAP_FATAL;
+    buf_dealloc(&buf);
+    return -1;
   }
 
   time_t duration = mutt_date_now() - start_time;
