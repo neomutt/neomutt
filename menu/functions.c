@@ -147,8 +147,10 @@ done:
  * menu_movement - Handle all the common Menu movements - Implements ::menu_function_t - @ingroup menu_function_api
  *
  * This function handles:
+ * - OP_SCROLL_END
  * - OP_SCROLL_HALF_DOWN
  * - OP_SCROLL_HALF_UP
+ * - OP_SCROLL_HOME
  * - OP_SCROLL_LINE_DOWN
  * - OP_SCROLL_LINE_UP
  * - OP_SCROLL_PAGE_DOWN
@@ -174,6 +176,20 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
   const int count = event->count;
   switch (event->op)
   {
+    case OP_SCROLL_END:
+      flags = menu_view_end(menu);
+      return ((flags == MENU_REDRAW_NONE) && (menu->top == old_top) &&
+              (menu->current == old_current)) ?
+                 FR_ERROR :
+                 FR_SUCCESS;
+
+    case OP_SCROLL_HOME:
+      flags = menu_view_home(menu);
+      return ((flags == MENU_REDRAW_NONE) && (menu->top == old_top) &&
+              (menu->current == old_current)) ?
+                 FR_ERROR :
+                 FR_SUCCESS;
+
     case OP_SCROLL_HALF_DOWN:
       menu_half_down(menu, count);
       return FR_SUCCESS;
@@ -338,8 +354,10 @@ done:
 static const struct MenuFunction MenuFunctions[] = {
   // clang-format off
   { OP_DISPLAY_HELP,                op_display_help },
+  { OP_SCROLL_END,                  menu_movement },
   { OP_SCROLL_HALF_DOWN,            menu_movement },
   { OP_SCROLL_HALF_UP,              menu_movement },
+  { OP_SCROLL_HOME,                 menu_movement },
   { OP_SCROLL_LINE_DOWN,            menu_movement },
   { OP_SCROLL_LINE_UP,              menu_movement },
   { OP_SCROLL_PAGE_DOWN,            menu_movement },

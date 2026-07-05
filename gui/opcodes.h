@@ -273,10 +273,14 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_ATTACH_VIEW_PAGER,                  N_("View attachment in pager using copiousoutput mailcap")) \
   /* L10N: Help for Attach, Compose function: <view-text> */ \
   _fmt(OP_ATTACH_VIEW_TEXT,                   N_("View attachment as text")) \
+  /* L10N: Help for Compose function <preview-scroll-end> */ \
+  _fmt(OP_PREVIEW_SCROLL_END,                 N_("Scroll to the bottom")) \
   /* L10N: Help for Compose function: <preview-scroll-half-down> */ \
   _fmt(OP_PREVIEW_SCROLL_HALF_DOWN,           N_("Scroll down half a page")) \
   /* L10N: Help for Compose function: <preview-scroll-half-up> */ \
   _fmt(OP_PREVIEW_SCROLL_HALF_UP,             N_("Scroll up half a page")) \
+  /* L10N: Help for Compose function <preview-scroll-home> */ \
+  _fmt(OP_PREVIEW_SCROLL_HOME,                N_("Scroll to the top")) \
   /* L10N: Help for Compose function: <preview-scroll-line-down> */ \
   _fmt(OP_PREVIEW_SCROLL_LINE_DOWN,           N_("Scroll down one line")) \
   /* L10N: Help for Compose function: <preview-scroll-line-up> */ \
@@ -667,10 +671,14 @@ const char *opcodes_get_name       (int op);
 #define OPS_SIDEBAR(_fmt) \
   /* L10N: Help for Sidebar function: <sidebar-activate-entry> */ \
   _fmt(OP_SIDEBAR_ACTIVATE_ENTRY,             N_("Open highlighted mailbox")) \
+  /* L10N: Help for Generic function <scroll-end> */ \
+  _fmt(OP_SIDEBAR_SCROLL_END,                 N_("Scroll to the bottom")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-half-down> */ \
   _fmt(OP_SIDEBAR_SCROLL_HALF_DOWN,           N_("Scroll down half a page")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-half-up> */ \
   _fmt(OP_SIDEBAR_SCROLL_HALF_UP,             N_("Scroll up half a page")) \
+  /* L10N: Help for Generic function <scroll-home> */ \
+  _fmt(OP_SIDEBAR_SCROLL_HOME,                N_("Scroll to the top")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-line-down> */ \
   _fmt(OP_SIDEBAR_SCROLL_LINE_DOWN,           N_("Scroll down one line")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-line-up> */ \

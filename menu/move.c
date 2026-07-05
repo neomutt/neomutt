@@ -44,6 +44,8 @@
  *   - menu_next_line()
  *   - menu_prev_page()
  *   - menu_next_page()
+ *   - menu_view_home()
+ *   - menu_view_end()
  *
  * Changing the selection may cause the view to move and vice versa.
  */
@@ -590,4 +592,28 @@ MenuRedrawFlags menu_prev_page(struct Menu *menu, int count)
 MenuRedrawFlags menu_next_page(struct Menu *menu, int count)
 {
   return menu_move_view_relative(menu, MAX(count, 1) * menu->page_len);
+}
+
+/**
+ * menu_view_home - Move the view to the top of the menu
+ * @param menu Current Menu
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ *
+ * If the selection scrolls off the view, it is dragged into the view.
+ */
+MenuRedrawFlags menu_view_home(struct Menu *menu)
+{
+  return menu_move_view_relative(menu, 0 - menu->max);
+}
+
+/**
+ * menu_view_end - Move the view to the bottom of the menu
+ * @param menu Current Menu
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ *
+ * If the selection scrolls off the view, it is dragged into the view.
+ */
+MenuRedrawFlags menu_view_end(struct Menu *menu)
+{
+  return menu_move_view_relative(menu, menu->max);
 }
