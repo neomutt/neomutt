@@ -51,8 +51,10 @@
  */
 static const struct MenuFuncOp OpSidebar[] = { /* map: sidebar */
   { "sidebar-activate-entry",              OP_SIDEBAR_ACTIVATE_ENTRY },
+  { "sidebar-scroll-end",                  OP_SIDEBAR_SCROLL_END },
   { "sidebar-scroll-half-down",            OP_SIDEBAR_SCROLL_HALF_DOWN },
   { "sidebar-scroll-half-up",              OP_SIDEBAR_SCROLL_HALF_UP },
+  { "sidebar-scroll-home",                 OP_SIDEBAR_SCROLL_HOME },
   { "sidebar-scroll-line-down",            OP_SIDEBAR_SCROLL_LINE_DOWN },
   { "sidebar-scroll-line-up",              OP_SIDEBAR_SCROLL_LINE_UP },
   { "sidebar-scroll-page-down",            OP_SIDEBAR_SCROLL_PAGE_DOWN },
@@ -812,6 +814,24 @@ int op_sidebar_scroll_page_up(struct SidebarFunctionData *fdata, const struct Ke
 }
 
 /**
+ * op_sidebar_scroll_home - Scrolls to the top - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+static int op_sidebar_scroll_home(struct SidebarFunctionData *fdata,
+                                  const struct KeyEvent *event)
+{
+  return sb_scroll_view(fdata, 0 - (int) ARRAY_SIZE(&fdata->wdata->entries));
+}
+
+/**
+ * op_sidebar_scroll_end - Scrolls to the bottom - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+static int op_sidebar_scroll_end(struct SidebarFunctionData *fdata,
+                                 const struct KeyEvent *event)
+{
+  return sb_scroll_view(fdata, (int) ARRAY_SIZE(&fdata->wdata->entries));
+}
+
+/**
  * sb_scroll_selection_to_row - Scroll the view so the selection is at a given row
  * @param fdata      Sidebar function data
  * @param wanted_row Row at which the selection should appear (0 = top)
@@ -892,8 +912,10 @@ static int op_sidebar_toggle_virtual(struct SidebarFunctionData *fdata,
 static const struct SidebarFunction SidebarFunctions[] = {
   // clang-format off
   { OP_SIDEBAR_ACTIVATE_ENTRY,               op_sidebar_activate_entry },
+  { OP_SIDEBAR_SCROLL_END,                   op_sidebar_scroll_end },
   { OP_SIDEBAR_SCROLL_HALF_DOWN,             op_sidebar_scroll_half_down },
   { OP_SIDEBAR_SCROLL_HALF_UP,               op_sidebar_scroll_half_up },
+  { OP_SIDEBAR_SCROLL_HOME,                  op_sidebar_scroll_home },
   { OP_SIDEBAR_SCROLL_LINE_DOWN,             op_sidebar_scroll_line_down },
   { OP_SIDEBAR_SCROLL_LINE_UP,               op_sidebar_scroll_line_up },
   { OP_SIDEBAR_SCROLL_PAGE_DOWN,             op_sidebar_scroll_page_down },
