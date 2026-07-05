@@ -63,10 +63,14 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_VIEW_KEYCODES,                      N_("Show the keycodes for key presses")) \
 
 #define OPS_SCROLL(_fmt) \
+  /* L10N: Help for Generic function <scroll-end> */ \
+  _fmt(OP_SCROLL_END,                         N_("Scroll to the bottom")) \
   /* L10N: Help for Generic function: <scroll-half-down> */ \
   _fmt(OP_SCROLL_HALF_DOWN,                   N_("Scroll down half a page")) \
   /* L10N: Help for Generic function: <scroll-half-up> */ \
   _fmt(OP_SCROLL_HALF_UP,                     N_("Scroll up half a page")) \
+  /* L10N: Help for Generic function <scroll-home> */ \
+  _fmt(OP_SCROLL_HOME,                        N_("Scroll to the top")) \
   /* L10N: Help for Generic function: <scroll-line-down> */ \
   _fmt(OP_SCROLL_LINE_DOWN,                   N_("Scroll down one line")) \
   /* L10N: Help for Generic function: <scroll-line-up> */ \
