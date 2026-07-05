@@ -126,6 +126,36 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Generic function: <toggle-tag> */ \
   _fmt(OP_TOGGLE_TAG,                         N_("Toggle tag on the current entry")) \
 
+#define OPS_TREE(_fmt) \
+  /* L10N: Help for Generic function <fold-all-trees> */ \
+  _fmt(OP_FOLD_ALL_TREES,                     N_("Collapse all trees")) \
+  /* L10N: Help for Generic function <fold-tree> */ \
+  _fmt(OP_FOLD_TREE,                          N_("Collapse current tree")) \
+  /* L10N: Help for Generic function <select-next-subtree> */ \
+  _fmt(OP_SELECT_NEXT_SUBTREE,                N_("Select the next subtree")) \
+  /* L10N: Help for Generic function <select-next-tree> */ \
+  _fmt(OP_SELECT_NEXT_TREE,                   N_("Select the next tree")) \
+  /* L10N: Help for Generic function <select-previous-subtree> */ \
+  _fmt(OP_SELECT_PREVIOUS_SUBTREE,            N_("Select the previous subtree")) \
+  /* L10N: Help for Generic function <select-previous-tree> */ \
+  _fmt(OP_SELECT_PREVIOUS_TREE,               N_("Select the previous tree")) \
+  /* L10N: Help for Generic function <select-tree-parent-entry> */ \
+  _fmt(OP_SELECT_TREE_PARENT_ENTRY,           N_("Select the parent entry in the tree")) \
+  /* L10N: Help for Generic function <select-tree-root-entry> */ \
+  _fmt(OP_SELECT_TREE_ROOT_ENTRY,             N_("Select the root entry of the tree")) \
+  /* L10N: Help for Generic function <toggle-all-trees> */ \
+  _fmt(OP_TOGGLE_ALL_TREES,                   N_("Collapse/expand all trees")) \
+  /* L10N: Help for Generic function <toggle-tag-subtree> */ \
+  _fmt(OP_TOGGLE_TAG_SUBTREE,                 N_("Tag/untag the current subtree")) \
+  /* L10N: Help for Generic function <toggle-tag-tree> */ \
+  _fmt(OP_TOGGLE_TAG_TREE,                    N_("Tag/untag the current tree")) \
+  /* L10N: Help for Generic function <toggle-tree> */ \
+  _fmt(OP_TOGGLE_TREE,                        N_("Collapse/expand current tree")) \
+  /* L10N: Help for Generic function <unfold-all-trees> */ \
+  _fmt(OP_UNFOLD_ALL_TREES,                   N_("Expand all trees")) \
+  /* L10N: Help for Generic function <unfold-tree> */ \
+  _fmt(OP_UNFOLD_TREE,                        N_("Expand current tree")) \
+
 #define OPS_EDITOR(_fmt) \
   /* L10N: Help for Editor function: <backspace> */ \
   _fmt(OP_EDITOR_BACKSPACE,                   N_("Delete the char in front of the cursor")) \
@@ -694,6 +724,7 @@ const char *opcodes_get_name       (int op);
   OPS_SEARCH(_fmt) \
   OPS_SELECT(_fmt) \
   OPS_TAG(_fmt) \
+  OPS_TREE(_fmt) \
   OPS_EDITOR(_fmt) \
   OPS_ATTACH(_fmt) \
   OPS_AUTOCRYPT(_fmt) \
