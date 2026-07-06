@@ -203,8 +203,23 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
 #endif
   { "view-attachments",              OP_VIEW_ATTACHMENTS },
   { "view-raw-message",              OP_VIEW_RAW_MESSAGE },
+
   // Deprecated
-  { "buffy-list",                    OP_MAILBOX_LIST, MFF_DEPRECATED },
+  { "buffy-list",                    OP_MAILBOX_LIST,             MFF_DEPRECATED },
+  { "close-all-threads",             OP_FOLD_ALL_TREES,           MFF_DEPRECATED },
+  { "close-thread",                  OP_FOLD_TREE,                MFF_DEPRECATED },
+  { "collapse-all",                  OP_TOGGLE_ALL_TREES,         MFF_DEPRECATED },
+  { "collapse-thread",               OP_TOGGLE_TREE,              MFF_DEPRECATED },
+  { "next-subthread",                OP_SELECT_NEXT_SUBTREE,      MFF_DEPRECATED },
+  { "next-thread",                   OP_SELECT_NEXT_TREE,         MFF_DEPRECATED },
+  { "open-all-threads",              OP_UNFOLD_ALL_TREES,         MFF_DEPRECATED },
+  { "open-thread",                   OP_UNFOLD_TREE,              MFF_DEPRECATED },
+  { "parent-message",                OP_SELECT_TREE_PARENT_ENTRY, MFF_DEPRECATED },
+  { "previous-subthread",            OP_SELECT_PREVIOUS_SUBTREE,  MFF_DEPRECATED },
+  { "previous-thread",               OP_SELECT_PREVIOUS_TREE,     MFF_DEPRECATED },
+  { "root-message",                  OP_SELECT_TREE_ROOT_ENTRY,   MFF_DEPRECATED },
+  { "tag-subthread",                 OP_TOGGLE_TAG_SUBTREE,       MFF_DEPRECATED },
+  { "tag-thread",                    OP_TOGGLE_TAG_TREE,          MFF_DEPRECATED },
   { NULL, 0 },
 };
 
