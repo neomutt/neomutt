@@ -118,12 +118,12 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "delete-thread",                 OP_DELETE_THREAD },
   { "display-address",               OP_DISPLAY_ADDRESS },
   { "display-message",               OP_DISPLAY_MESSAGE },
-  { "display-toggle-weed",           OP_DISPLAY_HEADERS },
+  { "display-toggle-weed",           OP_DISPLAY_MESSAGE_HEADERS },
   { "edit",                          OP_EDIT_RAW_MESSAGE },
   { "edit-label",                    OP_EDIT_LABEL },
   { "edit-or-view-raw-message",      OP_EDIT_OR_VIEW_RAW_MESSAGE },
   { "edit-raw-message",              OP_EDIT_RAW_MESSAGE },
-  { "edit-type",                     OP_ATTACH_EDIT_TYPE },
+  { "edit-type",                     OP_ATTACH_EDIT_CONTENT_TYPE },
 #ifdef USE_NOTMUCH
   { "entire-thread",                 OP_MAIN_ENTIRE_THREAD },
 #endif
@@ -227,7 +227,7 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
  * IndexDefaultBindings - Key bindings for the Index Menu
  */
 static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
-  { OP_ATTACH_EDIT_TYPE,                   "\005" },           // <Ctrl-E>
+  { OP_ATTACH_EDIT_CONTENT_TYPE,           "\005" },           // <Ctrl-E>
 #ifdef USE_AUTOCRYPT
   { OP_AUTOCRYPT_ACCT_MENU,                "A" },
 #endif
@@ -241,12 +241,12 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_DELETE_SUBTHREAD,                   "\033d" },          // <Alt-d>
   { OP_DELETE_THREAD,                      "\004" },           // <Ctrl-D>
   { OP_DISPLAY_ADDRESS,                    "@" },
-  { OP_DISPLAY_HEADERS,                    "h" },
   { OP_DISPLAY_LOG,                        "M" },
   { OP_DISPLAY_MESSAGE,                    " " },              // <Space>
   { OP_DISPLAY_MESSAGE,                    "<keypadenter>" },
   { OP_DISPLAY_MESSAGE,                    "\n" },             // <Enter>
   { OP_DISPLAY_MESSAGE,                    "\r" },             // <Return>
+  { OP_DISPLAY_MESSAGE_HEADERS,            "h" },
   { OP_EDIT_LABEL,                         "Y" },
   { OP_EDIT_OR_VIEW_RAW_MESSAGE,           "e" },
   { OP_EXIT,                               "x" },
@@ -942,8 +942,8 @@ static int op_display_address(struct IndexFunctionData *fdata, const struct KeyE
  *
  * This function handles:
  * - OP_ACTIVATE_ENTRY
- * - OP_DISPLAY_HEADERS
  * - OP_DISPLAY_MESSAGE
+ * - OP_DISPLAY_MESSAGE_HEADERS
  */
 static int op_display_message(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -967,7 +967,7 @@ static int op_display_message(struct IndexFunctionData *fdata, const struct KeyE
 
   /* toggle the weeding of headers so that a user can press the key
    * again while reading the message.  */
-  if (op == OP_DISPLAY_HEADERS)
+  if (op == OP_DISPLAY_MESSAGE_HEADERS)
   {
     bool_str_toggle(shared->sub, "weed", NULL);
     notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, shared);
@@ -3908,7 +3908,7 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_ACTIVATE_ENTRY,                   op_display_message,          CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_ALIAS_DIALOG,                     op_alias_dialog,             CHECK_NONE },
   { OP_APPLY_TO_TAGGED_END,              op_apply_to_tagged_end,      CHECK_NONE },
-  { OP_ATTACH_EDIT_TYPE,                 op_attach_edit_type,         CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_ATTACH_EDIT_CONTENT_TYPE,         op_attach_edit_type,         CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_BOUNCE_MESSAGE,                   op_bounce_message,           CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_CATCHUP,                          op_catchup,                  CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY },
   { OP_CHECK_TRADITIONAL,                op_check_traditional,        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
@@ -3923,8 +3923,8 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_DELETE_SUBTHREAD,                 op_delete_thread,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_DELETE_THREAD,                    op_delete_thread,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_DISPLAY_ADDRESS,                  op_display_address,          CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_DISPLAY_HEADERS,                  op_display_message,          CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_DISPLAY_MESSAGE,                  op_display_message,          CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_DISPLAY_MESSAGE_HEADERS,          op_display_message,          CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_EDIT_LABEL,                       op_edit_label,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_EDIT_OR_VIEW_RAW_MESSAGE,         op_edit_raw_message,         CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_EDIT_RAW_MESSAGE,                 op_edit_raw_message,         CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },

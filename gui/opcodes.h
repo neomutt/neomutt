@@ -229,10 +229,10 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_ATTACH_EDIT_LANGUAGE,               N_("Edit the 'Content-Language' of the attachment")) \
   /* L10N: Help for Compose function: <edit-mime> */ \
   _fmt(OP_ATTACH_EDIT_MIME,                   N_("Edit attachment using mailcap entry")) \
-  /* L10N: Help for Attach, Compose, Index function: <edit-type> */ \
-  _fmt(OP_ATTACH_EDIT_TYPE,                   N_("Edit attachment content type")) \
-  /* L10N: Help for Compose function: <filter-entry> */ \
-  _fmt(OP_ATTACH_FILTER,                      N_("Filter attachment through a shell command")) \
+  /* L10N: Help for Attach, Compose, Index function: <edit-content-type> */ \
+  _fmt(OP_ATTACH_EDIT_CONTENT_TYPE,           N_("Edit attachment content type")) \
+  /* L10N: Help for Compose function: <filter-attachment> */ \
+  _fmt(OP_ATTACH_FILTER_ATTACHMENT,           N_("Filter attachment through a shell command")) \
   /* L10N: Help for Compose function: <get-attachment> */ \
   _fmt(OP_ATTACH_GET_ATTACHMENT,              N_("Get a temporary copy of an attachment")) \
   /* L10N: Help for Compose function: <group-alternatives> */ \
@@ -241,18 +241,18 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_ATTACH_GROUP_LINGUAL,               N_("Group tagged attachments as 'multipart/multilingual'")) \
   /* L10N: Help for Compose function: <group-related> */ \
   _fmt(OP_ATTACH_GROUP_RELATED,               N_("Group tagged attachments as 'multipart/related'")) \
-  /* L10N: Help for Compose function: <move-down> */ \
-  _fmt(OP_ATTACH_MOVE_DOWN,                   N_("Move an attachment down in the attachment list")) \
-  /* L10N: Help for Compose function: <move-up> */ \
-  _fmt(OP_ATTACH_MOVE_UP,                     N_("Move an attachment up in the attachment list")) \
-  /* L10N: Help for Compose function: <new-mime> */ \
-  _fmt(OP_ATTACH_NEW_MIME,                    N_("Compose new attachment using mailcap entry")) \
-  /* L10N: Help for Attach, Compose function: <print-entry> */ \
-  _fmt(OP_ATTACH_PRINT,                       N_("Print the current entry")) \
-  /* L10N: Help for Compose function: <rename-attachment> */ \
-  _fmt(OP_ATTACH_RENAME_ATTACHMENT,           N_("Send attachment with a different name")) \
-  /* L10N: Help for Compose, Attach function: <copy-file> */ \
-  _fmt(OP_ATTACH_SAVE,                        N_("Save message/attachment to a mailbox/file")) \
+  /* L10N: Help for Compose function: <move-attachment-down> */ \
+  _fmt(OP_ATTACH_MOVE_ATTACHMENT_DOWN,        N_("Move an attachment down in the attachment list")) \
+  /* L10N: Help for Compose function: <move-attachment-up> */ \
+  _fmt(OP_ATTACH_MOVE_ATTACHMENT_UP,          N_("Move an attachment up in the attachment list")) \
+  /* L10N: Help for Compose function: <attach-new-mime> */ \
+  _fmt(OP_ATTACH_ATTACH_NEW_MIME,             N_("Compose new attachment using mailcap entry")) \
+  /* L10N: Help for Attach, Compose function: <print-attachment> */ \
+  _fmt(OP_ATTACH_PRINT_ATTACHMENT,            N_("Print the current entry")) \
+  /* L10N: Help for Compose function: <edit-attachment-name> */ \
+  _fmt(OP_ATTACH_EDIT_ATTACHMENT_NAME,        N_("Send attachment with a different name")) \
+  /* L10N: Help for Compose, Attach function: <save-attachment> */ \
+  _fmt(OP_ATTACH_SAVE_ATTACHMENT,             N_("Save message/attachment to a mailbox/file")) \
   /* L10N: Help for Compose function: <toggle-disposition> */ \
   _fmt(OP_ATTACH_TOGGLE_DISPOSITION,          N_("Toggle disposition between inline/attachment")) \
   /* L10N: Help for Compose function: <toggle-recode> */ \
@@ -261,18 +261,18 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_ATTACH_TOGGLE_UNLINK,               N_("Toggle whether to delete file after sending it")) \
   /* L10N: Help for Attach function: <undelete-entry> */ \
   _fmt(OP_ATTACH_UNDELETE,                    N_("Undelete the current entry")) \
-  /* L10N: Help for Compose function: <ungroup-attachment> */ \
-  _fmt(OP_ATTACH_UNGROUP,                     N_("Ungroup 'multipart' attachment")) \
+  /* L10N: Help for Compose function: <ungroup-attachments> */ \
+  _fmt(OP_ATTACH_UNGROUP_ATTACHMENTS,         N_("Ungroup 'multipart' attachment")) \
   /* L10N: Help for Compose function: <update-encoding> */ \
   _fmt(OP_ATTACH_UPDATE_ENCODING,             N_("Update an attachment's encoding info")) \
-  /* L10N: Help for Attach, Compose function: <view-attach> */ \
-  _fmt(OP_ATTACH_VIEW,                        N_("View attachment using mailcap entry if necessary")) \
-  /* L10N: Help for Attach, Compose function: <view-mailcap> */ \
-  _fmt(OP_ATTACH_VIEW_MAILCAP,                N_("Force viewing of attachment using mailcap")) \
-  /* L10N: Help for Attach, Compose function: <view-pager> */ \
-  _fmt(OP_ATTACH_VIEW_PAGER,                  N_("View attachment in pager using copiousoutput mailcap")) \
-  /* L10N: Help for Attach, Compose function: <view-text> */ \
-  _fmt(OP_ATTACH_VIEW_TEXT,                   N_("View attachment as text")) \
+  /* L10N: Help for Attach, Compose function: <display-attachment-default> */ \
+  _fmt(OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT,  N_("View attachment using mailcap entry if necessary")) \
+  /* L10N: Help for Attach, Compose function: <display-attachment-mailcap> */ \
+  _fmt(OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP,  N_("Force viewing of attachment using mailcap")) \
+  /* L10N: Help for Attach, Compose function: <display-attachment-pager> */ \
+  _fmt(OP_ATTACH_DISPLAY_ATTACHMENT_PAGER,    N_("View attachment in pager using copiousoutput mailcap")) \
+  /* L10N: Help for Attach, Compose function: <display-attachment-text> */ \
+  _fmt(OP_ATTACH_DISPLAY_ATTACHMENT_TEXT,     N_("View attachment as text")) \
 
 #ifdef USE_AUTOCRYPT
 #define OPS_AUTOCRYPT(_fmt) \
@@ -286,8 +286,8 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_AUTOCRYPT_TOGGLE_ACTIVE,            N_("Toggle the current account active/inactive")) \
   /* L10N: Help for Autocrypt function: <toggle-prefer-encrypt> */ \
   _fmt(OP_AUTOCRYPT_TOGGLE_PREFER,            N_("Toggle the current account prefer-encrypt flag")) \
-  /* L10N: Help for Compose function: <autocrypt-menu> */ \
-  _fmt(OP_COMPOSE_AUTOCRYPT_MENU,             N_("Show autocrypt compose menu options"))
+  /* L10N: Help for Compose function: <view-autocrypt-options> */ \
+  _fmt(OP_COMPOSE_VIEW_AUTOCRYPT_OPTIONS,     N_("Show autocrypt compose menu options"))
 #else
 #define OPS_AUTOCRYPT(_)
 #endif
@@ -297,18 +297,18 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_COMPOSE_EDIT_FILE,                  N_("Edit the file to be attached")) \
   /* L10N: Help for Compose function: <edit-message> */ \
   _fmt(OP_COMPOSE_EDIT_MESSAGE,               N_("Edit the message")) \
-  /* L10N: Help for Compose function: <ispell> */ \
+  /* L10N: Help for Compose function: <check-spelling> */ \
   _fmt(OP_COMPOSE_CHECK_SPELLING,             N_("Check the spelling of the message")) \
   /* L10N: Help for Compose function: <postpone-message> */ \
   _fmt(OP_COMPOSE_POSTPONE_MESSAGE,           N_("Save this message to send later")) \
-  /* L10N: Help for Compose function: <rename-file> */ \
-  _fmt(OP_COMPOSE_RENAME_FILE,                N_("Rename/move an attached file")) \
+  /* L10N: Help for Compose function: <rename-file-on-disk> */ \
+  _fmt(OP_COMPOSE_RENAME_FILE_ON_DISK,        N_("Rename/move an attached file")) \
   /* L10N: Help for Compose function: <send-message> */ \
   _fmt(OP_COMPOSE_SEND_MESSAGE,               N_("Send the message")) \
   /* L10N: Help for Attach, Index function: <compose-to-sender> */ \
   _fmt(OP_COMPOSE_TO_SENDER,                  N_("Compose new message to the current message sender")) \
-  /* L10N: Help for Compose function: <write-fcc> */ \
-  _fmt(OP_COMPOSE_WRITE_MESSAGE,              N_("Write the message to a folder")) \
+  /* L10N: Help for Compose function: <save-message-copy> */ \
+  _fmt(OP_COMPOSE_SAVE_MESSAGE_COPY,          N_("Write the message to a folder")) \
 
 #define OPS_CORE(_fmt) \
   /* L10N: Help for Index function: <alias-dialog> */ \
@@ -357,8 +357,8 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_DESCEND_DIRECTORY,                  N_("Descend into a directory")) \
   /* L10N: Help for Index function: <display-address> */ \
   _fmt(OP_DISPLAY_ADDRESS,                    N_("Display full address of sender")) \
-  /* L10N: Help for Attach, Compose, Index function: <display-toggle-weed> */ \
-  _fmt(OP_DISPLAY_HEADERS,                    N_("Display message and toggle header weeding")) \
+  /* L10N: Help for Attach, Compose, Index function: <display-message-headers> */ \
+  _fmt(OP_DISPLAY_MESSAGE_HEADERS,            N_("Display message and toggle header weeding")) \
   /* L10N: Help for Index function: <display-message> */ \
   _fmt(OP_DISPLAY_MESSAGE,                    N_("Display a message")) \
   /* L10N: Help for Index function: <edit-label> */ \
@@ -609,12 +609,12 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_PAGER_TOGGLE_SEARCH_HIGHLIGHTING,   N_("Show/hide highlighting of search matches")) \
 
 #define OPS_PGP(_fmt) \
-  /* L10N: Help for Compose function: <attach-key> */ \
-  _fmt(OP_ATTACH_ATTACH_KEY,                  N_("Attach a PGP public key")) \
+  /* L10N: Help for Compose function: <attach-pgp-key> */ \
+  _fmt(OP_ATTACH_ATTACH_PGP_KEY,              N_("Attach a PGP public key")) \
   /* L10N: Help for Attach, Index function: <check-traditional-pgp> */ \
   _fmt(OP_CHECK_TRADITIONAL,                  N_("Check for classic PGP")) \
-  /* L10N: Help for Compose function: <pgp-menu> */ \
-  _fmt(OP_COMPOSE_PGP_MENU,                   N_("Show PGP options")) \
+  /* L10N: Help for Compose function: <view-pgp-options> */ \
+  _fmt(OP_COMPOSE_VIEW_PGP_OPTIONS,           N_("Show PGP options")) \
   /* L10N: Help for Index function: <mail-key> */ \
   _fmt(OP_MAIL_KEY,                           N_("Mail a PGP public key")) \
   /* L10N: Help for Pgp, Smime function: <verify-key> */ \
@@ -639,10 +639,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_PREVIEW_SCROLL_PAGE_DOWN,           N_("Show the next page of the message")) \
   /* L10N: Help for Compose function: <preview-scroll-page-up> */ \
   _fmt(OP_PREVIEW_SCROLL_PAGE_UP,             N_("Show the previous page of the message")) \
-  /* L10N: Help for Compose function: <preview-select-first-entry> */ \
-  _fmt(OP_PREVIEW_SELECT_FIRST_ENTRY,         N_("Move to the first entry")) \
-  /* L10N: Help for Compose function: <preview-select-last-entry> */ \
-  _fmt(OP_PREVIEW_SELECT_LAST_ENTRY,          N_("Move to the last entry")) \
 
 #define OPS_SIDEBAR(_fmt) \
   /* L10N: Help for Sidebar function: <sidebar-activate-entry> */ \
@@ -697,8 +693,8 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_SIDEBAR_TOGGLE_VISIBLE,             N_("Show/hide the sidebar")) \
 
 #define OPS_SMIME(_fmt) \
-  /* L10N: Help for Compose function: <smime-menu> */ \
-  _fmt(OP_COMPOSE_SMIME_MENU,                 N_("Show S/MIME options")) \
+  /* L10N: Help for Compose function: <view-smime-options> */ \
+  _fmt(OP_COMPOSE_VIEW_SMIME_OPTIONS,         N_("Show S/MIME options")) \
 
 #define OPS(_fmt) \
   _fmt(OP_NULL,                               N_("Null operation")) \

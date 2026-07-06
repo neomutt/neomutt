@@ -78,18 +78,22 @@
  */
 static const struct MenuFuncOp OpCompose[] = { /* map: compose */
   { "attach-file",                   OP_ATTACH_ATTACH_FILE },
-  { "attach-key",                    OP_ATTACH_ATTACH_KEY },
   { "attach-message",                OP_ATTACH_ATTACH_MESSAGE },
+  { "attach-new-mime",               OP_ATTACH_ATTACH_NEW_MIME },
   { "attach-news-message",           OP_ATTACH_ATTACH_NEWS_MESSAGE },
-#ifdef USE_AUTOCRYPT
-  { "autocrypt-menu",                OP_COMPOSE_AUTOCRYPT_MENU },
-#endif
-  { "copy-file",                     OP_ATTACH_SAVE },
+  { "attach-pgp-key",                OP_ATTACH_ATTACH_PGP_KEY },
+  { "check-spelling",                OP_COMPOSE_CHECK_SPELLING },
   { "detach-file",                   OP_ATTACH_DETACH },
-  { "display-toggle-weed",           OP_DISPLAY_HEADERS },
+  { "display-attachment-default",    OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT },
+  { "display-attachment-mailcap",    OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP },
+  { "display-attachment-pager",      OP_ATTACH_DISPLAY_ATTACHMENT_PAGER },
+  { "display-attachment-text",       OP_ATTACH_DISPLAY_ATTACHMENT_TEXT },
+  { "display-message-headers",       OP_DISPLAY_MESSAGE_HEADERS },
+  { "edit-attachment-name",          OP_ATTACH_EDIT_ATTACHMENT_NAME },
   { "edit-bcc",                      OP_ENVELOPE_EDIT_BCC },
   { "edit-cc",                       OP_ENVELOPE_EDIT_CC },
   { "edit-content-id",               OP_ATTACH_EDIT_CONTENT_ID },
+  { "edit-content-type",             OP_ATTACH_EDIT_CONTENT_TYPE },
   { "edit-description",              OP_ATTACH_EDIT_DESCRIPTION },
   { "edit-encoding",                 OP_ATTACH_EDIT_ENCODING },
   { "edit-fcc",                      OP_ENVELOPE_EDIT_FCC },
@@ -104,18 +108,14 @@ static const struct MenuFuncOp OpCompose[] = { /* map: compose */
   { "edit-reply-to",                 OP_ENVELOPE_EDIT_REPLY_TO },
   { "edit-subject",                  OP_ENVELOPE_EDIT_SUBJECT },
   { "edit-to",                       OP_ENVELOPE_EDIT_TO },
-  { "edit-type",                     OP_ATTACH_EDIT_TYPE },
   { "edit-x-comment-to",             OP_ENVELOPE_EDIT_X_COMMENT_TO },
-  { "filter-entry",                  OP_ATTACH_FILTER },
+  { "filter-attachment",             OP_ATTACH_FILTER_ATTACHMENT },
   { "get-attachment",                OP_ATTACH_GET_ATTACHMENT },
   { "group-alternatives",            OP_ATTACH_GROUP_ALTS },
   { "group-multilingual",            OP_ATTACH_GROUP_LINGUAL },
   { "group-related",                 OP_ATTACH_GROUP_RELATED },
-  { "ispell",                        OP_COMPOSE_CHECK_SPELLING },
-  { "move-down",                     OP_ATTACH_MOVE_DOWN },
-  { "move-up",                       OP_ATTACH_MOVE_UP },
-  { "new-mime",                      OP_ATTACH_NEW_MIME },
-  { "pgp-menu",                      OP_COMPOSE_PGP_MENU },
+  { "move-attachment-down",          OP_ATTACH_MOVE_ATTACHMENT_DOWN },
+  { "move-attachment-up",            OP_ATTACH_MOVE_ATTACHMENT_UP },
   { "pipe-entry",                    OP_PIPE },
   { "pipe-message",                  OP_PIPE },
   { "postpone-message",              OP_COMPOSE_POSTPONE_MESSAGE },
@@ -125,23 +125,21 @@ static const struct MenuFuncOp OpCompose[] = { /* map: compose */
   { "preview-scroll-line-up",        OP_PREVIEW_SCROLL_LINE_UP },
   { "preview-scroll-page-down",      OP_PREVIEW_SCROLL_PAGE_DOWN },
   { "preview-scroll-page-up",        OP_PREVIEW_SCROLL_PAGE_UP },
-  { "preview-select-first-entry",    OP_PREVIEW_SELECT_FIRST_ENTRY },
-  { "preview-select-last-entry",     OP_PREVIEW_SELECT_LAST_ENTRY },
-  { "print-entry",                   OP_ATTACH_PRINT },
-  { "rename-attachment",             OP_ATTACH_RENAME_ATTACHMENT },
-  { "rename-file",                   OP_COMPOSE_RENAME_FILE },
+  { "print-attachment",              OP_ATTACH_PRINT_ATTACHMENT },
+  { "rename-file-on-disk",           OP_COMPOSE_RENAME_FILE_ON_DISK },
+  { "save-attachment",               OP_ATTACH_SAVE_ATTACHMENT },
+  { "save-message-copy",             OP_COMPOSE_SAVE_MESSAGE_COPY },
   { "send-message",                  OP_COMPOSE_SEND_MESSAGE },
-  { "smime-menu",                    OP_COMPOSE_SMIME_MENU },
   { "toggle-disposition",            OP_ATTACH_TOGGLE_DISPOSITION },
   { "toggle-recode",                 OP_ATTACH_TOGGLE_RECODE },
   { "toggle-unlink",                 OP_ATTACH_TOGGLE_UNLINK },
-  { "ungroup-attachment",            OP_ATTACH_UNGROUP },
+  { "ungroup-attachments",           OP_ATTACH_UNGROUP_ATTACHMENTS },
   { "update-encoding",               OP_ATTACH_UPDATE_ENCODING },
-  { "view-attach",                   OP_ATTACH_VIEW },
-  { "view-mailcap",                  OP_ATTACH_VIEW_MAILCAP },
-  { "view-pager",                    OP_ATTACH_VIEW_PAGER },
-  { "view-text",                     OP_ATTACH_VIEW_TEXT },
-  { "write-fcc",                     OP_COMPOSE_WRITE_MESSAGE },
+  { "view-pgp-options",              OP_COMPOSE_VIEW_PGP_OPTIONS },
+  { "view-smime-options",            OP_COMPOSE_VIEW_SMIME_OPTIONS },
+#ifdef USE_AUTOCRYPT
+  { "view-autocrypt-options",        OP_COMPOSE_VIEW_AUTOCRYPT_OPTIONS },
+#endif
   { NULL, 0 },
 };
 
@@ -150,47 +148,43 @@ static const struct MenuFuncOp OpCompose[] = { /* map: compose */
  */
 static const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_ATTACH_ATTACH_FILE,                 "a" },
-  { OP_ATTACH_ATTACH_KEY,                  "\033k" },          // <Alt-k>
   { OP_ATTACH_ATTACH_MESSAGE,              "A" },
+  { OP_ATTACH_ATTACH_NEW_MIME,             "n" },
+  { OP_ATTACH_ATTACH_PGP_KEY,              "\033k" },          // <Alt-k>
   { OP_ATTACH_DETACH,                      "D" },
+  { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT,  "<keypadenter>" },
+  { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT,  "\n" },             // <Enter>
+  { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT,  "\r" },             // <Return>
+  { OP_ATTACH_EDIT_ATTACHMENT_NAME,        "\017" },           // <Ctrl-O>
   { OP_ATTACH_EDIT_CONTENT_ID,             "\033i" },          // <Alt-i>
+  { OP_ATTACH_EDIT_CONTENT_TYPE,           "\024" },           // <Ctrl-T>
   { OP_ATTACH_EDIT_DESCRIPTION,            "d" },
   { OP_ATTACH_EDIT_ENCODING,               "\005" },           // <Ctrl-E>
   { OP_ATTACH_EDIT_LANGUAGE,               "\014" },           // <Ctrl-L>
   { OP_ATTACH_EDIT_MIME,                   "m" },
-  { OP_ATTACH_EDIT_TYPE,                   "\024" },           // <Ctrl-T>
-  { OP_ATTACH_FILTER,                      "F" },
+  { OP_ATTACH_FILTER_ATTACHMENT,           "F" },
   { OP_ATTACH_GET_ATTACHMENT,              "G" },
   { OP_ATTACH_GROUP_ALTS,                  "&" },
   { OP_ATTACH_GROUP_LINGUAL,               "^" },
   { OP_ATTACH_GROUP_RELATED,               "%" },
-  { OP_ATTACH_MOVE_DOWN,                   "+" },
-  { OP_ATTACH_MOVE_UP,                     "-" },
-  { OP_ATTACH_NEW_MIME,                    "n" },
-  { OP_PIPE,                               "|" },
-  { OP_ATTACH_PRINT,                       "l" },
-  { OP_ATTACH_RENAME_ATTACHMENT,           "\017" },           // <Ctrl-O>
-  { OP_ATTACH_SAVE,                        "C" },
+  { OP_ATTACH_MOVE_ATTACHMENT_DOWN,        "+" },
+  { OP_ATTACH_MOVE_ATTACHMENT_UP,          "-" },
+  { OP_ATTACH_PRINT_ATTACHMENT,            "l" },
+  { OP_ATTACH_SAVE_ATTACHMENT,             "C" },
   { OP_ATTACH_TOGGLE_DISPOSITION,          "\004" },           // <Ctrl-D>
   { OP_ATTACH_TOGGLE_UNLINK,               "u" },
-  { OP_ATTACH_UNGROUP,                     "#" },
+  { OP_ATTACH_UNGROUP_ATTACHMENTS,         "#" },
   { OP_ATTACH_UPDATE_ENCODING,             "U" },
-  { OP_ATTACH_VIEW,                        "<keypadenter>" },
-  { OP_ATTACH_VIEW,                        "\n" },             // <Enter>
-  { OP_ATTACH_VIEW,                        "\r" },             // <Return>
-#ifdef USE_AUTOCRYPT
-  { OP_COMPOSE_AUTOCRYPT_MENU,             "o" },
-#endif
+  { OP_COMPOSE_CHECK_SPELLING,             "i" },
   { OP_COMPOSE_EDIT_FILE,                  "\033e" },          // <Alt-e>
   { OP_COMPOSE_EDIT_MESSAGE,               "e" },
-  { OP_COMPOSE_CHECK_SPELLING,             "i" },
-  { OP_COMPOSE_PGP_MENU,                   "p" },
   { OP_COMPOSE_POSTPONE_MESSAGE,           "P" },
-  { OP_COMPOSE_RENAME_FILE,                "R" },
+  { OP_COMPOSE_RENAME_FILE_ON_DISK,        "R" },
+  { OP_COMPOSE_SAVE_MESSAGE_COPY,          "w" },
   { OP_COMPOSE_SEND_MESSAGE,               "y" },
-  { OP_COMPOSE_SMIME_MENU,                 "S" },
-  { OP_COMPOSE_WRITE_MESSAGE,              "w" },
-  { OP_DISPLAY_HEADERS,                    "h" },
+  { OP_COMPOSE_VIEW_PGP_OPTIONS,           "p" },
+  { OP_COMPOSE_VIEW_SMIME_OPTIONS,         "S" },
+  { OP_DISPLAY_MESSAGE_HEADERS,            "h" },
   { OP_ENVELOPE_EDIT_BCC,                  "b" },
   { OP_ENVELOPE_EDIT_CC,                   "c" },
   { OP_ENVELOPE_EDIT_FCC,                  "f" },
@@ -199,10 +193,14 @@ static const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_ENVELOPE_EDIT_REPLY_TO,             "r" },
   { OP_ENVELOPE_EDIT_SUBJECT,              "s" },
   { OP_ENVELOPE_EDIT_TO,                   "t" },
+  { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
+  { OP_PIPE,                               "|" },
   { OP_PREVIEW_SCROLL_PAGE_DOWN,           "<pagedown>" },
   { OP_PREVIEW_SCROLL_PAGE_UP,             "<pageup>" },
-  { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
   { OP_TOGGLE_TAG,                         "T" },
+#ifdef USE_AUTOCRYPT
+  { OP_COMPOSE_VIEW_AUTOCRYPT_OPTIONS,     "o" },
+#endif
   { 0, NULL },
 };
 // clang-format on
@@ -1680,7 +1678,7 @@ static int op_attach_edit_type(struct ComposeFunctionData *fdata, const struct K
  * op_attach_filter - Filter attachment through a shell command - Implements ::compose_function_t - @ingroup compose_function_api
  *
  * This function handles:
- * - OP_ATTACH_FILTER
+ * - OP_ATTACH_FILTER_ATTACHMENT
  * - OP_PIPE
  */
 static int op_attach_filter(struct ComposeFunctionData *fdata, const struct KeyEvent *event)
@@ -1707,8 +1705,8 @@ static int op_attach_filter(struct ComposeFunctionData *fdata, const struct KeyE
   }
 
   const int op = event->op;
-  mutt_pipe_attachment_list(&aa, (op == OP_ATTACH_FILTER));
-  if (op == OP_ATTACH_FILTER) /* cte might have changed */
+  mutt_pipe_attachment_list(&aa, (op == OP_ATTACH_FILTER_ATTACHMENT));
+  if (op == OP_ATTACH_FILTER_ATTACHMENT) /* cte might have changed */
   {
     menu_queue_redraw(menu, selection_redraw_flags(ARRAY_SIZE(&aa)));
   }
@@ -2666,11 +2664,11 @@ static int op_compose_write_message(struct ComposeFunctionData *fdata,
  * op_display_headers - Display message and toggle header weeding - Implements ::compose_function_t - @ingroup compose_function_api
  *
  * This function handles:
- * - OP_ATTACH_VIEW
- * - OP_ATTACH_VIEW_MAILCAP
- * - OP_ATTACH_VIEW_PAGER
- * - OP_ATTACH_VIEW_TEXT
- * - OP_DISPLAY_HEADERS
+ * - OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT
+ * - OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP
+ * - OP_ATTACH_DISPLAY_ATTACHMENT_PAGER
+ * - OP_ATTACH_DISPLAY_ATTACHMENT_TEXT
+ * - OP_DISPLAY_MESSAGE_HEADERS
  */
 static int op_display_headers(struct ComposeFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -2683,19 +2681,19 @@ static int op_display_headers(struct ComposeFunctionData *fdata, const struct Ke
   const int op = event->op;
   switch (op)
   {
-    case OP_ATTACH_VIEW:
-    case OP_DISPLAY_HEADERS:
+    case OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT:
+    case OP_DISPLAY_MESSAGE_HEADERS:
       break;
 
-    case OP_ATTACH_VIEW_MAILCAP:
+    case OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP:
       mode = MUTT_VA_MAILCAP;
       break;
 
-    case OP_ATTACH_VIEW_PAGER:
+    case OP_ATTACH_DISPLAY_ATTACHMENT_PAGER:
       mode = MUTT_VA_PAGER;
       break;
 
-    case OP_ATTACH_VIEW_TEXT:
+    case OP_ATTACH_DISPLAY_ATTACHMENT_TEXT:
       mode = MUTT_VA_AS_TEXT;
       break;
   }
@@ -2761,49 +2759,49 @@ static int op_quit(struct ComposeFunctionData *fdata, const struct KeyEvent *eve
  */
 static const struct ComposeFunction ComposeFunctions[] = {
   // clang-format off
-  { OP_ATTACH_ATTACH_FILE,         op_attach_attach_file        },
-  { OP_ATTACH_ATTACH_KEY,          op_attach_attach_key         },
-  { OP_ATTACH_ATTACH_MESSAGE,      op_attach_attach_message     },
-  { OP_ATTACH_ATTACH_NEWS_MESSAGE, op_attach_attach_message     },
-  { OP_ATTACH_DETACH,              op_attach_detach             },
-  { OP_ATTACH_EDIT_CONTENT_ID,     op_attach_edit_content_id    },
-  { OP_ATTACH_EDIT_DESCRIPTION,    op_attach_edit_description   },
-  { OP_ATTACH_EDIT_ENCODING,       op_attach_edit_encoding      },
-  { OP_ATTACH_EDIT_LANGUAGE,       op_attach_edit_language      },
-  { OP_ATTACH_EDIT_MIME,           op_attach_edit_mime          },
-  { OP_ATTACH_EDIT_TYPE,           op_attach_edit_type          },
-  { OP_ATTACH_FILTER,              op_attach_filter             },
-  { OP_ATTACH_GET_ATTACHMENT,      op_attach_get_attachment     },
-  { OP_ATTACH_GROUP_ALTS,          op_attach_group_alts         },
-  { OP_ATTACH_GROUP_LINGUAL,       op_attach_group_lingual      },
-  { OP_ATTACH_GROUP_RELATED,       op_attach_group_related      },
-  { OP_ATTACH_MOVE_DOWN,           op_attach_move_down          },
-  { OP_ATTACH_MOVE_UP,             op_attach_move_up            },
-  { OP_ATTACH_NEW_MIME,            op_attach_new_mime           },
-  { OP_ATTACH_PRINT,               op_attach_print              },
-  { OP_ATTACH_RENAME_ATTACHMENT,   op_attach_rename_attachment  },
-  { OP_ATTACH_SAVE,                op_attach_save               },
-  { OP_ATTACH_TOGGLE_DISPOSITION,  op_attach_toggle_disposition },
-  { OP_ATTACH_TOGGLE_RECODE,       op_attach_toggle_recode      },
-  { OP_ATTACH_TOGGLE_UNLINK,       op_attach_toggle_unlink      },
-  { OP_ATTACH_UNGROUP,             op_attach_ungroup            },
-  { OP_ATTACH_UPDATE_ENCODING,     op_attach_update_encoding    },
-  { OP_ATTACH_VIEW,                op_display_headers           },
-  { OP_ATTACH_VIEW_MAILCAP,        op_display_headers           },
-  { OP_ATTACH_VIEW_PAGER,          op_display_headers           },
-  { OP_ATTACH_VIEW_TEXT,           op_display_headers           },
-  { OP_COMPOSE_EDIT_FILE,          op_compose_edit_file         },
-  { OP_COMPOSE_EDIT_MESSAGE,       op_compose_edit_message      },
-  { OP_COMPOSE_CHECK_SPELLING,     op_compose_check_spelling    },
-  { OP_COMPOSE_POSTPONE_MESSAGE,   op_compose_postpone_message  },
-  { OP_COMPOSE_RENAME_FILE,        op_compose_rename_file       },
-  { OP_COMPOSE_SEND_MESSAGE,       op_compose_send_message      },
-  { OP_COMPOSE_WRITE_MESSAGE,      op_compose_write_message     },
-  { OP_DISPLAY_HEADERS,            op_display_headers           },
-  { OP_ENVELOPE_EDIT_HEADERS,      op_envelope_edit_headers     },
-  { OP_EXIT,                       op_quit                      },
-  { OP_PIPE,                       op_attach_filter             },
-  { OP_QUIT,                       op_quit                      },
+  { OP_ATTACH_ATTACH_FILE,                op_attach_attach_file },
+  { OP_ATTACH_ATTACH_MESSAGE,             op_attach_attach_message },
+  { OP_ATTACH_ATTACH_NEWS_MESSAGE,        op_attach_attach_message },
+  { OP_ATTACH_ATTACH_NEW_MIME,            op_attach_new_mime },
+  { OP_ATTACH_ATTACH_PGP_KEY,             op_attach_attach_key },
+  { OP_ATTACH_DETACH,                     op_attach_detach },
+  { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT, op_display_headers },
+  { OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP, op_display_headers },
+  { OP_ATTACH_DISPLAY_ATTACHMENT_PAGER,   op_display_headers },
+  { OP_ATTACH_DISPLAY_ATTACHMENT_TEXT,    op_display_headers },
+  { OP_ATTACH_EDIT_ATTACHMENT_NAME,       op_attach_rename_attachment },
+  { OP_ATTACH_EDIT_CONTENT_ID,            op_attach_edit_content_id },
+  { OP_ATTACH_EDIT_CONTENT_TYPE,          op_attach_edit_type },
+  { OP_ATTACH_EDIT_DESCRIPTION,           op_attach_edit_description },
+  { OP_ATTACH_EDIT_ENCODING,              op_attach_edit_encoding },
+  { OP_ATTACH_EDIT_LANGUAGE,              op_attach_edit_language },
+  { OP_ATTACH_EDIT_MIME,                  op_attach_edit_mime },
+  { OP_ATTACH_FILTER_ATTACHMENT,          op_attach_filter },
+  { OP_ATTACH_GET_ATTACHMENT,             op_attach_get_attachment },
+  { OP_ATTACH_GROUP_ALTS,                 op_attach_group_alts },
+  { OP_ATTACH_GROUP_LINGUAL,              op_attach_group_lingual },
+  { OP_ATTACH_GROUP_RELATED,              op_attach_group_related },
+  { OP_ATTACH_MOVE_ATTACHMENT_DOWN,       op_attach_move_down },
+  { OP_ATTACH_MOVE_ATTACHMENT_UP,         op_attach_move_up },
+  { OP_ATTACH_PRINT_ATTACHMENT,           op_attach_print },
+  { OP_ATTACH_SAVE_ATTACHMENT,            op_attach_save },
+  { OP_ATTACH_TOGGLE_DISPOSITION,         op_attach_toggle_disposition },
+  { OP_ATTACH_TOGGLE_RECODE,              op_attach_toggle_recode },
+  { OP_ATTACH_TOGGLE_UNLINK,              op_attach_toggle_unlink },
+  { OP_ATTACH_UNGROUP_ATTACHMENTS,        op_attach_ungroup },
+  { OP_ATTACH_UPDATE_ENCODING,            op_attach_update_encoding },
+  { OP_COMPOSE_CHECK_SPELLING,            op_compose_check_spelling },
+  { OP_COMPOSE_EDIT_FILE,                 op_compose_edit_file },
+  { OP_COMPOSE_EDIT_MESSAGE,              op_compose_edit_message },
+  { OP_COMPOSE_POSTPONE_MESSAGE,          op_compose_postpone_message },
+  { OP_COMPOSE_RENAME_FILE_ON_DISK,       op_compose_rename_file },
+  { OP_COMPOSE_SAVE_MESSAGE_COPY,         op_compose_write_message },
+  { OP_COMPOSE_SEND_MESSAGE,              op_compose_send_message },
+  { OP_DISPLAY_MESSAGE_HEADERS,           op_display_headers },
+  { OP_ENVELOPE_EDIT_HEADERS,             op_envelope_edit_headers },
+  { OP_EXIT,                              op_quit },
+  { OP_PIPE,                              op_attach_filter },
+  { OP_QUIT,                              op_quit },
   { 0, NULL },
   // clang-format on
 };

@@ -549,16 +549,14 @@ static int preview_scroll_end(struct PreviewWindowData *wdata, const struct KeyE
  */
 static const struct PreviewFunction PreviewFunctions[] = {
   // clang-format off
-  { OP_PREVIEW_SCROLL_END,           preview_scroll_end         },
-  { OP_PREVIEW_SCROLL_HALF_DOWN,     preview_scroll_half_down   },
-  { OP_PREVIEW_SCROLL_HALF_UP,       preview_scroll_half_up     },
-  { OP_PREVIEW_SCROLL_HOME,          preview_scroll_home        },
-  { OP_PREVIEW_SCROLL_LINE_DOWN,     preview_scroll_line_down   },
-  { OP_PREVIEW_SCROLL_LINE_UP,       preview_scroll_line_up     },
-  { OP_PREVIEW_SCROLL_PAGE_DOWN,     preview_scroll_page_down   },
-  { OP_PREVIEW_SCROLL_PAGE_UP,       preview_scroll_page_up     },
-  { OP_PREVIEW_SELECT_FIRST_ENTRY,   preview_scroll_home },
-  { OP_PREVIEW_SELECT_LAST_ENTRY,    preview_scroll_end  },
+  { OP_PREVIEW_SCROLL_END,           preview_scroll_end },
+  { OP_PREVIEW_SCROLL_HALF_DOWN,     preview_scroll_half_down },
+  { OP_PREVIEW_SCROLL_HALF_UP,       preview_scroll_half_up },
+  { OP_PREVIEW_SCROLL_HOME,          preview_scroll_home },
+  { OP_PREVIEW_SCROLL_LINE_DOWN,     preview_scroll_line_down },
+  { OP_PREVIEW_SCROLL_LINE_UP,       preview_scroll_line_up },
+  { OP_PREVIEW_SCROLL_PAGE_DOWN,     preview_scroll_page_down },
+  { OP_PREVIEW_SCROLL_PAGE_UP,       preview_scroll_page_up },
   { 0, NULL },
   // clang-format on
 };

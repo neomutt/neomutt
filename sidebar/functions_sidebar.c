@@ -825,8 +825,7 @@ static int op_sidebar_scroll_home(struct SidebarFunctionData *fdata,
 /**
  * op_sidebar_scroll_end - Scrolls to the bottom - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
-static int op_sidebar_scroll_end(struct SidebarFunctionData *fdata,
-                                 const struct KeyEvent *event)
+static int op_sidebar_scroll_end(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
 {
   return sb_scroll_view(fdata, (int) ARRAY_SIZE(&fdata->wdata->entries));
 }

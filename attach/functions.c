@@ -62,8 +62,8 @@ static const struct MenuFuncOp OpAttach[] = { /* map: attach */
   { "collapse-parts",                OP_ATTACH_COLLAPSE },
   { "compose-to-sender",             OP_COMPOSE_TO_SENDER },
   { "delete-entry",                  OP_ATTACH_DELETE },
-  { "display-toggle-weed",           OP_DISPLAY_HEADERS },
-  { "edit-type",                     OP_ATTACH_EDIT_TYPE },
+  { "display-toggle-weed",           OP_DISPLAY_MESSAGE_HEADERS },
+  { "edit-type",                     OP_ATTACH_EDIT_CONTENT_TYPE },
   { "extract-keys",                  OP_EXTRACT_KEYS },
   { "followup-message",              OP_FOLLOWUP },
   { "forward-message",               OP_FORWARD_MESSAGE },
@@ -75,15 +75,15 @@ static const struct MenuFuncOp OpAttach[] = { /* map: attach */
   { "list-unsubscribe",              OP_LIST_UNSUBSCRIBE },
   { "pipe-entry",                    OP_PIPE },
   { "pipe-message",                  OP_PIPE },
-  { "print-entry",                   OP_ATTACH_PRINT },
+  { "print-entry",                   OP_ATTACH_PRINT_ATTACHMENT },
   { "reply",                         OP_REPLY },
   { "resend-message",                OP_RESEND },
-  { "save-entry",                    OP_ATTACH_SAVE },
+  { "save-entry",                    OP_ATTACH_SAVE_ATTACHMENT },
   { "undelete-entry",                OP_ATTACH_UNDELETE },
-  { "view-attach",                   OP_ATTACH_VIEW },
-  { "view-mailcap",                  OP_ATTACH_VIEW_MAILCAP },
-  { "view-pager",                    OP_ATTACH_VIEW_PAGER },
-  { "view-text",                     OP_ATTACH_VIEW_TEXT },
+  { "view-attach",                   OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT },
+  { "view-mailcap",                  OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP },
+  { "view-pager",                    OP_ATTACH_DISPLAY_ATTACHMENT_PAGER },
+  { "view-text",                     OP_ATTACH_DISPLAY_ATTACHMENT_TEXT },
   { NULL, 0 },
 };
 
@@ -93,24 +93,24 @@ static const struct MenuFuncOp OpAttach[] = { /* map: attach */
 static const struct MenuOpSeq AttachDefaultBindings[] = { /* map: attach */
   { OP_ATTACH_COLLAPSE,                    "v" },
   { OP_ATTACH_DELETE,                      "d" },
-  { OP_ATTACH_EDIT_TYPE,                   "\005" },           // <Ctrl-E>
-  { OP_PIPE,                               "|" },
-  { OP_ATTACH_PRINT,                       "p" },
-  { OP_ATTACH_SAVE,                        "s" },
+  { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT,  "<keypadenter>" },
+  { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT,  "\n" },             // <Enter>
+  { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT,  "\r" },             // <Return>
+  { OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP,  "m" },
+  { OP_ATTACH_DISPLAY_ATTACHMENT_TEXT,     "T" },
+  { OP_ATTACH_EDIT_CONTENT_TYPE,           "\005" },           // <Ctrl-E>
+  { OP_ATTACH_PRINT_ATTACHMENT,            "p" },
+  { OP_ATTACH_SAVE_ATTACHMENT,             "s" },
   { OP_ATTACH_UNDELETE,                    "u" },
-  { OP_ATTACH_VIEW,                        "<keypadenter>" },
-  { OP_ATTACH_VIEW,                        "\n" },             // <Enter>
-  { OP_ATTACH_VIEW,                        "\r" },             // <Return>
-  { OP_ATTACH_VIEW_MAILCAP,                "m" },
-  { OP_ATTACH_VIEW_TEXT,                   "T" },
   { OP_BOUNCE_MESSAGE,                     "b" },
   { OP_CHECK_TRADITIONAL,                  "\033P" },          // <Alt-P>
-  { OP_DISPLAY_HEADERS,                    "h" },
+  { OP_DISPLAY_MESSAGE_HEADERS,            "h" },
   { OP_EXTRACT_KEYS,                       "\013" },           // <Ctrl-K>
   { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
   { OP_FORWARD_MESSAGE,                    "f" },
   { OP_GROUP_REPLY,                        "g" },
   { OP_LIST_REPLY,                         "L" },
+  { OP_PIPE,                               "|" },
   { OP_REPLY,                              "r" },
   { OP_RESEND,                             "\033e" },          // <Alt-e>
   { 0, NULL },
@@ -495,8 +495,8 @@ static int op_attach_undelete(struct AttachFunctionData *fdata, const struct Key
  * op_attach_view - view attachment using mailcap entry if necessary - Implements ::attach_function_t - @ingroup attach_function_api
  *
  * This function handles:
- * - OP_ATTACH_VIEW
- * - OP_DISPLAY_HEADERS
+ * - OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT
+ * - OP_DISPLAY_MESSAGE_HEADERS
  */
 static int op_attach_view(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -780,34 +780,34 @@ static int op_forward_to_group(struct AttachFunctionData *fdata, const struct Ke
  */
 static const struct AttachFunction AttachFunctions[] = {
   // clang-format off
-  { OP_ATTACH_COLLAPSE,     op_attach_collapse     },
-  { OP_ATTACH_DELETE,       op_attach_delete       },
-  { OP_ATTACH_EDIT_TYPE,    op_attach_edit_type    },
-  { OP_ATTACH_PRINT,        op_attach_print        },
-  { OP_ATTACH_SAVE,         op_attach_save         },
-  { OP_ATTACH_UNDELETE,     op_attach_undelete     },
-  { OP_ATTACH_VIEW,         op_attach_view         },
-  { OP_ATTACH_VIEW_MAILCAP, op_attach_view_mailcap },
-  { OP_ATTACH_VIEW_PAGER,   op_attach_view_pager   },
-  { OP_ATTACH_VIEW_TEXT,    op_attach_view_text    },
-  { OP_BOUNCE_MESSAGE,      op_bounce_message      },
-  { OP_CHECK_TRADITIONAL,   op_check_traditional   },
-  { OP_COMPOSE_TO_SENDER,   op_compose_to_sender   },
-  { OP_DISPLAY_HEADERS,     op_attach_view         },
-  { OP_EXIT,                op_quit                },
-  { OP_EXTRACT_KEYS,        op_extract_keys        },
-  { OP_FOLLOWUP,            op_followup            },
-  { OP_FORWARD_MESSAGE,     op_forward_message     },
-  { OP_FORWARD_TO_GROUP,    op_forward_to_group    },
-  { OP_GROUP_CHAT_REPLY,    op_reply               },
-  { OP_GROUP_REPLY,         op_reply               },
-  { OP_LIST_REPLY,          op_reply               },
-  { OP_LIST_SUBSCRIBE,      op_list_subscribe      },
-  { OP_LIST_UNSUBSCRIBE,    op_list_unsubscribe    },
-  { OP_PIPE,                op_attach_pipe         },
-  { OP_QUIT,                op_quit                },
-  { OP_REPLY,               op_reply               },
-  { OP_RESEND,              op_resend              },
+  { OP_ATTACH_COLLAPSE,                   op_attach_collapse },
+  { OP_ATTACH_DELETE,                     op_attach_delete },
+  { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT, op_attach_view },
+  { OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP, op_attach_view_mailcap },
+  { OP_ATTACH_DISPLAY_ATTACHMENT_PAGER,   op_attach_view_pager },
+  { OP_ATTACH_DISPLAY_ATTACHMENT_TEXT,    op_attach_view_text },
+  { OP_ATTACH_EDIT_CONTENT_TYPE,          op_attach_edit_type },
+  { OP_ATTACH_PRINT_ATTACHMENT,           op_attach_print },
+  { OP_ATTACH_SAVE_ATTACHMENT,            op_attach_save },
+  { OP_ATTACH_UNDELETE,                   op_attach_undelete },
+  { OP_BOUNCE_MESSAGE,                    op_bounce_message },
+  { OP_CHECK_TRADITIONAL,                 op_check_traditional },
+  { OP_COMPOSE_TO_SENDER,                 op_compose_to_sender },
+  { OP_DISPLAY_MESSAGE_HEADERS,           op_attach_view },
+  { OP_EXIT,                              op_quit },
+  { OP_EXTRACT_KEYS,                      op_extract_keys },
+  { OP_FOLLOWUP,                          op_followup },
+  { OP_FORWARD_MESSAGE,                   op_forward_message },
+  { OP_FORWARD_TO_GROUP,                  op_forward_to_group },
+  { OP_GROUP_CHAT_REPLY,                  op_reply },
+  { OP_GROUP_REPLY,                       op_reply },
+  { OP_LIST_REPLY,                        op_reply },
+  { OP_LIST_SUBSCRIBE,                    op_list_subscribe },
+  { OP_LIST_UNSUBSCRIBE,                  op_list_unsubscribe },
+  { OP_PIPE,                              op_attach_pipe },
+  { OP_QUIT,                              op_quit },
+  { OP_REPLY,                             op_reply },
+  { OP_RESEND,                            op_resend },
   { 0, NULL },
   // clang-format on
 };
