@@ -808,7 +808,10 @@ void mutt_clear_threads(struct ThreadsContext *tctx)
   {
     struct Email *e = m->emails[i];
     if (!e)
-      break;
+    {
+      // Keep processing, in case there are other holes in the Email array
+      continue;
+    }
 
     /* mailbox may have been only partially read */
     e->thread = NULL;
@@ -1750,8 +1753,14 @@ int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, enum MessageInTh
 
   for (int i = 0; i < (((mit == MIT_POSITION) || !threads[1]) ? 1 : 2); i++)
   {
-    while (!threads[i]->message)
+    /* Descend to the first node that references a real Email.
+     * Guard against a malformed or partially-built tree:
+     * a node with no message and no child would otherwise cause a NULL dereference. */
+    while (threads[i] && !threads[i]->message)
       threads[i] = threads[i]->child;
+
+    if (!threads[i] || !threads[i]->message)
+      return 1;
   }
 
   if (threaded == UT_REVERSE)
