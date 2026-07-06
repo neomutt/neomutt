@@ -120,11 +120,11 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Generic function: <apply-to-tagged> */ \
   _fmt(OP_APPLY_TO_TAGGED,                    N_("Apply the next function to tagged entries")) \
   /* L10N: Help for Generic function: <apply-to-tagged-begin> */ \
-  _fmt(OP_APPLY_TO_TAGGED_BEGIN,              N_("Skip following commands if nothing is tagged")) \
+  _fmt(OP_APPLY_TO_TAGGED_BEGIN,              N_("Skip to <apply-to-tagged-end> if nothing is tagged")) \
   /* L10N: Help for Generic function: <apply-to-tagged-end> */ \
-  _fmt(OP_APPLY_TO_TAGGED_END,                N_("Resume normal macro execution")) \
+  _fmt(OP_APPLY_TO_TAGGED_END,                N_("End marker for <apply-to-tagged-begin>")) \
   /* L10N: Help for Generic function: <toggle-tag> */ \
-  _fmt(OP_TOGGLE_TAG,                         N_("Toggle tag on the current entry")) \
+  _fmt(OP_TOGGLE_TAG,                         N_("Tag/untag the current entry")) \
 
 #define OPS_TREE(_fmt) \
   /* L10N: Help for Generic function <fold-all-trees> */ \
