@@ -292,6 +292,24 @@ const char *opcodes_get_name       (int op);
 #define OPS_AUTOCRYPT(_)
 #endif
 
+#define OPS_COMPOSE(_fmt) \
+  /* L10N: Help for Compose function: <edit-file> */ \
+  _fmt(OP_COMPOSE_EDIT_FILE,                  N_("Edit the file to be attached")) \
+  /* L10N: Help for Compose function: <edit-message> */ \
+  _fmt(OP_COMPOSE_EDIT_MESSAGE,               N_("Edit the message")) \
+  /* L10N: Help for Compose function: <ispell> */ \
+  _fmt(OP_COMPOSE_CHECK_SPELLING,             N_("Check the spelling of the message")) \
+  /* L10N: Help for Compose function: <postpone-message> */ \
+  _fmt(OP_COMPOSE_POSTPONE_MESSAGE,           N_("Save this message to send later")) \
+  /* L10N: Help for Compose function: <rename-file> */ \
+  _fmt(OP_COMPOSE_RENAME_FILE,                N_("Rename/move an attached file")) \
+  /* L10N: Help for Compose function: <send-message> */ \
+  _fmt(OP_COMPOSE_SEND_MESSAGE,               N_("Send the message")) \
+  /* L10N: Help for Attach, Index function: <compose-to-sender> */ \
+  _fmt(OP_COMPOSE_TO_SENDER,                  N_("Compose new message to the current message sender")) \
+  /* L10N: Help for Compose function: <write-fcc> */ \
+  _fmt(OP_COMPOSE_WRITE_MESSAGE,              N_("Write the message to a folder")) \
+
 #define OPS_CORE(_fmt) \
   /* L10N: Help for Index function: <alias-dialog> */ \
   _fmt(OP_ALIAS_DIALOG,                       N_("Open the aliases dialog")) \
@@ -317,22 +335,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_CHANGE_DIRECTORY,                   N_("Change directories")) \
   /* L10N: Help for Browser function: <check-new> */ \
   _fmt(OP_CHECK_NEW,                          N_("Check mailboxes for new mail")) \
-  /* L10N: Help for Compose function: <edit-file> */ \
-  _fmt(OP_COMPOSE_EDIT_FILE,                  N_("Edit the file to be attached")) \
-  /* L10N: Help for Compose function: <edit-message> */ \
-  _fmt(OP_COMPOSE_EDIT_MESSAGE,               N_("Edit the message")) \
-  /* L10N: Help for Compose function: <ispell> */ \
-  _fmt(OP_COMPOSE_CHECK_SPELLING,             N_("Check the spelling of the message")) \
-  /* L10N: Help for Compose function: <postpone-message> */ \
-  _fmt(OP_COMPOSE_POSTPONE_MESSAGE,           N_("Save this message to send later")) \
-  /* L10N: Help for Compose function: <rename-file> */ \
-  _fmt(OP_COMPOSE_RENAME_FILE,                N_("Rename/move an attached file")) \
-  /* L10N: Help for Compose function: <send-message> */ \
-  _fmt(OP_COMPOSE_SEND_MESSAGE,               N_("Send the message")) \
-  /* L10N: Help for Attach, Index function: <compose-to-sender> */ \
-  _fmt(OP_COMPOSE_TO_SENDER,                  N_("Compose new message to the current message sender")) \
-  /* L10N: Help for Compose function: <write-fcc> */ \
-  _fmt(OP_COMPOSE_WRITE_MESSAGE,              N_("Write the message to a folder")) \
   /* L10N: Help for Index function: <copy-message> */ \
   _fmt(OP_COPY_MESSAGE,                       N_("Copy a message to a file/mailbox")) \
   /* L10N: Help for Index, Query function: <create-alias> */ \
@@ -710,6 +712,7 @@ const char *opcodes_get_name       (int op);
   OPS_EDITOR(_fmt) \
   OPS_ATTACH(_fmt) \
   OPS_AUTOCRYPT(_fmt) \
+  OPS_COMPOSE(_fmt) \
   OPS_CORE(_fmt) \
   OPS_CRYPT(_fmt) \
   OPS_ENVELOPE(_fmt) \
