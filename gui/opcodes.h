@@ -453,14 +453,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_MAIN_CHANGE_GROUP_READONLY,         N_("Open a different newsgroup in read only mode")) \
   /* L10N: Help for Index function: <clear-flag> */ \
   _fmt(OP_MAIN_CLEAR_FLAG,                    N_("Clear a status flag from a message")) \
-  /* L10N: Help for Index function: <close-all-threads> */ \
-  _fmt(OP_MAIN_CLOSE_ALL_THREADS,             N_("Collapse all threads")) \
-  /* L10N: Help for Index function: <close-thread> */ \
-  _fmt(OP_MAIN_CLOSE_THREAD,                  N_("Collapse current thread")) \
-  /* L10N: Help for Index function: <collapse-all> */ \
-  _fmt(OP_MAIN_COLLAPSE_ALL,                  N_("Collapse/uncollapse all threads")) \
-  /* L10N: Help for Index function: <collapse-thread> */ \
-  _fmt(OP_MAIN_COLLAPSE_THREAD,               N_("Collapse/uncollapse current thread")) \
   /* L10N: Help for Index function: <delete-pattern> */ \
   _fmt(OP_MAIN_DELETE_PATTERN,                N_("Delete non-hidden messages matching a pattern")) \
   /* L10N: Help for Index function: <fetch-mail> */ \
@@ -481,10 +473,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_MAIN_NEXT_NEW,                      N_("Jump to the next new message")) \
   /* L10N: Help for Index function: <next-new-then-unread> */ \
   _fmt(OP_MAIN_NEXT_NEW_THEN_UNREAD,          N_("Jump to the next new or unread message")) \
-  /* L10N: Help for Index function: <next-subthread> */ \
-  _fmt(OP_MAIN_NEXT_SUBTHREAD,                N_("Jump to the next subthread")) \
-  /* L10N: Help for Index function: <next-thread> */ \
-  _fmt(OP_MAIN_NEXT_THREAD,                   N_("Jump to the next thread")) \
   /* L10N: Help for Index function: <next-undeleted> */ \
   _fmt(OP_MAIN_NEXT_UNDELETED,                N_("Move to the next undeleted message")) \
   /* L10N: Help for Index function: <next-unread> */ \
@@ -493,20 +481,10 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_MAIN_NEXT_UNREAD_MAILBOX,           N_("Open next mailbox with new mail")) \
   /* L10N: Help for Index function: <previous-unread-mailbox> */ \
   _fmt(OP_MAIN_PREV_UNREAD_MAILBOX,           N_("Open previous mailbox with new mail")) \
-  /* L10N: Help for Index function: <open-all-threads> */ \
-  _fmt(OP_MAIN_OPEN_ALL_THREADS,              N_("Uncollapse all threads")) \
-  /* L10N: Help for Index function: <open-thread> */ \
-  _fmt(OP_MAIN_OPEN_THREAD,                   N_("Uncollapse current thread")) \
-  /* L10N: Help for Index function: <parent-message> */ \
-  _fmt(OP_MAIN_PARENT_MESSAGE,                N_("Jump to parent message in thread")) \
   /* L10N: Help for Index function: <previous-new> */ \
   _fmt(OP_MAIN_PREV_NEW,                      N_("Jump to the previous new message")) \
   /* L10N: Help for Index function: <previous-new-then-unread> */ \
   _fmt(OP_MAIN_PREV_NEW_THEN_UNREAD,          N_("Jump to the previous new or unread message")) \
-  /* L10N: Help for Index function: <previous-subthread> */ \
-  _fmt(OP_MAIN_PREV_SUBTHREAD,                N_("Jump to previous subthread")) \
-  /* L10N: Help for Index function: <previous-thread> */ \
-  _fmt(OP_MAIN_PREV_THREAD,                   N_("Jump to previous thread")) \
   /* L10N: Help for Index function: <previous-undeleted> */ \
   _fmt(OP_MAIN_PREV_UNDELETED,                N_("Move to the previous undeleted message")) \
   /* L10N: Help for Index function: <previous-unread> */ \
@@ -517,8 +495,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_MAIN_READ_SUBTHREAD,                N_("Mark the current subthread as read")) \
   /* L10N: Help for Index function: <read-thread> */ \
   _fmt(OP_MAIN_READ_THREAD,                   N_("Mark the current thread as read")) \
-  /* L10N: Help for Index function: <root-message> */ \
-  _fmt(OP_MAIN_ROOT_MESSAGE,                  N_("Jump to root message in thread")) \
   /* L10N: Help for Index function: <set-flag> */ \
   _fmt(OP_MAIN_SET_FLAG,                      N_("Set a status flag on a message")) \
   /* L10N: Help for Index function: <show-limit> */ \
@@ -565,10 +541,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_SORT_REVERSE,                       N_("Sort messages in reverse order")) \
   /* L10N: Help for Browser function: <subscribe-pattern> */ \
   _fmt(OP_SUBSCRIBE_PATTERN,                  N_("Subscribe to newsgroups matching a pattern")) \
-  /* L10N: Help for Index function: <tag-subthread> */ \
-  _fmt(OP_TAG_SUBTHREAD,                      N_("Tag the current subthread")) \
-  /* L10N: Help for Index function: <tag-thread> */ \
-  _fmt(OP_TAG_THREAD,                         N_("Tag the current thread")) \
   /* L10N: Help for Browser function: <toggle-mailboxes> */ \
   _fmt(OP_TOGGLE_MAILBOXES,                   N_("Toggle whether to browse mailboxes or all files")) \
   /* L10N: Help for Index function: <toggle-new> */ \

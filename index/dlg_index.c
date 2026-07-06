@@ -155,7 +155,7 @@ bool check_acl(struct Mailbox *m, AclFlags acl, const char *msg)
  * @param menu Current menu
  * @param mode Collapse mode
  *
- * This function is called by OP_MAIN_COLLAPSE_ALL, by the one-way open/close
+ * This function is called by OP_TOGGLE_ALL_TREES, by the one-way open/close
  * commands, and on folder enter if the `$collapse_all` option is set.
  */
 void collapse_all(struct MailboxView *mv, struct Menu *menu, enum CollapseMode mode)

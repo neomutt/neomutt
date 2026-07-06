@@ -105,10 +105,6 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
 #endif
   { "check-traditional-pgp",         OP_CHECK_TRADITIONAL },
   { "clear-flag",                    OP_MAIN_CLEAR_FLAG },
-  { "close-all-threads",             OP_MAIN_CLOSE_ALL_THREADS },
-  { "close-thread",                  OP_MAIN_CLOSE_THREAD },
-  { "collapse-all",                  OP_MAIN_COLLAPSE_ALL },
-  { "collapse-thread",               OP_MAIN_COLLAPSE_THREAD },
   { "compose-to-sender",             OP_COMPOSE_TO_SENDER },
   { "copy-message",                  OP_COPY_MESSAGE },
   { "create-alias",                  OP_CREATE_ALIAS },
@@ -161,21 +157,14 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "modify-tags-then-hide",         OP_MAIN_MODIFY_TAGS_THEN_HIDE },
   { "next-new",                      OP_MAIN_NEXT_NEW },
   { "next-new-then-unread",          OP_MAIN_NEXT_NEW_THEN_UNREAD },
-  { "next-subthread",                OP_MAIN_NEXT_SUBTHREAD },
-  { "next-thread",                   OP_MAIN_NEXT_THREAD },
   { "next-undeleted",                OP_MAIN_NEXT_UNDELETED },
   { "next-unread",                   OP_MAIN_NEXT_UNREAD },
   { "next-unread-mailbox",           OP_MAIN_NEXT_UNREAD_MAILBOX },
-  { "open-all-threads",              OP_MAIN_OPEN_ALL_THREADS },
-  { "open-thread",                   OP_MAIN_OPEN_THREAD },
-  { "parent-message",                OP_MAIN_PARENT_MESSAGE },
   { "pipe-entry",                    OP_PIPE },
   { "pipe-message",                  OP_PIPE },
   { "post-message",                  OP_POST },
   { "previous-new",                  OP_MAIN_PREV_NEW },
   { "previous-new-then-unread",      OP_MAIN_PREV_NEW_THEN_UNREAD },
-  { "previous-subthread",            OP_MAIN_PREV_SUBTHREAD },
-  { "previous-thread",               OP_MAIN_PREV_THREAD },
   { "previous-undeleted",            OP_MAIN_PREV_UNDELETED },
   { "previous-unread",               OP_MAIN_PREV_UNREAD },
   { "previous-unread-mailbox",       OP_MAIN_PREV_UNREAD_MAILBOX },
@@ -190,7 +179,6 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "reconstruct-thread",            OP_RECONSTRUCT_THREAD },
   { "reply",                         OP_REPLY },
   { "resend-message",                OP_RESEND },
-  { "root-message",                  OP_MAIN_ROOT_MESSAGE },
   { "save-message",                  OP_SAVE },
   { "set-flag",                      OP_MAIN_SET_FLAG },
   { "show-limit",                    OP_MAIN_SHOW_LIMIT },
@@ -198,8 +186,6 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "sort-reverse",                  OP_SORT_REVERSE },
   { "sync-mailbox",                  OP_MAIN_SYNC_FOLDER },
   { "tag-pattern",                   OP_MAIN_TAG_PATTERN },
-  { "tag-subthread",                 OP_TAG_SUBTHREAD },
-  { "tag-thread",                    OP_TAG_THREAD },
   { "toggle-new",                    OP_TOGGLE_NEW },
   { "toggle-read",                   OP_TOGGLE_READ },
   { "toggle-write",                  OP_TOGGLE_WRITE },
@@ -266,21 +252,14 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_MAIN_CHANGE_GROUP,                  "i" },
   { OP_MAIN_CHANGE_GROUP_READONLY,         "\033i" },          // <Alt-i>
   { OP_MAIN_CLEAR_FLAG,                    "W" },
-  { OP_MAIN_COLLAPSE_ALL,                  "\033V" },          // <Alt-V>
-  { OP_MAIN_COLLAPSE_THREAD,               "\033v" },          // <Alt-v>
   { OP_MAIN_DELETE_PATTERN,                "D" },
   { OP_MAIN_FETCH_MAIL,                    "G" },
   { OP_MAIN_LIMIT,                         "l" },
   { OP_MAIN_LINK_THREADS,                  "&" },
   { OP_MAIN_NEXT_NEW_THEN_UNREAD,          "\t" },             // <Tab>
-  { OP_MAIN_NEXT_SUBTHREAD,                "\033n" },          // <Alt-n>
-  { OP_MAIN_NEXT_THREAD,                   "\016" },           // <Ctrl-N>
   { OP_MAIN_NEXT_UNDELETED,                "<down>" },
   { OP_MAIN_NEXT_UNDELETED,                "j" },
-  { OP_MAIN_PARENT_MESSAGE,                "P" },
   { OP_MAIN_PREV_NEW_THEN_UNREAD,          "\033\t" },         // <Alt-Tab>
-  { OP_MAIN_PREV_SUBTHREAD,                "\033p" },          // <Alt-p>
-  { OP_MAIN_PREV_THREAD,                   "\020" },           // <Ctrl-P>
   { OP_MAIN_PREV_UNDELETED,                "<up>" },
   { OP_MAIN_PREV_UNDELETED,                "k" },
   { OP_MAIN_READ_SUBTHREAD,                "\033r" },          // <Alt-r>
@@ -301,11 +280,18 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_RESEND,                             "\033e" },          // <Alt-e>
   { OP_SAVE,                               "s" },
   { OP_SELECT_NEXT_ENTRY,                  "J" },
+  { OP_SELECT_NEXT_SUBTREE,                "\033n" },          // <Alt-n>
+  { OP_SELECT_NEXT_TREE,                   "\016" },           // <Ctrl-N>
   { OP_SELECT_PREVIOUS_ENTRY,              "K" },
+  { OP_SELECT_PREVIOUS_SUBTREE,            "\033p" },          // <Alt-p>
+  { OP_SELECT_PREVIOUS_TREE,               "\020" },           // <Ctrl-P>
+  { OP_SELECT_TREE_PARENT_ENTRY,           "P" },
   { OP_SORT,                               "o" },
   { OP_SORT_REVERSE,                       "O" },
-  { OP_TAG_THREAD,                         "\033t" },          // <Alt-t>
+  { OP_TOGGLE_ALL_TREES,                   "\033V" },          // <Alt-V>
   { OP_TOGGLE_NEW,                         "N" },
+  { OP_TOGGLE_TAG_TREE,                    "\033t" },          // <Alt-t>
+  { OP_TOGGLE_TREE,                        "\033v" },          // <Alt-v>
   { OP_TOGGLE_WRITE,                       "%" },
   { OP_UNDELETE,                           "u" },
   { OP_UNDELETE_SUBTHREAD,                 "\033u" },          // <Alt-u>
@@ -1557,9 +1543,9 @@ changefoldercleanup:
 }
 
 /**
- * op_main_collapse_all - Collapse/uncollapse all threads - Implements ::index_function_t - @ingroup index_function_api
+ * op_toggle_all_trees - Collapse/uncollapse all threads - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_main_collapse_all(struct IndexFunctionData *fdata, const struct KeyEvent *event)
+static int op_toggle_all_trees(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
@@ -1575,9 +1561,9 @@ static int op_main_collapse_all(struct IndexFunctionData *fdata, const struct Ke
 }
 
 /**
- * op_main_close_all_threads - Collapse all threads - Implements ::index_function_t - @ingroup index_function_api
+ * op_fold_all_trees - Collapse all threads - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_main_close_all_threads(struct IndexFunctionData *fdata,
+static int op_fold_all_trees(struct IndexFunctionData *fdata,
                                      const struct KeyEvent *event)
 {
   struct IndexSharedData *shared = fdata->shared;
@@ -1598,9 +1584,9 @@ static int op_main_close_all_threads(struct IndexFunctionData *fdata,
 }
 
 /**
- * op_main_close_thread - Collapse current thread - Implements ::index_function_t - @ingroup index_function_api
+ * op_fold_tree - Collapse current thread - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_main_close_thread(struct IndexFunctionData *fdata, const struct KeyEvent *event)
+static int op_fold_tree(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
@@ -1613,9 +1599,9 @@ static int op_main_close_thread(struct IndexFunctionData *fdata, const struct Ke
 }
 
 /**
- * op_main_collapse_thread - Collapse/uncollapse current thread - Implements ::index_function_t - @ingroup index_function_api
+ * op_toggle_tree - Collapse/uncollapse current thread - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_main_collapse_thread(struct IndexFunctionData *fdata, const struct KeyEvent *event)
+static int op_toggle_tree(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
@@ -1628,9 +1614,9 @@ static int op_main_collapse_thread(struct IndexFunctionData *fdata, const struct
 }
 
 /**
- * op_main_open_all_threads - Open all threads - Implements ::index_function_t - @ingroup index_function_api
+ * op_unfold_all_trees - Open all threads - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_main_open_all_threads(struct IndexFunctionData *fdata,
+static int op_unfold_all_trees(struct IndexFunctionData *fdata,
                                     const struct KeyEvent *event)
 {
   struct IndexSharedData *shared = fdata->shared;
@@ -1651,9 +1637,9 @@ static int op_main_open_all_threads(struct IndexFunctionData *fdata,
 }
 
 /**
- * op_main_open_thread - Open current thread - Implements ::index_function_t - @ingroup index_function_api
+ * op_unfold_tree - Open current thread - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_main_open_thread(struct IndexFunctionData *fdata, const struct KeyEvent *event)
+static int op_unfold_tree(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
@@ -2112,22 +2098,22 @@ static int op_main_next_new(struct IndexFunctionData *fdata, const struct KeyEve
 }
 
 /**
- * op_main_next_thread - Jump to the next thread - Implements ::index_function_t - @ingroup index_function_api
+ * op_select_next_subtree - Jump to the next thread - Implements ::index_function_t - @ingroup index_function_api
  *
  * This function handles:
- * - OP_MAIN_NEXT_SUBTHREAD
- * - OP_MAIN_NEXT_THREAD
- * - OP_MAIN_PREV_SUBTHREAD
- * - OP_MAIN_PREV_THREAD
+ * - OP_SELECT_NEXT_SUBTREE
+ * - OP_SELECT_NEXT_TREE
+ * - OP_SELECT_PREVIOUS_SUBTREE
+ * - OP_SELECT_PREVIOUS_TREE
  */
-static int op_main_next_thread(struct IndexFunctionData *fdata, const struct KeyEvent *event)
+static int op_select_next_subtree(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
   const int op = event->op;
   const int count = event->count;
-  const bool forwards = (op == OP_MAIN_NEXT_THREAD) || (op == OP_MAIN_NEXT_SUBTHREAD);
-  const bool subthreads = (op == OP_MAIN_NEXT_SUBTHREAD) || (op == OP_MAIN_PREV_SUBTHREAD);
+  const bool forwards = (op == OP_SELECT_NEXT_TREE) || (op == OP_SELECT_NEXT_SUBTREE);
+  const bool subthreads = (op == OP_SELECT_NEXT_SUBTREE) || (op == OP_SELECT_PREVIOUS_SUBTREE);
 
   if (count > 0)
   {
@@ -2410,21 +2396,21 @@ static int op_main_read_thread(struct IndexFunctionData *fdata, const struct Key
 }
 
 /**
- * op_main_root_message - Jump to root message in thread - Implements ::index_function_t - @ingroup index_function_api
+ * op_select_tree_parent_entry - Jump to root message in thread - Implements ::index_function_t - @ingroup index_function_api
  *
  * This function handles:
- * - OP_MAIN_PARENT_MESSAGE
- * - OP_MAIN_ROOT_MESSAGE
+ * - OP_SELECT_TREE_PARENT_ENTRY
+ * - OP_SELECT_TREE_ROOT_ENTRY
  *
  * When called with a count prefix, will jump N ancestors up the thread
- * (for parent-message, not for root-message which always goes to root).
+ * (for select-tree-parent-entry, not for select-tree-root-entry which always goes to root).
  */
-static int op_main_root_message(struct IndexFunctionData *fdata, const struct KeyEvent *event)
+static int op_select_tree_parent_entry(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
-  int count = event->op == OP_MAIN_ROOT_MESSAGE ? 0 : MAX(event->count, 1);
-  int index = mutt_parent_message(shared->email, event->op == OP_MAIN_ROOT_MESSAGE, count);
+  int count = event->op == OP_SELECT_TREE_ROOT_ENTRY ? 0 : MAX(event->count, 1);
+  int index = mutt_parent_message(shared->email, event->op == OP_SELECT_TREE_ROOT_ENTRY, count);
   if (index != -1)
     menu_set_index(priv->menu, index);
 
@@ -3064,13 +3050,13 @@ static int op_toggle_tag(struct IndexFunctionData *fdata, const struct KeyEvent 
 }
 
 /**
- * op_tag_thread - Tag the current thread - Implements ::index_function_t - @ingroup index_function_api
+ * op_toggle_tag_subtree - Tag the current thread - Implements ::index_function_t - @ingroup index_function_api
  *
  * This function handles:
- * - OP_TAG_SUBTHREAD
- * - OP_TAG_THREAD
+ * - OP_TOGGLE_TAG_SUBTREE
+ * - OP_TOGGLE_TAG_TREE
  */
-static int op_tag_thread(struct IndexFunctionData *fdata, const struct KeyEvent *event)
+static int op_toggle_tag_subtree(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
@@ -3079,10 +3065,10 @@ static int op_tag_thread(struct IndexFunctionData *fdata, const struct KeyEvent 
 
   const int op = event->op;
   int rc = mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_TAG,
-                                !shared->email->tagged, (op != OP_TAG_THREAD));
+                                !shared->email->tagged, (op != OP_TOGGLE_TAG_TREE));
   if (rc != -1)
   {
-    const enum ResolveMethod rm = (op == OP_TAG_THREAD) ? RESOLVE_NEXT_THREAD :
+    const enum ResolveMethod rm = (op == OP_TOGGLE_TAG_TREE) ? RESOLVE_NEXT_THREAD :
                                                           RESOLVE_NEXT_SUBTHREAD;
     resolve_email(priv, shared, rm, 1);
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
@@ -3930,6 +3916,8 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_EXIT,                             op_exit,                     CHECK_NONE },
   { OP_EXTRACT_KEYS,                     op_extract_keys,             CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_FLAG_MESSAGE,                     op_flag_message,             CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
+  { OP_FOLD_ALL_TREES,                   op_fold_all_trees,           CHECK_IN_MAILBOX },
+  { OP_FOLD_TREE,                        op_fold_tree,                CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_FOLLOWUP,                         op_post,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_FORWARD_MESSAGE,                  op_forward_message,          CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_FORWARD_TO_GROUP,                 op_post,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
@@ -3954,10 +3942,6 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_MAIN_CHANGE_GROUP,                op_main_change_group,        CHECK_NONE },
   { OP_MAIN_CHANGE_GROUP_READONLY,       op_main_change_group,        CHECK_NONE },
   { OP_MAIN_CLEAR_FLAG,                  op_main_set_flag,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
-  { OP_MAIN_CLOSE_ALL_THREADS,           op_main_close_all_threads,   CHECK_IN_MAILBOX },
-  { OP_MAIN_CLOSE_THREAD,                op_main_close_thread,        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_MAIN_COLLAPSE_ALL,                op_main_collapse_all,        CHECK_IN_MAILBOX },
-  { OP_MAIN_COLLAPSE_THREAD,             op_main_collapse_thread,     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_DELETE_PATTERN,              op_main_delete_pattern,      CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_READONLY },
   { OP_MAIN_FETCH_MAIL,                  op_main_fetch_mail,          CHECK_ATTACH },
   { OP_MAIN_IMAP_FETCH,                  op_main_imap_fetch,          CHECK_NONE },
@@ -3968,25 +3952,17 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_MAIN_MODIFY_TAGS_THEN_HIDE,       op_main_modify_tags,         CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_MAIN_NEXT_NEW,                    op_main_next_new,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_NEXT_NEW_THEN_UNREAD,        op_main_next_new,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_MAIN_NEXT_SUBTHREAD,              op_main_next_thread,         CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_MAIN_NEXT_THREAD,                 op_main_next_thread,         CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_NEXT_UNDELETED,              op_main_next_undeleted,      CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_NEXT_UNREAD,                 op_main_next_new,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_NEXT_UNREAD_MAILBOX,         op_main_next_unread_mailbox, CHECK_IN_MAILBOX },
-  { OP_MAIN_OPEN_ALL_THREADS,            op_main_open_all_threads,    CHECK_IN_MAILBOX },
-  { OP_MAIN_OPEN_THREAD,                 op_main_open_thread,         CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_MAIN_PARENT_MESSAGE,              op_main_root_message,        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_PREV_NEW,                    op_main_next_new,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_PREV_NEW_THEN_UNREAD,        op_main_next_new,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_MAIN_PREV_SUBTHREAD,              op_main_next_thread,         CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_MAIN_PREV_THREAD,                 op_main_next_thread,         CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_PREV_UNDELETED,              op_main_prev_undeleted,      CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_PREV_UNREAD,                 op_main_next_new,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_PREV_UNREAD_MAILBOX,         op_main_prev_unread_mailbox, CHECK_IN_MAILBOX },
   { OP_MAIN_QUASI_DELETE,                op_main_quasi_delete,        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_READ_SUBTHREAD,              op_main_read_thread,         CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_MAIN_READ_THREAD,                 op_main_read_thread,         CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
-  { OP_MAIN_ROOT_MESSAGE,                op_main_root_message,        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_SET_FLAG,                    op_main_set_flag,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_MAIN_SHOW_LIMIT,                  op_main_show_limit,          CHECK_IN_MAILBOX },
   { OP_MAIN_SYNC_FOLDER,                 op_main_sync_folder,         CHECK_NONE },
@@ -4012,18 +3988,28 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_SEARCH_PREVIOUS,                  op_search,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_SELECT_ENTRY_BY_NUMBER,           op_select_entry_by_number,   CHECK_IN_MAILBOX },
   { OP_SELECT_NEXT_ENTRY,                op_select_last_entry,        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_SELECT_NEXT_SUBTREE,              op_select_next_subtree,      CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_SELECT_NEXT_TREE,                 op_select_next_subtree,      CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_SELECT_PREVIOUS_ENTRY,            op_select_previous_entry,    CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_SELECT_PREVIOUS_SUBTREE,          op_select_next_subtree,      CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_SELECT_PREVIOUS_TREE,             op_select_next_subtree,      CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_SELECT_TREE_PARENT_ENTRY,         op_select_tree_parent_entry, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_SELECT_TREE_ROOT_ENTRY,           op_select_tree_parent_entry, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_SORT,                             op_sort,                     CHECK_NONE },
   { OP_SORT_REVERSE,                     op_sort,                     CHECK_NONE },
-  { OP_TAG_SUBTHREAD,                    op_tag_thread,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_TAG_THREAD,                       op_tag_thread,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_TOGGLE_ALL_TREES,                 op_toggle_all_trees,         CHECK_IN_MAILBOX },
   { OP_TOGGLE_NEW,                       op_toggle_new,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_TOGGLE_READ,                      op_main_limit,               CHECK_IN_MAILBOX },
   { OP_TOGGLE_TAG,                       op_toggle_tag,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_TOGGLE_TAG_SUBTREE,               op_toggle_tag_subtree,       CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_TOGGLE_TAG_TREE,                  op_toggle_tag_subtree,       CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_TOGGLE_TREE,                      op_toggle_tree,              CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_TOGGLE_WRITE,                     op_toggle_write,             CHECK_IN_MAILBOX },
   { OP_UNDELETE,                         op_undelete,                 CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_UNDELETE_SUBTHREAD,               op_undelete_thread,          CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_UNDELETE_THREAD,                  op_undelete_thread,          CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
+  { OP_UNFOLD_ALL_TREES,                 op_unfold_all_trees,         CHECK_IN_MAILBOX },
+  { OP_UNFOLD_TREE,                      op_unfold_tree,              CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_VIEW_ATTACHMENTS,                 op_view_attachments,         CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_VIEW_RAW_MESSAGE,                 op_edit_raw_message,         CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
 #ifdef USE_AUTOCRYPT
