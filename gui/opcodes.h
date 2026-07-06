@@ -273,26 +273,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_ATTACH_VIEW_PAGER,                  N_("View attachment in pager using copiousoutput mailcap")) \
   /* L10N: Help for Attach, Compose function: <view-text> */ \
   _fmt(OP_ATTACH_VIEW_TEXT,                   N_("View attachment as text")) \
-  /* L10N: Help for Compose function <preview-scroll-end> */ \
-  _fmt(OP_PREVIEW_SCROLL_END,                 N_("Scroll to the bottom")) \
-  /* L10N: Help for Compose function: <preview-scroll-half-down> */ \
-  _fmt(OP_PREVIEW_SCROLL_HALF_DOWN,           N_("Scroll down half a page")) \
-  /* L10N: Help for Compose function: <preview-scroll-half-up> */ \
-  _fmt(OP_PREVIEW_SCROLL_HALF_UP,             N_("Scroll up half a page")) \
-  /* L10N: Help for Compose function <preview-scroll-home> */ \
-  _fmt(OP_PREVIEW_SCROLL_HOME,                N_("Scroll to the top")) \
-  /* L10N: Help for Compose function: <preview-scroll-line-down> */ \
-  _fmt(OP_PREVIEW_SCROLL_LINE_DOWN,           N_("Scroll down one line")) \
-  /* L10N: Help for Compose function: <preview-scroll-line-up> */ \
-  _fmt(OP_PREVIEW_SCROLL_LINE_UP,             N_("Scroll up one line")) \
-  /* L10N: Help for Compose function: <preview-scroll-page-down> */ \
-  _fmt(OP_PREVIEW_SCROLL_PAGE_DOWN,           N_("Show the next page of the message")) \
-  /* L10N: Help for Compose function: <preview-scroll-page-up> */ \
-  _fmt(OP_PREVIEW_SCROLL_PAGE_UP,             N_("Show the previous page of the message")) \
-  /* L10N: Help for Compose function: <preview-select-first-entry> */ \
-  _fmt(OP_PREVIEW_SELECT_FIRST_ENTRY,         N_("Move to the first entry")) \
-  /* L10N: Help for Compose function: <preview-select-last-entry> */ \
-  _fmt(OP_PREVIEW_SELECT_LAST_ENTRY,          N_("Move to the last entry")) \
 
 #ifdef USE_AUTOCRYPT
 #define OPS_AUTOCRYPT(_fmt) \
@@ -640,16 +620,38 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Pgp, Smime function: <view-name> */ \
   _fmt(OP_VIEW_ID,                            N_("View the key's user id")) \
 
+#define OPS_PREVIEW(_fmt) \
+  /* L10N: Help for Compose function <preview-scroll-end> */ \
+  _fmt(OP_PREVIEW_SCROLL_END,                 N_("Scroll to the bottom")) \
+  /* L10N: Help for Compose function: <preview-scroll-half-down> */ \
+  _fmt(OP_PREVIEW_SCROLL_HALF_DOWN,           N_("Scroll down half a page")) \
+  /* L10N: Help for Compose function: <preview-scroll-half-up> */ \
+  _fmt(OP_PREVIEW_SCROLL_HALF_UP,             N_("Scroll up half a page")) \
+  /* L10N: Help for Compose function <preview-scroll-home> */ \
+  _fmt(OP_PREVIEW_SCROLL_HOME,                N_("Scroll to the top")) \
+  /* L10N: Help for Compose function: <preview-scroll-line-down> */ \
+  _fmt(OP_PREVIEW_SCROLL_LINE_DOWN,           N_("Scroll down one line")) \
+  /* L10N: Help for Compose function: <preview-scroll-line-up> */ \
+  _fmt(OP_PREVIEW_SCROLL_LINE_UP,             N_("Scroll up one line")) \
+  /* L10N: Help for Compose function: <preview-scroll-page-down> */ \
+  _fmt(OP_PREVIEW_SCROLL_PAGE_DOWN,           N_("Show the next page of the message")) \
+  /* L10N: Help for Compose function: <preview-scroll-page-up> */ \
+  _fmt(OP_PREVIEW_SCROLL_PAGE_UP,             N_("Show the previous page of the message")) \
+  /* L10N: Help for Compose function: <preview-select-first-entry> */ \
+  _fmt(OP_PREVIEW_SELECT_FIRST_ENTRY,         N_("Move to the first entry")) \
+  /* L10N: Help for Compose function: <preview-select-last-entry> */ \
+  _fmt(OP_PREVIEW_SELECT_LAST_ENTRY,          N_("Move to the last entry")) \
+
 #define OPS_SIDEBAR(_fmt) \
   /* L10N: Help for Sidebar function: <sidebar-activate-entry> */ \
   _fmt(OP_SIDEBAR_ACTIVATE_ENTRY,             N_("Open highlighted mailbox")) \
-  /* L10N: Help for Generic function <scroll-end> */ \
+  /* L10N: Help for Generic function <sidebar-scroll-end> */ \
   _fmt(OP_SIDEBAR_SCROLL_END,                 N_("Scroll to the bottom")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-half-down> */ \
   _fmt(OP_SIDEBAR_SCROLL_HALF_DOWN,           N_("Scroll down half a page")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-half-up> */ \
   _fmt(OP_SIDEBAR_SCROLL_HALF_UP,             N_("Scroll up half a page")) \
-  /* L10N: Help for Generic function <scroll-home> */ \
+  /* L10N: Help for Generic function <sidebar-scroll-home> */ \
   _fmt(OP_SIDEBAR_SCROLL_HOME,                N_("Scroll to the top")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-line-down> */ \
   _fmt(OP_SIDEBAR_SCROLL_LINE_DOWN,           N_("Scroll down one line")) \
@@ -714,6 +716,7 @@ const char *opcodes_get_name       (int op);
   OPS_NOTMUCH(_fmt) \
   OPS_PAGER(_fmt) \
   OPS_PGP(_fmt) \
+  OPS_PREVIEW(_fmt) \
   OPS_SIDEBAR(_fmt) \
   OPS_SMIME(_fmt) \
 
