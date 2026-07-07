@@ -1,0 +1,5 @@
+bind $my_menu A_0001 compose-message
+bind $my_menu A_0002 delete-alias
+bind $my_menu A_0003 undelete-alias
+
+# vim: ft=neomuttrc
