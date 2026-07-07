@@ -1,0 +1,25 @@
+bind $my_menu N_0001 sidebar-first
+bind $my_menu N_0002 sidebar-last
+bind $my_menu N_0003 sidebar-next
+bind $my_menu N_0004 sidebar-next-new
+bind $my_menu N_0005 sidebar-open
+bind $my_menu N_0006 sidebar-page-down
+bind $my_menu N_0007 sidebar-page-up
+bind $my_menu N_0008 sidebar-prev
+bind $my_menu N_0009 sidebar-prev-new
+bind $my_menu N_0010 sidebar-scroll-half-down
+bind $my_menu N_0011 sidebar-scroll-half-up
+bind $my_menu N_0012 sidebar-scroll-line-down
+bind $my_menu N_0013 sidebar-scroll-line-up
+bind $my_menu N_0014 sidebar-scroll-selection-to-bottom
+bind $my_menu N_0015 sidebar-scroll-selection-to-middle
+bind $my_menu N_0016 sidebar-scroll-selection-to-top
+bind $my_menu N_0017 sidebar-select-entry-by-number
+bind $my_menu N_0018 sidebar-select-page-bottom
+bind $my_menu N_0019 sidebar-select-page-middle
+bind $my_menu N_0020 sidebar-select-page-top
+bind $my_menu N_0021 sidebar-start-search
+bind $my_menu N_0022 sidebar-toggle-virtual
+bind $my_menu N_0023 sidebar-toggle-visible
+
+# vim: ft=neomuttrc

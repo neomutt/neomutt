@@ -1,0 +1,11 @@
+bind $my_menu M_0001 create-alias
+bind $my_menu M_0002 limit
+bind $my_menu M_0003 mail
+bind $my_menu M_0004 query
+bind $my_menu M_0005 query-append
+bind $my_menu M_0006 sort
+bind $my_menu M_0007 sort-reverse
+bind $my_menu M_0008 tag-pattern
+bind $my_menu M_0009 untag-pattern
+
+# vim: ft=neomuttrc
