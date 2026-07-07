@@ -140,6 +140,31 @@ static const struct MenuFuncOp OpCompose[] = { /* map: compose */
 #ifdef USE_AUTOCRYPT
   { "view-autocrypt-options",        OP_COMPOSE_VIEW_AUTOCRYPT_OPTIONS },
 #endif
+
+  // Deprecated
+  { "attach-key",                    OP_ATTACH_ATTACH_PGP_KEY,              MFF_DEPRECATED },
+#ifdef USE_AUTOCRYPT
+  { "autocrypt-menu",                OP_COMPOSE_VIEW_AUTOCRYPT_OPTIONS,     MFF_DEPRECATED },
+#endif
+  { "copy-file",                     OP_ATTACH_SAVE_ATTACHMENT,             MFF_DEPRECATED },
+  { "display-toggle-weed",           OP_DISPLAY_MESSAGE_HEADERS,            MFF_DEPRECATED },
+  { "edit-type",                     OP_ATTACH_EDIT_CONTENT_TYPE,           MFF_DEPRECATED },
+  { "filter-entry",                  OP_ATTACH_FILTER_ATTACHMENT,           MFF_DEPRECATED },
+  { "ispell",                        OP_COMPOSE_CHECK_SPELLING,             MFF_DEPRECATED },
+  { "move-down",                     OP_ATTACH_MOVE_ATTACHMENT_DOWN,        MFF_DEPRECATED },
+  { "move-up",                       OP_ATTACH_MOVE_ATTACHMENT_UP,          MFF_DEPRECATED },
+  { "new-mime",                      OP_ATTACH_ATTACH_NEW_MIME,             MFF_DEPRECATED },
+  { "pgp-menu",                      OP_COMPOSE_VIEW_PGP_OPTIONS,           MFF_DEPRECATED },
+  { "print-entry",                   OP_ATTACH_PRINT_ATTACHMENT,            MFF_DEPRECATED },
+  { "rename-attachment",             OP_ATTACH_EDIT_ATTACHMENT_NAME,        MFF_DEPRECATED },
+  { "rename-file",                   OP_COMPOSE_RENAME_FILE_ON_DISK,        MFF_DEPRECATED },
+  { "smime-menu",                    OP_COMPOSE_VIEW_SMIME_OPTIONS,         MFF_DEPRECATED },
+  { "ungroup-attachment",            OP_ATTACH_UNGROUP_ATTACHMENTS,         MFF_DEPRECATED },
+  { "view-attach",                   OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT,  MFF_DEPRECATED },
+  { "view-mailcap",                  OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP,  MFF_DEPRECATED },
+  { "view-pager",                    OP_ATTACH_DISPLAY_ATTACHMENT_PAGER,    MFF_DEPRECATED },
+  { "view-text",                     OP_ATTACH_DISPLAY_ATTACHMENT_TEXT,     MFF_DEPRECATED },
+  { "write-fcc",                     OP_COMPOSE_SAVE_MESSAGE_COPY,          MFF_DEPRECATED },
   { NULL, 0 },
 };
 
