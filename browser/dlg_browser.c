@@ -125,7 +125,7 @@ static const struct Mapping FolderNewsHelp[] = {
   { N_("List"),        OP_TOGGLE_MAILBOXES },
   { N_("Subscribe"),   OP_BROWSER_SUBSCRIBE },
   { N_("Unsubscribe"), OP_BROWSER_UNSUBSCRIBE },
-  { N_("Catchup"),     OP_CATCHUP },
+  { N_("Catchup"),     OP_NNTP_MARK_NEWSGROUP_READ },
   { N_("Limit"),       OP_BROWSER_LIMIT },
   { N_("Help"),        OP_DISPLAY_HELP },
   { NULL, 0 },

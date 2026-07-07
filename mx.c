@@ -917,7 +917,7 @@ enum MxStatus mx_mbox_sync(struct Mailbox *m)
     struct Buffer *tmp = buf_pool_get();
 
     const struct MenuDefinition *md_index = index_get_menu_definition();
-    if (keymap_expand_key(km_find_func(md_index, OP_TOGGLE_WRITE), buf))
+    if (keymap_expand_key(km_find_func(md_index, OP_TOGGLE_MAILBOX_READONLY), buf))
       buf_printf(tmp, _(" Press '%s' to toggle write"), buf_string(buf));
     else
       buf_addstr(tmp, _("Use 'toggle-write' to re-enable write"));

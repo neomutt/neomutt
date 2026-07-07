@@ -65,18 +65,18 @@ static const struct MenuFuncOp OpAttach[] = { /* map: attach */
   { "display-toggle-weed",           OP_DISPLAY_MESSAGE_HEADERS },
   { "edit-type",                     OP_ATTACH_EDIT_CONTENT_TYPE },
   { "extract-keys",                  OP_EXTRACT_KEYS },
-  { "followup-message",              OP_FOLLOWUP },
+  { "followup-message",              OP_NNTP_FOLLOWUP_MESSAGE },
   { "forward-message",               OP_FORWARD_MESSAGE },
-  { "forward-to-group",              OP_FORWARD_TO_GROUP },
-  { "group-chat-reply",              OP_GROUP_CHAT_REPLY },
-  { "group-reply",                   OP_GROUP_REPLY },
+  { "forward-to-group",              OP_NNTP_FORWARD_TO_GROUP },
+  { "group-chat-reply",              OP_REPLY_GROUP_CHAT },
+  { "group-reply",                   OP_REPLY_ALL },
   { "list-reply",                    OP_LIST_REPLY },
   { "list-subscribe",                OP_LIST_SUBSCRIBE },
   { "list-unsubscribe",              OP_LIST_UNSUBSCRIBE },
   { "pipe-entry",                    OP_PIPE },
   { "pipe-message",                  OP_PIPE },
   { "print-entry",                   OP_ATTACH_PRINT_ATTACHMENT },
-  { "reply",                         OP_REPLY },
+  { "reply",                         OP_REPLY_SENDER },
   { "resend-message",                OP_RESEND },
   { "save-entry",                    OP_ATTACH_SAVE_ATTACHMENT },
   { "undelete-entry",                OP_ATTACH_UNDELETE },
@@ -108,10 +108,10 @@ static const struct MenuOpSeq AttachDefaultBindings[] = { /* map: attach */
   { OP_EXTRACT_KEYS,                       "\013" },           // <Ctrl-K>
   { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
   { OP_FORWARD_MESSAGE,                    "f" },
-  { OP_GROUP_REPLY,                        "g" },
   { OP_LIST_REPLY,                         "L" },
   { OP_PIPE,                               "|" },
-  { OP_REPLY,                              "r" },
+  { OP_REPLY_ALL,                          "g" },
+  { OP_REPLY_SENDER,                       "r" },
   { OP_RESEND,                             "\033e" },          // <Alt-e>
   { 0, NULL },
 };
@@ -680,10 +680,10 @@ static int op_list_unsubscribe(struct AttachFunctionData *fdata, const struct Ke
  * op_reply - reply to a message - Implements ::attach_function_t - @ingroup attach_function_api
  *
  * This function handles:
- * - OP_GROUP_CHAT_REPLY
- * - OP_GROUP_REPLY
  * - OP_LIST_REPLY
- * - OP_REPLY
+ * - OP_REPLY_ALL
+ * - OP_REPLY_GROUP_CHAT
+ * - OP_REPLY_SENDER
  */
 static int op_reply(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -693,9 +693,9 @@ static int op_reply(struct AttachFunctionData *fdata, const struct KeyEvent *eve
 
   const int op = event->op;
   SendFlags flags = SEND_REPLY;
-  if (op == OP_GROUP_REPLY)
+  if (op == OP_REPLY_ALL)
     flags |= SEND_GROUP_REPLY;
-  else if (op == OP_GROUP_CHAT_REPLY)
+  else if (op == OP_REPLY_GROUP_CHAT)
     flags |= SEND_GROUP_CHAT_REPLY;
   else if (op == OP_LIST_REPLY)
     flags |= SEND_LIST_REPLY;
@@ -796,17 +796,17 @@ static const struct AttachFunction AttachFunctions[] = {
   { OP_DISPLAY_MESSAGE_HEADERS,           op_attach_view },
   { OP_EXIT,                              op_quit },
   { OP_EXTRACT_KEYS,                      op_extract_keys },
-  { OP_FOLLOWUP,                          op_followup },
   { OP_FORWARD_MESSAGE,                   op_forward_message },
-  { OP_FORWARD_TO_GROUP,                  op_forward_to_group },
-  { OP_GROUP_CHAT_REPLY,                  op_reply },
-  { OP_GROUP_REPLY,                       op_reply },
   { OP_LIST_REPLY,                        op_reply },
   { OP_LIST_SUBSCRIBE,                    op_list_subscribe },
   { OP_LIST_UNSUBSCRIBE,                  op_list_unsubscribe },
+  { OP_NNTP_FOLLOWUP_MESSAGE,             op_followup },
+  { OP_NNTP_FORWARD_TO_GROUP,             op_forward_to_group },
   { OP_PIPE,                              op_attach_pipe },
   { OP_QUIT,                              op_quit },
-  { OP_REPLY,                             op_reply },
+  { OP_REPLY_ALL,                         op_reply },
+  { OP_REPLY_GROUP_CHAT,                  op_reply },
+  { OP_REPLY_SENDER,                      op_reply },
   { OP_RESEND,                            op_resend },
   { 0, NULL },
   // clang-format on

@@ -72,9 +72,9 @@ static const struct MenuFuncOp OpPager[] = { /* map: pager */
 
   // Deprecated
   { "bottom",            OP_SELECT_LAST_ENTRY,                 MFF_DEPRECATED },
-  { "buffy-list",        OP_MAILBOX_LIST,                      MFF_DEPRECATED },
+  { "buffy-list",        OP_SHOW_MAILBOXES,                    MFF_DEPRECATED },
   { "error-history",     OP_DISPLAY_LOG,                       MFF_DEPRECATED },
-  { "mark-as-new",       OP_TOGGLE_NEW,                        MFF_DEPRECATED },
+  { "mark-as-new",       OP_TOGGLE_NEW_FLAG,                   MFF_DEPRECATED },
   { "search-toggle",     OP_PAGER_TOGGLE_SEARCH_HIGHLIGHTING,  MFF_DEPRECATED },
   { "skip-quoted",       OP_PAGER_SKIP_QUOTED_TEXT,            MFF_DEPRECATED },
   { "tag-message",       OP_TOGGLE_TAG,                        MFF_DEPRECATED },
@@ -88,8 +88,6 @@ static const struct MenuFuncOp OpPager[] = { /* map: pager */
  */
 static const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { OP_EXIT,                               "q" },
-  { OP_MAIN_NEXT_UNDELETED,                "<right>" },
-  { OP_MAIN_PREV_UNDELETED,                "<left>" },
   { OP_PAGER_SKIP_HEADERS,                 "H" },
   { OP_PAGER_SKIP_QUOTED_TEXT,             "S" },
   { OP_PAGER_TOGGLE_QUOTED_TEXT,           "T" },
@@ -102,6 +100,8 @@ static const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { OP_SCROLL_PAGE_DOWN,                   " " },              // <Space>
   { OP_SCROLL_PAGE_UP,                     "-" },
   { OP_SELECT_FIRST_ENTRY,                 "^" },
+  { OP_SELECT_NEXT_UNDELETED_ENTRY,        "<right>" },
+  { OP_SELECT_PREVIOUS_UNDELETED_ENTRY,    "<left>" },
   { 0, NULL },
 };
 // clang-format on
@@ -1022,12 +1022,12 @@ static const struct PagerFunction PagerFunctions[] = {
   // clang-format off
   { OP_DISPLAY_HELP,                     op_display_help },
   { OP_EXIT,                             op_exit },
+  { OP_MOVE_MESSAGE,                     op_save },
   { OP_PAGER_SKIP_HEADERS,               op_pager_skip_headers },
   { OP_PAGER_SKIP_QUOTED_TEXT,           op_pager_skip_quoted },
   { OP_PAGER_TOGGLE_QUOTED_TEXT,         op_pager_toggle_quoted_text },
   { OP_PAGER_TOGGLE_SEARCH_HIGHLIGHTING, op_pager_toggle_search_highlighting },
   { OP_QUIT,                             op_quit },
-  { OP_SAVE,                             op_save },
   { OP_SCROLL_END,                       op_scroll_end },
   { OP_SCROLL_HALF_DOWN,                 op_scroll_half_down },
   { OP_SCROLL_HALF_UP,                   op_scroll_half_up },
