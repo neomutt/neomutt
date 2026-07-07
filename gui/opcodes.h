@@ -213,14 +213,28 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_ATTACH_ATTACH_MESSAGE,              N_("Attach messages to this message")) \
   /* L10N: Help for Compose function: <attach-news-message> */ \
   _fmt(OP_ATTACH_ATTACH_NEWS_MESSAGE,         N_("Attach news articles to this message")) \
+  /* L10N: Help for Compose function: <attach-new-mime> */ \
+  _fmt(OP_ATTACH_ATTACH_NEW_MIME,             N_("Compose new attachment using mailcap entry")) \
   /* L10N: Help for Attach function: <collapse-parts> */ \
   _fmt(OP_ATTACH_COLLAPSE,                    N_("Toggle display of subparts")) \
   /* L10N: Help for Attach function: <delete-entry> */ \
   _fmt(OP_ATTACH_DELETE,                      N_("Delete the current entry")) \
   /* L10N: Help for Compose function: <detach-file> */ \
   _fmt(OP_ATTACH_DETACH,                      N_("Delete the current entry")) \
+  /* L10N: Help for Attach, Compose function: <display-attachment-default> */ \
+  _fmt(OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT,  N_("View attachment using mailcap entry if necessary")) \
+  /* L10N: Help for Attach, Compose function: <display-attachment-mailcap> */ \
+  _fmt(OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP,  N_("Force viewing of attachment using mailcap")) \
+  /* L10N: Help for Attach, Compose function: <display-attachment-pager> */ \
+  _fmt(OP_ATTACH_DISPLAY_ATTACHMENT_PAGER,    N_("View attachment in pager using copiousoutput mailcap")) \
+  /* L10N: Help for Attach, Compose function: <display-attachment-text> */ \
+  _fmt(OP_ATTACH_DISPLAY_ATTACHMENT_TEXT,     N_("View attachment as text")) \
+  /* L10N: Help for Compose function: <edit-attachment-name> */ \
+  _fmt(OP_ATTACH_EDIT_ATTACHMENT_NAME,        N_("Send attachment with a different name")) \
   /* L10N: Help for Compose function: <edit-content-id> */ \
   _fmt(OP_ATTACH_EDIT_CONTENT_ID,             N_("Edit the 'Content-ID' of the attachment")) \
+  /* L10N: Help for Attach, Compose, Index function: <edit-content-type> */ \
+  _fmt(OP_ATTACH_EDIT_CONTENT_TYPE,           N_("Edit attachment content type")) \
   /* L10N: Help for Compose function: <edit-description> */ \
   _fmt(OP_ATTACH_EDIT_DESCRIPTION,            N_("Edit attachment description")) \
   /* L10N: Help for Compose function: <edit-encoding> */ \
@@ -229,8 +243,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_ATTACH_EDIT_LANGUAGE,               N_("Edit the 'Content-Language' of the attachment")) \
   /* L10N: Help for Compose function: <edit-mime> */ \
   _fmt(OP_ATTACH_EDIT_MIME,                   N_("Edit attachment using mailcap entry")) \
-  /* L10N: Help for Attach, Compose, Index function: <edit-content-type> */ \
-  _fmt(OP_ATTACH_EDIT_CONTENT_TYPE,           N_("Edit attachment content type")) \
   /* L10N: Help for Compose function: <filter-attachment> */ \
   _fmt(OP_ATTACH_FILTER_ATTACHMENT,           N_("Filter attachment through a shell command")) \
   /* L10N: Help for Compose function: <get-attachment> */ \
@@ -245,12 +257,8 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_ATTACH_MOVE_ATTACHMENT_DOWN,        N_("Move an attachment down in the attachment list")) \
   /* L10N: Help for Compose function: <move-attachment-up> */ \
   _fmt(OP_ATTACH_MOVE_ATTACHMENT_UP,          N_("Move an attachment up in the attachment list")) \
-  /* L10N: Help for Compose function: <attach-new-mime> */ \
-  _fmt(OP_ATTACH_ATTACH_NEW_MIME,             N_("Compose new attachment using mailcap entry")) \
   /* L10N: Help for Attach, Compose function: <print-attachment> */ \
   _fmt(OP_ATTACH_PRINT_ATTACHMENT,            N_("Print the current entry")) \
-  /* L10N: Help for Compose function: <edit-attachment-name> */ \
-  _fmt(OP_ATTACH_EDIT_ATTACHMENT_NAME,        N_("Send attachment with a different name")) \
   /* L10N: Help for Compose, Attach function: <save-attachment> */ \
   _fmt(OP_ATTACH_SAVE_ATTACHMENT,             N_("Save message/attachment to a mailbox/file")) \
   /* L10N: Help for Compose function: <toggle-disposition> */ \
@@ -265,14 +273,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_ATTACH_UNGROUP_ATTACHMENTS,         N_("Ungroup 'multipart' attachment")) \
   /* L10N: Help for Compose function: <update-encoding> */ \
   _fmt(OP_ATTACH_UPDATE_ENCODING,             N_("Update an attachment's encoding info")) \
-  /* L10N: Help for Attach, Compose function: <display-attachment-default> */ \
-  _fmt(OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT,  N_("View attachment using mailcap entry if necessary")) \
-  /* L10N: Help for Attach, Compose function: <display-attachment-mailcap> */ \
-  _fmt(OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP,  N_("Force viewing of attachment using mailcap")) \
-  /* L10N: Help for Attach, Compose function: <display-attachment-pager> */ \
-  _fmt(OP_ATTACH_DISPLAY_ATTACHMENT_PAGER,    N_("View attachment in pager using copiousoutput mailcap")) \
-  /* L10N: Help for Attach, Compose function: <display-attachment-text> */ \
-  _fmt(OP_ATTACH_DISPLAY_ATTACHMENT_TEXT,     N_("View attachment as text")) \
 
 #ifdef USE_AUTOCRYPT
 #define OPS_AUTOCRYPT(_fmt) \
@@ -615,8 +615,8 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_CHECK_TRADITIONAL,                  N_("Check for classic PGP")) \
   /* L10N: Help for Compose function: <view-pgp-options> */ \
   _fmt(OP_COMPOSE_VIEW_PGP_OPTIONS,           N_("Show PGP options")) \
-  /* L10N: Help for Index function: <mail-key> */ \
-  _fmt(OP_MAIL_KEY,                           N_("Mail a PGP public key")) \
+  /* L10N: Help for Index function: <send-pgp-key> */ \
+  _fmt(OP_SEND_PGP_KEY,                           N_("Mail a PGP public key")) \
   /* L10N: Help for Pgp, Smime function: <verify-key> */ \
   _fmt(OP_VERIFY_KEY,                         N_("Verify a public key")) \
   /* L10N: Help for Pgp, Smime function: <view-name> */ \
