@@ -86,19 +86,6 @@ static const struct AttrColor *get_color(int index, unsigned char *s)
     goto done;
   }
 
-  // %g %{tags} / %J %{thread-tags} - Plain message tags
-  if (type == MT_COLOR_INDEX_TAGS)
-  {
-    STAILQ_FOREACH(np, rcl, entries)
-    {
-      if (strstr(buf_string(buf), np->pattern))
-      {
-        ac_merge = merged_color_overlay(ac_merge, &np->attr_color);
-      }
-    }
-    goto done;
-  }
-
   STAILQ_FOREACH(np, rcl, entries)
   {
     if (mutt_pattern_exec(SLIST_FIRST(np->color_pattern),
