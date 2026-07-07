@@ -1,0 +1,26 @@
+bind $my_menu D_0001 choose-entry
+bind $my_menu D_0002 create-mailbox
+bind $my_menu D_0003 delete-mailbox
+bind $my_menu D_0004 display-file
+bind $my_menu D_0005 goto-directory
+bind $my_menu D_0006 goto-folder
+bind $my_menu D_0007 goto-home
+bind $my_menu D_0008 goto-parent
+bind $my_menu D_0009 goto-root
+bind $my_menu D_0010 goto-selected-directory
+bind $my_menu D_0011 limit
+bind $my_menu D_0012 nntp-mark-newsgroup-read
+bind $my_menu D_0013 nntp-mark-newsgroup-unread
+bind $my_menu D_0014 reload-active
+bind $my_menu D_0015 rename-mailbox
+bind $my_menu D_0016 select-new
+bind $my_menu D_0017 show-full-path
+bind $my_menu D_0018 show-mailboxes
+bind $my_menu D_0019 subscribe
+bind $my_menu D_0020 subscribe-pattern
+bind $my_menu D_0021 toggle-mailboxes
+bind $my_menu D_0022 toggle-subscribed
+bind $my_menu D_0023 unsubscribe
+bind $my_menu D_0024 unsubscribe-pattern
+
+# vim: ft=neomuttrc
