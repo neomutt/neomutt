@@ -357,8 +357,8 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_DISPLAY_MESSAGE,                    N_("Display a message")) \
   /* L10N: Help for Attach, Compose, Index function: <display-message-headers> */ \
   _fmt(OP_DISPLAY_MESSAGE_HEADERS,            N_("Display message and toggle header weeding")) \
-  /* L10N: Help for Index function: <edit-or-view-raw-message> */ \
-  _fmt(OP_EDIT_OR_VIEW_RAW_MESSAGE,           N_("Edit the raw message if the mailbox is not read-only, otherwise view it")) \
+  /* L10N: Help for Index, Index function: <edit-raw-message> */ \
+  _fmt(OP_EDIT_RAW_MESSAGE,                   N_("Edit the raw message if the mailbox is not read-only, otherwise view it")) \
   /* L10N: Help for Index, Index function: <edit-raw-message-readonly> */ \
   _fmt(OP_EDIT_RAW_MESSAGE_READONLY,          N_("Edit the raw message (edit and edit-raw-message are synonyms)")) \
   /* L10N: Help for Index, Index function: <modify-labels> */ \
@@ -543,8 +543,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_VIEW_ATTACHMENTS,                   N_("Show MIME attachments")) \
   /* L10N: Help for Index function: <view-list-actions> */ \
   _fmt(OP_VIEW_LIST_ACTIONS,                  N_("Perform mailing list action")) \
-  /* L10N: Help for Index function: <view-raw-message> */ \
-  _fmt(OP_VIEW_RAW_MESSAGE,                   N_("Show the raw message")) \
 
 #define OPS_CRYPT(_fmt) \
   /* L10N: Help for Index function: <copy-message-decrypted> */ \
