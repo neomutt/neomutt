@@ -444,11 +444,47 @@ bool mutt_limit_current_thread(struct MailboxView *mv, struct Email *e)
     return false;
 
   struct Mailbox *m = mv->mailbox;
+  struct PatternList *limit_pattern = NULL;
+  char *display_pattern = NULL;
+
+  if (e->env && e->env->message_id)
+  {
+    struct Buffer *msg_id = buf_pool_get();
+    struct Buffer *pattern = buf_pool_get();
+    struct Buffer *err = buf_pool_get();
+
+    mutt_file_sanitize_regex(msg_id, e->env->message_id);
+
+    buf_printf(pattern, "~(~i '%s')", buf_string(msg_id));
+    display_pattern = buf_strdup(pattern);
+    limit_pattern = mutt_pattern_comp(mv, buf_string(pattern), MUTT_PC_FULL_MSG, err);
+
+    if (!limit_pattern)
+      mutt_error("%s", buf_string(err));
+
+    buf_pool_release(&msg_id);
+    buf_pool_release(&pattern);
+    buf_pool_release(&err);
+
+    if (!limit_pattern)
+    {
+      FREE(&display_pattern);
+      return false;
+    }
+  }
 
   struct MuttThread *me = top_of_thread(e);
   if (!me)
+  {
+    FREE(&display_pattern);
+    mutt_pattern_free(&limit_pattern);
     return false;
+  }
 
+  FREE(&mv->pattern);
+  mutt_pattern_free(&mv->limit_pattern);
+  mv->pattern = display_pattern;
+  mv->limit_pattern = limit_pattern;
   m->vcount = 0;
   mv->vsize = 0;
   mv->collapsed = false;
