@@ -273,8 +273,8 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_END_COND,                           N_("End of conditional execution (noop)")) \
   /* L10N: Help for Generic function: <enter-command> */ \
   _fmt(OP_ENTER_COMMAND,                      N_("Enter a neomuttrc command")) \
-  /* L10N: Help for Browser function: <enter-mask> */ \
-  _fmt(OP_ENTER_MASK,                         N_("Enter a file mask")) \
+  /* L10N: Help for Browser function: <limit> */ \
+  _fmt(OP_BROWSER_LIMIT,                      N_("Limit the browser to matching files")) \
   /* L10N: Help for Generic function: <exit> */ \
   _fmt(OP_EXIT,                               N_("Exit this menu")) \
   /* L10N: Help for Generic function: <first-entry> */ \

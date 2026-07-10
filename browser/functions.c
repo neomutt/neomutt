@@ -74,9 +74,9 @@ static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
   { "delete-mailbox",                OP_DELETE_MAILBOX },
   { "descend-directory",             OP_DESCEND_DIRECTORY },
   { "display-filename",              OP_BROWSER_TELL },
-  { "enter-mask",                    OP_ENTER_MASK },
   { "goto-folder",                   OP_BROWSER_GOTO_FOLDER },
   { "goto-parent",                   OP_GOTO_PARENT },
+  { "limit",                         OP_BROWSER_LIMIT },
   { "mailbox-list",                  OP_MAILBOX_LIST },
   { "reload-active",                 OP_LOAD_ACTIVE },
   { "rename-mailbox",                OP_RENAME_MAILBOX },
@@ -91,8 +91,10 @@ static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
   { "unsubscribe",                   OP_BROWSER_UNSUBSCRIBE },
   { "unsubscribe-pattern",           OP_UNSUBSCRIBE_PATTERN },
   { "view-file",                     OP_BROWSER_VIEW_FILE },
+
   // Deprecated
-  { "buffy-list",                    OP_MAILBOX_LIST, MFF_DEPRECATED },
+  { "enter-mask",                    OP_BROWSER_LIMIT, MFF_DEPRECATED },
+  { "buffy-list",                    OP_MAILBOX_LIST,  MFF_DEPRECATED },
   { NULL, 0 },
 };
 
@@ -110,7 +112,7 @@ static const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
   { OP_CHANGE_DIRECTORY,                   "c" },
   { OP_CREATE_MAILBOX,                     "C" },
   { OP_DELETE_MAILBOX,                     "d" },
-  { OP_ENTER_MASK,                         "m" },
+  { OP_BROWSER_LIMIT,                      "m" },
   { OP_GOTO_PARENT,                        "p" },
   { OP_MAILBOX_LIST,                       "." },
   { OP_RENAME_MAILBOX,                     "r" },
@@ -305,7 +307,7 @@ static int op_browser_subscribe(struct BrowserPrivateData *priv, const struct Ke
 
   if (ARRAY_EMPTY(&priv->state.entry))
   {
-    mutt_error(OptNews ? _("No newsgroups match the mask") : _("There are no mailboxes"));
+    mutt_error(OptNews ? _("No newsgroups match the browser limit") : _("There are no mailboxes"));
     return FR_ERROR;
   }
 
@@ -387,7 +389,7 @@ static int op_browser_view_file(struct BrowserPrivateData *priv, const struct Ke
   struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
   if (ARRAY_EMPTY(&priv->state.entry))
   {
-    mutt_error(_("No files match the file mask"));
+    mutt_error(_("No files match the browser limit"));
     return FR_ERROR;
   }
 
@@ -783,15 +785,15 @@ static int op_delete_mailbox(struct BrowserPrivateData *priv, const struct KeyEv
 }
 
 /**
- * op_enter_mask - Enter a file mask - Implements ::browser_function_t - @ingroup browser_function_api
+ * op_browser_limit - Limit the browser - Implements ::browser_function_t - @ingroup browser_function_api
  */
-static int op_enter_mask(struct BrowserPrivateData *priv, const struct KeyEvent *event)
+static int op_browser_limit(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
-  const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
+  const struct Regex *c_browser_limit = cs_subset_regex(NeoMutt->sub, "browser_limit");
   struct Buffer *buf = buf_pool_get();
-  buf_strcpy(buf, c_mask ? c_mask->pattern : NULL);
-  if (mw_get_field(_("File Mask: "), buf, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) != 0)
+  buf_strcpy(buf, c_browser_limit ? c_browser_limit->pattern : NULL);
+  if (mw_get_field(_("Limit: "), buf, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) != 0)
   {
     buf_pool_release(&buf);
     return FR_NO_ACTION;
@@ -805,7 +807,7 @@ static int op_enter_mask(struct BrowserPrivateData *priv, const struct KeyEvent 
     buf_strcpy(buf, ".");
 
   struct Buffer *errmsg = buf_pool_get();
-  int rc = cs_subset_str_string_set(NeoMutt->sub, "mask", buf_string(buf), errmsg);
+  int rc = cs_subset_str_string_set(NeoMutt->sub, "browser_limit", buf_string(buf), errmsg);
   buf_pool_release(&buf);
   if (CSR_RESULT(rc) != CSR_SUCCESS)
   {
@@ -841,7 +843,7 @@ static int op_enter_mask(struct BrowserPrivateData *priv, const struct KeyEvent 
   priv->kill_prefix = false;
   if (ARRAY_EMPTY(&priv->state.entry))
   {
-    mutt_error(_("No files match the file mask"));
+    mutt_error(_("No files match the browser limit"));
     return FR_ERROR;
   }
   return FR_SUCCESS;
@@ -927,7 +929,7 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct
   struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
   if (ARRAY_EMPTY(&priv->state.entry))
   {
-    mutt_warning(_("No files match the file mask"));
+    mutt_warning(_("No files match the browser limit"));
     return FR_ERROR;
   }
 
@@ -1402,6 +1404,7 @@ static int op_toggle_mailboxes(struct BrowserPrivateData *priv, const struct Key
 static const struct BrowserFunction BrowserFunctions[] = {
   // clang-format off
   { OP_BROWSER_GOTO_FOLDER,  op_toggle_mailboxes },
+  { OP_BROWSER_LIMIT,        op_browser_limit },
   { OP_BROWSER_NEW_FILE,     op_browser_new_file },
   { OP_BROWSER_SUBSCRIBE,    op_browser_subscribe },
   { OP_BROWSER_TELL,         op_browser_tell },
@@ -1414,7 +1417,6 @@ static const struct BrowserFunction BrowserFunctions[] = {
   { OP_CREATE_MAILBOX,       op_create_mailbox },
   { OP_DELETE_MAILBOX,       op_delete_mailbox },
   { OP_DESCEND_DIRECTORY,    op_generic_select_entry },
-  { OP_ENTER_MASK,           op_enter_mask },
   { OP_EXIT,                 op_quit },
   { OP_GENERIC_SELECT_ENTRY, op_generic_select_entry },
   { OP_GOTO_PARENT,          op_change_directory },

@@ -505,18 +505,26 @@
 ** When this variable is \fIset\fP, NeoMutt will abbreviate mailbox
 ** names in the browser mailbox list, using '~' and '='
 ** shortcuts.
+*/
+
+{ "browser_limit", DT_REGEX, "!^\\.[^.]" },
+/*
 ** .pp
-** The default \fC"alpha"\fP setting of $$browser_sort uses
-** locale-based sorting (using \fCstrcoll(3)\fP), which ignores some
-** punctuation.  This can lead to some situations where the order
-** doesn't make intuitive sense.  In those cases, it may be
-** desirable to \fIunset\fP this variable.
+** A regular expression used in the file browser, optionally preceded by
+** the \fInot\fP operator "!".  Only files whose names match this limit
+** will be shown. The match is always case-sensitive.
 */
 
 { "browser_sort", DT_SORT, BROWSER_SORT_ALPHA },
 /*
 ** .pp
 ** Specifies how to sort entries in the file browser.
+** .pp
+** The default \fC"alpha"\fP setting of $$browser_sort uses
+** locale-based sorting (using \fCstrcoll(3)\fP), which ignores some
+** punctuation.  This can lead to some situations where the order
+** doesn't make intuitive sense.  In those cases, it may be
+** desirable to \fIunset\fP this variable.
 ** .dl
 ** .dt \fBValue\fP    .dd \fBSort by\fP
 ** .dt \fCalpha\fP    .dd Name
@@ -2538,14 +2546,6 @@
 ** "+" marker is displayed at the beginning of wrapped lines.
 ** .pp
 ** Also see the $$smart_wrap variable.
-*/
-
-{ "mask", DT_REGEX, "!^\\.[^.]" },
-/*
-** .pp
-** A regular expression used in the file browser, optionally preceded by
-** the \fInot\fP operator "!".  Only files whose names match this mask
-** will be shown. The match is always case-sensitive.
 */
 
 { "mbox", D_STRING_MAILBOX, "~/mbox" },
