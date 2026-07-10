@@ -750,7 +750,7 @@ BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/notmuch $(PWD)/test/parameter $(PWD)/test/parse \
 		  $(PWD)/test/path $(PWD)/test/pattern $(PWD)/test/pool \
 		  $(PWD)/test/prex $(PWD)/test/random $(PWD)/test/regex \
-		  $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 $(PWD)/test/signal \
+		  $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 $(PWD)/test/sidebar $(PWD)/test/signal \
 		  $(PWD)/test/slist $(PWD)/test/sort $(PWD)/test/store \
 		  $(PWD)/test/string $(PWD)/test/tags $(PWD)/test/thread \
 		  $(PWD)/test/url
