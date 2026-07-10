@@ -36,8 +36,9 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "get.h"
 #include "menu/lib.h"
+#include "sidebar/lib.h"
+#include "get.h"
 #include "globals.h"
 #include "keymap.h"
 #include "menu.h"
@@ -252,7 +253,25 @@ static enum MouseResult handle_mouse_event(const MEVENT *mevent, struct KeyEvent
     return MOUSE_IGNORED;
 
   struct MuttWindow *win = window_get_focus();
-  if (!win || (win->type != WT_MENU))
+  if (!win)
+    return MOUSE_IGNORED;
+
+  struct MuttWindow *dlg = dialog_find(win);
+  struct MuttWindow *win_sidebar = dlg ? window_find_child(dlg, WT_SIDEBAR) : NULL;
+  const int sidebar_rc = sb_select_by_coords(win_sidebar, mevent->y, mevent->x);
+  if (sidebar_rc >= 0)
+  {
+    if ((sidebar_rc == 0) || (mevent->bstate & BUTTON1_DOUBLE_CLICKED))
+    {
+      *event = (struct KeyEvent) { 0, OP_SIDEBAR_OPEN, 0 };
+      return MOUSE_EVENT;
+    }
+
+    window_redraw(NULL);
+    return MOUSE_CONSUMED;
+  }
+
+  if (win->type != WT_MENU)
     return MOUSE_IGNORED;
 
   struct Menu *menu = win->wdata;

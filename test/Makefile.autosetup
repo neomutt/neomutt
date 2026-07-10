@@ -476,6 +476,8 @@ KEY_OBJS	= test/key/mutt_push_macro_repeated.o
 
 MENU_OBJS	= test/menu/index_by_coords.o
 
+SIDEBAR_OBJS	= test/sidebar/select_by_coords.o
+
 LIST_OBJS	= test/list/common.o \
 		  test/list/mutt_list_clear.o \
 		  test/list/mutt_list_copy_tail.o \
@@ -789,6 +791,7 @@ TEST_OBJS	= test/common.o test/main.o test/module.o \
 		  $(IMAP_OBJS) \
 		  $(KEY_OBJS) \
 		  $(MENU_OBJS) \
+		  $(SIDEBAR_OBJS) \
 		  $(LIST_OBJS) \
 		  $(LOGGING_OBJS) \
 		  $(MAILBOX_OBJS) \
