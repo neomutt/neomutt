@@ -744,9 +744,9 @@ BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/group $(PWD)/test/gui $(PWD)/test/hash \
 		  $(PWD)/test/history $(PWD)/test/idna $(PWD)/test/imap \
 		  $(PWD)/test/key $(PWD)/test/list $(PWD)/test/logging \
-		  $(PWD)/test/mailbox \
-		  $(PWD)/test/mapping $(PWD)/test/mbyte $(PWD)/test/md5 \
-		  $(PWD)/test/memory $(PWD)/test/neo $(PWD)/test/notify \
+		  $(PWD)/test/mailbox $(PWD)/test/mapping $(PWD)/test/mbyte \
+		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/menu \
+		  $(PWD)/test/neo $(PWD)/test/notify \
 		  $(PWD)/test/notmuch $(PWD)/test/parameter $(PWD)/test/parse \
 		  $(PWD)/test/path $(PWD)/test/pattern $(PWD)/test/pool \
 		  $(PWD)/test/prex $(PWD)/test/random $(PWD)/test/regex \
