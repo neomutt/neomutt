@@ -152,7 +152,7 @@ struct ConfigDef BrowserVars[] = {
   { "mailbox_folder_format", DT_EXPANDO|D_NOT_EMPTY, IP "%2C %<n?%6n&      > %6m %i", IP &FolderFormatDef, NULL,
     "printf-like format string for the browser's display of mailbox folders"
   },
-  { "mask", DT_REGEX|D_REGEX_MATCH_CASE|D_REGEX_ALLOW_NOT|D_REGEX_NOSUB, IP "!^\\.[^.]", 0, NULL,
+  { "browser_limit", DT_REGEX|D_REGEX_MATCH_CASE|D_REGEX_ALLOW_NOT|D_REGEX_NOSUB, IP "!^\\.[^.]", 0, NULL,
     "Only display files/dirs matching this regex in the browser"
   },
   { "show_only_unread", DT_BOOL, false, 0, NULL,
@@ -162,7 +162,8 @@ struct ConfigDef BrowserVars[] = {
     "Group directories before files in the browser"
   },
 
-  { "sort_browser", DT_SYNONYM, IP "browser_sort", IP "2024-11-20" },
+  { "mask",         DT_SYNONYM, IP "browser_limit", IP "2026-07-10" },
+  { "sort_browser", DT_SYNONYM, IP "browser_sort",  IP "2024-11-20" },
 
   { NULL },
   // clang-format on

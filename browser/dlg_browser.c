@@ -112,7 +112,7 @@ static const struct Mapping FolderHelp[] = {
   { N_("Exit"),  OP_EXIT },
   { N_("Chdir"), OP_CHANGE_DIRECTORY },
   { N_("Goto"),  OP_BROWSER_GOTO_FOLDER },
-  { N_("Mask"),  OP_ENTER_MASK },
+  { N_("Limit"), OP_BROWSER_LIMIT },
   { N_("Help"),  OP_HELP },
   { NULL, 0 },
   // clang-format on
@@ -126,7 +126,7 @@ static const struct Mapping FolderNewsHelp[] = {
   { N_("Subscribe"),   OP_BROWSER_SUBSCRIBE },
   { N_("Unsubscribe"), OP_BROWSER_UNSUBSCRIBE },
   { N_("Catchup"),     OP_CATCHUP },
-  { N_("Mask"),        OP_ENTER_MASK },
+  { N_("Limit"),       OP_BROWSER_LIMIT },
   { N_("Help"),        OP_HELP },
   { NULL, 0 },
   // clang-format on
@@ -223,7 +223,7 @@ void init_state(struct BrowserState *state)
 }
 
 /**
- * examine_directory - Get list of all files/newsgroups with mask
+ * examine_directory - Get list of all files/newsgroups matching the browser limit
  * @param m       Mailbox
  * @param menu    Current Menu
  * @param state   State of browser
@@ -244,7 +244,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
 
     init_state(state);
 
-    const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
+    const struct Regex *c_browser_limit = cs_subset_regex(NeoMutt->sub, "browser_limit");
     for (unsigned int i = 0; i < adata->groups_num; i++)
     {
       struct NntpMboxData *mdata = adata->groups_list[i];
@@ -252,7 +252,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
         continue;
       if (prefix && *prefix && !mutt_str_startswith(mdata->group, prefix))
         continue;
-      if (!mutt_regex_match(c_mask, mdata->group))
+      if (!mutt_regex_match(c_browser_limit, mdata->group))
       {
         continue;
       }
@@ -306,7 +306,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
 
     struct MailboxArray ma = neomutt_mailboxes_get(NeoMutt, MUTT_MAILBOX_ANY);
 
-    const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
+    const struct Regex *c_browser_limit = cs_subset_regex(NeoMutt->sub, "browser_limit");
     while ((de = readdir(dir)))
     {
       if (mutt_str_equal(de->d_name, "."))
@@ -316,7 +316,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
       {
         continue;
       }
-      if (!mutt_regex_match(c_mask, de->d_name))
+      if (!mutt_regex_match(c_browser_limit, de->d_name))
       {
         continue;
       }
@@ -598,17 +598,17 @@ void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m,
       struct Buffer *path = buf_pool_get();
       buf_copy(path, &mod_data->last_dir);
       pretty_mailbox(path);
-      const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
+      const struct Regex *c_browser_limit = cs_subset_regex(NeoMutt->sub, "browser_limit");
       const bool c_imap_list_subscribed = cs_subset_bool(NeoMutt->sub, "imap_list_subscribed");
       if (state->imap_browse && c_imap_list_subscribed)
       {
-        snprintf(title, sizeof(title), _("Subscribed [%s], File mask: %s"),
-                 buf_string(path), NONULL(c_mask ? c_mask->pattern : NULL));
+        snprintf(title, sizeof(title), _("Subscribed [%s], Limit: %s"),
+                 buf_string(path), NONULL(c_browser_limit ? c_browser_limit->pattern : NULL));
       }
       else
       {
-        snprintf(title, sizeof(title), _("Directory [%s], File mask: %s"),
-                 buf_string(path), NONULL(c_mask ? c_mask->pattern : NULL));
+        snprintf(title, sizeof(title), _("Directory [%s], Limit: %s"),
+                 buf_string(path), NONULL(c_browser_limit ? c_browser_limit->pattern : NULL));
       }
       buf_pool_release(&path);
     }

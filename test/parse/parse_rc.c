@@ -57,7 +57,7 @@ static void test_parse_set(void)
     "net_inc",           // NUMBER
     "signature",         // PATH
     "print",             // QUAD
-    "mask",              // REGEX
+    "browser_limit",     // REGEX
     "sort",              // SORT
     "attribution_intro", // STRING
     "zzz",               // UNKNOWN
