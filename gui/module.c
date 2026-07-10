@@ -101,6 +101,9 @@ static bool gui_gui_init(struct NeoMutt *n)
   struct GuiModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_GUI);
 
   /* check whether terminal status is supported (must follow curses init) */
+  mousemask(BUTTON1_CLICKED | BUTTON1_DOUBLE_CLICKED | BUTTON4_PRESSED |
+                BUTTON5_PRESSED,
+            NULL);
   mod_data->ts_supported = mutt_ts_capability();
   mutt_resize_screen();
   log_gui();

@@ -159,6 +159,33 @@ int menu_get_index(struct Menu *menu)
 }
 
 /**
+ * menu_get_index_by_coords - Find a visible entry from screen coordinates
+ * @param menu Menu
+ * @param row  Screen row
+ * @param col  Screen column
+ * @retval num Index of entry
+ * @retval  -1 Click is outside the visible Menu entries
+ */
+int menu_get_index_by_coords(const struct Menu *menu, int row, int col)
+{
+  if (!menu || !menu->win || !mutt_window_is_visible(menu->win))
+    return -1;
+
+  const struct WindowState *wstate = &menu->win->state;
+  if ((row < wstate->row_offset) || (row >= (wstate->row_offset + wstate->rows)) ||
+      (col < wstate->col_offset) || (col >= (wstate->col_offset + wstate->cols)))
+  {
+    return -1;
+  }
+
+  const int index = menu->top + row - wstate->row_offset;
+  if ((index < 0) || (index >= menu->max))
+    return -1;
+
+  return index;
+}
+
+/**
  * menu_set_index - Set the current selection in the Menu
  * @param menu  Menu
  * @param index Item to select

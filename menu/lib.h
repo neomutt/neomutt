@@ -198,7 +198,8 @@ void         menu_init2(char **search_buffers);
 
 struct MuttWindow *menu_window_new(const struct MenuDefinition *md, struct ConfigSubset *sub);
 
-int  menu_get_index(struct Menu *menu);
+int menu_get_index(struct Menu *menu);
+int menu_get_index_by_coords(const struct Menu *menu, int row, int col);
 MenuRedrawFlags menu_set_index(struct Menu *menu, int index);
 MenuRedrawFlags menu_move_selection(struct Menu *menu, int index);
 void menu_queue_redraw(struct Menu *menu, MenuRedrawFlags redraw);
