@@ -1004,7 +1004,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
         op = OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT;
         break;
       }
-      case OP_ATTACH_PRINT_ATTACHMENT:
+      case OP_PRINT_ENTRY:
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         struct AttachPtrArray aa = ARRAY_HEAD_INITIALIZER;

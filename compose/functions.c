@@ -81,7 +81,7 @@ static const struct MenuFuncOp OpCompose[] = { /* map: compose */
   { "attach-message",                OP_ATTACH_ATTACH_MESSAGE },
   { "attach-new-mime",               OP_ATTACH_ATTACH_NEW_MIME },
   { "attach-news-message",           OP_ATTACH_ATTACH_NEWS_MESSAGE },
-  { "attach-pgp-key",                OP_ATTACH_ATTACH_PGP_KEY },
+  { "attach-pgp-key",                OP_COMPOSE_ATTACH_PGP_KEY },
   { "check-spelling",                OP_COMPOSE_CHECK_SPELLING },
   { "detach-file",                   OP_ATTACH_DETACH },
   { "display-attachment-default",    OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT },
@@ -139,7 +139,7 @@ static const struct MenuFuncOp OpCompose[] = { /* map: compose */
 #endif
 
   // Deprecated
-  { "attach-key",                    OP_ATTACH_ATTACH_PGP_KEY,              MFF_DEPRECATED },
+  { "attach-key",                    OP_COMPOSE_ATTACH_PGP_KEY,             MFF_DEPRECATED },
 #ifdef USE_AUTOCRYPT
   { "autocrypt-menu",                OP_COMPOSE_VIEW_AUTOCRYPT_OPTIONS,     MFF_DEPRECATED },
 #endif
@@ -171,7 +171,7 @@ static const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_ATTACH_ATTACH_FILE,                 "a" },
   { OP_ATTACH_ATTACH_MESSAGE,              "A" },
   { OP_ATTACH_ATTACH_NEW_MIME,             "n" },
-  { OP_ATTACH_ATTACH_PGP_KEY,              "\033k" },          // <Alt-k>
+  { OP_COMPOSE_ATTACH_PGP_KEY,             "\033k" },          // <Alt-k>
   { OP_ATTACH_DETACH,                      "D" },
   { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT,  "<keypadenter>" },
   { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT,  "\n" },             // <Enter>
@@ -190,7 +190,7 @@ static const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_ATTACH_GROUP_RELATED,               "%" },
   { OP_ATTACH_MOVE_ATTACHMENT_DOWN,        "+" },
   { OP_ATTACH_MOVE_ATTACHMENT_UP,          "-" },
-  { OP_ATTACH_PRINT_ATTACHMENT,            "l" },
+  { OP_PRINT_ENTRY,            "l" },
   { OP_ATTACH_SAVE_ATTACHMENT,             "C" },
   { OP_ATTACH_TOGGLE_DISPOSITION,          "\004" },           // <Ctrl-D>
   { OP_ATTACH_TOGGLE_UNLINK,               "u" },
@@ -2784,7 +2784,6 @@ static const struct ComposeFunction ComposeFunctions[] = {
   { OP_ATTACH_ATTACH_MESSAGE,             op_attach_attach_message },
   { OP_ATTACH_ATTACH_NEWS_MESSAGE,        op_attach_attach_message },
   { OP_ATTACH_ATTACH_NEW_MIME,            op_attach_new_mime },
-  { OP_ATTACH_ATTACH_PGP_KEY,             op_attach_attach_key },
   { OP_ATTACH_DETACH,                     op_attach_detach },
   { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT, op_display_headers },
   { OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP, op_display_headers },
@@ -2804,13 +2803,13 @@ static const struct ComposeFunction ComposeFunctions[] = {
   { OP_ATTACH_GROUP_RELATED,              op_attach_group_related },
   { OP_ATTACH_MOVE_ATTACHMENT_DOWN,       op_attach_move_down },
   { OP_ATTACH_MOVE_ATTACHMENT_UP,         op_attach_move_up },
-  { OP_ATTACH_PRINT_ATTACHMENT,           op_attach_print },
   { OP_ATTACH_SAVE_ATTACHMENT,            op_attach_save },
   { OP_ATTACH_TOGGLE_DISPOSITION,         op_attach_toggle_disposition },
   { OP_ATTACH_TOGGLE_RECODE,              op_attach_toggle_recode },
   { OP_ATTACH_TOGGLE_UNLINK,              op_attach_toggle_unlink },
   { OP_ATTACH_UNGROUP_ATTACHMENTS,        op_attach_ungroup },
   { OP_ATTACH_UPDATE_ENCODING,            op_attach_update_encoding },
+  { OP_COMPOSE_ATTACH_PGP_KEY,            op_attach_attach_key },
   { OP_COMPOSE_CHECK_SPELLING,            op_compose_check_spelling },
   { OP_COMPOSE_EDIT_FILE,                 op_compose_edit_file },
   { OP_COMPOSE_EDIT_MESSAGE,              op_compose_edit_message },
@@ -2822,6 +2821,7 @@ static const struct ComposeFunction ComposeFunctions[] = {
   { OP_ENVELOPE_EDIT_HEADERS,             op_envelope_edit_headers },
   { OP_EXIT,                              op_quit },
   { OP_PIPE_ENTRY,                        op_attach_filter },
+  { OP_PRINT_ENTRY,                       op_attach_print },
   { OP_QUIT,                              op_quit },
   { 0, NULL },
   // clang-format on

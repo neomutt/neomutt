@@ -96,7 +96,7 @@ static const struct MenuOpSeq AttachDefaultBindings[] = { /* map: attach */
   { OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP,  "m" },
   { OP_ATTACH_DISPLAY_ATTACHMENT_TEXT,     "T" },
   { OP_ATTACH_EDIT_CONTENT_TYPE,           "\005" },           // <Ctrl-E>
-  { OP_ATTACH_PRINT_ATTACHMENT,            "p" },
+  { OP_PRINT_ENTRY,                        "p" },
   { OP_ATTACH_SAVE_ATTACHMENT,             "s" },
   { OP_ATTACH_UNDELETE,                    "u" },
   { OP_BOUNCE_MESSAGE,                     "b" },
@@ -784,7 +784,7 @@ static const struct AttachFunction AttachFunctions[] = {
   { OP_ATTACH_DISPLAY_ATTACHMENT_PAGER,   op_attach_view_pager },
   { OP_ATTACH_DISPLAY_ATTACHMENT_TEXT,    op_attach_view_text },
   { OP_ATTACH_EDIT_CONTENT_TYPE,          op_attach_edit_type },
-  { OP_ATTACH_PRINT_ATTACHMENT,           op_attach_print },
+  { OP_PRINT_ENTRY,                       op_attach_print },
   { OP_ATTACH_SAVE_ATTACHMENT,            op_attach_save },
   { OP_ATTACH_UNDELETE,                   op_attach_undelete },
   { OP_BOUNCE_MESSAGE,                    op_bounce_message },

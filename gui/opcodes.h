@@ -273,8 +273,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_ATTACH_MOVE_ATTACHMENT_DOWN,        N_("Move an attachment down in the attachment list")) \
   /* L10N: Help for Compose function: <move-attachment-up> */ \
   _fmt(OP_ATTACH_MOVE_ATTACHMENT_UP,          N_("Move an attachment up in the attachment list")) \
-  /* L10N: Help for Attach, Compose function: <print-attachment> */ \
-  _fmt(OP_ATTACH_PRINT_ATTACHMENT,            N_("Print the current entry")) \
   /* L10N: Help for Compose, Attach function: <save-attachment> */ \
   _fmt(OP_ATTACH_SAVE_ATTACHMENT,             N_("Save message/attachment to a mailbox/file")) \
   /* L10N: Help for Compose function: <toggle-disposition> */ \
@@ -301,7 +299,7 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Autocrypt function: <toggle-prefer-encrypt> */ \
   _fmt(OP_AUTOCRYPT_TOGGLE_PREFER,            N_("Toggle the current account prefer-encrypt flag")) \
   /* L10N: Help for Compose function: <view-autocrypt-options> */ \
-  _fmt(OP_COMPOSE_VIEW_AUTOCRYPT_OPTIONS,     N_("Show autocrypt compose menu options")) \
+  _fmt(OP_COMPOSE_VIEW_AUTOCRYPT_OPTIONS,     N_("Show Autocrypt options")) \
   /* L10N: Help for Index function: <view-autocrypt-accounts> */ \
   _fmt(OP_VIEW_AUTOCRYPT_ACCOUNTS,            N_("Manage autocrypt accounts"))
 #else
@@ -558,27 +556,27 @@ const char *opcodes_get_name       (int op);
 
 #define OPS_ENVELOPE(_fmt) \
   /* L10N: Help for Compose function: <edit-bcc> */ \
-  _fmt(OP_ENVELOPE_EDIT_BCC,                  N_("Edit the BCC list")) \
+  _fmt(OP_ENVELOPE_EDIT_BCC,                  N_("Edit the 'Bcc:' list")) \
   /* L10N: Help for Compose function: <edit-cc> */ \
-  _fmt(OP_ENVELOPE_EDIT_CC,                   N_("Edit the CC list")) \
+  _fmt(OP_ENVELOPE_EDIT_CC,                   N_("Edit the 'Cc:' list")) \
   /* L10N: Help for Compose function: <edit-fcc> */ \
   _fmt(OP_ENVELOPE_EDIT_FCC,                  N_("Enter a file to save a copy of this message in")) \
   /* L10N: Help for Compose function: <edit-followup-to> */ \
-  _fmt(OP_ENVELOPE_EDIT_FOLLOWUP_TO,          N_("Edit the Followup-To field")) \
+  _fmt(OP_ENVELOPE_EDIT_FOLLOWUP_TO,          N_("Edit the 'Followup-to:' field")) \
   /* L10N: Help for Compose function: <edit-from> */ \
-  _fmt(OP_ENVELOPE_EDIT_FROM,                 N_("Edit the from field")) \
+  _fmt(OP_ENVELOPE_EDIT_FROM,                 N_("Edit the 'From:' field")) \
   /* L10N: Help for Compose function: <edit-headers> */ \
   _fmt(OP_ENVELOPE_EDIT_HEADERS,              N_("Edit the message with headers")) \
   /* L10N: Help for Compose function: <edit-newsgroups> */ \
   _fmt(OP_ENVELOPE_EDIT_NEWSGROUPS,           N_("Edit the newsgroups list")) \
   /* L10N: Help for Compose function: <edit-reply-to> */ \
-  _fmt(OP_ENVELOPE_EDIT_REPLY_TO,             N_("Edit the Reply-To field")) \
+  _fmt(OP_ENVELOPE_EDIT_REPLY_TO,             N_("Edit the 'Reply-to:' field")) \
   /* L10N: Help for Compose function: <edit-subject> */ \
-  _fmt(OP_ENVELOPE_EDIT_SUBJECT,              N_("Edit the subject of this message")) \
+  _fmt(OP_ENVELOPE_EDIT_SUBJECT,              N_("Edit the 'Subject:' of this message")) \
   /* L10N: Help for Compose function: <edit-to> */ \
-  _fmt(OP_ENVELOPE_EDIT_TO,                   N_("Edit the TO list")) \
+  _fmt(OP_ENVELOPE_EDIT_TO,                   N_("Edit the 'To:' list")) \
   /* L10N: Help for Compose function: <edit-x-comment-to> */ \
-  _fmt(OP_ENVELOPE_EDIT_X_COMMENT_TO,         N_("Edit the X-Comment-To field")) \
+  _fmt(OP_ENVELOPE_EDIT_X_COMMENT_TO,         N_("Edit the 'X-comment-to:' field")) \
 
 #ifdef USE_NOTMUCH
 #define OPS_NOTMUCH(_fmt) \
@@ -611,10 +609,10 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_PAGER_TOGGLE_SEARCH_HIGHLIGHTING,   N_("Show/hide highlighting of search matches")) \
 
 #define OPS_PGP(_fmt) \
-  /* L10N: Help for Compose function: <attach-pgp-key> */ \
-  _fmt(OP_ATTACH_ATTACH_PGP_KEY,              N_("Attach a PGP public key")) \
   /* L10N: Help for Attach, Index function: <check-traditional-pgp> */ \
   _fmt(OP_CHECK_TRADITIONAL,                  N_("Check for classic PGP")) \
+  /* L10N: Help for Compose function: <attach-pgp-key> */ \
+  _fmt(OP_COMPOSE_ATTACH_PGP_KEY,             N_("Attach a PGP public key")) \
   /* L10N: Help for Compose function: <view-pgp-options> */ \
   _fmt(OP_COMPOSE_VIEW_PGP_OPTIONS,           N_("Show PGP options")) \
   /* L10N: Help for Index function: <send-pgp-key> */ \
