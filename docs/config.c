@@ -5302,8 +5302,8 @@
 ** .dt \fC%T\fP    .dd \fC%{use-threads}\fP      .dd Current threading mode ($$use_threads)
 ** .dt \fC%t\fP    .dd \fC%{tagged-count}\fP     .dd Number of tagged messages in the mailbox
 ** .dt \fC%u\fP    .dd \fC%{unread-count}\fP     .dd Number of unread messages in the mailbox (seen or unseen)
-** .dt \fC%v\fP    .dd \fC%{limit-pattern}\fP    .dd NeoMutt version string
-** .dt \fC%V\fP    .dd \fC%{version}\fP          .dd Currently active limit pattern, if any
+** .dt \fC%v\fP    .dd \fC%{version}\fP          .dd NeoMutt version string
+** .dt \fC%V\fP    .dd \fC%{limit-pattern}\fP    .dd Currently active limit pattern, if any
 ** .dt \fC%*X\fP   .dd \fC%{padding-soft:X}\fP   .dd Soft-fill with character \fCX\fP as pad
 ** .dt \fC%>X\fP   .dd \fC%{padding-hard:X}\fP   .dd Right justify the rest of the string and pad with character \fCX\fP
 ** .dt \fC%|X\fP   .dd \fC%{padding-eol:X}\fP    .dd Pad to the end of the line with character \fCX\fP
