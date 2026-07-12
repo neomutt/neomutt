@@ -106,7 +106,7 @@ static const struct MenuOpSeq AttachDefaultBindings[] = { /* map: attach */
   { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
   { OP_FORWARD_MESSAGE,                    "f" },
   { OP_LIST_REPLY,                         "L" },
-  { OP_PIPE,                               "|" },
+  { OP_PIPE_ENTRY,                         "|" },
   { OP_REPLY_ALL,                          "g" },
   { OP_REPLY_SENDER,                       "r" },
   { OP_RESEND,                             "\033e" },          // <Alt-e>
@@ -799,7 +799,7 @@ static const struct AttachFunction AttachFunctions[] = {
   { OP_LIST_UNSUBSCRIBE,                  op_list_unsubscribe },
   { OP_NNTP_FOLLOWUP_MESSAGE,             op_followup },
   { OP_NNTP_FORWARD_TO_GROUP,             op_forward_to_group },
-  { OP_PIPE,                              op_attach_pipe },
+  { OP_PIPE_ENTRY,                        op_attach_pipe },
   { OP_QUIT,                              op_quit },
   { OP_REPLY_ALL,                         op_reply },
   { OP_REPLY_GROUP_CHAT,                  op_reply },

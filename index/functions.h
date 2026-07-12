@@ -60,7 +60,7 @@ typedef int (*index_function_t)(struct IndexFunctionData *fdata,
  */
 struct IndexFunction
 {
-  int op;                    ///< Op code, e.g. OP_LIMIT_MESSAGES
+  int op;                    ///< Op code, e.g. OP_LIMIT_ENTRIES
   index_function_t function; ///< Function to call
   int flags; ///< Prerequisites for the function, e.g. #CHECK_IN_MAILBOX
 };

@@ -215,7 +215,7 @@ static const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_ENVELOPE_EDIT_SUBJECT,              "s" },
   { OP_ENVELOPE_EDIT_TO,                   "t" },
   { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
-  { OP_PIPE,                               "|" },
+  { OP_PIPE_ENTRY,                         "|" },
   { OP_PREVIEW_SCROLL_PAGE_DOWN,           "<pagedown>" },
   { OP_PREVIEW_SCROLL_PAGE_UP,             "<pageup>" },
   { OP_TOGGLE_TAG,                         "T" },
@@ -1700,7 +1700,7 @@ static int op_attach_edit_type(struct ComposeFunctionData *fdata, const struct K
  *
  * This function handles:
  * - OP_ATTACH_FILTER_ATTACHMENT
- * - OP_PIPE
+ * - OP_PIPE_ENTRY
  */
 static int op_attach_filter(struct ComposeFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -2821,7 +2821,7 @@ static const struct ComposeFunction ComposeFunctions[] = {
   { OP_DISPLAY_MESSAGE_HEADERS,           op_display_headers },
   { OP_ENVELOPE_EDIT_HEADERS,             op_envelope_edit_headers },
   { OP_EXIT,                              op_quit },
-  { OP_PIPE,                              op_attach_filter },
+  { OP_PIPE_ENTRY,                        op_attach_filter },
   { OP_QUIT,                              op_quit },
   { 0, NULL },
   // clang-format on

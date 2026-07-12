@@ -80,7 +80,7 @@ const struct MenuFuncOp OpQuery[] = { /* map: query */
 static const struct MenuOpSeq AliasDefaultBindings[] = { /* map: alias */
   { OP_COMPOSE_MESSAGE,                    "m" },
   { OP_DELETE,                             "d" },
-  { OP_LIMIT_MESSAGES,                     "l" },
+  { OP_LIMIT_ENTRIES,                      "l" },
   { OP_MAIN_TAG_PATTERN,                   "T" },
   { OP_MAIN_UNTAG_PATTERN,                 "\024" },           // <Ctrl-T>
   { OP_SORT_ENTRIES,                       "o" },
@@ -96,7 +96,7 @@ static const struct MenuOpSeq AliasDefaultBindings[] = { /* map: alias */
 static const struct MenuOpSeq QueryDefaultBindings[] = { /* map: query */
   { OP_COMPOSE_MESSAGE,                    "m" },
   { OP_CREATE_ALIAS,                       "a" },
-  { OP_LIMIT_MESSAGES,                     "l" },
+  { OP_LIMIT_ENTRIES,                      "l" },
   { OP_MAIN_TAG_PATTERN,                   "T" },
   { OP_MAIN_UNTAG_PATTERN,                 "\024" },           // <Ctrl-T>
   { OP_QUERY_APPEND,                       "A" },
@@ -608,7 +608,7 @@ static const struct AliasFunction AliasFunctions[] = {
   { OP_CREATE_ALIAS,           op_create_alias },
   { OP_DELETE,                 op_delete },
   { OP_EXIT,                   op_quit },
-  { OP_LIMIT_MESSAGES,         op_main_limit },
+  { OP_LIMIT_ENTRIES,          op_main_limit },
   { OP_MAIN_TAG_PATTERN,       op_main_tag_pattern },
   { OP_MAIN_UNTAG_PATTERN,     op_main_untag_pattern },
   { OP_QUERY_APPEND,           op_query },

@@ -42,16 +42,22 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Generic function: <quit> */ \
   _fmt(OP_QUIT,                               N_("Save changes and quit")) \
 
+#define OPS_ENTRY(_fmt) \
+  /* L10N: Help for Generic function: <pipe-entry> */ \
+  _fmt(OP_PIPE_ENTRY,                         N_("Pipe the current entry to a shell command")) \
+  /* L10N: Help for Generic function: <print-entry> */ \
+  _fmt(OP_PRINT_ENTRY,                        N_("Print the current entry")) \
+
 #define OPS_GLOBAL(_fmt) \
   /* L10N: Help for Generic function: <check-stats> */ \
   _fmt(OP_CHECK_STATS,                        N_("Calculate message statistics for all mailboxes")) \
-  /* L10N: Help for Editor, Generic function: <display-help> */ \
+  /* L10N: Help for Generic function: <display-help> */ \
   _fmt(OP_DISPLAY_HELP,                       N_("Display the help screen")) \
   /* L10N: Help for Generic function: <display-log> */ \
   _fmt(OP_DISPLAY_LOG,                        N_("Display log and debug messages")) \
   /* L10N: Help for Generic function: <forget-passphrase> */ \
   _fmt(OP_FORGET_PASSPHRASE,                  N_("Wipe passphrases from memory")) \
-  /* L10N: Help for Editor, Generic function: <redraw-screen> */ \
+  /* L10N: Help for Generic function: <redraw-screen> */ \
   _fmt(OP_REDRAW_SCREEN,                      N_("Clear and redraw the screen")) \
   /* L10N: Help for Generic function: <run-command> */ \
   _fmt(OP_RUN_COMMAND,                        N_("Execute a NeoMutt command")) \
@@ -63,13 +69,13 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_VIEW_KEYCODES,                      N_("Show the keycodes for key presses")) \
 
 #define OPS_SCROLL(_fmt) \
-  /* L10N: Help for Generic function <scroll-end> */ \
+  /* L10N: Help for Generic function: <scroll-end> */ \
   _fmt(OP_SCROLL_END,                         N_("Scroll to the bottom")) \
   /* L10N: Help for Generic function: <scroll-half-down> */ \
   _fmt(OP_SCROLL_HALF_DOWN,                   N_("Scroll down half a page")) \
   /* L10N: Help for Generic function: <scroll-half-up> */ \
   _fmt(OP_SCROLL_HALF_UP,                     N_("Scroll up half a page")) \
-  /* L10N: Help for Generic function <scroll-home> */ \
+  /* L10N: Help for Generic function: <scroll-home> */ \
   _fmt(OP_SCROLL_HOME,                        N_("Scroll to the top")) \
   /* L10N: Help for Generic function: <scroll-line-down> */ \
   _fmt(OP_SCROLL_LINE_DOWN,                   N_("Scroll down one line")) \
@@ -127,34 +133,44 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_TOGGLE_TAG,                         N_("Tag/untag the current entry")) \
 
 #define OPS_TREE(_fmt) \
-  /* L10N: Help for Generic function <fold-all-trees> */ \
+  /* L10N: Help for Generic function: <fold-all-trees> */ \
   _fmt(OP_FOLD_ALL_TREES,                     N_("Collapse all trees")) \
-  /* L10N: Help for Generic function <fold-tree> */ \
+  /* L10N: Help for Generic function: <fold-tree> */ \
   _fmt(OP_FOLD_TREE,                          N_("Collapse current tree")) \
-  /* L10N: Help for Generic function <select-next-subtree> */ \
+  /* L10N: Help for Generic function: <select-next-subtree> */ \
   _fmt(OP_SELECT_NEXT_SUBTREE,                N_("Select the next subtree")) \
-  /* L10N: Help for Generic function <select-next-tree> */ \
+  /* L10N: Help for Generic function: <select-next-tree> */ \
   _fmt(OP_SELECT_NEXT_TREE,                   N_("Select the next tree")) \
-  /* L10N: Help for Generic function <select-previous-subtree> */ \
+  /* L10N: Help for Generic function: <select-previous-subtree> */ \
   _fmt(OP_SELECT_PREVIOUS_SUBTREE,            N_("Select the previous subtree")) \
-  /* L10N: Help for Generic function <select-previous-tree> */ \
+  /* L10N: Help for Generic function: <select-previous-tree> */ \
   _fmt(OP_SELECT_PREVIOUS_TREE,               N_("Select the previous tree")) \
-  /* L10N: Help for Generic function <select-tree-parent-entry> */ \
+  /* L10N: Help for Generic function: <select-tree-parent-entry> */ \
   _fmt(OP_SELECT_TREE_PARENT_ENTRY,           N_("Select the parent entry in the tree")) \
-  /* L10N: Help for Generic function <select-tree-root-entry> */ \
+  /* L10N: Help for Generic function: <select-tree-root-entry> */ \
   _fmt(OP_SELECT_TREE_ROOT_ENTRY,             N_("Select the root entry of the tree")) \
-  /* L10N: Help for Generic function <toggle-all-trees> */ \
+  /* L10N: Help for Generic function: <toggle-all-trees> */ \
   _fmt(OP_TOGGLE_ALL_TREES,                   N_("Collapse/expand all trees")) \
-  /* L10N: Help for Generic function <toggle-tag-subtree> */ \
+  /* L10N: Help for Generic function: <toggle-tag-subtree> */ \
   _fmt(OP_TOGGLE_TAG_SUBTREE,                 N_("Tag/untag the current subtree")) \
-  /* L10N: Help for Generic function <toggle-tag-tree> */ \
+  /* L10N: Help for Generic function: <toggle-tag-tree> */ \
   _fmt(OP_TOGGLE_TAG_TREE,                    N_("Tag/untag the current tree")) \
-  /* L10N: Help for Generic function <toggle-tree> */ \
+  /* L10N: Help for Generic function: <toggle-tree> */ \
   _fmt(OP_TOGGLE_TREE,                        N_("Collapse/expand current tree")) \
-  /* L10N: Help for Generic function <unfold-all-trees> */ \
+  /* L10N: Help for Generic function: <unfold-all-trees> */ \
   _fmt(OP_UNFOLD_ALL_TREES,                   N_("Expand all trees")) \
-  /* L10N: Help for Generic function <unfold-tree> */ \
+  /* L10N: Help for Generic function: <unfold-tree> */ \
   _fmt(OP_UNFOLD_TREE,                        N_("Expand current tree")) \
+
+#define OPS_VIEW(_fmt) \
+  /* L10N: Help for Generic function: <limit-entries> */ \
+  _fmt(OP_LIMIT_ENTRIES,                      N_("Show only entries matching a pattern")) \
+  /* L10N: Help for Generic function: <show-limit> */ \
+  _fmt(OP_SHOW_LIMIT,                         N_("Show currently active limit pattern")) \
+  /* L10N: Help for Generic function: <sort-entries> */ \
+  _fmt(OP_SORT_ENTRIES,                       N_("Sort entries")) \
+  /* L10N: Help for Generic function: <sort-entries-reverse> */ \
+  _fmt(OP_SORT_ENTRIES_REVERSE,               N_("Sort entries in reverse order")) \
 
 #define OPS_EDITOR(_fmt) \
   /* L10N: Help for Editor function: <backspace> */ \
@@ -375,8 +391,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_GOTO_HOME,                          N_("Go to home directory")) \
   /* L10N: Help for Browser function: <goto-parent> */ \
   _fmt(OP_GOTO_PARENT,                        N_("Go to parent directory")) \
-  /* L10N: Help for Alias, Index, Query function: <limit-messages> */ \
-  _fmt(OP_LIMIT_MESSAGES,                     N_("Show only messages matching a pattern")) \
   /* L10N: Help for Index function: <limit-thread> */ \
   _fmt(OP_LIMIT_THREAD,                       N_("Limit view to current thread")) \
   /* L10N: Help for Browser function: <goto-root> */ \
@@ -423,8 +437,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_MAIN_LINK_THREADS,                  N_("Link tagged message to the current one")) \
   /* L10N: Help for Index function: <set-flag> */ \
   _fmt(OP_MAIN_SET_FLAG,                      N_("Set a status flag on a message")) \
-  /* L10N: Help for Index function: <show-limit> */ \
-  _fmt(OP_MAIN_SHOW_LIMIT,                    N_("Show currently active limit pattern")) \
   /* L10N: Help for Index function: <sync-mailbox> */ \
   _fmt(OP_MAIN_SYNC_FOLDER,                   N_("Save changes to mailbox")) \
   /* L10N: Help for Alias, Index, Query function: <tag-pattern> */ \
@@ -457,12 +469,8 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_NNTP_POST_MESSAGE,                  N_("Post message to newsgroup")) \
   /* L10N: Help for Index function: <nntp-reconstruct-thread> */ \
   _fmt(OP_NNTP_RECONSTRUCT_THREAD,            N_("Reconstruct thread containing current message")) \
-  /* L10N: Help for Attach, Compose, Index, Attach, Compose, Index function: <pipe-entry> */ \
-  _fmt(OP_PIPE,                               N_("Pipe message/attachment to a shell command")) \
   /* L10N: Help for Index function: <pop-fetch-mail> */ \
   _fmt(OP_POP_FETCH_MAIL,                     N_("Retrieve mail from POP server")) \
-  /* L10N: Help for Index function: <print-message> */ \
-  _fmt(OP_PRINT,                              N_("Print the current entry")) \
   /* L10N: Help for Index function: <purge-message> */ \
   _fmt(OP_PURGE_MESSAGE,                      N_("Delete the current entry, bypassing the trash folder")) \
   /* L10N: Help for Index function: <purge-thread> */ \
@@ -507,10 +515,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_SHOW_MAILBOXES,                     N_("List mailboxes with new mail")) \
   /* L10N: Help for Index function: <show-sender-address> */ \
   _fmt(OP_SHOW_SENDER_ADDRESS,                N_("Display full address of sender")) \
-  /* L10N: Help for Browser, Query, Alias, Index function: <sort> */ \
-  _fmt(OP_SORT_ENTRIES,                       N_("Sort messages")) \
-  /* L10N: Help for Alias, Browser, Index, Query function: <sort-alias-reverse> */ \
-  _fmt(OP_SORT_ENTRIES_REVERSE,               N_("Sort messages in reverse order")) \
   /* L10N: Help for Browser function: <subscribe-pattern> */ \
   _fmt(OP_SUBSCRIBE_PATTERN,                  N_("Subscribe to newsgroups matching a pattern")) \
   /* L10N: Help for Index function: <toggle-important-flag> */ \
@@ -697,12 +701,14 @@ const char *opcodes_get_name       (int op);
 #define OPS(_fmt) \
   _fmt(OP_NULL,                               N_("Null operation")) \
   OPS_DIALOG(_fmt) \
+  OPS_ENTRY(_fmt) \
   OPS_GLOBAL(_fmt) \
   OPS_SCROLL(_fmt) \
   OPS_SEARCH(_fmt) \
   OPS_SELECT(_fmt) \
   OPS_TAG(_fmt) \
   OPS_TREE(_fmt) \
+  OPS_VIEW(_fmt) \
   OPS_EDITOR(_fmt) \
   OPS_ATTACH(_fmt) \
   OPS_AUTOCRYPT(_fmt) \
