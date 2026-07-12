@@ -83,8 +83,6 @@ static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
   { "reload-active",                 OP_LOAD_ACTIVE },
   { "rename-mailbox",                OP_RENAME_MAILBOX },
   { "select-new",                    OP_BROWSER_NEW_FILE },
-  { "sort",                          OP_SORT_ENTRIES },
-  { "sort-reverse",                  OP_SORT_ENTRIES_REVERSE },
   { "subscribe",                     OP_BROWSER_SUBSCRIBE },
   { "subscribe-pattern",             OP_SUBSCRIBE_PATTERN },
   { "toggle-mailboxes",              OP_TOGGLE_MAILBOXES },

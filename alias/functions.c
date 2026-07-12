@@ -54,10 +54,7 @@
  */
 static const struct MenuFuncOp OpAlias[] = { /* map: alias */
   { "delete-entry",                  OP_DELETE },
-  { "limit",                         OP_LIMIT_MESSAGES },
   { "mail",                          OP_COMPOSE_MESSAGE },
-  { "sort-alias",                    OP_SORT_ENTRIES },
-  { "sort-alias-reverse",            OP_SORT_ENTRIES_REVERSE },
   { "tag-pattern",                   OP_MAIN_TAG_PATTERN },
   { "undelete-entry",                OP_UNDELETE },
   { "untag-pattern",                 OP_MAIN_UNTAG_PATTERN },
@@ -69,12 +66,9 @@ static const struct MenuFuncOp OpAlias[] = { /* map: alias */
  */
 const struct MenuFuncOp OpQuery[] = { /* map: query */
   { "create-alias",                  OP_CREATE_ALIAS },
-  { "limit",                         OP_LIMIT_MESSAGES },
   { "mail",                          OP_COMPOSE_MESSAGE },
   { "query",                         OP_VIEW_ADDRESS_QUERY },
   { "query-append",                  OP_QUERY_APPEND },
-  { "sort",                          OP_SORT_ENTRIES },
-  { "sort-reverse",                  OP_SORT_ENTRIES_REVERSE },
   { "tag-pattern",                   OP_MAIN_TAG_PATTERN },
   { "untag-pattern",                 OP_MAIN_UNTAG_PATTERN },
   { NULL, 0 },
