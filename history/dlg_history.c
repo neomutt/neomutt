@@ -51,9 +51,14 @@
  *
  * ## Events
  *
- * None.  The dialog is not affected by any config or colours and doesn't
- * support sorting.  Once constructed, the events are handled by the Menu (part
- * of the @ref gui_simple).
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type | Handler                   |
+ * | :--------- | :------------------------ |
+ * | #NT_CONFIG | history_config_observer() |
+ *
+ * The dialog is not affected by colours and doesn't support sorting.  Some
+ * other events are handled by the Menu (part of the @ref gui_simple).
  */
 
 #include "config.h"
@@ -109,6 +114,29 @@ static int history_make_entry(struct Menu *menu, int line, int max_cols, struct 
 }
 
 /**
+ * history_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
+ *
+ * The History Dialog is affected by changes to `$history_format`.
+ */
+static int history_config_observer(struct NotifyCallback *nc)
+{
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
+    return -1;
+
+  struct EventConfig *ev_c = nc->event_data;
+  if (!mutt_str_equal(ev_c->name, "history_format"))
+    return 0;
+
+  struct Menu *menu = nc->global_data;
+  menu_queue_redraw(menu, MENU_REDRAW_FULL);
+  mutt_debug(LL_DEBUG5, "config done, request WA_RECALC, MENU_REDRAW_FULL\n");
+
+  return 0;
+}
+
+/**
  * dlg_history - Select an item from a history list - @ingroup gui_dlg
  * @param[in]  buf     Buffer in which to save string
  * @param[out] matches Items to choose from
@@ -132,6 +160,9 @@ void dlg_history(struct Buffer *buf, struct StringArray *matches)
   menu->max = ARRAY_SIZE(matches);
   menu->mdata = &hd;
   menu->mdata_free = NULL; // Menu doesn't own the data
+
+  // NT_COLOR is handled by the SimpleDialog
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, history_config_observer, menu);
 
   struct MuttWindow *old_focus = window_set_focus(menu->win);
   // ---------------------------------------------------------------------------
@@ -164,5 +195,6 @@ void dlg_history(struct Buffer *buf, struct StringArray *matches)
   // ---------------------------------------------------------------------------
 
   window_set_focus(old_focus);
+  notify_observer_remove(NeoMutt->sub->notify, history_config_observer, menu);
   simple_dialog_free(&sdw.dlg);
 }
