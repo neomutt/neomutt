@@ -53,10 +53,10 @@
  * OpAlias - Functions for the Alias Menu
  */
 static const struct MenuFuncOp OpAlias[] = { /* map: alias */
-  { "delete-entry",                  OP_DELETE },
+  { "delete-entry",                  OP_DELETE_ALIAS },
   { "mail",                          OP_COMPOSE_MESSAGE },
   { "tag-pattern",                   OP_MAIN_TAG_PATTERN },
-  { "undelete-entry",                OP_UNDELETE },
+  { "undelete-entry",                OP_UNDELETE_ALIAS },
   { "untag-pattern",                 OP_MAIN_UNTAG_PATTERN },
   { NULL, 0 },
 };
@@ -79,14 +79,14 @@ const struct MenuFuncOp OpQuery[] = { /* map: query */
  */
 static const struct MenuOpSeq AliasDefaultBindings[] = { /* map: alias */
   { OP_COMPOSE_MESSAGE,                    "m" },
-  { OP_DELETE,                             "d" },
+  { OP_DELETE_ALIAS,                       "d" },
   { OP_LIMIT_ENTRIES,                      "l" },
   { OP_MAIN_TAG_PATTERN,                   "T" },
   { OP_MAIN_UNTAG_PATTERN,                 "\024" },           // <Ctrl-T>
   { OP_SORT_ENTRIES,                       "o" },
   { OP_SORT_ENTRIES_REVERSE,               "O" },
   { OP_TOGGLE_TAG,                         "<space>" },
-  { OP_UNDELETE,                           "u" },
+  { OP_UNDELETE_ALIAS,                     "u" },
   { 0, NULL },
 };
 
@@ -255,8 +255,8 @@ static void alias_apply_set_deleted(struct AliasViewPtrArray *avpa, bool deleted
  * op_delete - delete the current entry - Implements ::alias_function_t - @ingroup alias_function_api
  *
  * This function handles:
- * - OP_DELETE
- * - OP_UNDELETE
+ * - OP_DELETE_ALIAS
+ * - OP_UNDELETE_ALIAS
  *
  * Supports repeat-count: `5<delete-entry>` deletes the current entry and the
  * next 4. Overruns are silently capped at the end of the visible list.
@@ -265,7 +265,7 @@ static int op_delete(struct AliasFunctionData *fdata, const struct KeyEvent *eve
 {
   struct AliasMenuData *mdata = fdata->wdata;
   struct Menu *menu = mdata->menu;
-  const bool deleted = (event->op == OP_DELETE);
+  const bool deleted = (event->op == OP_DELETE_ALIAS);
 
   struct AliasViewPtrArray avpa = ARRAY_HEAD_INITIALIZER;
   alias_add_selection(&avpa, mdata, menu->tag_prefix, event->count);
@@ -606,7 +606,7 @@ static const struct AliasFunction AliasFunctions[] = {
   { OP_ACTIVATE_ENTRY,         op_activate_entry },
   { OP_COMPOSE_MESSAGE,        op_mail },
   { OP_CREATE_ALIAS,           op_create_alias },
-  { OP_DELETE,                 op_delete },
+  { OP_DELETE_ALIAS,           op_delete },
   { OP_EXIT,                   op_quit },
   { OP_LIMIT_ENTRIES,          op_main_limit },
   { OP_MAIN_TAG_PATTERN,       op_main_tag_pattern },
@@ -619,7 +619,7 @@ static const struct AliasFunction AliasFunctions[] = {
   { OP_SEARCH_PREVIOUS,        op_search },
   { OP_SORT_ENTRIES,           op_sort },
   { OP_SORT_ENTRIES_REVERSE,   op_sort },
-  { OP_UNDELETE,               op_delete },
+  { OP_UNDELETE_ALIAS,         op_delete },
   { OP_VIEW_ADDRESS_QUERY,     op_query },
   { 0, NULL },
   // clang-format on

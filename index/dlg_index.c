@@ -101,8 +101,8 @@
 static const struct Mapping IndexHelp[] = {
   // clang-format off
   { N_("Quit"),  OP_QUIT },
-  { N_("Del"),   OP_DELETE },
-  { N_("Undel"), OP_UNDELETE },
+  { N_("Del"),   OP_DELETE_MESSAGE },
+  { N_("Undel"), OP_UNDELETE_MESSAGE },
   { N_("Save"),  OP_MOVE_MESSAGE },
   { N_("Mail"),  OP_COMPOSE_MESSAGE },
   { N_("Reply"), OP_REPLY_SENDER },
@@ -116,8 +116,8 @@ static const struct Mapping IndexHelp[] = {
 const struct Mapping IndexNewsHelp[] = {
   // clang-format off
   { N_("Quit"),     OP_QUIT },
-  { N_("Del"),      OP_DELETE },
-  { N_("Undel"),    OP_UNDELETE },
+  { N_("Del"),      OP_DELETE_MESSAGE },
+  { N_("Undel"),    OP_UNDELETE_MESSAGE },
   { N_("Save"),     OP_MOVE_MESSAGE },
   { N_("Post"),     OP_NNTP_POST_MESSAGE },
   { N_("Followup"), OP_NNTP_FOLLOWUP_MESSAGE },

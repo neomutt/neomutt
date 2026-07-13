@@ -357,8 +357,10 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_CREATE_MAILBOX,                     N_("Create a new mailbox (IMAP only)")) \
   /* L10N: Help for Index function: <create-message-hotkey> */ \
   _fmt(OP_CREATE_MESSAGE_HOTKEY,              N_("Create a hotkey macro for the current message")) \
-  /* L10N: Help for Alias, Postpone, Index function: <delete-entry> */ \
-  _fmt(OP_DELETE,                             N_("Delete the current entry")) \
+  /* L10N: Help for Alias function: <delete-alias> */ \
+  _fmt(OP_DELETE_ALIAS,                       N_("Delete the current alias")) \
+  /* L10N: Help for Postpone, Index function: <delete-message> */ \
+  _fmt(OP_DELETE_MESSAGE,                     N_("Delete the current message")) \
   /* L10N: Help for Browser function: <delete-mailbox> */ \
   _fmt(OP_DELETE_MAILBOX,                     N_("Delete the current mailbox (IMAP only)")) \
   /* L10N: Help for Index function: <delete-subthread> */ \
@@ -375,9 +377,9 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_EDIT_RAW_MESSAGE,                   N_("Edit the raw message if the mailbox is not read-only, otherwise view it")) \
   /* L10N: Help for Index, Index function: <edit-raw-message-readonly> */ \
   _fmt(OP_EDIT_RAW_MESSAGE_READONLY,          N_("Edit the raw message (edit and edit-raw-message are synonyms)")) \
-  /* L10N: Help for Index, Index function: <modify-labels> */ \
+  /* L10N: Help for Index, Index function: <edit-tags> */ \
   _fmt(OP_EDIT_TAGS,                          N_("Modify (notmuch/imap) tags")) \
-  /* L10N: Help for Index, Index function: <modify-labels-then-hide> */ \
+  /* L10N: Help for Index, Index function: <edit-tags-then-hide> */ \
   _fmt(OP_EDIT_TAGS_THEN_HIDE,                N_("Modify (notmuch/imap) tags and then hide message")) \
   /* L10N: Help for Index function: <edit-x-label> */ \
   _fmt(OP_EDIT_X_LABEL,                       N_("Add, change, or delete a message's label")) \
@@ -527,8 +529,10 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_TOGGLE_READ_MESSAGES,               N_("Toggle view of read messages")) \
   /* L10N: Help for Browser function: <uncatchup> */ \
   _fmt(OP_UNCATCHUP,                          N_("Mark all articles in newsgroup as unread")) \
-  /* L10N: Help for Alias, Postpone, Index function: <undelete-entry> */ \
-  _fmt(OP_UNDELETE,                           N_("Undelete the current entry")) \
+  /* L10N: Help for Alias function: <undelete-alias> */ \
+  _fmt(OP_UNDELETE_ALIAS,                     N_("Undelete the current alias")) \
+  /* L10N: Help for Alias, Postpone, Index function: <undelete-message> */ \
+  _fmt(OP_UNDELETE_MESSAGE,                   N_("Undelete the current message")) \
   /* L10N: Help for Index function: <undelete-subthread> */ \
   _fmt(OP_UNDELETE_SUBTHREAD,                 N_("Undelete all messages in subthread")) \
   /* L10N: Help for Index function: <undelete-thread> */ \
@@ -582,8 +586,6 @@ const char *opcodes_get_name       (int op);
 #define OPS_NOTMUCH(_fmt) \
   /* L10N: Help for Index function: <fetch-entire-thread> */ \
   _fmt(OP_FETCH_ENTIRE_THREAD,                N_("Read entire thread of the current message")) \
-  /* L10N: Help for Index function: <change-vfolder> */ \
-  _fmt(OP_MAIN_CHANGE_VFOLDER,                N_("Open a different virtual folder")) \
   /* L10N: Help for Index function: <vfolder-create-from-query> */ \
   _fmt(OP_VFOLDER_CREATE_FROM_QUERY,          N_("Generate virtual folder from query")) \
   /* L10N: Help for Index function: <vfolder-create-from-query-readonly> */ \

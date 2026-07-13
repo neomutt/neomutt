@@ -115,7 +115,7 @@ struct KeyEvent *array_pop(struct KeyEventArray *a)
  * array_add - Add an event to the end of the array
  * @param a  Array
  * @param ch Character
- * @param op Operation, e.g. OP_DELETE
+ * @param op Operation, e.g. OP_DELETE_MESSAGE
  */
 void array_add(struct KeyEventArray *a, int ch, int op)
 {
@@ -152,7 +152,7 @@ void mutt_unget_ch(int ch)
 
 /**
  * mutt_unget_op - Return an operation to the input buffer
- * @param op Operation, e.g. OP_DELETE
+ * @param op Operation, e.g. OP_DELETE_MESSAGE
  *
  * This puts events into the `UngetKeyEvents` buffer
  */

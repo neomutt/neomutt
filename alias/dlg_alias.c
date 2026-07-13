@@ -100,8 +100,8 @@
 static const struct Mapping AliasHelp[] = {
   // clang-format off
   { N_("Exit"),     OP_EXIT },
-  { N_("Del"),      OP_DELETE },
-  { N_("Undel"),    OP_UNDELETE },
+  { N_("Del"),      OP_DELETE_ALIAS },
+  { N_("Undel"),    OP_UNDELETE_ALIAS },
   { N_("Sort"),     OP_SORT_ENTRIES },
   { N_("Rev-Sort"), OP_SORT_ENTRIES_REVERSE },
   { N_("Select"),   OP_ACTIVATE_ENTRY },
