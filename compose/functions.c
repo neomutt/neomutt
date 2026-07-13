@@ -152,6 +152,7 @@ static const struct MenuFuncOp OpCompose[] = { /* map: compose */
   { "move-up",                       OP_ATTACH_MOVE_ATTACHMENT_UP,          MFF_DEPRECATED },
   { "new-mime",                      OP_ATTACH_ATTACH_NEW_MIME,             MFF_DEPRECATED },
   { "pgp-menu",                      OP_COMPOSE_VIEW_PGP_OPTIONS,           MFF_DEPRECATED },
+  { "pipe-message",                  OP_PIPE_ENTRY,                         MFF_DEPRECATED },
   { "rename-attachment",             OP_ATTACH_EDIT_ATTACHMENT_NAME,        MFF_DEPRECATED },
   { "rename-file",                   OP_COMPOSE_RENAME_FILE_ON_DISK,        MFF_DEPRECATED },
   { "smime-menu",                    OP_COMPOSE_VIEW_SMIME_OPTIONS,         MFF_DEPRECATED },

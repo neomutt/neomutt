@@ -60,9 +60,12 @@ static const struct MenuFuncOp OpAlias[] = { /* map: alias */
   { "untag-pattern",                 OP_MAIN_UNTAG_PATTERN },
 
   // Deprecated
-  { "delete-entry",                  OP_DELETE_ALIAS,    MFF_DEPRECATED },
-  { "mail",                          OP_COMPOSE_MESSAGE, MFF_DEPRECATED },
-  { "undelete-entry",                OP_UNDELETE_ALIAS,  MFF_DEPRECATED },
+  { "delete-entry",                  OP_DELETE_ALIAS,         MFF_DEPRECATED },
+  { "limit",                         OP_LIMIT_ENTRIES,        MFF_DEPRECATED },
+  { "mail",                          OP_COMPOSE_MESSAGE,      MFF_DEPRECATED },
+  { "sort-alias",                    OP_SORT_ENTRIES,         MFF_DEPRECATED },
+  { "sort-alias-reverse",            OP_SORT_ENTRIES_REVERSE, MFF_DEPRECATED },
+  { "undelete-entry",                OP_UNDELETE_ALIAS,       MFF_DEPRECATED },
   { NULL, 0 },
 };
 
@@ -78,7 +81,10 @@ const struct MenuFuncOp OpQuery[] = { /* map: query */
   { "untag-pattern",                 OP_MAIN_UNTAG_PATTERN },
 
   // Deprecated
-  { "mail",                          OP_COMPOSE_MESSAGE, MFF_DEPRECATED },
+  { "limit",                         OP_LIMIT_ENTRIES,        MFF_DEPRECATED },
+  { "mail",                          OP_COMPOSE_MESSAGE,      MFF_DEPRECATED },
+  { "sort",                          OP_SORT_ENTRIES,         MFF_DEPRECATED },
+  { "sort-reverse",                  OP_SORT_ENTRIES_REVERSE, MFF_DEPRECATED },
   { NULL, 0 },
 };
 

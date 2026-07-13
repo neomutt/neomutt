@@ -81,6 +81,9 @@ static const struct MenuFuncOp OpAttach[] = { /* map: attach */
   { "view-mailcap",                  OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP },
   { "view-pager",                    OP_ATTACH_DISPLAY_ATTACHMENT_PAGER },
   { "view-text",                     OP_ATTACH_DISPLAY_ATTACHMENT_TEXT },
+
+  // Deprecated
+  { "pipe-message",                  OP_PIPE_ENTRY, MFF_DEPRECATED },
   { NULL, 0 },
 };
 

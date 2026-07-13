@@ -93,8 +93,10 @@ static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
   { "view-file",                     OP_BROWSER_VIEW_FILE },
 
   // Deprecated
-  { "enter-mask",                    OP_BROWSER_LIMIT,  MFF_DEPRECATED },
-  { "buffy-list",                    OP_SHOW_MAILBOXES, MFF_DEPRECATED },
+  { "buffy-list",                    OP_SHOW_MAILBOXES,       MFF_DEPRECATED },
+  { "enter-mask",                    OP_BROWSER_LIMIT,        MFF_DEPRECATED },
+  { "sort",                          OP_SORT_ENTRIES,         MFF_DEPRECATED },
+  { "sort-reverse",                  OP_SORT_ENTRIES_REVERSE, MFF_DEPRECATED },
   { NULL, 0 },
 };
 
