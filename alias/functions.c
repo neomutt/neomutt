@@ -53,11 +53,16 @@
  * OpAlias - Functions for the Alias Menu
  */
 static const struct MenuFuncOp OpAlias[] = { /* map: alias */
-  { "delete-entry",                  OP_DELETE_ALIAS },
-  { "mail",                          OP_COMPOSE_MESSAGE },
+  { "compose-message",               OP_COMPOSE_MESSAGE },
+  { "delete-alias",                  OP_DELETE_ALIAS },
   { "tag-pattern",                   OP_MAIN_TAG_PATTERN },
-  { "undelete-entry",                OP_UNDELETE_ALIAS },
+  { "undelete-alias",                OP_UNDELETE_ALIAS },
   { "untag-pattern",                 OP_MAIN_UNTAG_PATTERN },
+
+  // Deprecated
+  { "delete-entry",                  OP_DELETE_ALIAS,    MFF_DEPRECATED },
+  { "mail",                          OP_COMPOSE_MESSAGE, MFF_DEPRECATED },
+  { "undelete-entry",                OP_UNDELETE_ALIAS,  MFF_DEPRECATED },
   { NULL, 0 },
 };
 
@@ -65,12 +70,15 @@ static const struct MenuFuncOp OpAlias[] = { /* map: alias */
  * OpQuery - Functions for the external Query Menu
  */
 const struct MenuFuncOp OpQuery[] = { /* map: query */
+  { "compose-message",               OP_COMPOSE_MESSAGE },
   { "create-alias",                  OP_CREATE_ALIAS },
-  { "mail",                          OP_COMPOSE_MESSAGE },
   { "query",                         OP_VIEW_ADDRESS_QUERY },
   { "query-append",                  OP_QUERY_APPEND },
   { "tag-pattern",                   OP_MAIN_TAG_PATTERN },
   { "untag-pattern",                 OP_MAIN_UNTAG_PATTERN },
+
+  // Deprecated
+  { "mail",                          OP_COMPOSE_MESSAGE, MFF_DEPRECATED },
   { NULL, 0 },
 };
 
