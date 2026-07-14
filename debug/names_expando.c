@@ -208,6 +208,7 @@ const char *name_expando_uid_compose(int uid)
   {
     DEBUG_NAME(ED_COM_ATTACH_COUNT);
     DEBUG_NAME(ED_COM_ATTACH_SIZE);
+    DEBUG_NAME(ED_COM_SPELLING_FILE);
     DEBUG_DEFAULT;
   }
 }

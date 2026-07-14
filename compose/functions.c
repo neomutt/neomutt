@@ -47,6 +47,7 @@
 #include "attach/lib.h"
 #include "browser/lib.h"
 #include "editor/lib.h"
+#include "expando/lib.h"
 #include "history/lib.h"
 #include "hooks/lib.h"
 #include "imap/lib.h"
@@ -110,7 +111,7 @@ static const struct MenuFuncOp OpCompose[] = { /* map: compose */
   { "group-alternatives",            OP_ATTACH_GROUP_ALTS },
   { "group-multilingual",            OP_ATTACH_GROUP_LINGUAL },
   { "group-related",                 OP_ATTACH_GROUP_RELATED },
-  { "ispell",                        OP_COMPOSE_ISPELL },
+  { "ispell",                        OP_COMPOSE_CHECK_SPELLING },
   { "move-down",                     OP_ATTACH_MOVE_DOWN },
   { "move-up",                       OP_ATTACH_MOVE_UP },
   { "new-mime",                      OP_ATTACH_NEW_MIME },
@@ -182,7 +183,7 @@ static const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
 #endif
   { OP_COMPOSE_EDIT_FILE,                  "\033e" },          // <Alt-e>
   { OP_COMPOSE_EDIT_MESSAGE,               "e" },
-  { OP_COMPOSE_ISPELL,                     "i" },
+  { OP_COMPOSE_CHECK_SPELLING,             "i" },
   { OP_COMPOSE_PGP_MENU,                   "p" },
   { OP_COMPOSE_POSTPONE_MESSAGE,           "P" },
   { OP_COMPOSE_RENAME_FILE,                "R" },
@@ -2470,18 +2471,50 @@ static int op_compose_edit_message(struct ComposeFunctionData *fdata,
 }
 
 /**
- * op_compose_ispell - Run ispell on the message - Implements ::compose_function_t - @ingroup compose_function_api
+ * struct SpellingCommandData - Data for the spelling command
  */
-static int op_compose_ispell(struct ComposeFunctionData *fdata, const struct KeyEvent *event)
+struct SpellingCommandData
+{
+  const char *filename; ///< Filename of the message being composed
+};
+
+/**
+ * spelling_command_file - Spelling command: Filename - Implements ::get_string_t - @ingroup expando_get_string_api
+ */
+static void spelling_command_file(const struct ExpandoNode *node, void *data,
+                                  MuttFormatFlags flags, struct Buffer *buf)
+{
+  struct SpellingCommandData *scd = data;
+
+  buf_quote_filename(buf, scd->filename, true);
+}
+
+/**
+ * op_compose_check_spelling - Check the spelling of the message - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_compose_check_spelling(struct ComposeFunctionData *fdata,
+                                     const struct KeyEvent *event)
 {
   struct ComposeSharedData *shared = fdata->shared;
   endwin();
-  const char *const c_ispell = cs_subset_string(shared->sub, "ispell");
+  const struct Expando *c_spelling_command = cs_subset_expando(shared->sub, "spelling_command");
   struct Buffer *cmd = buf_pool_get();
-  struct Buffer *quoted = buf_pool_get();
-  buf_quote_filename(quoted, shared->email->body->filename, true);
-  buf_printf(cmd, "%s -x %s", NONULL(c_ispell), buf_string(quoted));
-  buf_pool_release(&quoted);
+  struct SpellingCommandData scd = { shared->email->body->filename };
+  const struct ExpandoRenderCallback spelling_command_render_callbacks[] = {
+    { ED_COMPOSE, ED_COM_SPELLING_FILE, spelling_command_file, NULL },
+    { -1, -1, NULL, NULL },
+  };
+  expando_render(c_spelling_command, spelling_command_render_callbacks, &scd,
+                 MUTT_FORMAT_NONE, -1, cmd);
+  if (!expando_find_node(c_spelling_command, ED_COMPOSE, ED_COM_SPELLING_FILE))
+  {
+    if (!buf_is_empty(cmd))
+      buf_addch(cmd, ' ');
+    struct Buffer *quoted = buf_pool_get();
+    buf_quote_filename(quoted, scd.filename, true);
+    buf_addstr(cmd, buf_string(quoted));
+    buf_pool_release(&quoted);
+  }
   if (mutt_system(buf_string(cmd)) == -1)
   {
     mutt_error(_("Error running \"%s\""), buf_string(cmd));
@@ -2761,7 +2794,7 @@ static const struct ComposeFunction ComposeFunctions[] = {
   { OP_ATTACH_VIEW_TEXT,           op_display_headers           },
   { OP_COMPOSE_EDIT_FILE,          op_compose_edit_file         },
   { OP_COMPOSE_EDIT_MESSAGE,       op_compose_edit_message      },
-  { OP_COMPOSE_ISPELL,             op_compose_ispell            },
+  { OP_COMPOSE_CHECK_SPELLING,     op_compose_check_spelling    },
   { OP_COMPOSE_POSTPONE_MESSAGE,   op_compose_postpone_message  },
   { OP_COMPOSE_RENAME_FILE,        op_compose_rename_file       },
   { OP_COMPOSE_SEND_MESSAGE,       op_compose_send_message      },

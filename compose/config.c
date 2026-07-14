@@ -36,10 +36,6 @@
 #include "expando/lib.h"
 #include "shared_data.h"
 
-#ifndef ISPELL
-#define ISPELL "ispell"
-#endif
-
 /**
  * ComposeFormatDef - Expando definitions
  *
@@ -55,6 +51,19 @@ static const struct ExpandoDefinition ComposeFormatDef[] = {
   { "h", "hostname",     ED_GLOBAL,  ED_GLO_HOSTNAME,     NULL },
   { "l", "attach-size",  ED_COMPOSE, ED_COM_ATTACH_SIZE,  NULL },
   { "v", "version",      ED_GLOBAL,  ED_GLO_VERSION,      NULL },
+  { NULL, NULL, 0, -1, NULL }
+  // clang-format on
+};
+
+/**
+ * SpellingCommandFormatDef - Expando definitions
+ *
+ * Config:
+ * - $spelling_command
+ */
+static const struct ExpandoDefinition SpellingCommandFormatDef[] = {
+  // clang-format off
+  { "f", "file", ED_COMPOSE, ED_COM_SPELLING_FILE, NULL },
   { NULL, NULL, 0, -1, NULL }
   // clang-format on
 };
@@ -89,14 +98,15 @@ struct ConfigDef ComposeVars[] = {
   { "edit_headers", DT_BOOL, false, 0, NULL,
     "Let the user edit the email headers whilst editing an email"
   },
-  { "ispell", DT_STRING|D_STRING_COMMAND, IP ISPELL, 0, NULL,
+  { "spelling_command", DT_EXPANDO|D_STRING_COMMAND, IP "ispell -x %f", IP &SpellingCommandFormatDef, NULL,
     "External command to perform spell-checking"
   },
   { "postpone", DT_QUAD, MUTT_ASKYES, 0, NULL,
     "Save messages to the `$postponed` folder"
   },
 
-  { "edit_hdrs", DT_SYNONYM, IP "edit_headers", IP "2021-03-21" },
+  { "edit_hdrs", DT_SYNONYM, IP "edit_headers",     IP "2021-03-21" },
+  { "ispell",    DT_SYNONYM, IP "spelling_command", IP "2026-07-14" },
   { NULL },
   // clang-format on
 };

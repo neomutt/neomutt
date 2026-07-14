@@ -1,9 +1,5 @@
 #include "config.h"
 
-#ifndef ISPELL
-#define ISPELL "ispell"
-#endif
-
 /*++*/
 // clang-format off
 { "abort_backspace", DT_BOOL, true },
@@ -2347,10 +2343,17 @@
 ** .te
 */
 
-{ "ispell", D_STRING_COMMAND, ISPELL },
+{ "spelling_command", D_STRING_COMMAND, "ispell -x %f" },
 /*
 ** .pp
-** How to invoke ispell (GNU's spell-checking software).
+** External command to perform spell-checking.  The following printf-style
+** sequence is understood:
+** .dl
+** .dt %f .dd %{file} .dd Filename of the message
+** .de
+** .pp
+** If the command does not contain the sequence, the filename will be appended
+** to the command.
 */
 
 { "keep_flagged", DT_BOOL, false },

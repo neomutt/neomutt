@@ -56,6 +56,7 @@ enum ExpandoDataCompose
 {
   ED_COM_ATTACH_COUNT = 1,     ///< ComposeAttachData, num_attachments()
   ED_COM_ATTACH_SIZE,          ///< ComposeAttachData, cum_attachs_size()
+  ED_COM_SPELLING_FILE,        ///< Spelling command's filename
 };
 
 void compose_shared_data_free(struct MuttWindow *win, void **ptr);
