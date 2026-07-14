@@ -48,6 +48,8 @@ struct Expando *expando_new (const char *format);
 
 bool expando_equal(const struct Expando *a, const struct Expando *b);
 
+const struct ExpandoNode *expando_find_node(const struct Expando *exp, int did, int uid);
+
 struct Expando *expando_parse(const char *str, const struct ExpandoDefinition *defs, struct Buffer *err);
 
 int expando_render(const struct Expando *exp, const struct ExpandoRenderCallback *erc, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);

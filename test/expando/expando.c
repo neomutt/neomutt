@@ -52,6 +52,33 @@ void test_expando_expando(void)
     expando_free(NULL);
   }
 
+  // const struct ExpandoNode *expando_find_node(const struct Expando *exp, int did, int uid);
+  {
+    struct Expando *exp = expando_new("apple");
+    struct ExpandoNode *first = node_new();
+    struct ExpandoNode *second = node_new();
+    struct ExpandoNode *nested = node_new();
+
+    first->did = ED_EMAIL;
+    first->uid = ED_EMA_DATE_FORMAT;
+    second->did = ED_ENVELOPE;
+    second->uid = ED_ENV_FROM;
+    nested->did = ED_EMAIL;
+    nested->uid = ED_EMA_SCORE;
+
+    node_add_child(exp->node, first);
+    node_add_child(exp->node, second);
+    node_add_child(second, nested);
+
+    TEST_CHECK(expando_find_node(NULL, ED_EMAIL, ED_EMA_DATE_FORMAT) == NULL);
+    TEST_CHECK(expando_find_node(exp, ED_EMAIL, ED_EMA_DATE_FORMAT) == first);
+    TEST_CHECK(expando_find_node(exp, ED_EMAIL, ED_EMA_SCORE) == nested);
+    TEST_CHECK(expando_find_node(exp, ED_ENVELOPE, ED_ENV_FROM) == second);
+    TEST_CHECK(expando_find_node(exp, ED_EMAIL, ED_EMA_SIZE) == NULL);
+
+    expando_free(&exp);
+  }
+
   // bool expando_equal(const struct Expando *a, const struct Expando *b);
   {
     struct Expando *exp_a1 = expando_new("apple");

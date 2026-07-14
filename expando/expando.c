@@ -72,6 +72,49 @@ void expando_free(struct Expando **ptr)
 }
 
 /**
+ * node_find - Find a Node in a tree
+ * @param node Root Node
+ * @param did  Domain ID
+ * @param uid  Unique ID
+ * @retval ptr Matching Node
+ * @retval NULL No matching Node
+ */
+static const struct ExpandoNode *node_find(const struct ExpandoNode *node, int did, int uid)
+{
+  if (!node)
+    return NULL;
+
+  if ((node->did == did) && (node->uid == uid))
+    return node;
+
+  struct ExpandoNode **np = NULL;
+  ARRAY_FOREACH(np, &node->children)
+  {
+    const struct ExpandoNode *match = node_find(*np, did, uid);
+    if (match)
+      return match;
+  }
+
+  return NULL;
+}
+
+/**
+ * expando_find_node - Find a Node in an Expando tree
+ * @param exp Expando to search
+ * @param did Domain ID
+ * @param uid Unique ID
+ * @retval ptr Matching Node
+ * @retval NULL No matching Node
+ */
+const struct ExpandoNode *expando_find_node(const struct Expando *exp, int did, int uid)
+{
+  if (!exp)
+    return NULL;
+
+  return node_find(exp->node, did, uid);
+}
+
+/**
  * expando_parse - Parse an Expando string
  * @param str  String to parse
  * @param defs Data defining Expando
