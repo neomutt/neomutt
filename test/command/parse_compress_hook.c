@@ -26,6 +26,8 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "compmbox/lib.h"
+#include "expando/lib.h"
 #include "hooks/lib.h"
 #include "parse/lib.h"
 #include "common.h"
@@ -41,7 +43,8 @@ static const struct CommandTest AppendTests[] = {
   // clang-format off
   // append-hook <regex> <shell-command>
   { MUTT_CMD_WARNING, "" },
-  { MUTT_CMD_SUCCESS, "'\\.gz$' \"gzip --stdout              '%t' >> '%f'\"" },
+  { MUTT_CMD_SUCCESS, "'\\.gz$' \"gzip --stdout              '%{to}' >> '%{from}'\"" },
+  { MUTT_CMD_ERROR,   "'\\.gz$' \"gzip --stdout              '%{from}'\"" },
   { MUTT_CMD_ERROR,   NULL },
   // clang-format on
 };
@@ -50,7 +53,8 @@ static const struct CommandTest CloseTests[] = {
   // clang-format off
   // close-hook  <regex> <shell-command>
   { MUTT_CMD_WARNING, "" },
-  { MUTT_CMD_SUCCESS, "'\\.gz$' \"gzip --stdout              '%t' >  '%f'\"" },
+  { MUTT_CMD_SUCCESS, "'\\.gz$' \"gzip --stdout              '%{to}' >  '%{from}'\"" },
+  { MUTT_CMD_ERROR,   "'\\.gz$' \"gzip --stdout              '%{to}'\"" },
   { MUTT_CMD_ERROR,   NULL },
   // clang-format on
 };
@@ -59,7 +63,8 @@ static const struct CommandTest OpenTests[] = {
   // clang-format off
   // open-hook   <regex> <shell-command>
   { MUTT_CMD_WARNING, "" },
-  { MUTT_CMD_SUCCESS, "'\\.gz$' \"gzip --stdout --decompress '%f' >  '%t'\"" },
+  { MUTT_CMD_SUCCESS, "'\\.gz$' \"gzip --stdout --decompress '%{from}' >  '%{to}'\"" },
+  { MUTT_CMD_ERROR,   "'\\.gz$' \"gzip --stdout --decompress '%{from}'\"" },
   { MUTT_CMD_ERROR,   NULL },
   // clang-format on
 };
@@ -79,6 +84,14 @@ static void test_parse_append_hook(void)
     buf_seek(line, 0);
     rc = parse_compress_hook(&AppendHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, AppendTests[i].rc);
+  }
+
+  struct Hook *hook = mutt_find_hook(CMD_APPEND_HOOK, "mail.gz");
+  TEST_CHECK(hook != NULL);
+  if (hook)
+  {
+    TEST_CHECK(expando_find_node(hook->expando, ED_COMPRESS, ED_CMP_FROM) != NULL);
+    TEST_CHECK(expando_find_node(hook->expando, ED_COMPRESS, ED_CMP_TO) != NULL);
   }
 
   parse_context_free(&pc);

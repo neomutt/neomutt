@@ -45,6 +45,7 @@
 #include "muttlib.h"
 
 extern const struct ExpandoDefinition IndexFormatDef[];
+extern const struct ExpandoDefinition CompressFormatDef[];
 
 /**
  * parse_charset_hook - Parse charset Hook commands - Implements Command::parse() - @ingroup command_parse
@@ -917,6 +918,7 @@ enum CommandResult parse_compress_hook(const struct Command *cmd, struct Buffer 
 
   struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   struct Hook *hook = NULL;
+  struct Expando *exp = NULL;
   enum CommandResult rc = MUTT_CMD_ERROR;
   bool pat_not = false;
   regex_t *rx = NULL;
@@ -957,7 +959,12 @@ enum CommandResult parse_compress_hook(const struct Command *cmd, struct Buffer 
     goto cleanup;
   }
 
-  if (mutt_comp_valid_command(buf_string(command)) == 0)
+  exp = expando_parse(buf_string(command), CompressFormatDef, err);
+  if (!exp)
+    goto cleanup;
+
+  if (!expando_find_node(exp, ED_COMPRESS, ED_CMP_FROM) ||
+      !expando_find_node(exp, ED_COMPRESS, ED_CMP_TO))
   {
     buf_strcpy(err, _("badly formatted command string"));
     goto cleanup;
@@ -974,6 +981,9 @@ enum CommandResult parse_compress_hook(const struct Command *cmd, struct Buffer 
       hook->command = buf_strdup(command);
       FREE(&hook->source_file);
       hook->source_file = mutt_get_sourced_cwd();
+      expando_free(&hook->expando);
+      hook->expando = exp;
+      exp = NULL;
 
       rc = MUTT_CMD_SUCCESS;
       goto cleanup;
@@ -999,12 +1009,14 @@ enum CommandResult parse_compress_hook(const struct Command *cmd, struct Buffer 
   hook->regex.pattern = buf_strdup(regex);
   hook->regex.regex = rx;
   hook->regex.pat_not = pat_not;
-  hook->expando = NULL;
+  hook->expando = exp;
+  exp = NULL;
 
   TAILQ_INSERT_TAIL(&mod_data->hooks, hook, entries);
   rc = MUTT_CMD_SUCCESS;
 
 cleanup:
+  expando_free(&exp);
   buf_pool_release(&regex);
   buf_pool_release(&command);
   return rc;

@@ -210,25 +210,6 @@ static void store_size(const struct Mailbox *m)
 }
 
 /**
- * validate_compress_expando - Validate the Compress hooks
- * @param s Command string
- * @retval ptr Expando
- */
-static struct Expando *validate_compress_expando(const char *s)
-{
-  struct Buffer *err = buf_pool_get();
-
-  struct Expando *exp = expando_parse(s, CompressFormatDef, err);
-  if (!exp)
-  {
-    mutt_error(_("Expando parse error: %s"), buf_string(err));
-  }
-
-  buf_pool_release(&err);
-  return exp;
-}
-
-/**
  * set_compress_info - Find the compress hooks for a mailbox
  * @param m Mailbox to examine
  * @retval ptr  CompressInfo Hook info for the mailbox's path
@@ -245,19 +226,19 @@ static struct CompressInfo *set_compress_info(struct Mailbox *m)
     return m->compress_info;
 
   /* Open is compulsory */
-  const char *o = mutt_find_hook(CMD_OPEN_HOOK, mailbox_path(m));
-  if (!o)
+  struct Hook *open_hook = mutt_find_hook(CMD_OPEN_HOOK, mailbox_path(m));
+  if (!open_hook)
     return NULL;
 
-  const char *c = mutt_find_hook(CMD_CLOSE_HOOK, mailbox_path(m));
-  const char *a = mutt_find_hook(CMD_APPEND_HOOK, mailbox_path(m));
+  struct Hook *close_hook = mutt_find_hook(CMD_CLOSE_HOOK, mailbox_path(m));
+  struct Hook *append_hook = mutt_find_hook(CMD_APPEND_HOOK, mailbox_path(m));
 
   struct CompressInfo *ci = MUTT_MEM_CALLOC(1, struct CompressInfo);
   m->compress_info = ci;
 
-  ci->cmd_open = validate_compress_expando(o);
-  ci->cmd_close = c ? validate_compress_expando(c) : NULL;
-  ci->cmd_append = a ? validate_compress_expando(a) : NULL;
+  ci->cmd_open = open_hook->expando;
+  ci->cmd_close = close_hook ? close_hook->expando : NULL;
+  ci->cmd_append = append_hook ? append_hook->expando : NULL;
 
   return ci;
 }
@@ -270,11 +251,6 @@ static void compress_info_free(struct Mailbox *m)
 {
   if (!m || !m->compress_info)
     return;
-
-  struct CompressInfo *ci = m->compress_info;
-  expando_free(&ci->cmd_open);
-  expando_free(&ci->cmd_close);
-  expando_free(&ci->cmd_append);
 
   unlock_realpath(m);
 
@@ -372,23 +348,6 @@ bool mutt_comp_can_read(const char *path)
     return true;
 
   return false;
-}
-
-/**
- * mutt_comp_valid_command - Is this command string allowed?
- * @param cmd  Command string
- * @retval 1 Valid command
- * @retval 0 "%f" and/or "%t" is missing
- *
- * A valid command string must have both "%f" (from file) and "%t" (to file).
- * We don't check if we can actually run the command.
- */
-int mutt_comp_valid_command(const char *cmd)
-{
-  if (!cmd)
-    return 0;
-
-  return strstr(cmd, "%f") && strstr(cmd, "%t");
 }
 
 /**

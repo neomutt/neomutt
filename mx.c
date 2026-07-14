@@ -651,11 +651,11 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
     bool is_spool;
     mbox = buf_pool_get();
 
-    char *p = mutt_find_hook(CMD_MBOX_HOOK, mailbox_path(m));
-    if (p)
+    struct Hook *hook = mutt_find_hook(CMD_MBOX_HOOK, mailbox_path(m));
+    if (hook)
     {
       is_spool = true;
-      buf_strcpy(mbox, p);
+      buf_strcpy(mbox, hook->command);
     }
     else
     {

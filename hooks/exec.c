@@ -108,11 +108,11 @@ void exec_folder_hook(const char *path, const char *desc)
  * mutt_find_hook - Find a matching hook
  * @param id  Hook CommandId, e.g #CMD_FOLDER_HOOK
  * @param pat Pattern to match
- * @retval ptr Command string
+ * @retval ptr Matching Hook
  *
- * @note The returned string must not be freed.
+ * @note The returned Hook must not be freed.
  */
-char *mutt_find_hook(enum CommandId id, const char *pat)
+struct Hook *mutt_find_hook(enum CommandId id, const char *pat)
 {
   struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   struct Hook *hook = NULL;
@@ -122,7 +122,7 @@ char *mutt_find_hook(enum CommandId id, const char *pat)
     if (hook->id == id)
     {
       if (mutt_regex_match(&hook->regex, pat))
-        return hook->command;
+        return hook;
     }
   }
   return NULL;

@@ -28,6 +28,7 @@
 struct Address;
 struct Buffer;
 struct Email;
+struct Hook;
 struct HookList;
 struct ListHead;
 
@@ -40,7 +41,7 @@ void                  exec_timeout_hook            (void);
 void                  mutt_crypt_hook              (struct ListHead *list, struct Address *addr);
 void                  mutt_default_save            (struct Buffer *path, struct Email *e);
 void                  mutt_delete_hooks            (struct HookList *hooks, enum CommandId id);
-char *                mutt_find_hook               (enum CommandId id, const char *pat);
+struct Hook *         mutt_find_hook               (enum CommandId id, const char *pat);
 const struct Expando *mutt_idxfmt_hook             (const char *name, struct Mailbox *m, struct Email *e);
 void                  mutt_select_fcc              (struct Buffer *path, struct Email *e);
 

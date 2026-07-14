@@ -56,21 +56,21 @@ enum ExpandoDataCompress
  * struct CompressInfo - Private data for compress
  *
  * This object gets attached to the Mailbox.
+ * Command expandos are owned by their Hooks.
  */
 struct CompressInfo
 {
-  struct Expando *cmd_append;    ///< append-hook command
-  struct Expando *cmd_close;     ///< close-hook  command
-  struct Expando *cmd_open;      ///< open-hook   command
-  long size;                     ///< size of the compressed file
-  const struct MxOps *child_ops; ///< callbacks of de-compressed file
-  bool locked;                   ///< if realpath is locked
-  FILE *fp_lock;                 ///< fp used for locking
+  const struct Expando *cmd_append; ///< append-hook command
+  const struct Expando *cmd_close;  ///< close-hook  command
+  const struct Expando *cmd_open;   ///< open-hook   command
+  long size;                        ///< size of the compressed file
+  const struct MxOps *child_ops;    ///< callbacks of de-compressed file
+  bool locked;                      ///< if realpath is locked
+  FILE *fp_lock;                    ///< fp used for locking
 };
 
 bool mutt_comp_can_append(struct Mailbox *m);
 bool mutt_comp_can_read(const char *path);
-int  mutt_comp_valid_command(const char *cmd);
 
 extern const struct MxOps MxCompOps;
 
