@@ -51,7 +51,7 @@ static void test_parse_set(void)
   const char *vars[] = {
     "from",              // ADDRESS
     "beep",              // BOOL
-    "ispell",            // COMMAND
+    "spelling_command",  // COMMAND
     "mbox_type",         // ENUM
     "to_chars",          // MBTABLE
     "net_inc",           // NUMBER

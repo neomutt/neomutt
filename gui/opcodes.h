@@ -172,7 +172,7 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Compose function: <edit-message> */ \
   _fmt(OP_COMPOSE_EDIT_MESSAGE,               N_("Edit the message")) \
   /* L10N: Help for Compose function: <ispell> */ \
-  _fmt(OP_COMPOSE_ISPELL,                     N_("Run ispell on the message")) \
+  _fmt(OP_COMPOSE_CHECK_SPELLING,             N_("Check the spelling of the message")) \
   /* L10N: Help for Compose function: <postpone-message> */ \
   _fmt(OP_COMPOSE_POSTPONE_MESSAGE,           N_("Save this message to send later")) \
   /* L10N: Help for Compose function: <rename-file> */ \
