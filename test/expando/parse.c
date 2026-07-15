@@ -58,6 +58,7 @@ void test_expando_parser(void)
     { "b", "banana",           ED_ALIAS,  ED_ALI_COMMENT,          NULL },
     { "c", "cherry",           ED_ALIAS,  ED_ALI_FLAGS,            NULL },
     { "d", "damson",           ED_ALIAS,  ED_ALI_NAME,             NULL },
+    { NULL, "elderberry",      ED_ALIAS,  ED_ALI_NUMBER,           NULL },
     { NULL, NULL, 0, -1, NULL },
     // clang-format on
   };
@@ -200,6 +201,42 @@ void test_expando_parser(void)
 
     buf_pool_release(&buf);
     buf_pool_release(&err);
+  }
+
+  {
+    static const struct
+    {
+      const char *source;
+      const char *short_names;
+      const char *long_names;
+    } StringTests[] = {
+      // clang-format off
+      { "%a %5{banana} %<c?%d&%%>",  "%a %5b %<c?%d&%%>",    "%{apple} %5{banana} %<{cherry}?%{damson}&%%>" },
+      { "%[%Y-%m-%d] %{%b %d}",      "%[%Y-%m-%d] %{%b %d}", "%[%Y-%m-%d] %{%b %d}" },
+      { "%* ",                       "%* ",                  "%{padding-soft} " },
+      { "%{elderberry} \\%a",        "%{elderberry} \\%a",   "%{elderberry} \\%a" },
+      // clang-format on
+    };
+
+    struct Buffer *buf = buf_pool_get();
+    struct Buffer *err = buf_pool_get();
+    for (int i = 0; i < countof(StringTests); i++)
+    {
+      struct Expando *exp = expando_parse(StringTests[i].source, TestFormatDef, err);
+      TEST_CHECK(exp != NULL);
+
+      expando_stringify(exp, TestFormatDef, false, buf);
+      TEST_CHECK_STR_EQ(buf_string(buf), StringTests[i].short_names);
+      buf_reset(buf);
+
+      expando_stringify(exp, TestFormatDef, true, buf);
+      TEST_CHECK_STR_EQ(buf_string(buf), StringTests[i].long_names);
+      buf_reset(buf);
+      buf_reset(err);
+      expando_free(&exp);
+    }
+    buf_pool_release(&err);
+    buf_pool_release(&buf);
   }
 
   {

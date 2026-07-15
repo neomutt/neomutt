@@ -34,6 +34,7 @@
 #include "mutt/lib.h"
 #include "debug/lib.h"
 #include "serial.h"
+#include "definition.h"
 #include "expando.h"
 #include "node.h"
 #include "node_conddate.h"
@@ -314,4 +315,200 @@ void expando_serialise(const struct Expando *exp, struct Buffer *buf)
     return;
 
   dump_node(exp->node, buf);
+}
+
+/**
+ * find_long_name - Find an Expando definition by its long name
+ * @param str  String beginning with a long name
+ * @param defs Expando definitions
+ * @retval ptr Matching definition
+ * @retval NULL No match
+ */
+static const struct ExpandoDefinition *find_long_name(const char *str,
+                                                      const struct ExpandoDefinition *defs)
+{
+  for (const struct ExpandoDefinition *def = defs;
+       def && (def->short_name || def->long_name); def++)
+  {
+    if (!def->long_name)
+      continue;
+
+    const size_t len = mutt_str_len(def->long_name);
+    if (mutt_strn_equal(str, def->long_name, len) && (str[len] == '}'))
+      return def;
+  }
+
+  return NULL;
+}
+
+/**
+ * find_short_name - Find an Expando definition by its short name
+ * @param str  String beginning with a short name
+ * @param defs Expando definitions
+ * @retval ptr Matching definition
+ * @retval NULL No match
+ */
+static const struct ExpandoDefinition *find_short_name(const char *str,
+                                                       const struct ExpandoDefinition *defs)
+{
+  for (const struct ExpandoDefinition *def = defs;
+       def && (def->short_name || def->long_name); def++)
+  {
+    const size_t len = mutt_str_len(def->short_name);
+    if ((len > 0) && mutt_strn_equal(str, def->short_name, len))
+      return def;
+  }
+
+  return NULL;
+}
+
+/**
+ * add_expando_name - Add an Expando name to a buffer
+ * @param buf   Buffer for the result
+ * @param def   Expando definition
+ * @param named Prefer the named form
+ */
+static void add_expando_name(struct Buffer *buf, const struct ExpandoDefinition *def, bool named)
+{
+  if (named && def->long_name)
+    buf_add_printf(buf, "{%s}", def->long_name);
+  else if (def->short_name)
+    buf_addstr(buf, def->short_name);
+  else
+    buf_add_printf(buf, "{%s}", def->long_name);
+}
+
+/**
+ * skip_format - Skip printf-style formatting after a percent sign
+ * @param str String to examine
+ * @retval ptr First character of the Expando name
+ */
+static const char *skip_format(const char *str)
+{
+  if ((*str == '-') || (*str == '='))
+    str++;
+  if (*str == '0')
+    str++;
+  while (mutt_isdigit(*str))
+    str++;
+  if (*str == '.')
+  {
+    str++;
+    while (mutt_isdigit(*str))
+      str++;
+  }
+  if (*str == '_')
+    str++;
+
+  return str;
+}
+
+/**
+ * find_enclosure_end - Find an unescaped enclosure terminator
+ * @param str  String to examine
+ * @param close Terminator character
+ * @retval ptr Terminator
+ * @retval NULL Terminator not found
+ */
+static const char *find_enclosure_end(const char *str, char close)
+{
+  while (*str)
+  {
+    if ((str[0] == '\\') && str[1])
+    {
+      str += 2;
+      continue;
+    }
+    if (*str == close)
+      return str;
+    str++;
+  }
+
+  return NULL;
+}
+
+/**
+ * expando_stringify - Write an Expando using short or named Expando names
+ * @param exp   Expando to stringify
+ * @param defs  Expando definitions
+ * @param named Prefer named Expandos
+ * @param buf   Buffer for the result
+ *
+ * If the preferred name isn't defined, use the other name.  Everything except
+ * Expando names is copied verbatim, preserving custom Expando payloads.
+ */
+void expando_stringify(const struct Expando *exp, const struct ExpandoDefinition *defs,
+                       bool named, struct Buffer *buf)
+{
+  if (!exp || !defs || !buf)
+    return;
+
+  const char *str = exp->string;
+  while (*str)
+  {
+    if ((str[0] == '\\') && str[1])
+    {
+      buf_addstr_n(buf, str, 2);
+      str += 2;
+      continue;
+    }
+
+    if ((str[0] != '%') || (str[1] == '%'))
+    {
+      const size_t len = ((str[0] == '%') ? 2 : 1);
+      buf_addstr_n(buf, str, len);
+      str += len;
+      continue;
+    }
+
+    const char *name = skip_format(str + 1);
+    const bool conditional = ((*name == '<') || (*name == '?'));
+    if (conditional)
+      name++;
+
+    const struct ExpandoDefinition *def = NULL;
+    size_t name_len = 0;
+    if (*name == '{')
+    {
+      def = find_long_name(name + 1, defs);
+      if (def)
+        name_len = mutt_str_len(def->long_name) + 2;
+    }
+    if (!def)
+    {
+      def = find_short_name(name, defs);
+      if (def)
+        name_len = mutt_str_len(def->short_name);
+    }
+
+    if (!def)
+    {
+      buf_addch(buf, *str++);
+      continue;
+    }
+
+    buf_addstr_n(buf, str, name - str);
+    add_expando_name(buf, def, named);
+    str = name + name_len;
+
+    // Custom enclosure payloads may contain strftime percent sequences.
+    // Their short names are the opening delimiter; copy through the close.
+    if (!conditional && def->parse && def->short_name && strchr("([{@", def->short_name[0]))
+    {
+      char close = def->short_name[0];
+      if (close == '(')
+        close = ')';
+      else if (close == '[')
+        close = ']';
+      else if (close == '{')
+        close = '}';
+
+      const char *end = find_enclosure_end(str, close);
+      if (end)
+      {
+        buf_addstr_n(buf, str, end - str + 1);
+        str = end + 1;
+      }
+    }
+  }
 }
