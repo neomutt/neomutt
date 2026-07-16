@@ -58,6 +58,7 @@ void sb_init(struct MuttWindow *all_dialogs_window);
 void sb_cleanup(struct ListHead *sidebar_pinned, struct MuttWindow *all_dialogs_window);
 
 int sb_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
+int sb_select_by_coords(struct MuttWindow *win, int row, int col);
 
 enum CommandResult parse_sidebar_pin(const struct Command *cmd, struct Buffer *line,
                                      const struct ParseContext *pc,

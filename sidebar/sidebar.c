@@ -88,6 +88,58 @@ struct Mailbox *sb_get_highlight(struct MuttWindow *win)
 }
 
 /**
+ * sb_select_by_coords - Select the Sidebar entry at screen coordinates
+ * @param win Sidebar Window
+ * @param row Screen row
+ * @param col Screen column
+ * @retval 1  Highlight changed
+ * @retval 0  Highlight already on the clicked entry
+ * @retval -1 Click is outside the visible Sidebar entries
+ */
+int sb_select_by_coords(struct MuttWindow *win, int row, int col)
+{
+  struct SidebarWindowData *wdata = sb_wdata_get(win);
+  if (!wdata || !mutt_window_is_visible(win))
+    return -1;
+
+  const struct WindowState *wstate = &win->state;
+  if ((row < wstate->row_offset) || (row >= (wstate->row_offset + wstate->rows)) ||
+      (col < wstate->col_offset) || (col >= (wstate->col_offset + wstate->cols)))
+  {
+    return -1;
+  }
+
+  if (wdata->top_index < 0)
+    return -1;
+
+  const int wanted_row = row - wstate->row_offset;
+  int visible_row = 0;
+
+  struct SbEntry **sbep = NULL;
+  ARRAY_FOREACH_FROM(sbep, &wdata->entries, wdata->top_index)
+  {
+    if (visible_row >= wstate->rows)
+      break;
+    if ((*sbep)->is_hidden)
+      continue;
+
+    if (visible_row == wanted_row)
+    {
+      if (wdata->hil_index == ARRAY_FOREACH_IDX_sbep)
+        return 0;
+
+      wdata->hil_index = ARRAY_FOREACH_IDX_sbep;
+      win->actions |= WA_RECALC;
+      return 1;
+    }
+
+    visible_row++;
+  }
+
+  return -1;
+}
+
+/**
  * sb_add_mailbox - Add a Mailbox to the Sidebar
  * @param wdata Sidebar data
  * @param m     Mailbox to add

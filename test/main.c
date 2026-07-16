@@ -589,6 +589,12 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_map_get_value)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_map_get_value_n)                                 \
                                                                                \
+  /* menu */                                                                   \
+  NEOMUTT_TEST_ITEM(test_menu_get_index_by_coords)                             \
+                                                                               \
+  /* sidebar */                                                                \
+  NEOMUTT_TEST_ITEM(test_sb_select_by_coords)                                  \
+                                                                               \
   /* mbyte */                                                                  \
   NEOMUTT_TEST_ITEM(test_buf_mb_wcstombs)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_mb_charlen)                                      \

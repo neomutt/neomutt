@@ -474,6 +474,10 @@ IMAP_OBJS	= test/imap/msg_set.o
 
 KEY_OBJS	= test/key/mutt_push_macro_repeated.o
 
+MENU_OBJS	= test/menu/index_by_coords.o
+
+SIDEBAR_OBJS	= test/sidebar/select_by_coords.o
+
 LIST_OBJS	= test/list/common.o \
 		  test/list/mutt_list_clear.o \
 		  test/list/mutt_list_copy_tail.o \
@@ -740,13 +744,13 @@ BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/group $(PWD)/test/gui $(PWD)/test/hash \
 		  $(PWD)/test/history $(PWD)/test/idna $(PWD)/test/imap \
 		  $(PWD)/test/key $(PWD)/test/list $(PWD)/test/logging \
-		  $(PWD)/test/mailbox \
-		  $(PWD)/test/mapping $(PWD)/test/mbyte $(PWD)/test/md5 \
-		  $(PWD)/test/memory $(PWD)/test/neo $(PWD)/test/notify \
+		  $(PWD)/test/mailbox $(PWD)/test/mapping $(PWD)/test/mbyte \
+		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/menu \
+		  $(PWD)/test/neo $(PWD)/test/notify \
 		  $(PWD)/test/notmuch $(PWD)/test/parameter $(PWD)/test/parse \
 		  $(PWD)/test/path $(PWD)/test/pattern $(PWD)/test/pool \
 		  $(PWD)/test/prex $(PWD)/test/random $(PWD)/test/regex \
-		  $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 $(PWD)/test/signal \
+		  $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 $(PWD)/test/sidebar $(PWD)/test/signal \
 		  $(PWD)/test/slist $(PWD)/test/sort $(PWD)/test/store \
 		  $(PWD)/test/string $(PWD)/test/tags $(PWD)/test/thread \
 		  $(PWD)/test/url
@@ -786,6 +790,8 @@ TEST_OBJS	= test/common.o test/main.o test/module.o \
 		  $(IDNA_OBJS) \
 		  $(IMAP_OBJS) \
 		  $(KEY_OBJS) \
+		  $(MENU_OBJS) \
+		  $(SIDEBAR_OBJS) \
 		  $(LIST_OBJS) \
 		  $(LOGGING_OBJS) \
 		  $(MAILBOX_OBJS) \

@@ -36,8 +36,9 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "get.h"
 #include "menu/lib.h"
+#include "sidebar/lib.h"
+#include "get.h"
 #include "globals.h"
 #include "keymap.h"
 #include "menu.h"
@@ -214,6 +215,84 @@ static int mutt_monitor_getch_timeout(int timeout_ms)
 #endif /* USE_INOTIFY */
 
 /**
+ * enum MouseResult - Result of handling a mouse event
+ */
+enum MouseResult
+{
+  MOUSE_IGNORED = 0, ///< Mouse event was ignored
+  MOUSE_CONSUMED,    ///< Mouse event was handled without generating a key event
+  MOUSE_EVENT,       ///< Mouse event generated a key event
+};
+
+/**
+ * handle_mouse_event - Handle a mouse event
+ * @param mevent Mouse event
+ * @param[out] event Key event to dispatch
+ * @retval #MOUSE_IGNORED  Mouse event should be ignored
+ * @retval #MOUSE_CONSUMED Mouse event was handled without a key event
+ * @retval #MOUSE_EVENT    Mouse event generated a key event
+ */
+static enum MouseResult handle_mouse_event(const MEVENT *mevent, struct KeyEvent *event)
+{
+  if (!mevent || !event)
+    return MOUSE_IGNORED;
+
+  if (mevent->bstate & BUTTON4_PRESSED)
+  {
+    *event = (struct KeyEvent) { 0, OP_PREV_PAGE, 0 };
+    return MOUSE_EVENT;
+  }
+
+  if (mevent->bstate & BUTTON5_PRESSED)
+  {
+    *event = (struct KeyEvent) { 0, OP_NEXT_PAGE, 0 };
+    return MOUSE_EVENT;
+  }
+
+  if (!(mevent->bstate & (BUTTON1_CLICKED | BUTTON1_DOUBLE_CLICKED)))
+    return MOUSE_IGNORED;
+
+  struct MuttWindow *win = window_get_focus();
+  if (!win)
+    return MOUSE_IGNORED;
+
+  struct MuttWindow *dlg = dialog_find(win);
+  struct MuttWindow *win_sidebar = dlg ? window_find_child(dlg, WT_SIDEBAR) : NULL;
+  const int sidebar_rc = sb_select_by_coords(win_sidebar, mevent->y, mevent->x);
+  if (sidebar_rc >= 0)
+  {
+    if ((sidebar_rc == 0) || (mevent->bstate & BUTTON1_DOUBLE_CLICKED))
+    {
+      *event = (struct KeyEvent) { 0, OP_SIDEBAR_OPEN, 0 };
+      return MOUSE_EVENT;
+    }
+
+    window_redraw(NULL);
+    return MOUSE_CONSUMED;
+  }
+
+  if (win->type != WT_MENU)
+    return MOUSE_IGNORED;
+
+  struct Menu *menu = win->wdata;
+  const int old_index = menu_get_index(menu);
+  const int new_index = menu_get_index_by_coords(menu, mevent->y, mevent->x);
+  if (new_index < 0)
+    return MOUSE_IGNORED;
+
+  menu_set_index(menu, new_index);
+
+  if ((new_index == old_index) || (mevent->bstate & BUTTON1_DOUBLE_CLICKED))
+  {
+    *event = (struct KeyEvent) { 0, OP_GENERIC_SELECT_ENTRY, 0 };
+    return MOUSE_EVENT;
+  }
+
+  window_redraw(NULL);
+  return MOUSE_CONSUMED;
+}
+
+/**
  * mutt_getch_timeout - Read a character from the input buffer with timeout
  * @param flags      Flags, e.g. #GETCH_IGNORE_MACRO
  * @param timeout_ms Timeout in milliseconds
@@ -242,29 +321,51 @@ static struct KeyEvent mutt_getch_timeout(GetChFlags flags, int timeout_ms)
   }
 
   int ch;
-  SigInt = false;
-  mutt_sig_allow_interrupt(true);
-  timeout(timeout_ms);
+  while (true)
+  {
+    SigInt = false;
+    mutt_sig_allow_interrupt(true);
+    timeout(timeout_ms);
 #ifdef USE_INOTIFY
-  ch = mutt_monitor_getch_timeout(timeout_ms);
+    ch = mutt_monitor_getch_timeout(timeout_ms);
 #else
-  ch = getch();
+    ch = getch();
 #endif
-  mutt_sig_allow_interrupt(false);
+    mutt_sig_allow_interrupt(false);
 
-  if (SigInt)
-  {
-    mutt_query_exit();
-    return event_abort;
-  }
-
-  if (ch == KEY_RESIZE)
-  {
-    timeout(0);
-    while ((ch = getch()) == KEY_RESIZE)
+    if (SigInt)
     {
-      // do nothing
+      mutt_query_exit();
+      return event_abort;
     }
+
+    if (ch == KEY_RESIZE)
+    {
+      timeout(0);
+      while ((ch = getch()) == KEY_RESIZE)
+      {
+        // do nothing
+      }
+    }
+    else if (ch == KEY_MOUSE)
+    {
+      MEVENT mevent = { 0 };
+      struct KeyEvent event_mouse = { 0, OP_NULL, 0 };
+
+      if (getmouse(&mevent) != OK)
+        continue;
+
+      switch (handle_mouse_event(&mevent, &event_mouse))
+      {
+        case MOUSE_EVENT:
+          return event_mouse;
+        case MOUSE_CONSUMED:
+        case MOUSE_IGNORED:
+          continue;
+      }
+    }
+
+    break;
   }
 
   if (ch == ERR)
