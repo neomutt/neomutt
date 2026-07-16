@@ -364,7 +364,36 @@ static int op_browser_tell(struct BrowserPrivateData *priv, const struct KeyEven
   if (ARRAY_EMPTY(&priv->state.entry))
     return FR_ERROR;
 
-  mutt_message("%s", ARRAY_GET(&priv->state.entry, index)->name);
+  struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
+  struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
+  struct Buffer *path = buf_pool_get();
+  if (priv->state.is_mailbox_list)
+  {
+    buf_strcpy(path, ff->name);
+    expand_path(path, false);
+  }
+  else if (ff->local)
+  {
+    buf_concat_path(path, buf_string(&mod_data->last_dir), ff->name);
+  }
+  else
+  {
+    buf_strcpy(path, ff->name);
+  }
+
+  if (!ff->local)
+  {
+    struct Url *url = url_parse(buf_string(path));
+    if (url)
+    {
+      buf_reset(path);
+      url_tobuffer(url, path, U_NONE);
+      url_free(&url);
+    }
+  }
+
+  mutt_message("%s", buf_string(path));
+  buf_pool_release(&path);
   return FR_SUCCESS;
 }
 
