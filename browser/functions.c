@@ -307,7 +307,8 @@ static int op_browser_subscribe(struct BrowserPrivateData *priv, const struct Ke
 
   if (ARRAY_EMPTY(&priv->state.entry))
   {
-    mutt_error(OptNews ? _("No newsgroups match the browser limit") : _("There are no mailboxes"));
+    mutt_error(OptNews ? _("No newsgroups match the browser limit") :
+                         _("There are no mailboxes"));
     return FR_ERROR;
   }
 

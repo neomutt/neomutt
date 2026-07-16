@@ -602,13 +602,13 @@ void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m,
       const bool c_imap_list_subscribed = cs_subset_bool(NeoMutt->sub, "imap_list_subscribed");
       if (state->imap_browse && c_imap_list_subscribed)
       {
-        snprintf(title, sizeof(title), _("Subscribed [%s], Limit: %s"),
-                 buf_string(path), NONULL(c_browser_limit ? c_browser_limit->pattern : NULL));
+        snprintf(title, sizeof(title), _("Subscribed [%s], Limit: %s"), buf_string(path),
+                 NONULL(c_browser_limit ? c_browser_limit->pattern : NULL));
       }
       else
       {
-        snprintf(title, sizeof(title), _("Directory [%s], Limit: %s"),
-                 buf_string(path), NONULL(c_browser_limit ? c_browser_limit->pattern : NULL));
+        snprintf(title, sizeof(title), _("Directory [%s], Limit: %s"), buf_string(path),
+                 NONULL(c_browser_limit ? c_browser_limit->pattern : NULL));
       }
       buf_pool_release(&path);
     }
