@@ -295,8 +295,12 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_GET_MESSAGE,                        N_("Get message with Message-ID")) \
   /* L10N: Help for Index function: <get-parent> */ \
   _fmt(OP_GET_PARENT,                         N_("Get parent of the current message")) \
+  /* L10N: Help for Browser function: <goto-home> */ \
+  _fmt(OP_GOTO_HOME,                          N_("Go to home directory")) \
   /* L10N: Help for Browser function: <goto-parent> */ \
   _fmt(OP_GOTO_PARENT,                        N_("Go to parent directory")) \
+  /* L10N: Help for Browser function: <goto-root> */ \
+  _fmt(OP_GOTO_ROOT,                          N_("Go to root directory")) \
   /* L10N: Help for Attach, Index function: <group-chat-reply> */ \
   _fmt(OP_GROUP_CHAT_REPLY,                   N_("Reply to all recipients preserving To/Cc")) \
   /* L10N: Help for Attach, Index function: <group-reply> */ \
