@@ -1082,13 +1082,21 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
 
   const bool c_crypt_protected_headers_read = cs_subset_bool(sub, "crypt_protected_headers_read");
 
-  /* post == 1 => postpone message.
-   * post == 0 => Normal mode.  */
+  /* When postponing, the real Subject is only recoverable if the postponed
+   * copy is itself encrypted (postpone_message() embeds it as a protected
+   * header inside the encrypted body via mutt_protect()). If $postpone_encrypt
+   * is unset, the postponed copy stays in plain text, so hiding the Subject
+   * header here would discard the only copy of it - see #3256. */
+  const bool c_postpone_encrypt = cs_subset_bool(sub, "postpone_encrypt");
+  bool hide_protected_subject = c_crypt_protected_headers_read &&
+                                mutt_should_hide_protected_subject(e) &&
+                                (!post || c_postpone_encrypt);
+
+  // post == true  => postpone message
+  // post == false => normal mode
   mutt_rfc822_write_header(msg->fp, e->env, e->body,
-                           post ? MUTT_WRITE_HEADER_POSTPONE : MUTT_WRITE_HEADER_FCC, false,
-                           c_crypt_protected_headers_read &&
-                               mutt_should_hide_protected_subject(e),
-                           sub);
+                           post ? MUTT_WRITE_HEADER_POSTPONE : MUTT_WRITE_HEADER_FCC,
+                           false, hide_protected_subject, sub);
 
   /* (postponement) if this was a reply of some sort, <msgid> contains the
    * Message-ID: of message replied to.  Save it using a special X-Mutt-
