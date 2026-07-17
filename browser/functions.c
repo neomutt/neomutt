@@ -75,7 +75,9 @@ static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
   { "descend-directory",             OP_DESCEND_DIRECTORY },
   { "display-filename",              OP_BROWSER_TELL },
   { "goto-folder",                   OP_BROWSER_GOTO_FOLDER },
+  { "goto-home",                     OP_GOTO_HOME },
   { "goto-parent",                   OP_GOTO_PARENT },
+  { "goto-root",                     OP_GOTO_ROOT },
   { "limit",                         OP_BROWSER_LIMIT },
   { "mailbox-list",                  OP_MAILBOX_LIST },
   { "reload-active",                 OP_LOAD_ACTIVE },
@@ -547,8 +549,10 @@ static int op_catchup(struct BrowserPrivateData *priv, const struct KeyEvent *ev
  * op_change_directory - Change directories - Implements ::browser_function_t - @ingroup browser_function_api
  *
  * This function handles:
- * - OP_GOTO_PARENT
  * - OP_CHANGE_DIRECTORY
+ * - OP_GOTO_HOME
+ * - OP_GOTO_PARENT
+ * - OP_GOTO_ROOT
  */
 static int op_change_directory(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
@@ -589,6 +593,14 @@ static int op_change_directory(struct BrowserPrivateData *priv, const struct Key
       if (mutt_str_equal(buf_string(buf), prev))
         break;
     }
+  }
+  else if (op == OP_GOTO_HOME)
+  {
+    buf_strcpy(buf, NeoMutt->home_dir);
+  }
+  else if (op == OP_GOTO_ROOT)
+  {
+    buf_strcpy(buf, "/");
   }
 
   if (!buf_is_empty(buf))
@@ -1449,7 +1461,9 @@ static const struct BrowserFunction BrowserFunctions[] = {
   { OP_DESCEND_DIRECTORY,    op_generic_select_entry },
   { OP_EXIT,                 op_quit },
   { OP_GENERIC_SELECT_ENTRY, op_generic_select_entry },
+  { OP_GOTO_HOME,            op_change_directory },
   { OP_GOTO_PARENT,          op_change_directory },
+  { OP_GOTO_ROOT,            op_change_directory },
   { OP_LOAD_ACTIVE,          op_load_active },
   { OP_MAILBOX_LIST,         op_mailbox_list },
   { OP_QUIT,                 op_quit },
