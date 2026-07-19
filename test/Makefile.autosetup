@@ -630,6 +630,8 @@ RFC2047_OBJS	= test/rfc2047/common.o \
 RFC2231_OBJS	= test/rfc2231/rfc2231_decode_parameters.o \
 		  test/rfc2231/rfc2231_encode_string.o
 
+SIDEBAR_OBJS	= test/sidebar/sb_remove_mailbox.o
+
 SIGNAL_OBJS	= test/signal/mutt_sig_allow_interrupt.o \
 		  test/signal/mutt_sig_block.o \
 		  test/signal/mutt_sig_block_system.o \
@@ -746,7 +748,8 @@ BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/notmuch $(PWD)/test/parameter $(PWD)/test/parse \
 		  $(PWD)/test/path $(PWD)/test/pattern $(PWD)/test/pool \
 		  $(PWD)/test/prex $(PWD)/test/random $(PWD)/test/regex \
-		  $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 $(PWD)/test/signal \
+		  $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 $(PWD)/test/sidebar \
+		  $(PWD)/test/signal \
 		  $(PWD)/test/slist $(PWD)/test/sort $(PWD)/test/store \
 		  $(PWD)/test/string $(PWD)/test/tags $(PWD)/test/thread \
 		  $(PWD)/test/url
@@ -806,6 +809,7 @@ TEST_OBJS	= test/common.o test/main.o test/module.o \
 		  $(REGEX_OBJS) \
 		  $(RFC2047_OBJS) \
 		  $(RFC2231_OBJS) \
+		  $(SIDEBAR_OBJS) \
 		  $(SIGNAL_OBJS) \
 		  $(SLIST_OBJS) \
 		  $(SORT_OBJS) \
