@@ -343,6 +343,10 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_MAILBOX_LIST,                       N_("List mailboxes with new mail")) \
   /* L10N: Help for Index function: <break-thread> */ \
   _fmt(OP_MAIN_BREAK_THREAD,                  N_("Break the thread in two")) \
+  /* L10N: Help for Index function: <browse-mailboxes> */ \
+  _fmt(OP_MAIN_BROWSE_MAILBOXES,              N_("Browse mailboxes")) \
+  /* L10N: Help for Index function: <browse-mailboxes-readonly> */ \
+  _fmt(OP_MAIN_BROWSE_MAILBOXES_READONLY,     N_("Browse mailboxes in read only mode")) \
   /* L10N: Help for Index function: <change-folder> */ \
   _fmt(OP_MAIN_CHANGE_FOLDER,                 N_("Open a different folder")) \
   /* L10N: Help for Index function: <change-folder-readonly> */ \

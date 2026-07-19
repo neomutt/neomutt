@@ -92,6 +92,8 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
 #endif
   { "bounce-message",                OP_BOUNCE_MESSAGE },
   { "break-thread",                  OP_MAIN_BREAK_THREAD },
+  { "browse-mailboxes",              OP_MAIN_BROWSE_MAILBOXES },
+  { "browse-mailboxes-readonly",     OP_MAIN_BROWSE_MAILBOXES_READONLY },
   { "catchup",                       OP_CATCHUP },
   { "change-folder",                 OP_MAIN_CHANGE_FOLDER },
   { "change-folder-readonly",        OP_MAIN_CHANGE_FOLDER_READONLY },
@@ -256,6 +258,7 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_MAILBOX_LIST,                       "." },
   { OP_MAIL_KEY,                           "\033k" },          // <Alt-k>
   { OP_MAIN_BREAK_THREAD,                  "#" },
+  { OP_MAIN_BROWSE_MAILBOXES,              "y" },
   { OP_MAIN_CHANGE_FOLDER,                 "c" },
   { OP_MAIN_CHANGE_FOLDER_READONLY,        "\033c" },          // <Alt-c>
   { OP_MAIN_CHANGE_GROUP,                  "i" },
@@ -1479,6 +1482,8 @@ static int op_main_break_thread(struct IndexFunctionData *fdata, const struct Ke
  * op_main_change_folder - Open a different folder - Implements ::index_function_t - @ingroup index_function_api
  *
  * This function handles:
+ * - OP_MAIN_BROWSE_MAILBOXES
+ * - OP_MAIN_BROWSE_MAILBOXES_READONLY
  * - OP_MAIN_CHANGE_FOLDER
  * - OP_MAIN_CHANGE_FOLDER_READONLY
  * - OP_MAIN_CHANGE_VFOLDER
@@ -1490,34 +1495,38 @@ static int op_main_change_folder(struct IndexFunctionData *fdata, const struct K
   struct Buffer *folderbuf = buf_pool_get();
   buf_alloc(folderbuf, PATH_MAX);
 
-  char *cp = NULL;
-  bool read_only;
-  const bool c_read_only = cs_subset_bool(shared->sub, "read_only");
   const int op = event->op;
-  if (shared->attach_msg || c_read_only || (op == OP_MAIN_CHANGE_FOLDER_READONLY))
+  const bool browse = (op == OP_MAIN_BROWSE_MAILBOXES) ||
+                      (op == OP_MAIN_BROWSE_MAILBOXES_READONLY);
+  const bool c_read_only = cs_subset_bool(shared->sub, "read_only");
+  const bool read_only = shared->attach_msg || c_read_only ||
+                         (op == OP_MAIN_BROWSE_MAILBOXES_READONLY) ||
+                         (op == OP_MAIN_CHANGE_FOLDER_READONLY);
+
+  if (browse)
   {
-    cp = _("Open mailbox in read-only mode");
-    read_only = true;
+    dlg_browser(folderbuf, MUTT_SEL_FOLDER | MUTT_SEL_MAILBOX,
+                shared->mailbox, NULL, NULL);
   }
   else
   {
-    cp = _("Open mailbox");
-    read_only = false;
-  }
+    const char *cp = read_only ? _("Open mailbox in read-only mode") :
+                                 _("Open mailbox");
 
-  const bool c_change_folder_next = cs_subset_bool(shared->sub, "change_folder_next");
-  if (c_change_folder_next && shared->mailbox && !buf_is_empty(&shared->mailbox->pathbuf))
-  {
-    buf_strcpy(folderbuf, mailbox_path(shared->mailbox));
-    pretty_mailbox(folderbuf);
-  }
-  /* By default, fill buf with the next mailbox that contains unread mail */
-  mutt_mailbox_next(shared->mailbox_view ? shared->mailbox : NULL, folderbuf);
+    const bool c_change_folder_next = cs_subset_bool(shared->sub, "change_folder_next");
+    if (c_change_folder_next && shared->mailbox && !buf_is_empty(&shared->mailbox->pathbuf))
+    {
+      buf_strcpy(folderbuf, mailbox_path(shared->mailbox));
+      pretty_mailbox(folderbuf);
+    }
+    /* By default, fill buf with the next mailbox that contains unread mail */
+    mutt_mailbox_next(shared->mailbox_view ? shared->mailbox : NULL, folderbuf);
 
-  if (mw_enter_fname(cp, folderbuf, true, shared->mailbox, false, NULL, NULL,
-                     MUTT_SEL_NONE) == -1)
-  {
-    goto changefoldercleanup;
+    if (mw_enter_fname(cp, folderbuf, true, shared->mailbox, false, NULL, NULL,
+                       MUTT_SEL_NONE) == -1)
+    {
+      goto changefoldercleanup;
+    }
   }
 
   /* Selected directory is okay, let's save it. */
@@ -3938,6 +3947,8 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_MAILBOX_LIST,                     op_mailbox_list,             CHECK_NONE },
   { OP_MAIL_KEY,                         op_mail_key,                 CHECK_ATTACH },
   { OP_MAIN_BREAK_THREAD,                op_main_break_thread,        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
+  { OP_MAIN_BROWSE_MAILBOXES,            op_main_change_folder,       CHECK_NONE },
+  { OP_MAIN_BROWSE_MAILBOXES_READONLY,   op_main_change_folder,       CHECK_NONE },
   { OP_MAIN_CHANGE_FOLDER,               op_main_change_folder,       CHECK_NONE },
   { OP_MAIN_CHANGE_FOLDER_READONLY,      op_main_change_folder,       CHECK_NONE },
   { OP_MAIN_CHANGE_GROUP,                op_main_change_group,        CHECK_NONE },
