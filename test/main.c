@@ -90,6 +90,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_actx_entries_free)                               \
   NEOMUTT_TEST_ITEM(test_mutt_actx_free)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_actx_new)                                        \
+  NEOMUTT_TEST_ITEM(test_mutt_decode_save_attachment)                          \
                                                                                \
   /* base64 */                                                                 \
   NEOMUTT_TEST_ITEM(test_mutt_b64_buffer_decode)                               \
