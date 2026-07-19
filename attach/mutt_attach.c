@@ -1113,6 +1113,13 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *b, const char *path,
     b->encoding = saved_encoding;
     if (saved_parts)
     {
+      /* For multipart/external-body attachments, mutt_parse_part() above
+       * built a fresh, standalone b->parts tree (b->email stays NULL).
+       * For message/rfc822 attachments, the fresh tree is b->email->body
+       * instead (the two pointers alias), and email_free() below already
+       * frees it - freeing it here too would be a double free. */
+      if (b->parts && (b->parts != saved_parts) && !b->email)
+        mutt_body_free(&b->parts);
       email_free(&b->email);
       b->parts = saved_parts;
       b->email = e_saved;
