@@ -705,6 +705,9 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_rfc2231_decode_parameters)                            \
   NEOMUTT_TEST_ITEM(test_rfc2231_encode_string)                                \
                                                                                \
+  /* sidebar */                                                                \
+  NEOMUTT_TEST_ITEM(test_sb_remove_mailbox)                                    \
+                                                                               \
   /* signal */                                                                 \
   NEOMUTT_TEST_ITEM(test_mutt_sig_allow_interrupt)                             \
   NEOMUTT_TEST_ITEM(test_mutt_sig_block)                                       \

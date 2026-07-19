@@ -163,7 +163,8 @@ void sb_remove_mailbox(struct SidebarWindowData *wdata, const struct Mailbox *m)
       if (!sbep_cur)
       {
         // The last entry was deleted, so backtrack
-        sb_prev(wdata);
+        if (!sb_prev(wdata))
+          wdata->hil_index = -1;
       }
       else if ((*sbep_cur)->is_hidden)
       {
