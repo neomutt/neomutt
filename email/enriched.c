@@ -484,7 +484,7 @@ int text_enriched_handler(struct Body *b_email, struct State *state)
     DONE
   } text_state = TEXT;
 
-  long bytes = b_email->length;
+  LOFF_T bytes = b_email->length;
   struct EnrichedState enriched = { 0 };
   wint_t wc = 0;
   int tag_len = 0;
