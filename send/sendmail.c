@@ -109,7 +109,11 @@ static int send_msg(const char *path, struct StringArray *args, const char *msg,
   }
 
   pid_t pid = fork();
-  if (pid == 0)
+  if (pid == -1)
+  {
+    FREE(tempfile);
+  }
+  else if (pid == 0)
   {
     struct sigaction act = { 0 };
     struct sigaction oldalrm = { 0 };
