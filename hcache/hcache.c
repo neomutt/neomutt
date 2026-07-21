@@ -604,8 +604,11 @@ struct HCacheEntry hcache_fetch_email(struct HeaderCache *hc, const char *key,
     goto end;
   }
   int off = 0;
-  serial_restore_uint32_t(&hce.uidvalidity, data, &off, dlen);
-  serial_restore_int(&hce.crc, data, &off, dlen);
+  if (!serial_restore_uint32_t(&hce.uidvalidity, data, &off, dlen) ||
+      !serial_restore_int(&hce.crc, data, &off, dlen))
+  {
+    goto end;
+  }
   ASSERT((size_t) off == hlen);
   if ((hce.crc != hc->crc) || ((uidvalidity != 0) && (uidvalidity != hce.uidvalidity)))
   {
