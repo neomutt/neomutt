@@ -58,6 +58,7 @@ static const struct MenuFuncOp OpEditor[] = { /* map: editor */
   { "complete-mailbox",                OP_EDITOR_COMPLETE_MAILBOX },
   { "complete-query",                  OP_EDITOR_COMPLETE_QUERY },
   { "delete-char",                     OP_EDITOR_DELETE_CHAR },
+  { "display-help",                    OP_DISPLAY_HELP },
   { "downcase-word",                   OP_EDITOR_DOWNCASE_WORD },
   { "eol",                             OP_EDITOR_EOL },
   { "forward-char",                    OP_EDITOR_FORWARD_CHAR },
@@ -72,7 +73,6 @@ static const struct MenuFuncOp OpEditor[] = { /* map: editor */
   { "kill-word",                       OP_EDITOR_KILL_WORD },
   { "quote-char",                      OP_EDITOR_QUOTE_CHAR },
   { "redraw-screen",                   OP_REDRAW_SCREEN },
-  { "show-help",                       OP_DISPLAY_HELP },
   { "transpose-chars",                 OP_EDITOR_TRANSPOSE_CHARS },
   { "upcase-word",                     OP_EDITOR_UPCASE_WORD },
 
