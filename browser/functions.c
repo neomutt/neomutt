@@ -67,9 +67,8 @@ static int op_subscribe_pattern(struct BrowserPrivateData *priv, const struct Ke
  * OpBrowser - Functions for the file Browser Menu
  */
 static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
-  { "catchup",                       OP_NNTP_MARK_NEWSGROUP_READ },
+  { "nntp-mark-newsgroup-read",      OP_NNTP_MARK_NEWSGROUP_READ },
   { "change-dir",                    OP_CHANGE_DIRECTORY },
-  { "check-new",                     OP_CHECK_NEW },
   { "create-mailbox",                OP_CREATE_MAILBOX },
   { "delete-mailbox",                OP_DELETE_MAILBOX },
   { "descend-directory",             OP_DESCEND_DIRECTORY },
@@ -79,7 +78,7 @@ static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
   { "goto-parent",                   OP_GOTO_PARENT },
   { "goto-root",                     OP_GOTO_ROOT },
   { "limit",                         OP_BROWSER_LIMIT },
-  { "mailbox-list",                  OP_SHOW_MAILBOXES },
+  { "show-mailboxes",                OP_SHOW_MAILBOXES },
   { "reload-active",                 OP_LOAD_ACTIVE },
   { "rename-mailbox",                OP_RENAME_MAILBOX },
   { "select-new",                    OP_BROWSER_NEW_FILE },
@@ -90,13 +89,17 @@ static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
   { "uncatchup",                     OP_UNCATCHUP },
   { "unsubscribe",                   OP_BROWSER_UNSUBSCRIBE },
   { "unsubscribe-pattern",           OP_UNSUBSCRIBE_PATTERN },
-  { "view-file",                     OP_BROWSER_VIEW_FILE },
+  { "display-file",                  OP_BROWSER_VIEW_FILE },
 
   // Deprecated
-  { "buffy-list",                    OP_SHOW_MAILBOXES,       MFF_DEPRECATED },
-  { "enter-mask",                    OP_BROWSER_LIMIT,        MFF_DEPRECATED },
-  { "sort",                          OP_SORT_ENTRIES,         MFF_DEPRECATED },
-  { "sort-reverse",                  OP_SORT_ENTRIES_REVERSE, MFF_DEPRECATED },
+  { "buffy-list",                    OP_SHOW_MAILBOXES,           MFF_DEPRECATED },
+  { "catchup",                       OP_NNTP_MARK_NEWSGROUP_READ, MFF_DEPRECATED },
+  { "check-new",                     OP_CHECK_STATS,              MFF_DEPRECATED },
+  { "enter-mask",                    OP_BROWSER_LIMIT,            MFF_DEPRECATED },
+  { "mailbox-list",                  OP_SHOW_MAILBOXES,           MFF_DEPRECATED },
+  { "sort",                          OP_SORT_ENTRIES,             MFF_DEPRECATED },
+  { "sort-reverse",                  OP_SORT_ENTRIES_REVERSE,     MFF_DEPRECATED },
+  { "view-file",                     OP_BROWSER_VIEW_FILE,        MFF_DEPRECATED },
   { NULL, 0 },
 };
 
