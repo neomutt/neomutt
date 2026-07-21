@@ -55,9 +55,7 @@
 static const struct MenuFuncOp OpAlias[] = { /* map: alias */
   { "compose-message",               OP_COMPOSE_MESSAGE },
   { "delete-alias",                  OP_DELETE_ALIAS },
-  { "tag-pattern",                   OP_MAIN_TAG_PATTERN },
   { "undelete-alias",                OP_UNDELETE_ALIAS },
-  { "untag-pattern",                 OP_MAIN_UNTAG_PATTERN },
 
   // Deprecated
   { "delete-entry",                  OP_DELETE_ALIAS,         MFF_DEPRECATED },
@@ -77,8 +75,6 @@ const struct MenuFuncOp OpQuery[] = { /* map: query */
   { "create-alias",                  OP_CREATE_ALIAS },
   { "query",                         OP_VIEW_ADDRESS_QUERY },
   { "query-append",                  OP_QUERY_APPEND },
-  { "tag-pattern",                   OP_MAIN_TAG_PATTERN },
-  { "untag-pattern",                 OP_MAIN_UNTAG_PATTERN },
 
   // Deprecated
   { "limit",                         OP_LIMIT_ENTRIES,        MFF_DEPRECATED },
@@ -95,12 +91,12 @@ static const struct MenuOpSeq AliasDefaultBindings[] = { /* map: alias */
   { OP_COMPOSE_MESSAGE,                    "m" },
   { OP_DELETE_ALIAS,                       "d" },
   { OP_LIMIT_ENTRIES,                      "l" },
-  { OP_MAIN_TAG_PATTERN,                   "T" },
-  { OP_MAIN_UNTAG_PATTERN,                 "\024" },           // <Ctrl-T>
   { OP_SORT_ENTRIES,                       "o" },
   { OP_SORT_ENTRIES_REVERSE,               "O" },
+  { OP_TAG_PATTERN,                        "T" },
   { OP_TOGGLE_TAG,                         "<space>" },
   { OP_UNDELETE_ALIAS,                     "u" },
+  { OP_UNTAG_PATTERN,                      "\024" },           // <Ctrl-T>
   { 0, NULL },
 };
 
@@ -111,12 +107,12 @@ static const struct MenuOpSeq QueryDefaultBindings[] = { /* map: query */
   { OP_COMPOSE_MESSAGE,                    "m" },
   { OP_CREATE_ALIAS,                       "a" },
   { OP_LIMIT_ENTRIES,                      "l" },
-  { OP_MAIN_TAG_PATTERN,                   "T" },
-  { OP_MAIN_UNTAG_PATTERN,                 "\024" },           // <Ctrl-T>
   { OP_QUERY_APPEND,                       "A" },
   { OP_SORT_ENTRIES,                       "o" },
   { OP_SORT_ENTRIES_REVERSE,               "O" },
+  { OP_TAG_PATTERN,                        "T" },
   { OP_TOGGLE_TAG,                         "<space>" },
+  { OP_UNTAG_PATTERN,                      "\024" },           // <Ctrl-T>
   { OP_VIEW_ADDRESS_QUERY,                 "Q" },
   { 0, NULL },
 };
@@ -623,8 +619,6 @@ static const struct AliasFunction AliasFunctions[] = {
   { OP_DELETE_ALIAS,           op_delete },
   { OP_EXIT,                   op_quit },
   { OP_LIMIT_ENTRIES,          op_main_limit },
-  { OP_MAIN_TAG_PATTERN,       op_main_tag_pattern },
-  { OP_MAIN_UNTAG_PATTERN,     op_main_untag_pattern },
   { OP_QUERY_APPEND,           op_query },
   { OP_QUIT,                   op_quit },
   { OP_SEARCH_BACKWARD,        op_search },
@@ -633,7 +627,9 @@ static const struct AliasFunction AliasFunctions[] = {
   { OP_SEARCH_PREVIOUS,        op_search },
   { OP_SORT_ENTRIES,           op_sort },
   { OP_SORT_ENTRIES_REVERSE,   op_sort },
+  { OP_TAG_PATTERN,            op_main_tag_pattern },
   { OP_UNDELETE_ALIAS,         op_delete },
+  { OP_UNTAG_PATTERN,          op_main_untag_pattern },
   { OP_VIEW_ADDRESS_QUERY,     op_query },
   { 0, NULL },
   // clang-format on

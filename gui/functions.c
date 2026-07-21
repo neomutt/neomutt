@@ -113,6 +113,7 @@ static const struct MenuFuncOp OpGeneric[] = { /* map: generic */
   { "show-version",                  OP_SHOW_VERSION },
   { "sort-entries",                  OP_SORT_ENTRIES },
   { "sort-entries-reverse",          OP_SORT_ENTRIES_REVERSE },
+  { "tag-pattern",                   OP_TAG_PATTERN },
   { "toggle-all-trees",              OP_TOGGLE_ALL_TREES },
   { "toggle-tag",                    OP_TOGGLE_TAG },
   { "toggle-tag-subtree",            OP_TOGGLE_TAG_SUBTREE },
@@ -120,6 +121,7 @@ static const struct MenuFuncOp OpGeneric[] = { /* map: generic */
   { "toggle-tree",                   OP_TOGGLE_TREE },
   { "unfold-all-trees",              OP_UNFOLD_ALL_TREES },
   { "unfold-tree",                   OP_UNFOLD_TREE },
+  { "untag-pattern",                 OP_UNTAG_PATTERN },
   { "view-keycodes",                 OP_VIEW_KEYCODES },
 
   // Deprecated

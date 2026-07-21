@@ -129,8 +129,12 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_APPLY_TO_TAGGED_BEGIN,              N_("Skip to <apply-to-tagged-end> if nothing is tagged")) \
   /* L10N: Help for Generic function: <apply-to-tagged-end> */ \
   _fmt(OP_APPLY_TO_TAGGED_END,                N_("End marker for <apply-to-tagged-begin>")) \
+  /* L10N: Help for Generic function: <tag-pattern> */ \
+  _fmt(OP_TAG_PATTERN,                   N_("Tag entries matching a pattern")) \
   /* L10N: Help for Generic function: <toggle-tag> */ \
   _fmt(OP_TOGGLE_TAG,                         N_("Tag/untag the current entry")) \
+  /* L10N: Help for Generic function: <untag-pattern> */ \
+  _fmt(OP_UNTAG_PATTERN,                 N_("Untag entries matching a pattern")) \
 
 #define OPS_TREE(_fmt) \
   /* L10N: Help for Generic function: <fold-all-trees> */ \
@@ -439,12 +443,8 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_MAIN_SET_FLAG,                      N_("Set a status flag on a message")) \
   /* L10N: Help for Index function: <sync-mailbox> */ \
   _fmt(OP_MAIN_SYNC_FOLDER,                   N_("Save changes to mailbox")) \
-  /* L10N: Help for Alias, Index, Query function: <tag-pattern> */ \
-  _fmt(OP_MAIN_TAG_PATTERN,                   N_("Tag non-hidden messages matching a pattern")) \
   /* L10N: Help for Index function: <undelete-pattern> */ \
   _fmt(OP_MAIN_UNDELETE_PATTERN,              N_("Undelete non-hidden messages matching a pattern")) \
-  /* L10N: Help for Alias, Index, Query function: <untag-pattern> */ \
-  _fmt(OP_MAIN_UNTAG_PATTERN,                 N_("Untag non-hidden messages matching a pattern")) \
   /* L10N: Help for Index function: <mark-subthread-read> */ \
   _fmt(OP_MARK_SUBTHREAD_READ,                N_("Mark the current subthread as read")) \
   /* L10N: Help for Index function: <mark-thread-read> */ \
