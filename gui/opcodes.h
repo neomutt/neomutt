@@ -619,10 +619,10 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_COMPOSE_VIEW_PGP_OPTIONS,           N_("Show PGP options")) \
   /* L10N: Help for Index function: <send-pgp-key> */ \
   _fmt(OP_SEND_PGP_KEY,                       N_("Mail a PGP public key")) \
-  /* L10N: Help for Pgp, Smime function: <verify-key> */ \
-  _fmt(OP_VERIFY_KEY,                         N_("Verify a public key")) \
-  /* L10N: Help for Pgp, Smime function: <view-name> */ \
-  _fmt(OP_VIEW_ID,                            N_("View the key's user id")) \
+  /* L10N: Help for Pgp, Smime function: <display-details> */ \
+  _fmt(OP_DISPLAY_DETAILS,                    N_("Display full key/certificate info")) \
+  /* L10N: Help for Pgp, Smime function: <show-identity> */ \
+  _fmt(OP_SHOW_IDENTITY,                      N_("Show the full identity of the key/certificate")) \
 
 #define OPS_PREVIEW(_fmt) \
   /* L10N: Help for Compose function <preview-scroll-end> */ \

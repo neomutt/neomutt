@@ -215,8 +215,8 @@ static const struct PgpFunction PgpFunctions[] = {
   { OP_ACTIVATE_ENTRY,         op_activate_entry },
   { OP_EXIT,                   op_quit },
   { OP_QUIT,                   op_quit },
-  { OP_VERIFY_KEY,             op_verify_key },
-  { OP_VIEW_ID,                op_view_id },
+  { OP_DISPLAY_DETAILS,        op_verify_key },
+  { OP_SHOW_IDENTITY,          op_view_id },
   { 0, NULL },
   // clang-format on
 };

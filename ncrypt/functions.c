@@ -41,8 +41,12 @@
  * OpPgp - Functions for the Pgp Menu
  */
 static const struct MenuFuncOp OpPgp[] = { /* map: pgp */
-  { "verify-key",                    OP_VERIFY_KEY },
-  { "view-name",                     OP_VIEW_ID },
+  { "display-details",               OP_DISPLAY_DETAILS },
+  { "show-identity",                 OP_SHOW_IDENTITY },
+
+  // Deprecated
+  { "verify-key",                    OP_DISPLAY_DETAILS, MFF_DEPRECATED },
+  { "view-name",                     OP_SHOW_IDENTITY,   MFF_DEPRECATED },
   { NULL, 0 },
 };
 
@@ -51,8 +55,12 @@ static const struct MenuFuncOp OpPgp[] = { /* map: pgp */
  */
 static const struct MenuFuncOp OpSmime[] = { /* map: smime */
 #ifdef CRYPT_BACKEND_GPGME
-  { "verify-key",                    OP_VERIFY_KEY },
-  { "view-name",                     OP_VIEW_ID },
+  { "verify-key",                    OP_DISPLAY_DETAILS },
+  { "view-name",                     OP_SHOW_IDENTITY },
+
+  // Deprecated
+  { "verify-key",                    OP_DISPLAY_DETAILS, MFF_DEPRECATED },
+  { "view-name",                     OP_SHOW_IDENTITY,   MFF_DEPRECATED },
 #endif
   { NULL, 0 },
 };
@@ -61,8 +69,8 @@ static const struct MenuFuncOp OpSmime[] = { /* map: smime */
  * PgpDefaultBindings - Key bindings for the Pgp Menu
  */
 static const struct MenuOpSeq PgpDefaultBindings[] = { /* map: pgp */
-  { OP_VERIFY_KEY,                         "c" },
-  { OP_VIEW_ID,                            "%" },
+  { OP_DISPLAY_DETAILS,                    "c" },
+  { OP_SHOW_IDENTITY,                      "%" },
   { 0, NULL },
 };
 
@@ -71,8 +79,8 @@ static const struct MenuOpSeq PgpDefaultBindings[] = { /* map: pgp */
  */
 static const struct MenuOpSeq SmimeDefaultBindings[] = { /* map: smime */
 #ifdef CRYPT_BACKEND_GPGME
-  { OP_VERIFY_KEY,                         "c" },
-  { OP_VIEW_ID,                            "%" },
+  { OP_DISPLAY_DETAILS,                    "c" },
+  { OP_SHOW_IDENTITY,                      "%" },
 #endif
   { 0, NULL },
 };
