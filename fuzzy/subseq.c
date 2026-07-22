@@ -331,7 +331,12 @@ int fuzzy_subseq_match(const char *pattern, const char *candidate,
       if ((pchar_len == cchar_len) && (memcmp(pattern + pi, candidate + ci, pchar_len) == 0))
       {
         for (int k = 0; k < pchar_len; k++)
-          matchpos[pi + k] = ci + k;
+        {
+          const int match_idx = pi + k;
+          if (match_idx >= DEFAULT_MAX_PATTERN)
+            return -1;
+          matchpos[match_idx] = ci + k;
+        }
 
         if (first < 0)
           first = ci;
