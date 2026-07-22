@@ -48,10 +48,16 @@
  * OpAutocrypt - Functions for the Autocrypt Account
  */
 static const struct MenuFuncOp OpAutocrypt[] = { /* map: autocrypt account */
-  { "create-account",                OP_AUTOCRYPT_CREATE_ACCT },
-  { "delete-account",                OP_AUTOCRYPT_DELETE_ACCT },
-  { "toggle-active",                 OP_AUTOCRYPT_TOGGLE_ACTIVE },
-  { "toggle-prefer-encrypt",         OP_AUTOCRYPT_TOGGLE_PREFER },
+  { "create-autocrypt-account",         OP_AUTOCRYPT_CREATE_ACCT },
+  { "delete-autocrypt-account",         OP_AUTOCRYPT_DELETE_ACCT },
+  { "toggle-autocrypt-active",          OP_AUTOCRYPT_TOGGLE_ACTIVE },
+  { "toggle-autocrypt-prefer-encrypt",  OP_AUTOCRYPT_TOGGLE_PREFER },
+
+  // Deprecated
+  { "create-account",                OP_AUTOCRYPT_CREATE_ACCT,   MFF_DEPRECATED },
+  { "delete-account",                OP_AUTOCRYPT_DELETE_ACCT,   MFF_DEPRECATED },
+  { "toggle-active",                 OP_AUTOCRYPT_TOGGLE_ACTIVE, MFF_DEPRECATED },
+  { "toggle-prefer-encrypt",         OP_AUTOCRYPT_TOGGLE_PREFER, MFF_DEPRECATED },
   { NULL, 0 }
 };
 
