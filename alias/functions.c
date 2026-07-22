@@ -73,10 +73,11 @@ static const struct MenuFuncOp OpAlias[] = { /* map: alias */
 const struct MenuFuncOp OpQuery[] = { /* map: query */
   { "compose-message",               OP_COMPOSE_MESSAGE },
   { "create-alias",                  OP_CREATE_ALIAS },
-  { "query",                         OP_VIEW_ADDRESS_QUERY },
   { "query-append",                  OP_QUERY_APPEND },
+  { "view-address-query",            OP_VIEW_ADDRESS_QUERY },
 
   // Deprecated
+  { "query",                         OP_VIEW_ADDRESS_QUERY },
   { "limit",                         OP_LIMIT_ENTRIES,        MFF_DEPRECATED },
   { "mail",                          OP_COMPOSE_MESSAGE,      MFF_DEPRECATED },
   { "sort",                          OP_SORT_ENTRIES,         MFF_DEPRECATED },
