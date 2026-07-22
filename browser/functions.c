@@ -67,21 +67,22 @@ static int op_subscribe_pattern(struct BrowserPrivateData *priv, const struct Ke
  * OpBrowser - Functions for the file Browser Menu
  */
 static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
-  { "nntp-mark-newsgroup-read",      OP_NNTP_MARK_NEWSGROUP_READ },
   { "change-dir",                    OP_CHANGE_DIRECTORY },
   { "create-mailbox",                OP_CREATE_MAILBOX },
   { "delete-mailbox",                OP_DELETE_MAILBOX },
   { "descend-directory",             OP_DESCEND_DIRECTORY },
+  { "display-file",                  OP_BROWSER_VIEW_FILE },
   { "display-filename",              OP_BROWSER_TELL },
   { "goto-folder",                   OP_BROWSER_GOTO_FOLDER },
   { "goto-home",                     OP_GOTO_HOME },
   { "goto-parent",                   OP_GOTO_PARENT },
   { "goto-root",                     OP_GOTO_ROOT },
   { "limit",                         OP_BROWSER_LIMIT },
-  { "show-mailboxes",                OP_SHOW_MAILBOXES },
+  { "nntp-mark-newsgroup-read",      OP_NNTP_MARK_NEWSGROUP_READ },
   { "reload-active",                 OP_LOAD_ACTIVE },
   { "rename-mailbox",                OP_RENAME_MAILBOX },
   { "select-new",                    OP_BROWSER_NEW_FILE },
+  { "show-mailboxes",                OP_SHOW_MAILBOXES },
   { "subscribe",                     OP_BROWSER_SUBSCRIBE },
   { "subscribe-pattern",             OP_SUBSCRIBE_PATTERN },
   { "toggle-mailboxes",              OP_TOGGLE_MAILBOXES },
@@ -89,7 +90,6 @@ static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
   { "uncatchup",                     OP_UNCATCHUP },
   { "unsubscribe",                   OP_BROWSER_UNSUBSCRIBE },
   { "unsubscribe-pattern",           OP_UNSUBSCRIBE_PATTERN },
-  { "display-file",                  OP_BROWSER_VIEW_FILE },
 
   // Deprecated
   { "buffy-list",                    OP_SHOW_MAILBOXES,           MFF_DEPRECATED },
@@ -108,6 +108,7 @@ static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
  */
 static const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
   { OP_BROWSER_GOTO_FOLDER,                "=" },
+  { OP_BROWSER_LIMIT,                      "m" },
   { OP_BROWSER_NEW_FILE,                   "N" },
   { OP_BROWSER_SUBSCRIBE,                  "s" },
   { OP_BROWSER_TELL,                       "@" },
@@ -117,7 +118,6 @@ static const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
   { OP_CHANGE_DIRECTORY,                   "c" },
   { OP_CREATE_MAILBOX,                     "C" },
   { OP_DELETE_MAILBOX,                     "d" },
-  { OP_BROWSER_LIMIT,                      "m" },
   { OP_GOTO_PARENT,                        "p" },
   { OP_RENAME_MAILBOX,                     "r" },
   { OP_SHOW_MAILBOXES,                     "." },
@@ -412,7 +412,7 @@ static int op_browser_toggle_lsub(struct BrowserPrivateData *priv, const struct 
   const bool c_imap_list_subscribed = cs_subset_bool(NeoMutt->sub, "imap_list_subscribed");
   mutt_message("set imap_list_subscribed = %s", c_imap_list_subscribed ? "yes" : "no");
 
-  mutt_unget_op(OP_CHECK_NEW);
+  mutt_unget_op(OP_CHECK_STATS);
   return FR_SUCCESS;
 }
 
@@ -1369,7 +1369,7 @@ static int op_subscribe_pattern(struct BrowserPrivateData *priv, const struct Ke
  *
  * This function handles:
  * - OP_BROWSER_GOTO_FOLDER
- * - OP_CHECK_NEW
+ * - OP_CHECK_STATS
  * - OP_TOGGLE_MAILBOXES
  */
 static int op_toggle_mailboxes(struct BrowserPrivateData *priv, const struct KeyEvent *event)
@@ -1458,7 +1458,7 @@ static const struct BrowserFunction BrowserFunctions[] = {
   { OP_BROWSER_UNSUBSCRIBE,      op_browser_subscribe },
   { OP_BROWSER_VIEW_FILE,        op_browser_view_file },
   { OP_CHANGE_DIRECTORY,         op_change_directory },
-  { OP_CHECK_NEW,                op_toggle_mailboxes },
+  { OP_CHECK_STATS,              op_toggle_mailboxes },
   { OP_CREATE_MAILBOX,           op_create_mailbox },
   { OP_DELETE_MAILBOX,           op_delete_mailbox },
   { OP_DESCEND_DIRECTORY,        op_activate_entry },

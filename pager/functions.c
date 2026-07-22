@@ -69,7 +69,6 @@ static const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "toggle-quoted-text",            OP_PAGER_TOGGLE_QUOTED_TEXT },
   { "toggle-search-highlighting",    OP_PAGER_TOGGLE_SEARCH_HIGHLIGHTING },
 
-
   // Deprecated
   { "bottom",            OP_SELECT_LAST_ENTRY,                 MFF_DEPRECATED },
   { "buffy-list",        OP_SHOW_MAILBOXES,                    MFF_DEPRECATED },

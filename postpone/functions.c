@@ -266,14 +266,14 @@ static int op_search(struct PostponeData *pd, const struct KeyEvent *event)
  */
 static const struct PostponeFunction PostponeFunctions[] = {
   // clang-format off
+  { OP_ACTIVATE_ENTRY,         op_activate_entry },
   { OP_DELETE_MESSAGE,         op_delete },
   { OP_EXIT,                   op_quit },
-  { OP_ACTIVATE_ENTRY,         op_activate_entry },
   { OP_QUIT,                   op_quit },
+  { OP_SEARCH_BACKWARD,        op_search },
   { OP_SEARCH_FORWARD,         op_search },
   { OP_SEARCH_NEXT,            op_search },
   { OP_SEARCH_PREVIOUS,        op_search },
-  { OP_SEARCH_BACKWARD,        op_search },
   { OP_UNDELETE_MESSAGE,       op_delete },
   { 0, NULL },
   // clang-format on

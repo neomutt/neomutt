@@ -77,9 +77,9 @@ const struct MenuFuncOp OpQuery[] = { /* map: query */
   { "view-address-query",            OP_VIEW_ADDRESS_QUERY },
 
   // Deprecated
-  { "query",                         OP_VIEW_ADDRESS_QUERY },
   { "limit",                         OP_LIMIT_ENTRIES,        MFF_DEPRECATED },
   { "mail",                          OP_COMPOSE_MESSAGE,      MFF_DEPRECATED },
+  { "query",                         OP_VIEW_ADDRESS_QUERY,   MFF_DEPRECATED },
   { "sort",                          OP_SORT_ENTRIES,         MFF_DEPRECATED },
   { "sort-reverse",                  OP_SORT_ENTRIES_REVERSE, MFF_DEPRECATED },
   { NULL, 0 },

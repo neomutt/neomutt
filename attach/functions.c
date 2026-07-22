@@ -104,7 +104,6 @@ static const struct MenuFuncOp OpAttach[] = { /* map: attach */
  * AttachDefaultBindings - Key bindings for the Attachment Menu
  */
 static const struct MenuOpSeq AttachDefaultBindings[] = { /* map: attach */
-  { OP_ATTACH_COLLAPSE,                    "v" },
   { OP_ATTACH_DELETE,                      "d" },
   { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT,  "<keypadenter>" },
   { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT,  "\n" },             // <Enter>
@@ -112,7 +111,6 @@ static const struct MenuOpSeq AttachDefaultBindings[] = { /* map: attach */
   { OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP,  "m" },
   { OP_ATTACH_DISPLAY_ATTACHMENT_TEXT,     "T" },
   { OP_ATTACH_EDIT_CONTENT_TYPE,           "\005" },           // <Ctrl-E>
-  { OP_PRINT_ENTRY,                        "p" },
   { OP_ATTACH_SAVE_ATTACHMENT,             "s" },
   { OP_ATTACH_UNDELETE,                    "u" },
   { OP_BOUNCE_MESSAGE,                     "b" },
@@ -123,9 +121,11 @@ static const struct MenuOpSeq AttachDefaultBindings[] = { /* map: attach */
   { OP_FORWARD_MESSAGE,                    "f" },
   { OP_LIST_REPLY,                         "L" },
   { OP_PIPE_ENTRY,                         "|" },
+  { OP_PRINT_ENTRY,                        "p" },
   { OP_REPLY_ALL,                          "g" },
   { OP_REPLY_SENDER,                       "r" },
   { OP_RESEND,                             "\033e" },          // <Alt-e>
+  { OP_TOGGLE_TREE,                        "v" },
   { 0, NULL },
 };
 // clang-format on
@@ -793,14 +793,12 @@ static int op_forward_to_group(struct AttachFunctionData *fdata, const struct Ke
  */
 static const struct AttachFunction AttachFunctions[] = {
   // clang-format off
-  { OP_ATTACH_COLLAPSE,                   op_attach_collapse },
   { OP_ATTACH_DELETE,                     op_attach_delete },
   { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT, op_attach_view },
   { OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP, op_attach_view_mailcap },
   { OP_ATTACH_DISPLAY_ATTACHMENT_PAGER,   op_attach_view_pager },
   { OP_ATTACH_DISPLAY_ATTACHMENT_TEXT,    op_attach_view_text },
   { OP_ATTACH_EDIT_CONTENT_TYPE,          op_attach_edit_type },
-  { OP_PRINT_ENTRY,                       op_attach_print },
   { OP_ATTACH_SAVE_ATTACHMENT,            op_attach_save },
   { OP_ATTACH_UNDELETE,                   op_attach_undelete },
   { OP_BOUNCE_MESSAGE,                    op_bounce_message },
@@ -816,11 +814,13 @@ static const struct AttachFunction AttachFunctions[] = {
   { OP_NNTP_FOLLOWUP_MESSAGE,             op_followup },
   { OP_NNTP_FORWARD_TO_GROUP,             op_forward_to_group },
   { OP_PIPE_ENTRY,                        op_attach_pipe },
+  { OP_PRINT_ENTRY,                       op_attach_print },
   { OP_QUIT,                              op_quit },
   { OP_REPLY_ALL,                         op_reply },
   { OP_REPLY_GROUP_CHAT,                  op_reply },
   { OP_REPLY_SENDER,                      op_reply },
   { OP_RESEND,                            op_resend },
+  { OP_TOGGLE_TREE,                       op_attach_collapse },
   { 0, NULL },
   // clang-format on
 };

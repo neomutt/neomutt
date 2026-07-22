@@ -180,7 +180,7 @@ static void sidebar_matcher_cb(const char *text, void *data)
 }
 
 /**
- * op_sidebar_search - Selects the last unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ * op_sidebar_search - Perform a sidebar fuzzy search and update the highlight - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
 int op_sidebar_search(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
 {

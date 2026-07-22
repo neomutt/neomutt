@@ -235,8 +235,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_ATTACH_ATTACH_NEWS_MESSAGE,         N_("Attach news articles to this message")) \
   /* L10N: Help for Compose function: <attach-new-mime> */ \
   _fmt(OP_ATTACH_ATTACH_NEW_MIME,             N_("Compose new attachment using mailcap entry")) \
-  /* L10N: Help for Attach function: <collapse-parts> */ \
-  _fmt(OP_ATTACH_COLLAPSE,                    N_("Toggle display of subparts")) \
   /* L10N: Help for Attach function: <delete-entry> */ \
   _fmt(OP_ATTACH_DELETE,                      N_("Delete the current entry")) \
   /* L10N: Help for Compose function: <detach-file> */ \
@@ -347,8 +345,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_BROWSER_VIEW_FILE,                  N_("View file")) \
   /* L10N: Help for Browser function: <change-dir> */ \
   _fmt(OP_CHANGE_DIRECTORY,                   N_("Change directories")) \
-  /* L10N: Help for Browser function: <check-new> */ \
-  _fmt(OP_CHECK_NEW,                          N_("Check mailboxes for new mail")) \
   /* L10N: Help for Alias, Index, Query function: <compose-message> */ \
   _fmt(OP_COMPOSE_MESSAGE,                    N_("Compose a new mail message")) \
   /* L10N: Help for Index function: <copy-message> */ \
@@ -395,10 +391,10 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_GOTO_HOME,                          N_("Go to home directory")) \
   /* L10N: Help for Browser function: <goto-parent> */ \
   _fmt(OP_GOTO_PARENT,                        N_("Go to parent directory")) \
-  /* L10N: Help for Index function: <limit-thread> */ \
-  _fmt(OP_LIMIT_THREAD,                       N_("Limit view to current thread")) \
   /* L10N: Help for Browser function: <goto-root> */ \
   _fmt(OP_GOTO_ROOT,                          N_("Go to root directory")) \
+  /* L10N: Help for Index function: <limit-thread> */ \
+  _fmt(OP_LIMIT_THREAD,                       N_("Limit view to current thread")) \
   /* L10N: Help for List function: <list-archive> */ \
   _fmt(OP_LIST_ARCHIVE,                       N_("Retrieve list archive information")) \
   /* L10N: Help for List function: <list-help> */ \

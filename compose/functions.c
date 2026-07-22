@@ -174,7 +174,6 @@ static const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_ATTACH_ATTACH_FILE,                 "a" },
   { OP_ATTACH_ATTACH_MESSAGE,              "A" },
   { OP_ATTACH_ATTACH_NEW_MIME,             "n" },
-  { OP_COMPOSE_ATTACH_PGP_KEY,             "\033k" },          // <Alt-k>
   { OP_ATTACH_DETACH,                      "D" },
   { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT,  "<keypadenter>" },
   { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT,  "\n" },             // <Enter>
@@ -193,12 +192,12 @@ static const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_ATTACH_GROUP_RELATED,               "%" },
   { OP_ATTACH_MOVE_ATTACHMENT_DOWN,        "+" },
   { OP_ATTACH_MOVE_ATTACHMENT_UP,          "-" },
-  { OP_PRINT_ENTRY,            "l" },
   { OP_ATTACH_SAVE_ATTACHMENT,             "C" },
   { OP_ATTACH_TOGGLE_DISPOSITION,          "\004" },           // <Ctrl-D>
   { OP_ATTACH_TOGGLE_UNLINK,               "u" },
   { OP_ATTACH_UNGROUP_ATTACHMENTS,         "#" },
   { OP_ATTACH_UPDATE_ENCODING,             "U" },
+  { OP_COMPOSE_ATTACH_PGP_KEY,             "\033k" },          // <Alt-k>
   { OP_COMPOSE_CHECK_SPELLING,             "i" },
   { OP_COMPOSE_EDIT_FILE,                  "\033e" },          // <Alt-e>
   { OP_COMPOSE_EDIT_MESSAGE,               "e" },
@@ -206,6 +205,9 @@ static const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_COMPOSE_RENAME_FILE_ON_DISK,        "R" },
   { OP_COMPOSE_SAVE_MESSAGE_COPY,          "w" },
   { OP_COMPOSE_SEND_MESSAGE,               "y" },
+#ifdef USE_AUTOCRYPT
+  { OP_COMPOSE_VIEW_AUTOCRYPT_OPTIONS,     "o" },
+#endif
   { OP_COMPOSE_VIEW_PGP_OPTIONS,           "p" },
   { OP_COMPOSE_VIEW_SMIME_OPTIONS,         "S" },
   { OP_DISPLAY_MESSAGE_HEADERS,            "h" },
@@ -221,10 +223,8 @@ static const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_PIPE_ENTRY,                         "|" },
   { OP_PREVIEW_SCROLL_PAGE_DOWN,           "<pagedown>" },
   { OP_PREVIEW_SCROLL_PAGE_UP,             "<pageup>" },
+  { OP_PRINT_ENTRY,                        "l" },
   { OP_TOGGLE_TAG,                         "T" },
-#ifdef USE_AUTOCRYPT
-  { OP_COMPOSE_VIEW_AUTOCRYPT_OPTIONS,     "o" },
-#endif
   { 0, NULL },
 };
 // clang-format on

@@ -96,6 +96,7 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "change-newsgroup",                      OP_MAIN_CHANGE_GROUP },
   { "change-newsgroup-readonly",             OP_MAIN_CHANGE_GROUP_READONLY },
   { "check-traditional-pgp",                 OP_CHECK_TRADITIONAL },
+  { "compose-message",                       OP_COMPOSE_MESSAGE },
   { "compose-to-sender",                     OP_COMPOSE_TO_SENDER },
   { "copy-message",                          OP_COPY_MESSAGE },
   { "copy-message-decoded",                  OP_COPY_MESSAGE_DECODED },
@@ -107,6 +108,7 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "delete-subthread",                      OP_DELETE_SUBTHREAD },
   { "delete-thread",                         OP_DELETE_THREAD },
   { "display-message",                       OP_DISPLAY_MESSAGE },
+  { "display-message-headers",               OP_DISPLAY_MESSAGE_HEADERS },
   { "edit-content-type",                     OP_ATTACH_EDIT_CONTENT_TYPE },
   { "edit-raw-message",                      OP_EDIT_RAW_MESSAGE },
   { "edit-raw-message-readonly",             OP_EDIT_RAW_MESSAGE_READONLY },
@@ -125,7 +127,6 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "list-reply",                            OP_LIST_REPLY },
   { "list-subscribe",                        OP_LIST_SUBSCRIBE },
   { "list-unsubscribe",                      OP_LIST_UNSUBSCRIBE },
-  { "mail",                                  OP_COMPOSE_MESSAGE },
   { "mark-subthread-read",                   OP_MARK_SUBTHREAD_READ },
   { "mark-thread-read",                      OP_MARK_THREAD_READ },
   { "move-message",                          OP_MOVE_MESSAGE },
@@ -175,9 +176,9 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
 #ifdef USE_NOTMUCH
   { "vfolder-create-from-query",             OP_VFOLDER_CREATE_FROM_QUERY },
   { "vfolder-create-from-query-readonly",    OP_VFOLDER_CREATE_FROM_QUERY_READONLY },
+  { "vfolder-reset-window",                  OP_VFOLDER_RESET_WINDOW },
   { "vfolder-shift-window-back",             OP_VFOLDER_SHIFT_WINDOW_BACK },
   { "vfolder-shift-window-forward",          OP_VFOLDER_SHIFT_WINDOW_FORWARD },
-  { "vfolder-reset-window",                  OP_VFOLDER_RESET_WINDOW },
 #endif
   { "view-address-query",                    OP_VIEW_ADDRESS_QUERY },
   { "view-aliases",                          OP_VIEW_ALIASES },
@@ -207,7 +208,7 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "decrypt-copy",                          OP_COPY_MESSAGE_DECRYPTED,              MFF_DEPRECATED },
   { "decrypt-save",                          OP_MOVE_MESSAGE_DECRYPTED,              MFF_DEPRECATED },
   { "display-address",                       OP_SHOW_SENDER_ADDRESS,                 MFF_DEPRECATED },
-  { "display-message-headers",               OP_DISPLAY_MESSAGE_HEADERS },
+  { "display-toggle-weed",                   OP_DISPLAY_MESSAGE_HEADERS,             MFF_DEPRECATED },
   { "edit",                                  OP_EDIT_RAW_MESSAGE,                    MFF_DEPRECATED },
   { "edit-label",                            OP_EDIT_X_LABEL,                        MFF_DEPRECATED },
   { "edit-or-view-raw-message",              OP_EDIT_RAW_MESSAGE,                    MFF_DEPRECATED },
@@ -227,7 +228,7 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "limit",                                 OP_LIMIT_ENTRIES,                       MFF_DEPRECATED },
   { "limit-current-thread",                  OP_LIMIT_THREAD,                        MFF_DEPRECATED },
   { "list-action",                           OP_VIEW_LIST_ACTIONS,                   MFF_DEPRECATED },
-  { "compose-message",                       OP_COMPOSE_MESSAGE },
+  { "mail",                                  OP_COMPOSE_MESSAGE,                     MFF_DEPRECATED },
   { "mail-key",                              OP_SEND_PGP_KEY,                        MFF_DEPRECATED },
   { "mailbox-list",                          OP_SHOW_MAILBOXES,                      MFF_DEPRECATED },
   { "mark-message",                          OP_CREATE_MESSAGE_HOTKEY,               MFF_DEPRECATED },
@@ -290,75 +291,73 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_ATTACH_EDIT_CONTENT_TYPE,            "\005" },           // <Ctrl-E>
   { OP_BOUNCE_MESSAGE,                      "b" },
   { OP_CHECK_TRADITIONAL,                   "\033P" },          // <Alt-P>
+  { OP_COMPOSE_MESSAGE,                     "m" },
   { OP_COPY_MESSAGE,                        "C" },
-  { OP_CREATE_ALIAS,                        "a" },
   { OP_COPY_MESSAGE_DECODED,                "\033C" },          // <Alt-C>
-  { OP_MOVE_MESSAGE_DECODED,                "\033s" },          // <Alt-s>
+  { OP_CREATE_ALIAS,                        "a" },
+  { OP_CREATE_MESSAGE_HOTKEY,               "~" },
   { OP_DELETE_MESSAGE,                      "d" },
   { OP_DELETE_SUBTHREAD,                    "\033d" },          // <Alt-d>
   { OP_DELETE_THREAD,                       "\004" },           // <Ctrl-D>
-  { OP_SHOW_SENDER_ADDRESS,                 "@" },
   { OP_DISPLAY_LOG,                         "M" },
   { OP_DISPLAY_MESSAGE,                     " " },              // <Space>
   { OP_DISPLAY_MESSAGE,                     "<keypadenter>" },
   { OP_DISPLAY_MESSAGE,                     "\n" },             // <Enter>
   { OP_DISPLAY_MESSAGE,                     "\r" },             // <Return>
   { OP_DISPLAY_MESSAGE_HEADERS,             "h" },
-  { OP_EDIT_X_LABEL,                        "Y" },
   { OP_EDIT_RAW_MESSAGE,                    "e" },
+  { OP_EDIT_X_LABEL,                        "Y" },
   { OP_EXIT,                                "x" },
   { OP_EXTRACT_KEYS,                        "\013" },           // <Ctrl-K>
-  { OP_TOGGLE_IMPORTANT_FLAG,               "F" },
   { OP_FORGET_PASSPHRASE,                   "\006" },           // <Ctrl-F>
   { OP_FORWARD_MESSAGE,                     "f" },
-  { OP_REPLY_ALL,                           "g" },
-  { OP_VIEW_LIST_ACTIONS,                   "\033L" },          // <Alt-L>
+  { OP_LIMIT_ENTRIES,                       "l" },
   { OP_LIST_REPLY,                          "L" },
-  { OP_COMPOSE_MESSAGE,                     "m" },
-  { OP_SHOW_MAILBOXES,                      "." },
   { OP_MAIN_BREAK_THREAD,                   "#" },
   { OP_MAIN_BROWSE_MAILBOXES,               "y" },
   { OP_MAIN_CHANGE_FOLDER,                  "c" },
   { OP_MAIN_CHANGE_FOLDER_READONLY,         "\033c" },          // <Alt-c>
   { OP_MAIN_CHANGE_GROUP,                   "i" },
   { OP_MAIN_CHANGE_GROUP_READONLY,          "\033i" },          // <Alt-i>
-  { OP_UNSET_FLAG,                          "W" },
   { OP_MAIN_DELETE_PATTERN,                 "D" },
-  { OP_POP_FETCH_MAIL,                      "G" },
-  { OP_LIMIT_ENTRIES,                       "l" },
   { OP_MAIN_LINK_THREADS,                   "&" },
-  { OP_SELECT_NEXT_NEW_OR_UNREAD_ENTRY,     "\t" },             // <Tab>
-  { OP_SELECT_NEXT_UNDELETED_ENTRY,         "<down>" },
-  { OP_SELECT_NEXT_UNDELETED_ENTRY,         "j" },
-  { OP_SELECT_PREVIOUS_NEW_OR_UNREAD_ENTRY, "\033\t" },         // <Alt-Tab>
-  { OP_SELECT_PREVIOUS_UNDELETED_ENTRY,     "<up>" },
-  { OP_CREATE_MESSAGE_HOTKEY,               "~" },
   { OP_MAIN_SET_FLAG,                       "w" },
   { OP_MAIN_SYNC_FOLDER,                    "$" },
   { OP_MAIN_UNDELETE_PATTERN,               "U" },
   { OP_MARK_SUBTHREAD_READ,                 "\033r" },          // <Alt-r>
   { OP_MARK_THREAD_READ,                    "\022" },           // <Ctrl-R>
   { OP_MOVE_MESSAGE,                        "s" },
+  { OP_MOVE_MESSAGE_DECODED,                "\033s" },          // <Alt-s>
   { OP_PIPE_ENTRY,                          "|" },
+  { OP_POP_FETCH_MAIL,                      "G" },
   { OP_PRINT_ENTRY,                         "p" },
   { OP_QUIT,                                "q" },
   { OP_RECALL_DRAFT_MESSAGE,                "R" },
+  { OP_REPLY_ALL,                           "g" },
   { OP_REPLY_SENDER,                        "r" },
   { OP_RESEND,                              "\033e" },          // <Alt-e>
   { OP_SELECT_NEXT_ENTRY,                   "J" },
+  { OP_SELECT_NEXT_NEW_OR_UNREAD_ENTRY,     "\t" },             // <Tab>
   { OP_SELECT_NEXT_SUBTREE,                 "\033n" },          // <Alt-n>
   { OP_SELECT_NEXT_TREE,                    "\016" },           // <Ctrl-N>
+  { OP_SELECT_NEXT_UNDELETED_ENTRY,         "<down>" },
+  { OP_SELECT_NEXT_UNDELETED_ENTRY,         "j" },
   { OP_SELECT_PREVIOUS_ENTRY,               "K" },
+  { OP_SELECT_PREVIOUS_NEW_OR_UNREAD_ENTRY, "\033\t" },         // <Alt-Tab>
   { OP_SELECT_PREVIOUS_SUBTREE,             "\033p" },          // <Alt-p>
   { OP_SELECT_PREVIOUS_TREE,                "\020" },           // <Ctrl-P>
+  { OP_SELECT_PREVIOUS_UNDELETED_ENTRY,     "<up>" },
   { OP_SELECT_PREVIOUS_UNDELETED_ENTRY,     "k" },
   { OP_SELECT_TREE_PARENT_ENTRY,            "P" },
   { OP_SEND_PGP_KEY,                        "\033k" },          // <Alt-k>
   { OP_SHOW_LIMIT,                          "\033l" },          // <Alt-l>
+  { OP_SHOW_MAILBOXES,                      "." },
+  { OP_SHOW_SENDER_ADDRESS,                 "@" },
   { OP_SORT_ENTRIES,                        "o" },
   { OP_SORT_ENTRIES_REVERSE,                "O" },
   { OP_TAG_PATTERN,                         "T" },
   { OP_TOGGLE_ALL_TREES,                    "\033V" },          // <Alt-V>
+  { OP_TOGGLE_IMPORTANT_FLAG,               "F" },
   { OP_TOGGLE_MAILBOX_READONLY,             "%" },
   { OP_TOGGLE_NEW_FLAG,                     "N" },
   { OP_TOGGLE_TAG_TREE,                     "\033t" },          // <Alt-t>
@@ -366,9 +365,11 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_UNDELETE_MESSAGE,                    "u" },
   { OP_UNDELETE_SUBTHREAD,                  "\033u" },          // <Alt-u>
   { OP_UNDELETE_THREAD,                     "\025" },           // <Ctrl-U>
+  { OP_UNSET_FLAG,                          "W" },
   { OP_UNTAG_PATTERN,                       "\024" },           // <Ctrl-T>
   { OP_VIEW_ADDRESS_QUERY,                  "Q" },
   { OP_VIEW_ATTACHMENTS,                    "v" },
+  { OP_VIEW_LIST_ACTIONS,                   "\033L" },          // <Alt-L>
 #ifdef USE_AUTOCRYPT
   { OP_VIEW_AUTOCRYPT_ACCOUNTS,             "A" },
 #endif
@@ -3965,6 +3966,7 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_COMPOSE_TO_SENDER,                    op_compose_to_sender,        CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_COPY_MESSAGE,                         op_save,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_COPY_MESSAGE_DECODED,                 op_save,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_COPY_MESSAGE_DECRYPTED,               op_save,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_CREATE_ALIAS,                         op_create_alias,             CHECK_NONE },
   { OP_CREATE_MESSAGE_HOTKEY,                op_mark_msg,                 CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_DELETE_MESSAGE,                       op_delete,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
@@ -4070,6 +4072,7 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_UNDELETE_THREAD,                      op_undelete_thread,          CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_UNFOLD_ALL_TREES,                     op_unfold_all_trees,         CHECK_IN_MAILBOX },
   { OP_UNFOLD_TREE,                          op_unfold_tree,              CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_UNSET_FLAG,                           op_main_set_flag,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_UNTAG_PATTERN,                        op_main_untag_pattern,       CHECK_IN_MAILBOX },
   { OP_VIEW_ADDRESS_QUERY,                   op_query,                    CHECK_ATTACH },
   { OP_VIEW_ALIASES,                         op_alias_dialog,             CHECK_NONE },

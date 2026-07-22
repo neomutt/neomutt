@@ -89,7 +89,7 @@ static const struct MenuFuncOp OpEditor[] = { /* map: editor */
  * EditorDefaultBindings - Key bindings for the Editor Menu
  */
 static const struct MenuOpSeq EditorDefaultBindings[] = { /* map: editor */
-  { OP_EDITOR_COMPLETE_MAILBOX,            " " },              // <Space>
+  { OP_DISPLAY_HELP,                       "\033?" },          // <Alt-?>
   { OP_EDITOR_BACKSPACE,                   "<backspace>" },
   { OP_EDITOR_BACKSPACE,                   "\010" },           // <Ctrl-H>
   { OP_EDITOR_BACKSPACE,                   "\177" },           // <Backspace>
@@ -100,6 +100,7 @@ static const struct MenuOpSeq EditorDefaultBindings[] = { /* map: editor */
   { OP_EDITOR_BOL,                         "\001" },           // <Ctrl-A>
   { OP_EDITOR_CAPITALIZE_WORD,             "\033c" },          // <Alt-c>
   { OP_EDITOR_COMPLETE,                    "\t" },             // <Tab>
+  { OP_EDITOR_COMPLETE_MAILBOX,            " " },              // <Space>
   { OP_EDITOR_COMPLETE_QUERY,              "\024" },           // <Ctrl-T>
   { OP_EDITOR_DELETE_CHAR,                 "<delete>" },
   { OP_EDITOR_DELETE_CHAR,                 "\004" },           // <Ctrl-D>
@@ -109,19 +110,18 @@ static const struct MenuOpSeq EditorDefaultBindings[] = { /* map: editor */
   { OP_EDITOR_FORWARD_CHAR,                "<right>" },
   { OP_EDITOR_FORWARD_CHAR,                "\006" },           // <Ctrl-F>
   { OP_EDITOR_FORWARD_WORD,                "\033f" },          // <Alt-f>
-  { OP_HISTORY_SEARCH,                     "\022" },           // <Ctrl-R>
   { OP_EDITOR_KILL_EOL,                    "\013" },           // <Ctrl-K>
   { OP_EDITOR_KILL_EOW,                    "\033d" },          // <Alt-d>
   { OP_EDITOR_KILL_LINE,                   "\025" },           // <Ctrl-U>
   { OP_EDITOR_KILL_WORD,                   "\027" },           // <Ctrl-W>
   { OP_EDITOR_QUOTE_CHAR,                  "\026" },           // <Ctrl-V>
   { OP_EDITOR_UPCASE_WORD,                 "\033u" },          // <Alt-u>
+  { OP_HISTORY_SEARCH,                     "\022" },           // <Ctrl-R>
   { OP_HISTORY_SELECT_NEXT_ENTRY,          "<down>" },
   { OP_HISTORY_SELECT_NEXT_ENTRY,          "\016" },           // <Ctrl-N>
   { OP_HISTORY_SELECT_PREVIOUS_ENTRY,      "<up>" },
   { OP_HISTORY_SELECT_PREVIOUS_ENTRY,      "\020" },           // <Ctrl-P>
   { OP_REDRAW_SCREEN,                      "\014" },           // <Ctrl-L>
-  { OP_DISPLAY_HELP,                       "\033?" },          // <Alt-?>
   { 0, NULL },
 };
 // clang-format on
@@ -254,9 +254,9 @@ static int op_history_search(struct EnterFunctionData *fdata, const struct KeyEv
 }
 
 /**
- * op_history_select_prev - Scroll up through the history list - Implements ::enter_function_t - @ingroup enter_function_api
+ * op_history_select_previous_entry - Scroll up through the history list - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_history_select_prev(struct EnterFunctionData *fdata, const struct KeyEvent *event)
+static int op_history_select_previous_entry(struct EnterFunctionData *fdata, const struct KeyEvent *event)
 {
   struct EnterWindowData *wdata = fdata->wdata;
   if (wdata->hclass == HC_NONE)
@@ -528,7 +528,7 @@ static const struct EnterFunction EnterFunctions[] = {
   { OP_EDITOR_UPCASE_WORD,              op_editor_capitalize_word },
   { OP_HISTORY_SEARCH,                  op_history_search },
   { OP_HISTORY_SELECT_NEXT_ENTRY,       op_history_select_next_entry },
-  { OP_HISTORY_SELECT_PREVIOUS_ENTRY,   op_history_select_prev },
+  { OP_HISTORY_SELECT_PREVIOUS_ENTRY,   op_history_select_previous_entry },
   { OP_REDRAW_SCREEN,                   op_redraw_screen },
   { 0, NULL },
   // clang-format on

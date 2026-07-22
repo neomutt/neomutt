@@ -213,9 +213,9 @@ static int op_view_id(struct PgpData *pd, const struct KeyEvent *event)
 static const struct PgpFunction PgpFunctions[] = {
   // clang-format off
   { OP_ACTIVATE_ENTRY,         op_activate_entry },
+  { OP_DISPLAY_DETAILS,        op_verify_key },
   { OP_EXIT,                   op_quit },
   { OP_QUIT,                   op_quit },
-  { OP_DISPLAY_DETAILS,        op_verify_key },
   { OP_SHOW_IDENTITY,          op_view_id },
   { 0, NULL },
   // clang-format on

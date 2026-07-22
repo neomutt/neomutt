@@ -1032,7 +1032,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
         }
         FALLTHROUGH;
 
-      case OP_ATTACH_COLLAPSE:
+      case OP_TOGGLE_TREE:
         if (recv)
           return op;
         FALLTHROUGH;
