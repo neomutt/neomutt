@@ -8,6 +8,7 @@
 [![Code build](https://github.com/neomutt/neomutt/actions/workflows/build-and-test.yml/badge.svg?branch=main&event=push)](https://github.com/neomutt/neomutt/actions/workflows/build-and-test.yml "Latest Automatic Code Build")
 [![Coverity Scan](https://img.shields.io/coverity/scan/8495.svg)](https://scan.coverity.com/projects/neomutt-neomutt "Latest Code Static Analysis")
 [![Website build](https://github.com/neomutt/neomutt.github.io/actions/workflows/pages/pages-build-deployment/badge.svg)](https://neomutt.org/ "Website Build")
+[![Packaging status](https://repology.org/badge/tiny-repos/neomutt.svg)](https://repology.org/project/neomutt/versions "Packaging status across distros")
 
 ## What is NeoMutt?
 
