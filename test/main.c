@@ -143,6 +143,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_buf_strdup)                                           \
   NEOMUTT_TEST_ITEM(test_buf_str_equal)                                        \
   NEOMUTT_TEST_ITEM(test_buf_substrcpy)                                        \
+  NEOMUTT_TEST_ITEM(test_buf_tell)                                             \
                                                                                \
   /* charset */                                                                \
   NEOMUTT_TEST_ITEM(test_mutt_ch_canonical_charset)                            \
