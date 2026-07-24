@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Build Fuzzers (${{ matrix.sanitizer }})
         id: build
-        uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master
+        uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@aa9b1bbbb35c68581047066ca1681ef258c313ae  # master as of 2026-07-23; oss-fuzz has no tagged releases
         with:
           oss-fuzz-project-name: 'neomutt'
           dry-run: false
@@ -26,7 +26,7 @@ jobs:
           language: c++
 
       - name: Run Fuzzers (${{ matrix.sanitizer }})
-        uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master
+        uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@aa9b1bbbb35c68581047066ca1681ef258c313ae  # master as of 2026-07-23; oss-fuzz has no tagged releases
         with:
           oss-fuzz-project-name: 'neomutt'
           fuzz-seconds: 600
