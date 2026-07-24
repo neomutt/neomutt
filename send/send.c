@@ -65,6 +65,7 @@
 #include "history/lib.h"
 #include "hooks/lib.h"
 #include "index/lib.h"
+#include "mlist/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
 #include "pattern/lib.h"
@@ -2968,6 +2969,9 @@ bool mutt_send_list_subscribe(struct Mailbox *m, struct Email *e)
     return false;
   }
 
+  if (!mutt_istr_startswith(uri, "mailto:"))
+    return mlist_open_url(uri);
+
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
   ARRAY_ADD(&ea, e);
   bool rc = send_simple_email(m, &ea, uri, "Subscribe", "subscribe");
@@ -2996,6 +3000,9 @@ bool mutt_send_list_unsubscribe(struct Mailbox *m, struct Email *e)
     mutt_warning(_("No List-Unsubscribe header found"));
     return false;
   }
+
+  if (!mutt_istr_startswith(uri, "mailto:"))
+    return mlist_open_url(uri);
 
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
   ARRAY_ADD(&ea, e);

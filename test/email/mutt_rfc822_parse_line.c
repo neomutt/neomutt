@@ -27,6 +27,7 @@
 #include "acutest.h"
 #include <stdbool.h>
 #include <string.h>
+#include "mutt/lib.h"
 #include "email/lib.h"
 
 void test_mutt_rfc822_parse_line(void)

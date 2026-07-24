@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <stdio.h>
 #include <string.h>
+#include "mutt/lib.h"
 #include "email/lib.h"
 
 static void check_header(const struct ListHead *actual, const char *expected[], size_t num_expected)
