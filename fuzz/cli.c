@@ -28,8 +28,17 @@
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "cli/lib.h"
+#include "expando/lib.h"
 
 bool StartupComplete = true;
+
+/**
+ * expando_stringify - Dummy
+ */
+void expando_stringify(const struct Expando *exp, const struct ExpandoDefinition *defs,
+                       bool named, struct Buffer *buf)
+{
+}
 
 /**
  * parse_args - Parse fuzz input into argc/argv format
