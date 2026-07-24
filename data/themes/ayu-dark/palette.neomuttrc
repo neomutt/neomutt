@@ -1,0 +1,25 @@
+# vim: filetype=neomuttrc
+#
+# Ayu Dark Palette
+
+# Background shades
+set my_bg0 = "color16"
+set my_bg1 = "color234"
+set my_bg2 = "color235"
+
+# Foreground shades
+set my_fg0 = "color255"
+set my_fg1 = "color244"
+set my_fg2 = "color241"
+set my_fg3 = "color232"
+
+# Accent colors
+set my_red     = "color204"
+set my_green   = "color149"
+set my_yellow  = "color222"
+set my_blue    = "color39"
+set my_magenta = "color183"
+set my_cyan    = "color81"
+set my_orange  = "color209"
+set my_lime    = "color82"
+set my_search  = "color149"

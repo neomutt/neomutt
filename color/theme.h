@@ -1,6 +1,6 @@
 /**
  * @file
- * Config used by Color
+ * Theme loading and management
  *
  * @authors
  * Copyright (C) 2026 Richard Russon <rich@flatcap.org>
@@ -21,29 +21,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @page color_config Config used by Color
- *
- * Config used by Color
- */
+#ifndef MUTT_COLOR_THEME_H
+#define MUTT_COLOR_THEME_H
 
-#include "config.h"
-#include <stdbool.h>
-#include <stddef.h>
-#include "config/lib.h"
+struct Buffer;
+struct Command;
+struct ParseContext;
+struct ParseError;
 
-/**
- * ColorVars - Config definitions for the Color module
- */
-struct ConfigDef ColorVars[] = {
-  // clang-format off
-  { "color_directcolor", DT_BOOL|D_ON_STARTUP, false, 0, NULL,
-    "Use 24bit colors (aka truecolor aka directcolor)"
-  },
-  { "theme_dir", DT_PATH, 0, 0, NULL,
-    "Directory to search for color themes"
-  },
+enum CommandResult parse_theme(const struct Command *cmd, struct Buffer *line,
+                               const struct ParseContext *pc, struct ParseError *pe);
 
-  { NULL },
-  // clang-format on
-};
+#endif /* MUTT_COLOR_THEME_H */
