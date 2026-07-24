@@ -180,35 +180,72 @@ static bool check_read_delay(uint64_t *timestamp)
 }
 
 /**
- * dlg_pager - Display an email, attachment, or help, in a window - @ingroup gui_dlg
+ * pager_cleanup - Release the Pager data structures
+ * @param pview Pager view settings
+ */
+void pager_cleanup(struct PagerView *pview)
+{
+  if (!pview || !pview->win_pager || !pview->win_pager->parent ||
+      !pview->win_pager->parent->wdata)
+    return;
+
+  struct PagerPrivateData *priv = pview->win_pager->parent->wdata;
+  struct MuttWindow *dlg = dialog_find(pview->win_pager);
+
+  mutt_file_fclose(&priv->fp);
+  if ((pview->mode == PAGER_MODE_EMAIL) && dlg)
+  {
+    struct IndexSharedData *shared = dlg ? dlg->wdata : NULL;
+    if (shared && shared->mailbox_view)
+      shared->mailbox_view->msg_in_pager = -1;
+  }
+
+  qstyle_free_tree(&priv->quote_list);
+
+  if (priv->lines)
+  {
+    for (size_t i = 0; i < priv->lines_max; i++)
+    {
+      FREE(&(priv->lines[i].syntax));
+      if (priv->search_compiled && priv->lines[i].search)
+        FREE(&(priv->lines[i].search));
+    }
+  }
+  if (priv->search_compiled)
+  {
+    regfree(&priv->search_re);
+    priv->search_compiled = false;
+  }
+  FREE(&priv->lines);
+  priv->lines_max = 0;
+
+  {
+    struct AttrColor *ac = NULL;
+    int count = 0;
+    TAILQ_FOREACH(ac, &priv->ansi_list, entries)
+    {
+      count++;
+    }
+    color_debug(LL_DEBUG5, "AnsiColors %d\n", count);
+  }
+  attr_color_list_clear(&priv->ansi_list);
+
+  if (priv->old_focus)
+  {
+    window_set_focus(priv->old_focus);
+    priv->old_focus = NULL;
+  }
+
+  priv->pview = NULL;
+}
+
+/**
+ * pager_setup - Prepare the Pager data structures
  * @param pview Pager view settings
  * @retval  0 Success
  * @retval -1 Error
- *
- * The Pager Dialog displays an Email to the user.
- *
- * They can navigate through the Email, search through it and user `color`
- * commands to highlight it.
- *
- * From the Pager, the user can also use some Index functions, such as
- * `<next-entry>` or `<delete>`.
- *
- * This pager is actually not so simple as it once was. But it will be again.
- * Currently it operates in 3 modes:
- * - viewing messages.                (PAGER_MODE_EMAIL)
- * - viewing attachments.             (PAGER_MODE_ATTACH)
- * - viewing other stuff (e.g. help). (PAGER_MODE_OTHER)
- * These can be distinguished by PagerMode in PagerView.
- * Data is not yet polymorphic and is fused into a single struct (PagerData).
- * Different elements of PagerData are expected to be present depending on the
- * mode:
- * - PAGER_MODE_EMAIL expects data->email and not expects data->body
- * - PAGER_MODE_ATTACH expects data->email and data->body
- *   special sub-case of this mode is viewing attached email message
- *   it is recognized by presence of data->fp and data->body->email
- * - PAGER_MODE_OTHER does not expect data->email or data->body
  */
-int dlg_pager(struct PagerView *pview)
+int pager_setup(struct PagerView *pview)
 {
   //===========================================================================
   // ACT 1 - Ensure sanity of the caller and determine the mode
@@ -220,8 +257,16 @@ int dlg_pager(struct PagerView *pview)
   ASSERT(pview->win_pbar);
 
   struct MuttWindow *dlg = dialog_find(pview->win_pager);
-  struct IndexSharedData *shared = dlg->wdata;
-  struct MuttWindow *win_sidebar = window_find_child(dlg, WT_SIDEBAR);
+  struct MuttWindow *tabbed = window_find_parent(pview->win_pager, WT_TABBED);
+  struct IndexSharedData *shared = dlg ? dlg->wdata : NULL;
+  struct MuttWindow *win_sidebar = dlg ? window_find_child(dlg, WT_SIDEBAR) : NULL;
+
+  if (tabbed && ((pview->mode == PAGER_MODE_HELP) || (pview->mode == PAGER_MODE_OTHER)))
+  {
+    shared = NULL;
+    win_sidebar = NULL;
+  }
+  struct PagerPrivateData *priv = pview->win_pager->parent->wdata;
 
   switch (pview->mode)
   {
@@ -229,6 +274,8 @@ int dlg_pager(struct PagerView *pview)
       // This case was previously identified by IsEmail macro
       // we expect data to contain email and not contain body
       // We also expect email to always belong to some mailbox
+      ASSERT(dlg);
+      ASSERT(shared);
       ASSERT(shared->mailbox_view);
       ASSERT(shared->mailbox);
       ASSERT(shared->email);
@@ -251,8 +298,6 @@ int dlg_pager(struct PagerView *pview)
 
     case PAGER_MODE_HELP:
     case PAGER_MODE_OTHER:
-      ASSERT(!shared->mailbox_view);
-      ASSERT(!shared->email);
       ASSERT(!pview->pdata->body);
       break;
 
@@ -271,15 +316,16 @@ int dlg_pager(struct PagerView *pview)
   //===========================================================================
 
   //---------- local variables ------------------------------------------------
-  int op = 0;
-  enum MailboxType mailbox_type = shared->mailbox ? shared->mailbox->type : MUTT_UNKNOWN;
-  struct PagerPrivateData *priv = pview->win_pager->parent->wdata;
+  struct PagerModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
+  ASSERT(mod_data);
+
   priv->rc = -1;
   priv->searchctx = 0;
   priv->first = true;
   priv->wrapped = false;
   priv->delay_read_timestamp = 0;
   priv->pager_redraw = false;
+  priv->old_focus = NULL;
 
   // Wipe any previous state info
   struct Notify *notify = priv->notify;
@@ -308,10 +354,9 @@ int dlg_pager(struct PagerView *pview)
     }
   }
   //---------- setup help menu ------------------------------------------------
-  struct PagerModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
-  ASSERT(mod_data);
 
-  pview->win_pager->help_data = pager_resolve_help_mapping(pview->mode, mailbox_type);
+  pview->win_pager->help_data = pager_resolve_help_mapping(
+      pview->mode, shared && shared->mailbox ? shared->mailbox->type : MUTT_UNKNOWN);
   pview->win_pager->help_md = mod_data->md_pager;
 
   //---------- initialize redraw pdata  -----------------------------------------
@@ -339,6 +384,7 @@ int dlg_pager(struct PagerView *pview)
     for (size_t i = 0; i < priv->lines_max; i++)
       FREE(&priv->lines[i].syntax);
     FREE(&priv->lines);
+    unlink(pview->pdata->fname);
     return -1;
   }
 
@@ -349,17 +395,36 @@ int dlg_pager(struct PagerView *pview)
     for (size_t i = 0; i < priv->lines_max; i++)
       FREE(&priv->lines[i].syntax);
     FREE(&priv->lines);
+    unlink(pview->pdata->fname);
     return -1;
   }
+
   unlink(pview->pdata->fname);
   priv->pview = pview;
+
+  pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
+
+  if (win_sidebar)
+    win_sidebar->actions |= WA_RECALC;
+
+  return 0;
+}
+
+/**
+ * pager_activate - Show the Pager window and give it focus
+ * @param pview Pager view settings
+ */
+static void pager_activate(struct PagerView *pview)
+{
+  struct MuttWindow *dlg = dialog_find(pview->win_pager);
+  struct PagerPrivateData *priv = pview->win_pager->parent->wdata;
 
   //---------- show windows, set focus and visibility --------------------------
   window_set_visible(pview->win_pager->parent, true);
   mutt_window_reflow(dlg);
   window_invalidate_all();
 
-  struct MuttWindow *old_focus = window_set_focus(pview->win_pager);
+  priv->old_focus = window_set_focus(pview->win_pager);
 
   //---------- jump to the bottom if requested ------------------------------
   if (pview->flags & MUTT_PAGER_BOTTOM)
@@ -375,8 +440,30 @@ int dlg_pager(struct PagerView *pview)
   // Force an initial paint, which will populate priv->lines
   pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   window_redraw(NULL);
+}
 
+/**
+ * pager_event_loop - Read user input and update the Pager
+ * @param pview Pager view settings
+ * @retval 0 Success
+ * @retval -1 Error
+ */
+static int pager_event_loop(struct PagerView *pview)
+{
+  struct MuttWindow *dlg = dialog_find(pview->win_pager);
+  struct MuttWindow *tabbed = window_find_parent(pview->win_pager, WT_TABBED);
+  struct IndexSharedData *shared = dlg ? dlg->wdata : NULL;
+  struct MuttWindow *win_sidebar = dlg ? window_find_child(dlg, WT_SIDEBAR) : NULL;
+
+  if (tabbed && ((pview->mode == PAGER_MODE_HELP) || (pview->mode == PAGER_MODE_OTHER)))
+    shared = NULL;
+  struct PagerPrivateData *priv = pview->win_pager->parent->wdata;
+  struct PagerModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
+  ASSERT(mod_data);
+
+  int op = 0;
   priv->loop = PAGER_LOOP_CONTINUE;
+
   do
   {
     window_redraw(NULL);
@@ -405,7 +492,7 @@ int dlg_pager(struct PagerView *pview)
     // tries to emulate concurrency.
     //-------------------------------------------------------------------------
     bool do_new_mail = false;
-    if (shared->mailbox && !shared->attach_msg)
+    if (shared && shared->mailbox && !shared->attach_msg)
     {
       int oldcount = shared->mailbox->msg_count;
       /* check for new mail */
@@ -498,7 +585,7 @@ int dlg_pager(struct PagerView *pview)
     // marking the wrong message as read.
     if (check_read_delay(&priv->delay_read_timestamp))
     {
-      if (shared->mailbox && shared->email)
+      if (shared && shared->mailbox && shared->email)
         mutt_set_flag(shared->mailbox, shared->email, MUTT_READ, true, true);
     }
 
@@ -525,7 +612,7 @@ int dlg_pager(struct PagerView *pview)
     {
       if ((rc == FR_UNKNOWN) && priv->pview->win_index)
         rc = index_function_dispatcher(priv->pview->win_index, &event);
-      if (rc == FR_UNKNOWN)
+      if ((rc == FR_UNKNOWN) && win_sidebar)
         rc = sb_function_dispatcher(win_sidebar, &event);
     }
     if (rc == FR_UNKNOWN)
@@ -543,48 +630,47 @@ int dlg_pager(struct PagerView *pview)
       mutt_flushinp();
 
   } while (priv->loop == PAGER_LOOP_CONTINUE);
-  window_set_focus(old_focus);
 
-  //-------------------------------------------------------------------------
-  // END OF ACT 3: Read user input loop - while (op != OP_ABORT)
-  //-------------------------------------------------------------------------
+  return (priv->loop == PAGER_LOOP_RELOAD) ? PAGER_LOOP_RELOAD :
+                                             ((priv->rc != -1) ? priv->rc : 0);
+}
 
-  mutt_file_fclose(&priv->fp);
-  if (pview->mode == PAGER_MODE_EMAIL)
-  {
-    if (shared->mailbox_view)
-      shared->mailbox_view->msg_in_pager = -1;
-  }
+/**
+ * dlg_pager - Display an email, attachment, or help, in a window - @ingroup gui_dlg
+ * @param pview Pager view settings
+ * @retval  0 Success
+ * @retval -1 Error
+ *
+ * The Pager Dialog displays an Email to the user.
+ *
+ * They can navigate through the Email, search through it and user `color`
+ * commands to highlight it.
+ *
+ * From the Pager, the user can also use some Index functions, such as
+ * `<next-entry>` or `<delete>`.
+ *
+ * This pager is actually not so simple as it once was. But it will be again.
+ * Currently it operates in 3 modes:
+ * - viewing messages.                (PAGER_MODE_EMAIL)
+ * - viewing attachments.             (PAGER_MODE_ATTACH)
+ * - viewing other stuff (e.g. help). (PAGER_MODE_OTHER)
+ * These can be distinguished by PagerMode in PagerView.
+ * Data is not yet polymorphic and is fused into a single struct (PagerData).
+ * Different elements of PagerData are expected to be present depending on the
+ * mode:
+ * - PAGER_MODE_EMAIL expects data->email and not expects data->body
+ * - PAGER_MODE_ATTACH expects data->email and data->body
+ *   special sub-case of this mode is viewing attached email message
+ *   it is recognized by presence of data->fp and data->body->email
+ * - PAGER_MODE_OTHER does not expect data->email or data->body
+ */
+int dlg_pager(struct PagerView *pview)
+{
+  if (pager_setup(pview) != 0)
+    return -1;
 
-  qstyle_free_tree(&priv->quote_list);
-
-  for (size_t i = 0; i < priv->lines_max; i++)
-  {
-    FREE(&(priv->lines[i].syntax));
-    if (priv->search_compiled && priv->lines[i].search)
-      FREE(&(priv->lines[i].search));
-  }
-  if (priv->search_compiled)
-  {
-    regfree(&priv->search_re);
-    priv->search_compiled = false;
-  }
-  FREE(&priv->lines);
-  {
-    struct AttrColor *ac = NULL;
-    int count = 0;
-    TAILQ_FOREACH(ac, &priv->ansi_list, entries)
-    {
-      count++;
-    }
-    color_debug(LL_DEBUG5, "AnsiColors %d\n", count);
-  }
-  attr_color_list_clear(&priv->ansi_list);
-
-  priv->pview = NULL;
-
-  if (priv->loop == PAGER_LOOP_RELOAD)
-    return PAGER_LOOP_RELOAD;
-
-  return (priv->rc != -1) ? priv->rc : 0;
+  pager_activate(pview);
+  int rc = pager_event_loop(pview);
+  pager_cleanup(pview);
+  return rc;
 }

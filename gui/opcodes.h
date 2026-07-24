@@ -670,6 +670,36 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Compose function: <smime-menu> */ \
   _fmt(OP_COMPOSE_SMIME_MENU,                 N_("Show S/MIME options")) \
 
+#define OPS_TABS(_fmt) \
+  /* L10N: Help for Tabs function: <tab-switch-1> */ \
+  _fmt(OP_TAB_SWITCH_1,                       N_("Switch to tab 1")) \
+  /* L10N: Help for Tabs function: <tab-switch-2> */ \
+  _fmt(OP_TAB_SWITCH_2,                       N_("Switch to tab 2")) \
+  /* L10N: Help for Tabs function: <tab-switch-3> */ \
+  _fmt(OP_TAB_SWITCH_3,                       N_("Switch to tab 3")) \
+  /* L10N: Help for Tabs function: <tab-switch-4> */ \
+  _fmt(OP_TAB_SWITCH_4,                       N_("Switch to tab 4")) \
+  /* L10N: Help for Tabs function: <tab-switch-5> */ \
+  _fmt(OP_TAB_SWITCH_5,                       N_("Switch to tab 5")) \
+  /* L10N: Help for Tabs function: <tab-switch-6> */ \
+  _fmt(OP_TAB_SWITCH_6,                       N_("Switch to tab 6")) \
+  /* L10N: Help for Tabs function: <tab-switch-7> */ \
+  _fmt(OP_TAB_SWITCH_7,                       N_("Switch to tab 7")) \
+  /* L10N: Help for Tabs function: <tab-switch-8> */ \
+  _fmt(OP_TAB_SWITCH_8,                       N_("Switch to tab 8")) \
+  /* L10N: Help for Tabs function: <tab-switch-9> */ \
+  _fmt(OP_TAB_SWITCH_9,                       N_("Switch to tab 9")) \
+  /* L10N: Help for Tabs function: <tab-switch-0> */ \
+  _fmt(OP_TAB_SWITCH_0,                       N_("Switch to tab 10")) \
+  /* L10N: Help for Tabs function: <tab-switch-next> */ \
+  _fmt(OP_TAB_SWITCH_NEXT,                    N_("Switch to the next tab")) \
+  /* L10N: Help for Tabs function: <tab-switch-prev> */ \
+  _fmt(OP_TAB_SWITCH_PREV,                    N_("Switch to the previous tab")) \
+  /* L10N: Help for Tabs function: <tab-switch-first> */ \
+  _fmt(OP_TAB_SWITCH_FIRST,                   N_("Switch to first tab")) \
+  /* L10N: Help for Tabs function: <tab-switch-last> */ \
+  _fmt(OP_TAB_SWITCH_LAST,                    N_("Switch to last tab")) \
+
 #define OPS(_fmt) \
   _fmt(OP_NULL,                               N_("Null operation")) \
   OPS_ATTACH(_fmt) \
@@ -681,6 +711,7 @@ const char *opcodes_get_name       (int op);
   OPS_PGP(_fmt) \
   OPS_SIDEBAR(_fmt) \
   OPS_SMIME(_fmt) \
+  OPS_TABS(_fmt) \
 
 /**
  * enum MuttOps - All NeoMutt Opcodes

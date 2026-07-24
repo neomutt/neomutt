@@ -406,6 +406,7 @@ const char *name_window_type(const struct MuttWindow *win)
     DEBUG_NAME(WT_ROOT);
     DEBUG_NAME(WT_SIDEBAR);
     DEBUG_NAME(WT_STATUS_BAR);
+    DEBUG_NAME(WT_TABBED);
     DEBUG_DEFAULT;
   }
 }

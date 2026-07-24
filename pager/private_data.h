@@ -33,6 +33,7 @@
 #include "color/lib.h"
 
 struct MuttWindow;
+struct IndexSharedData;
 
 /**
  * struct PagerPrivateData - Private state data for the Pager
@@ -40,6 +41,7 @@ struct MuttWindow;
 struct PagerPrivateData
 {
   struct PagerView *pview;     ///< Object to view in the pager
+  struct IndexSharedData *shared; ///< Shared data for observers and the Pager
 
   FILE *fp;                    ///< File containing decrypted/decoded/weeded Email
   struct stat st;              ///< Stats about Email file
@@ -77,6 +79,7 @@ struct PagerPrivateData
   uint64_t delay_read_timestamp; ///< Time that email was first shown
   bool pager_redraw;             ///< Force a complete redraw
   enum PagerLoopMode loop;       ///< What the Event Loop should do next, e.g. #PAGER_LOOP_CONTINUE
+  struct MuttWindow *old_focus;  ///< Focus to restore when the Pager closes
 };
 
 void                     pager_private_data_free(struct MuttWindow *win, void **ptr);

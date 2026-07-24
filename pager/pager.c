@@ -354,6 +354,8 @@ static int pager_index_observer(struct NotifyCallback *nc)
     return 0;
   if (!nc->global_data)
     return -1;
+  if (nc->event_subtype == NT_INDEX_DELETE)
+    return 0;
 
   struct MuttWindow *win_pager = nc->global_data;
 
@@ -398,6 +400,8 @@ static int pager_pager_observer(struct NotifyCallback *nc)
     return 0;
   if (!nc->global_data || !nc->event_data)
     return -1;
+  if (nc->event_subtype == NT_PAGER_DELETE)
+    return 0;
 
   struct MuttWindow *win_pager = nc->global_data;
 
@@ -431,15 +435,12 @@ static int pager_window_observer(struct NotifyCallback *nc)
   if (!priv)
     return 0;
 
-  struct MuttWindow *dlg = window_find_parent(win_pager, WT_DLG_INDEX);
-  if (!dlg)
-    dlg = window_find_parent(win_pager, WT_DLG_PAGER);
-
-  struct IndexSharedData *shared = dlg->wdata;
+  struct IndexSharedData *shared = priv->shared;
 
   mutt_color_observer_remove(pager_color_observer, win_pager);
   notify_observer_remove(NeoMutt->sub->notify, pager_config_observer, win_pager);
-  notify_observer_remove(shared->notify, pager_index_observer, win_pager);
+  if (shared)
+    notify_observer_remove(shared->notify, pager_index_observer, win_pager);
   notify_observer_remove(priv->notify, pager_pager_observer, win_pager);
   notify_observer_remove(win_pager->notify, pager_window_observer, win_pager);
 
@@ -463,6 +464,7 @@ struct MuttWindow *pager_window_new(struct IndexSharedData *shared,
   win->wdata = priv;
   win->recalc = pager_recalc;
   win->repaint = pager_repaint;
+  priv->shared = shared;
 
   mutt_color_observer_add(pager_color_observer, win);
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, pager_config_observer, win);
