@@ -29,6 +29,7 @@
  */
 
 #include "config.h"
+#include <limits.h>
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
@@ -282,8 +283,19 @@ static int zstrm_write(struct Connection *conn, const char *buf, size_t count)
     }
   } while (true);
 
-  rc = (int) count;
-  return (rc <= 0) ? 1 : rc; /* avoid wrong behaviour due to overflow */
+  // count is the number of (uncompressed) bytes accepted by this layer, all
+  // of which are always consumed by the deflate loop above before this
+  // point is reached. Narrowing it into this function's int return can only
+  // go wrong if count itself overflows INT_MAX, in which case the previous
+  // `(rc <= 0) ? 1 : rc` fallback silently reported a false "1 byte
+  // written" instead of surfacing the failure -- see #4940. Report the
+  // overflow as an error instead of masking it.
+  if (count > INT_MAX)
+  {
+    mutt_debug(LL_DEBUG1, "zstrm_write: count %zu exceeds INT_MAX\n", count);
+    return -1;
+  }
+  return (int) count;
 }
 
 /**
