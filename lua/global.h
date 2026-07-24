@@ -1,9 +1,9 @@
 /**
  * @file
- * Lua private Module data
+ * Lua Global Functions and Variables
  *
  * @authors
- * Copyright (C) 2026 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,20 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LUA_MODULE_DATA_H
-#define MUTT_LUA_MODULE_DATA_H
+#ifndef MUTT_LUA_GLOBAL_H
+#define MUTT_LUA_GLOBAL_H
 
+#include <stdio.h>
 #include <lua.h>
 
-/**
- * struct LuaModuleData - Lua private Module data
- */
-struct LuaModuleData
-{
-  struct Notify         *notify;      ///< Notifications
-  lua_State             *lua_state;   ///< Lua State
-  struct LuaLogFile     *log_file;    ///< Log File
-  struct LuaConsoleInfo *console;     ///< Lua Console
-};
+void lua_global_init(lua_State *l);
 
-#endif /* MUTT_LUA_MODULE_DATA_H */
+#endif /* MUTT_LUA_GLOBAL_H */
