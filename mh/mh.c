@@ -1035,6 +1035,7 @@ static enum MxStatus mh_check(struct Mailbox *m)
 
   if (num_new > 0)
   {
+    m->has_new = true;
     mailbox_changed(m, NT_MAILBOX_INVALID);
     m->changed = true;
   }
