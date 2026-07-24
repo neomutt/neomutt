@@ -10,6 +10,8 @@ jobs:
   leaderboard:
     name: Update Leaderboard
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
     - name: Check secret

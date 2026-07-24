@@ -27,6 +27,8 @@ jobs:
     name: Fedora ${{ matrix.distro.version }} - ${{ matrix.config.name }}
     runs-on: ubuntu-latest
     container: ghcr.io/neomutt/fedora:${{ matrix.distro.version }}
+    permissions:
+      contents: read
 
     env:
       # Force Node 24 until github-actions-cpu-cores gets a new release

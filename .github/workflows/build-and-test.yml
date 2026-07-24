@@ -19,6 +19,8 @@ jobs:
     name: Build-${{ matrix.cfg.name }}
     runs-on: ubuntu-latest
     container: ghcr.io/neomutt/ubuntu
+    permissions:
+      contents: read
 
     strategy:
       # Limit jobs to one at a time so that ccache really helps later builds

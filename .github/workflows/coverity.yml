@@ -11,6 +11,8 @@ jobs:
     name: Coverity
     runs-on: ubuntu-latest
     container: ghcr.io/neomutt/ubuntu
+    permissions:
+      contents: read
 
     env:
       TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}

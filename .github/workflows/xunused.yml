@@ -12,6 +12,8 @@ jobs:
     name: Check for unused functions
     runs-on: ubuntu-latest
     container: ghcr.io/neomutt/ubuntu
+    permissions:
+      contents: read
 
     env:
       CONFIGURE_OPTIONS: --autocrypt --compile-commands --disable-doc --gdbm --gnutls --gpgme --gss --lmdb --lua --lz4 --notmuch --sasl --tdb --with-lock=fcntl --zlib --zstd
