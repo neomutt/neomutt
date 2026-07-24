@@ -66,9 +66,9 @@
 static const struct Mapping PagerHelp[] = {
   // clang-format off
   { N_("Exit"),          OP_EXIT },
-  { N_("PrevPg"),        OP_PREV_PAGE },
-  { N_("NextPg"),        OP_NEXT_PAGE },
-  { N_("Help"),          OP_HELP },
+  { N_("PrevPg"),        OP_SCROLL_PAGE_UP },
+  { N_("NextPg"),        OP_SCROLL_PAGE_DOWN },
+  { N_("Help"),          OP_DISPLAY_HELP },
   { NULL, 0 },
   // clang-format on
 };
@@ -77,8 +77,8 @@ static const struct Mapping PagerHelp[] = {
 static const struct Mapping PagerHelpHelp[] = {
   // clang-format off
   { N_("Exit"),          OP_EXIT },
-  { N_("PrevPg"),        OP_PREV_PAGE },
-  { N_("NextPg"),        OP_NEXT_PAGE },
+  { N_("PrevPg"),        OP_SCROLL_PAGE_UP },
+  { N_("NextPg"),        OP_SCROLL_PAGE_DOWN },
   { NULL, 0 },
   // clang-format on
 };
@@ -87,13 +87,13 @@ static const struct Mapping PagerHelpHelp[] = {
 static const struct Mapping PagerNormalHelp[] = {
   // clang-format off
   { N_("Exit"),          OP_EXIT },
-  { N_("PrevPg"),        OP_PREV_PAGE },
-  { N_("NextPg"),        OP_NEXT_PAGE },
+  { N_("PrevPg"),        OP_SCROLL_PAGE_UP },
+  { N_("NextPg"),        OP_SCROLL_PAGE_DOWN },
   { N_("View Attachm."), OP_VIEW_ATTACHMENTS },
-  { N_("Del"),           OP_DELETE },
-  { N_("Reply"),         OP_REPLY },
-  { N_("Next"),          OP_MAIN_NEXT_UNDELETED },
-  { N_("Help"),          OP_HELP },
+  { N_("Del"),           OP_DELETE_MESSAGE },
+  { N_("Reply"),         OP_REPLY_SENDER },
+  { N_("Next"),          OP_SELECT_NEXT_UNDELETED_ENTRY },
+  { N_("Help"),          OP_DISPLAY_HELP },
   { NULL, 0 },
   // clang-format on
 };
@@ -102,13 +102,13 @@ static const struct Mapping PagerNormalHelp[] = {
 static const struct Mapping PagerNewsHelp[] = {
   // clang-format off
   { N_("Exit"),          OP_EXIT },
-  { N_("PrevPg"),        OP_PREV_PAGE },
-  { N_("NextPg"),        OP_NEXT_PAGE },
-  { N_("Post"),          OP_POST },
-  { N_("Followup"),      OP_FOLLOWUP },
-  { N_("Del"),           OP_DELETE },
-  { N_("Next"),          OP_MAIN_NEXT_UNDELETED },
-  { N_("Help"),          OP_HELP },
+  { N_("PrevPg"),        OP_SCROLL_PAGE_UP },
+  { N_("NextPg"),        OP_SCROLL_PAGE_DOWN },
+  { N_("Post"),          OP_NNTP_POST_MESSAGE },
+  { N_("Followup"),      OP_NNTP_FOLLOWUP_MESSAGE },
+  { N_("Del"),           OP_DELETE_MESSAGE },
+  { N_("Next"),          OP_SELECT_NEXT_UNDELETED_ENTRY },
+  { N_("Help"),          OP_DISPLAY_HELP },
   { NULL, 0 },
   // clang-format on
 };

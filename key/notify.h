@@ -33,7 +33,7 @@ struct EventBinding
 {
   const struct MenuDefinition *menu;   ///< Menu Definition
   const char *key;                     ///< Key string being bound (for new bind/macro)
-  int op;                              ///< Operation the key's bound to (for bind), e.g. OP_DELETE
+  int op;                              ///< Operation the key's bound to (for bind), e.g. OP_DELETE_MESSAGE
 };
 
 /**

@@ -512,10 +512,10 @@ static int op_envelope_edit_x_comment_to(struct EnvelopeWindowData *wdata,
 static const struct EnvelopeFunction EnvelopeFunctions[] = {
 // clang-format off
 #ifdef USE_AUTOCRYPT
-  { OP_COMPOSE_AUTOCRYPT_MENU,            op_compose_autocrypt_menu },
+  { OP_COMPOSE_VIEW_AUTOCRYPT_OPTIONS,    op_compose_autocrypt_menu },
 #endif
-  { OP_COMPOSE_PGP_MENU,                  op_compose_pgp_menu },
-  { OP_COMPOSE_SMIME_MENU,                op_compose_smime_menu },
+  { OP_COMPOSE_VIEW_PGP_OPTIONS,          op_compose_pgp_menu },
+  { OP_COMPOSE_VIEW_SMIME_OPTIONS,        op_compose_smime_menu },
   { OP_ENVELOPE_EDIT_BCC,                 op_envelope_edit_bcc },
   { OP_ENVELOPE_EDIT_CC,                  op_envelope_edit_cc },
   { OP_ENVELOPE_EDIT_FCC,                 op_envelope_edit_fcc },

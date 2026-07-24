@@ -1,0 +1,6 @@
+bind $my_menu C_0001 create-autocrypt-account
+bind $my_menu C_0002 delete-autocrypt-account
+bind $my_menu C_0003 toggle-autocrypt-active
+bind $my_menu C_0004 toggle-autocrypt-prefer-encrypt
+
+# vim: ft=neomuttrc

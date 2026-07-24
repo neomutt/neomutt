@@ -58,9 +58,9 @@ static int op_quit(struct PgpData *pd, const struct KeyEvent *event)
 }
 
 /**
- * op_generic_select_entry - Select the current entry - Implements ::pgp_function_t - @ingroup pgp_function_api
+ * op_activate_entry - Select the current entry - Implements ::pgp_function_t - @ingroup pgp_function_api
  */
-static int op_generic_select_entry(struct PgpData *pd, const struct KeyEvent *event)
+static int op_activate_entry(struct PgpData *pd, const struct KeyEvent *event)
 {
   /* XXX make error reporting more verbose */
 
@@ -212,11 +212,11 @@ static int op_view_id(struct PgpData *pd, const struct KeyEvent *event)
  */
 static const struct PgpFunction PgpFunctions[] = {
   // clang-format off
+  { OP_ACTIVATE_ENTRY,         op_activate_entry },
+  { OP_DISPLAY_DETAILS,        op_verify_key },
   { OP_EXIT,                   op_quit },
-  { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },
   { OP_QUIT,                   op_quit },
-  { OP_VERIFY_KEY,             op_verify_key },
-  { OP_VIEW_ID,                op_view_id },
+  { OP_SHOW_IDENTITY,          op_view_id },
   { 0, NULL },
   // clang-format on
 };

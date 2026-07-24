@@ -101,13 +101,13 @@
 static const struct Mapping IndexHelp[] = {
   // clang-format off
   { N_("Quit"),  OP_QUIT },
-  { N_("Del"),   OP_DELETE },
-  { N_("Undel"), OP_UNDELETE },
-  { N_("Save"),  OP_SAVE },
-  { N_("Mail"),  OP_MAIL },
-  { N_("Reply"), OP_REPLY },
-  { N_("Group"), OP_GROUP_REPLY },
-  { N_("Help"),  OP_HELP },
+  { N_("Del"),   OP_DELETE_MESSAGE },
+  { N_("Undel"), OP_UNDELETE_MESSAGE },
+  { N_("Save"),  OP_MOVE_MESSAGE },
+  { N_("Mail"),  OP_COMPOSE_MESSAGE },
+  { N_("Reply"), OP_REPLY_SENDER },
+  { N_("Group"), OP_REPLY_ALL },
+  { N_("Help"),  OP_DISPLAY_HELP },
   { NULL, 0 },
   // clang-format on
 };
@@ -116,13 +116,13 @@ static const struct Mapping IndexHelp[] = {
 const struct Mapping IndexNewsHelp[] = {
   // clang-format off
   { N_("Quit"),     OP_QUIT },
-  { N_("Del"),      OP_DELETE },
-  { N_("Undel"),    OP_UNDELETE },
-  { N_("Save"),     OP_SAVE },
-  { N_("Post"),     OP_POST },
-  { N_("Followup"), OP_FOLLOWUP },
-  { N_("Catchup"),  OP_CATCHUP },
-  { N_("Help"),     OP_HELP },
+  { N_("Del"),      OP_DELETE_MESSAGE },
+  { N_("Undel"),    OP_UNDELETE_MESSAGE },
+  { N_("Save"),     OP_MOVE_MESSAGE },
+  { N_("Post"),     OP_NNTP_POST_MESSAGE },
+  { N_("Followup"), OP_NNTP_FOLLOWUP_MESSAGE },
+  { N_("Catchup"),  OP_NNTP_MARK_NEWSGROUP_READ },
+  { N_("Help"),     OP_DISPLAY_HELP },
   { NULL, 0 },
   // clang-format on
 };
@@ -155,7 +155,7 @@ bool check_acl(struct Mailbox *m, AclFlags acl, const char *msg)
  * @param menu Current menu
  * @param mode Collapse mode
  *
- * This function is called by OP_MAIN_COLLAPSE_ALL, by the one-way open/close
+ * This function is called by OP_TOGGLE_ALL_TREES, by the one-way open/close
  * commands, and on folder enter if the `$collapse_all` option is set.
  */
 void collapse_all(struct MailboxView *mv, struct Menu *menu, enum CollapseMode mode)
@@ -1172,8 +1172,8 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
   {
     /* Clear the tag prefix unless we just started it.
      * Don't clear the prefix on a timeout, but do clear on an abort */
-    if (priv->tag_prefix && (op != OP_TAG_PREFIX) &&
-        (op != OP_TAG_PREFIX_COND) && (op != OP_TIMEOUT))
+    if (priv->tag_prefix && (op != OP_APPLY_TO_TAGGED) &&
+        (op != OP_APPLY_TO_TAGGED_BEGIN) && (op != OP_TIMEOUT))
     {
       priv->tag_prefix = false;
     }
@@ -1346,7 +1346,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 
     /* special handling for the priv->tag-prefix function */
     const bool c_auto_tag = cs_subset_bool(shared->sub, "auto_tag");
-    if ((op == OP_TAG_PREFIX) || (op == OP_TAG_PREFIX_COND))
+    if ((op == OP_APPLY_TO_TAGGED) || (op == OP_APPLY_TO_TAGGED_BEGIN))
     {
       /* A second priv->tag-prefix command aborts */
       if (priv->tag_prefix)
@@ -1364,11 +1364,11 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 
       if (shared->mailbox->msg_tagged == 0)
       {
-        if (op == OP_TAG_PREFIX)
+        if (op == OP_APPLY_TO_TAGGED)
         {
           mutt_error(_("No tagged messages"));
         }
-        else if (op == OP_TAG_PREFIX_COND)
+        else if (op == OP_APPLY_TO_TAGGED_BEGIN)
         {
           mutt_flush_macro_to_endcond();
           mutt_message(_("Nothing to do"));

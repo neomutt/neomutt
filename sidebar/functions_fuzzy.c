@@ -65,12 +65,12 @@ struct MenuDefinition *sb_fuzzy_init_menu(void)
  */
 static const struct SidebarFunction FuzzyFunctions[] = {
   // clang-format off
-  { OP_FIRST_ENTRY,          op_sidebar_first },
-  { OP_LAST_ENTRY,           op_sidebar_last },
-  { OP_NEXT_ENTRY,           op_sidebar_next },
-  { OP_NEXT_PAGE,            op_sidebar_scroll_page_down },
-  { OP_PREV_ENTRY,           op_sidebar_prev },
-  { OP_PREV_PAGE,            op_sidebar_scroll_page_up },
+  { OP_SCROLL_PAGE_DOWN,            op_sidebar_scroll_page_down },
+  { OP_SCROLL_PAGE_UP,              op_sidebar_scroll_page_up },
+  { OP_SELECT_FIRST_ENTRY,          op_sidebar_select_first_entry },
+  { OP_SELECT_LAST_ENTRY,           op_sidebar_select_last_entry },
+  { OP_SELECT_NEXT_ENTRY,           op_sidebar_select_next_entry },
+  { OP_SELECT_PREVIOUS_ENTRY,       op_sidebar_select_previous_entry },
   { 0, NULL },
   // clang-format on
 };
@@ -180,9 +180,9 @@ static void sidebar_matcher_cb(const char *text, void *data)
 }
 
 /**
- * op_sidebar_start_search - Selects the last unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ * op_sidebar_search - Perform a sidebar fuzzy search and update the highlight - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
-int op_sidebar_start_search(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
+int op_sidebar_search(struct SidebarFunctionData *fdata, const struct KeyEvent *event)
 {
   struct SidebarWindowData *wdata = fdata->wdata;
   if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))

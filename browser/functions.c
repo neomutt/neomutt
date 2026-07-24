@@ -67,24 +67,22 @@ static int op_subscribe_pattern(struct BrowserPrivateData *priv, const struct Ke
  * OpBrowser - Functions for the file Browser Menu
  */
 static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
-  { "catchup",                       OP_CATCHUP },
   { "change-dir",                    OP_CHANGE_DIRECTORY },
-  { "check-new",                     OP_CHECK_NEW },
   { "create-mailbox",                OP_CREATE_MAILBOX },
   { "delete-mailbox",                OP_DELETE_MAILBOX },
   { "descend-directory",             OP_DESCEND_DIRECTORY },
+  { "display-file",                  OP_BROWSER_VIEW_FILE },
   { "display-filename",              OP_BROWSER_TELL },
   { "goto-folder",                   OP_BROWSER_GOTO_FOLDER },
   { "goto-home",                     OP_GOTO_HOME },
   { "goto-parent",                   OP_GOTO_PARENT },
   { "goto-root",                     OP_GOTO_ROOT },
   { "limit",                         OP_BROWSER_LIMIT },
-  { "mailbox-list",                  OP_MAILBOX_LIST },
+  { "nntp-mark-newsgroup-read",      OP_NNTP_MARK_NEWSGROUP_READ },
   { "reload-active",                 OP_LOAD_ACTIVE },
   { "rename-mailbox",                OP_RENAME_MAILBOX },
   { "select-new",                    OP_BROWSER_NEW_FILE },
-  { "sort",                          OP_SORT },
-  { "sort-reverse",                  OP_SORT_REVERSE },
+  { "show-mailboxes",                OP_SHOW_MAILBOXES },
   { "subscribe",                     OP_BROWSER_SUBSCRIBE },
   { "subscribe-pattern",             OP_SUBSCRIBE_PATTERN },
   { "toggle-mailboxes",              OP_TOGGLE_MAILBOXES },
@@ -92,11 +90,16 @@ static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
   { "uncatchup",                     OP_UNCATCHUP },
   { "unsubscribe",                   OP_BROWSER_UNSUBSCRIBE },
   { "unsubscribe-pattern",           OP_UNSUBSCRIBE_PATTERN },
-  { "view-file",                     OP_BROWSER_VIEW_FILE },
 
   // Deprecated
-  { "enter-mask",                    OP_BROWSER_LIMIT, MFF_DEPRECATED },
-  { "buffy-list",                    OP_MAILBOX_LIST,  MFF_DEPRECATED },
+  { "buffy-list",                    OP_SHOW_MAILBOXES,           MFF_DEPRECATED },
+  { "catchup",                       OP_NNTP_MARK_NEWSGROUP_READ, MFF_DEPRECATED },
+  { "check-new",                     OP_CHECK_STATS,              MFF_DEPRECATED },
+  { "enter-mask",                    OP_BROWSER_LIMIT,            MFF_DEPRECATED },
+  { "mailbox-list",                  OP_SHOW_MAILBOXES,           MFF_DEPRECATED },
+  { "sort",                          OP_SORT_ENTRIES,             MFF_DEPRECATED },
+  { "sort-reverse",                  OP_SORT_ENTRIES_REVERSE,     MFF_DEPRECATED },
+  { "view-file",                     OP_BROWSER_VIEW_FILE,        MFF_DEPRECATED },
   { NULL, 0 },
 };
 
@@ -105,6 +108,7 @@ static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
  */
 static const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
   { OP_BROWSER_GOTO_FOLDER,                "=" },
+  { OP_BROWSER_LIMIT,                      "m" },
   { OP_BROWSER_NEW_FILE,                   "N" },
   { OP_BROWSER_SUBSCRIBE,                  "s" },
   { OP_BROWSER_TELL,                       "@" },
@@ -114,12 +118,11 @@ static const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
   { OP_CHANGE_DIRECTORY,                   "c" },
   { OP_CREATE_MAILBOX,                     "C" },
   { OP_DELETE_MAILBOX,                     "d" },
-  { OP_BROWSER_LIMIT,                      "m" },
   { OP_GOTO_PARENT,                        "p" },
-  { OP_MAILBOX_LIST,                       "." },
   { OP_RENAME_MAILBOX,                     "r" },
-  { OP_SORT,                               "o" },
-  { OP_SORT_REVERSE,                       "O" },
+  { OP_SHOW_MAILBOXES,                     "." },
+  { OP_SORT_ENTRIES,                       "o" },
+  { OP_SORT_ENTRIES_REVERSE,               "O" },
   { OP_TOGGLE_MAILBOXES,                   "\t" },             // <Tab>
   { 0, NULL },
 };
@@ -409,7 +412,7 @@ static int op_browser_toggle_lsub(struct BrowserPrivateData *priv, const struct 
   const bool c_imap_list_subscribed = cs_subset_bool(NeoMutt->sub, "imap_list_subscribed");
   mutt_message("set imap_list_subscribed = %s", c_imap_list_subscribed ? "yes" : "no");
 
-  mutt_unget_op(OP_CHECK_NEW);
+  mutt_unget_op(OP_CHECK_STATS);
   return FR_SUCCESS;
 }
 
@@ -493,7 +496,7 @@ static struct NntpMboxData *browser_apply_catchup(struct FolderFilePtrArray *ffp
  * op_catchup - Mark all articles in newsgroup as read - Implements ::browser_function_t - @ingroup browser_function_api
  *
  * This function handles:
- * - OP_CATCHUP
+ * - OP_NNTP_MARK_NEWSGROUP_READ
  * - OP_UNCATCHUP
  *
  * Supports repeat-count: `5<catchup>` operates on the current entry and the
@@ -525,7 +528,7 @@ static int op_catchup(struct BrowserPrivateData *priv, const struct KeyEvent *ev
 
   struct NntpMboxData *mdata = browser_apply_catchup(&ffpa, priv->mailbox,
                                                      mod_data->current_news_srv,
-                                                     (event->op == OP_CATCHUP));
+                                                     (event->op == OP_NNTP_MARK_NEWSGROUP_READ));
   ARRAY_FREE(&ffpa);
 
   if (mdata)
@@ -957,13 +960,13 @@ static int op_jump(struct BrowserPrivateData *priv, const struct KeyEvent *event
 }
 
 /**
- * op_generic_select_entry - Select the current entry - Implements ::browser_function_t - @ingroup browser_function_api
+ * op_activate_entry - Select the current entry - Implements ::browser_function_t - @ingroup browser_function_api
  *
  * This function handles:
+ * - OP_ACTIVATE_ENTRY
  * - OP_DESCEND_DIRECTORY
- * - OP_GENERIC_SELECT_ENTRY
  */
-static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct KeyEvent *event)
+static int op_activate_entry(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   if (event->count > 0)
     return op_jump(priv, event);
@@ -978,7 +981,7 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct
   const int op = event->op;
   int index = menu_get_index(priv->menu);
   struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
-  if ((priv->menu->tag_prefix) && (op == OP_GENERIC_SELECT_ENTRY))
+  if ((priv->menu->tag_prefix) && (op == OP_ACTIVATE_ENTRY))
   {
     // Do nothing
   }
@@ -1212,15 +1215,15 @@ static int op_rename_mailbox(struct BrowserPrivateData *priv, const struct KeyEv
  * op_sort - Sort messages - Implements ::browser_function_t - @ingroup browser_function_api
  *
  * This function handles:
- * - OP_SORT
- * - OP_SORT_REVERSE
+ * - OP_SORT_ENTRIES
+ * - OP_SORT_ENTRIES_REVERSE
  */
 static int op_sort(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   bool resort = true;
   int sort = -1;
   const int op = event->op;
-  int reverse = (op == OP_SORT_REVERSE);
+  int reverse = (op == OP_SORT_ENTRIES_REVERSE);
 
   switch (mw_multi_choice((reverse) ?
                               /* L10N: The highlighted letters must match the "Sort" options */
@@ -1366,7 +1369,7 @@ static int op_subscribe_pattern(struct BrowserPrivateData *priv, const struct Ke
  *
  * This function handles:
  * - OP_BROWSER_GOTO_FOLDER
- * - OP_CHECK_NEW
+ * - OP_CHECK_STATS
  * - OP_TOGGLE_MAILBOXES
  */
 static int op_toggle_mailboxes(struct BrowserPrivateData *priv, const struct KeyEvent *event)
@@ -1445,35 +1448,35 @@ static int op_toggle_mailboxes(struct BrowserPrivateData *priv, const struct Key
  */
 static const struct BrowserFunction BrowserFunctions[] = {
   // clang-format off
-  { OP_BROWSER_GOTO_FOLDER,  op_toggle_mailboxes },
-  { OP_BROWSER_LIMIT,        op_browser_limit },
-  { OP_BROWSER_NEW_FILE,     op_browser_new_file },
-  { OP_BROWSER_SUBSCRIBE,    op_browser_subscribe },
-  { OP_BROWSER_TELL,         op_browser_tell },
-  { OP_BROWSER_TOGGLE_LSUB,  op_browser_toggle_lsub },
-  { OP_BROWSER_UNSUBSCRIBE,  op_browser_subscribe },
-  { OP_BROWSER_VIEW_FILE,    op_browser_view_file },
-  { OP_CATCHUP,              op_catchup },
-  { OP_CHANGE_DIRECTORY,     op_change_directory },
-  { OP_CHECK_NEW,            op_toggle_mailboxes },
-  { OP_CREATE_MAILBOX,       op_create_mailbox },
-  { OP_DELETE_MAILBOX,       op_delete_mailbox },
-  { OP_DESCEND_DIRECTORY,    op_generic_select_entry },
-  { OP_EXIT,                 op_quit },
-  { OP_GENERIC_SELECT_ENTRY, op_generic_select_entry },
-  { OP_GOTO_HOME,            op_change_directory },
-  { OP_GOTO_PARENT,          op_change_directory },
-  { OP_GOTO_ROOT,            op_change_directory },
-  { OP_LOAD_ACTIVE,          op_load_active },
-  { OP_MAILBOX_LIST,         op_mailbox_list },
-  { OP_QUIT,                 op_quit },
-  { OP_RENAME_MAILBOX,       op_rename_mailbox },
-  { OP_SORT,                 op_sort },
-  { OP_SORT_REVERSE,         op_sort },
-  { OP_SUBSCRIBE_PATTERN,    op_subscribe_pattern },
-  { OP_TOGGLE_MAILBOXES,     op_toggle_mailboxes },
-  { OP_UNCATCHUP,            op_catchup },
-  { OP_UNSUBSCRIBE_PATTERN,  op_subscribe_pattern },
+  { OP_ACTIVATE_ENTRY,           op_activate_entry },
+  { OP_BROWSER_GOTO_FOLDER,      op_toggle_mailboxes },
+  { OP_BROWSER_LIMIT,            op_browser_limit },
+  { OP_BROWSER_NEW_FILE,         op_browser_new_file },
+  { OP_BROWSER_SUBSCRIBE,        op_browser_subscribe },
+  { OP_BROWSER_TELL,             op_browser_tell },
+  { OP_BROWSER_TOGGLE_LSUB,      op_browser_toggle_lsub },
+  { OP_BROWSER_UNSUBSCRIBE,      op_browser_subscribe },
+  { OP_BROWSER_VIEW_FILE,        op_browser_view_file },
+  { OP_CHANGE_DIRECTORY,         op_change_directory },
+  { OP_CHECK_STATS,              op_toggle_mailboxes },
+  { OP_CREATE_MAILBOX,           op_create_mailbox },
+  { OP_DELETE_MAILBOX,           op_delete_mailbox },
+  { OP_DESCEND_DIRECTORY,        op_activate_entry },
+  { OP_EXIT,                     op_quit },
+  { OP_GOTO_HOME,                op_change_directory },
+  { OP_GOTO_PARENT,              op_change_directory },
+  { OP_GOTO_ROOT,                op_change_directory },
+  { OP_LOAD_ACTIVE,              op_load_active },
+  { OP_NNTP_MARK_NEWSGROUP_READ, op_catchup },
+  { OP_QUIT,                     op_quit },
+  { OP_RENAME_MAILBOX,           op_rename_mailbox },
+  { OP_SHOW_MAILBOXES,           op_mailbox_list },
+  { OP_SORT_ENTRIES,             op_sort },
+  { OP_SORT_ENTRIES_REVERSE,     op_sort },
+  { OP_SUBSCRIBE_PATTERN,        op_subscribe_pattern },
+  { OP_TOGGLE_MAILBOXES,         op_toggle_mailboxes },
+  { OP_UNCATCHUP,                op_catchup },
+  { OP_UNSUBSCRIBE_PATTERN,      op_subscribe_pattern },
   { 0, NULL },
   // clang-format on
 };

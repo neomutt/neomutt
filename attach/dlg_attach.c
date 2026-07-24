@@ -92,10 +92,10 @@
 static const struct Mapping AttachmentHelp[] = {
   // clang-format off
   { N_("Exit"),  OP_EXIT },
-  { N_("Save"),  OP_ATTACH_SAVE },
-  { N_("Pipe"),  OP_PIPE },
-  { N_("Print"), OP_ATTACH_PRINT },
-  { N_("Help"),  OP_HELP },
+  { N_("Save"),  OP_ATTACH_SAVE_ATTACHMENT },
+  { N_("Pipe"),  OP_PIPE_ENTRY },
+  { N_("Print"), OP_PRINT_ENTRY },
+  { N_("Help"),  OP_DISPLAY_HELP },
   { NULL, 0 },
   // clang-format on
 };

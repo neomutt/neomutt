@@ -1,0 +1,25 @@
+bind $my_menu B_0001 bounce-message
+bind $my_menu B_0002 check-traditional-pgp
+bind $my_menu B_0003 compose-to-sender
+bind $my_menu B_0004 delete-entry
+bind $my_menu B_0005 display-attachment-default
+bind $my_menu B_0006 display-attachment-mailcap
+bind $my_menu B_0007 display-attachment-pager
+bind $my_menu B_0008 display-attachment-text
+bind $my_menu B_0009 display-message-headers
+bind $my_menu B_0010 edit-content-type
+bind $my_menu B_0011 extract-keys
+bind $my_menu B_0012 forward-message
+bind $my_menu B_0013 list-reply
+bind $my_menu B_0014 list-subscribe
+bind $my_menu B_0015 list-unsubscribe
+bind $my_menu B_0016 nntp-followup-message
+bind $my_menu B_0017 nntp-forward-to-group
+bind $my_menu B_0018 reply-all
+bind $my_menu B_0019 reply-group-chat
+bind $my_menu B_0020 reply-sender
+bind $my_menu B_0021 resend-message
+bind $my_menu B_0022 save-attachment
+bind $my_menu B_0023 undelete-entry
+
+# vim: ft=neomuttrc

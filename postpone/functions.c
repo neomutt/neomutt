@@ -47,8 +47,8 @@
  * OpPostpone - Functions for the Postpone Menu
  */
 static const struct MenuFuncOp OpPostpone[] = { /* map: postpone */
-  { "delete-entry",                  OP_DELETE },
-  { "undelete-entry",                OP_UNDELETE },
+  { "delete-entry",                  OP_DELETE_MESSAGE },
+  { "undelete-entry",                OP_UNDELETE_MESSAGE },
   { NULL, 0 },
 };
 
@@ -56,9 +56,9 @@ static const struct MenuFuncOp OpPostpone[] = { /* map: postpone */
  * PostponeDefaultBindings - Key bindings for the Postpone Menu
  */
 static const struct MenuOpSeq PostponeDefaultBindings[] = { /* map: postpone */
-  { OP_DELETE,                             "d" },
-  { OP_TAG,                                "t" },
-  { OP_UNDELETE,                           "u" },
+  { OP_DELETE_MESSAGE,                     "d" },
+  { OP_TOGGLE_TAG,                         "t" },
+  { OP_UNDELETE_MESSAGE,                   "u" },
   { 0, NULL },
 };
 // clang-format on
@@ -162,8 +162,8 @@ static void postpone_apply_set_deleted(struct Mailbox *m, struct EmailArray *ea,
  * op_delete - Delete the current entry - Implements ::postpone_function_t - @ingroup postpone_function_api
  *
  * This function handles:
- * - OP_DELETE
- * - OP_UNDELETE
+ * - OP_DELETE_MESSAGE
+ * - OP_UNDELETE_MESSAGE
  *
  * Supports repeat-count: `5<delete-entry>` deletes the current entry and the
  * next 4. Overruns are silently capped at the end of the list.
@@ -175,7 +175,7 @@ static int op_delete(struct PostponeData *pd, const struct KeyEvent *event)
   struct Mailbox *m = mv->mailbox;
 
   const int index = menu_get_index(menu);
-  const bool bf = (event->op == OP_DELETE);
+  const bool bf = (event->op == OP_DELETE_MESSAGE);
 
   /* should deleted draft messages be saved in the trash folder? */
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
@@ -209,9 +209,9 @@ static int op_quit(struct PostponeData *pd, const struct KeyEvent *event)
 }
 
 /**
- * op_generic_select_entry - Select the current entry - Implements ::postpone_function_t - @ingroup postpone_function_api
+ * op_activate_entry - Select the current entry - Implements ::postpone_function_t - @ingroup postpone_function_api
  */
-static int op_generic_select_entry(struct PostponeData *pd, const struct KeyEvent *event)
+static int op_activate_entry(struct PostponeData *pd, const struct KeyEvent *event)
 {
   int index = menu_get_index(pd->menu);
   struct MailboxView *mv = pd->mailbox_view;
@@ -225,27 +225,27 @@ static int op_generic_select_entry(struct PostponeData *pd, const struct KeyEven
  * op_search - Search for a regular expression - Implements ::postpone_function_t - @ingroup postpone_function_api
  *
  * This function handles:
- * - OP_SEARCH
+ * - OP_SEARCH_BACKWARD
+ * - OP_SEARCH_FORWARD
  * - OP_SEARCH_NEXT
- * - OP_SEARCH_OPPOSITE
- * - OP_SEARCH_REVERSE
+ * - OP_SEARCH_PREVIOUS
  */
 static int op_search(struct PostponeData *pd, const struct KeyEvent *event)
 {
   SearchFlags flags = SEARCH_NONE;
   switch (event->op)
   {
-    case OP_SEARCH:
+    case OP_SEARCH_FORWARD:
       flags |= SEARCH_PROMPT;
       pd->search_state->reverse = false;
       break;
-    case OP_SEARCH_REVERSE:
+    case OP_SEARCH_BACKWARD:
       flags |= SEARCH_PROMPT;
       pd->search_state->reverse = true;
       break;
     case OP_SEARCH_NEXT:
       break;
-    case OP_SEARCH_OPPOSITE:
+    case OP_SEARCH_PREVIOUS:
       flags |= SEARCH_OPPOSITE;
       break;
   }
@@ -266,15 +266,15 @@ static int op_search(struct PostponeData *pd, const struct KeyEvent *event)
  */
 static const struct PostponeFunction PostponeFunctions[] = {
   // clang-format off
-  { OP_DELETE,                 op_delete },
+  { OP_ACTIVATE_ENTRY,         op_activate_entry },
+  { OP_DELETE_MESSAGE,         op_delete },
   { OP_EXIT,                   op_quit },
-  { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },
   { OP_QUIT,                   op_quit },
-  { OP_SEARCH,                 op_search },
+  { OP_SEARCH_BACKWARD,        op_search },
+  { OP_SEARCH_FORWARD,         op_search },
   { OP_SEARCH_NEXT,            op_search },
-  { OP_SEARCH_OPPOSITE,        op_search },
-  { OP_SEARCH_REVERSE,         op_search },
-  { OP_UNDELETE,               op_delete },
+  { OP_SEARCH_PREVIOUS,        op_search },
+  { OP_UNDELETE_MESSAGE,       op_delete },
   { 0, NULL },
   // clang-format on
 };

@@ -115,7 +115,7 @@ struct KeyEvent *array_pop(struct KeyEventArray *a)
  * array_add - Add an event to the end of the array
  * @param a  Array
  * @param ch Character
- * @param op Operation, e.g. OP_DELETE
+ * @param op Operation, e.g. OP_DELETE_MESSAGE
  */
 void array_add(struct KeyEventArray *a, int ch, int op)
 {
@@ -124,14 +124,14 @@ void array_add(struct KeyEventArray *a, int ch, int op)
 }
 
 /**
- * array_to_endcond - Clear the array until an OP_END_COND
+ * array_to_endcond - Clear the array until an OP_APPLY_TO_TAGGED_END
  * @param a Array
  */
 void array_to_endcond(struct KeyEventArray *a)
 {
   while (!ARRAY_EMPTY(a))
   {
-    if (array_pop(a)->op == OP_END_COND)
+    if (array_pop(a)->op == OP_APPLY_TO_TAGGED_END)
     {
       return;
     }
@@ -152,7 +152,7 @@ void mutt_unget_ch(int ch)
 
 /**
  * mutt_unget_op - Return an operation to the input buffer
- * @param op Operation, e.g. OP_DELETE
+ * @param op Operation, e.g. OP_DELETE_MESSAGE
  *
  * This puts events into the `UngetKeyEvents` buffer
  */
@@ -179,7 +179,7 @@ void mutt_push_macro_event(int ch, int op)
 /**
  * mutt_flush_macro_to_endcond - Drop a macro from the input buffer
  *
- * All the macro text is deleted until an OP_END_COND command,
+ * All the macro text is deleted until an OP_APPLY_TO_TAGGED_END command,
  * or the buffer is empty.
  */
 void mutt_flush_macro_to_endcond(void)
@@ -330,7 +330,7 @@ void km_error_key(const struct MenuDefinition *md)
   if (!md)
     return;
 
-  struct Keymap *key = km_find_func(md, OP_HELP);
+  struct Keymap *key = km_find_func(md, OP_DISPLAY_HELP);
   if (!key)
   {
     mutt_error(_("Key is not bound"));

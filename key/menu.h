@@ -36,7 +36,7 @@ struct SubMenu;
 struct MenuFuncOp
 {
   const char   *name;    ///< Name of the function
-  int           op;      ///< Operation, e.g. OP_DELETE
+  int           op;      ///< Operation, e.g. OP_DELETE_MESSAGE
   MenuFuncFlags flags;   ///< Flags, e.g. MFF_DEPRECATED
 };
 
@@ -45,7 +45,7 @@ struct MenuFuncOp
  */
 struct MenuOpSeq
 {
-  int op;           ///< Operation, e.g. OP_DELETE
+  int op;           ///< Operation, e.g. OP_DELETE_MESSAGE
   const char *seq;  ///< Default key binding
 };
 
@@ -56,7 +56,7 @@ struct MenuFunctionOp
 {
   int         menu;       ///< Menu, e.g. #MENU_ALIAS
   const char *function;   ///< Name of the function
-  int         op;         ///< Operation, e.g. OP_DELETE
+  int         op;         ///< Operation, e.g. OP_DELETE_MESSAGE
 };
 ARRAY_HEAD(MenuFunctionOpArray, struct MenuFunctionOp);
 
