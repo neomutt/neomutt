@@ -10,7 +10,7 @@ jobs:
   doxygen:
     name: Update Code Docs
     runs-on: ubuntu-latest
-    container: ghcr.io/neomutt/fedora:42
+    container: ghcr.io/neomutt/fedora:44
 
     steps:
     - name: Check Secret
@@ -40,8 +40,7 @@ jobs:
       with:
         repository: neomutt/code
         path: code
-        persist-credentials: false
-        # otherwise GITHUB_TOKEN will be used, rather than the Personal Access Token
+        token: ${{ secrets.DOXYGEN_DEPLOY_KEY }}
 
     - name: Generate Docs
       run: |
@@ -55,10 +54,5 @@ jobs:
         action-doxygen/bin/commit.sh neomutt/html code
 
     - name: Push to Code Docs
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.DOXYGEN_DEPLOY_KEY }}
-        branch: main
-        directory: code
-        repository: neomutt/code
-
+      run: git push origin main
+      working-directory: code

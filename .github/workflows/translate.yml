@@ -38,8 +38,7 @@ jobs:
       with:
         repository: neomutt/neomutt.github.io
         path: website
-        persist-credentials: false
-        # otherwise GITHUB_TOKEN will be used, rather than the Personal Access Token
+        token: ${{ secrets.TRANSLATE_DEPLOY_KEY }}
 
     - name: Set Up Git
       run: |
@@ -61,10 +60,5 @@ jobs:
         scripts/commit.sh neomutt website translate.html
 
     - name: Push to Website
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.TRANSLATE_DEPLOY_KEY }}
-        branch: main
-        directory: website
-        repository: neomutt/neomutt.github.io
-
+      run: git push origin main
+      working-directory: website
