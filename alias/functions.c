@@ -53,14 +53,17 @@
  * OpAlias - Functions for the Alias Menu
  */
 static const struct MenuFuncOp OpAlias[] = { /* map: alias */
-  { "delete-entry",                  OP_DELETE_ALIAS },
-  { "limit",                         OP_LIMIT_ENTRIES },
-  { "mail",                          OP_COMPOSE_MESSAGE },
-  { "sort-alias",                    OP_SORT_ENTRIES },
-  { "sort-alias-reverse",            OP_SORT_ENTRIES_REVERSE },
-  { "tag-pattern",                   OP_TAG_PATTERN },
-  { "undelete-entry",                OP_UNDELETE_ALIAS },
-  { "untag-pattern",                 OP_UNTAG_PATTERN },
+  { "compose-message",               OP_COMPOSE_MESSAGE },
+  { "delete-alias",                  OP_DELETE_ALIAS },
+  { "undelete-alias",                OP_UNDELETE_ALIAS },
+
+  // Deprecated
+  { "delete-entry",                  OP_DELETE_ALIAS,         MFF_DEPRECATED },
+  { "limit",                         OP_LIMIT_ENTRIES,        MFF_DEPRECATED },
+  { "mail",                          OP_COMPOSE_MESSAGE,      MFF_DEPRECATED },
+  { "sort-alias",                    OP_SORT_ENTRIES,         MFF_DEPRECATED },
+  { "sort-alias-reverse",            OP_SORT_ENTRIES_REVERSE, MFF_DEPRECATED },
+  { "undelete-entry",                OP_UNDELETE_ALIAS,       MFF_DEPRECATED },
   { NULL, 0 },
 };
 
@@ -68,15 +71,17 @@ static const struct MenuFuncOp OpAlias[] = { /* map: alias */
  * OpQuery - Functions for the external Query Menu
  */
 const struct MenuFuncOp OpQuery[] = { /* map: query */
+  { "compose-message",               OP_COMPOSE_MESSAGE },
   { "create-alias",                  OP_CREATE_ALIAS },
-  { "limit",                         OP_LIMIT_ENTRIES },
-  { "mail",                          OP_COMPOSE_MESSAGE },
-  { "query",                         OP_VIEW_ADDRESS_QUERY },
   { "query-append",                  OP_QUERY_APPEND },
-  { "sort",                          OP_SORT_ENTRIES },
-  { "sort-reverse",                  OP_SORT_ENTRIES_REVERSE },
-  { "tag-pattern",                   OP_TAG_PATTERN },
-  { "untag-pattern",                 OP_UNTAG_PATTERN },
+  { "view-address-query",            OP_VIEW_ADDRESS_QUERY },
+
+  // Deprecated
+  { "limit",                         OP_LIMIT_ENTRIES,        MFF_DEPRECATED },
+  { "mail",                          OP_COMPOSE_MESSAGE,      MFF_DEPRECATED },
+  { "query",                         OP_VIEW_ADDRESS_QUERY,   MFF_DEPRECATED },
+  { "sort",                          OP_SORT_ENTRIES,         MFF_DEPRECATED },
+  { "sort-reverse",                  OP_SORT_ENTRIES_REVERSE, MFF_DEPRECATED },
   { NULL, 0 },
 };
 
@@ -383,9 +388,9 @@ static int alias_select_entries(struct AliasMenuData *mdata, int count)
 }
 
 /**
- * op_generic_select_entry - select the current entry - Implements ::alias_function_t - @ingroup alias_function_api
+ * op_activate_entry - select the current entry - Implements ::alias_function_t - @ingroup alias_function_api
  */
-static int op_generic_select_entry(struct AliasFunctionData *fdata, const struct KeyEvent *event)
+static int op_activate_entry(struct AliasFunctionData *fdata, const struct KeyEvent *event)
 {
   if (event->count > 0)
     return op_jump(fdata, event);
@@ -615,7 +620,7 @@ static int op_sort(struct AliasFunctionData *fdata, const struct KeyEvent *event
  */
 static const struct AliasFunction AliasFunctions[] = {
   // clang-format off
-  { OP_ACTIVATE_ENTRY,         op_generic_select_entry },
+  { OP_ACTIVATE_ENTRY,         op_activate_entry },
   { OP_COMPOSE_MESSAGE,        op_mail },
   { OP_CREATE_ALIAS,           op_create_alias },
   { OP_DELETE_ALIAS,           op_delete },

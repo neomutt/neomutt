@@ -62,7 +62,7 @@ typedef int (*alias_function_t)(struct AliasFunctionData *fdata, const struct Ke
  */
 struct AliasFunction
 {
-  int op;                    ///< Op code, e.g. OP_SEARCH
+  int op;                    ///< Op code, e.g. OP_SEARCH_FORWARD
   alias_function_t function; ///< Function to call
 };
 
