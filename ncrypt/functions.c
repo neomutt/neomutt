@@ -41,8 +41,12 @@
  * OpPgp - Functions for the Pgp Menu
  */
 static const struct MenuFuncOp OpPgp[] = { /* map: pgp */
-  { "verify-key",                    OP_DISPLAY_DETAILS },
-  { "view-name",                     OP_SHOW_IDENTITY },
+  { "display-details",               OP_DISPLAY_DETAILS },
+  { "show-identity",                 OP_SHOW_IDENTITY },
+
+  // Deprecated
+  { "verify-key",                    OP_DISPLAY_DETAILS, MFF_DEPRECATED },
+  { "view-name",                     OP_SHOW_IDENTITY,   MFF_DEPRECATED },
   { NULL, 0 },
 };
 
@@ -51,8 +55,12 @@ static const struct MenuFuncOp OpPgp[] = { /* map: pgp */
  */
 static const struct MenuFuncOp OpSmime[] = { /* map: smime */
 #ifdef CRYPT_BACKEND_GPGME
-  { "verify-key",                    OP_DISPLAY_DETAILS },
-  { "view-name",                     OP_SHOW_IDENTITY },
+  { "display-details",               OP_DISPLAY_DETAILS },
+  { "show-identity",                 OP_SHOW_IDENTITY },
+
+  // Deprecated
+  { "verify-key",                    OP_DISPLAY_DETAILS, MFF_DEPRECATED },
+  { "view-name",                     OP_SHOW_IDENTITY,   MFF_DEPRECATED },
 #endif
   { NULL, 0 },
 };
