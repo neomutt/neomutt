@@ -1,0 +1,62 @@
+name: IWYU
+
+on:
+  pull_request:
+    paths:
+      - '**/*.c'
+      - '**/*.h'
+  push:
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  iwyu:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    container: ghcr.io/neomutt/ubuntu
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+
+      - name: Checkout IWYU Mapping Files
+        uses: actions/checkout@v7
+        with:
+          repository: neomutt/iwyu
+          path: iwyu-tool
+
+      - name: Install IWYU
+        run: apt-get update && apt-get install -y iwyu
+
+      - name: Configure NeoMutt
+        run: |
+          CC=clang ./configure --autocrypt --fmemopen --gdbm --gnutls --gpgme --gss \
+            --lmdb --lua --lz4 --notmuch --pcre2 --rocksdb --sasl --tdb \
+            --with-lock=fcntl --zlib --zstd --compile-commands
+
+      - name: Build (generates compile_commands.json)
+        run: make -j "$(nproc)" compile_commands.json
+
+      - name: Run IWYU
+        run: |
+          chmod +x iwyu-tool/bin/iwyu.sh
+          # Drive the file list from compile_commands.json itself, not a blind
+          # find -- some source files (e.g. conn/gsasl.c) are excluded by the
+          # feature flags used to configure this build, and running IWYU on
+          # them anyway produces spurious compile errors unrelated to includes.
+          tac compile_commands.json | sed '2 s/.$//' | tac | jq -r '.[] | .file' \
+            | xargs iwyu-tool/bin/iwyu.sh 2>&1 | tee iwyu-report.txt || true
+
+      - name: Upload IWYU Report
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: iwyu-report
+          path: iwyu-report.txt
