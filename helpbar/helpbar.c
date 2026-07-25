@@ -78,7 +78,7 @@
 /**
  * make_help - Create one entry for the Help Bar
  * @param[in]  md   Current Menu Definition
- * @param[in]  op   Operation, e.g. OP_DELETE
+ * @param[in]  op   Operation, e.g. OP_DELETE_MESSAGE
  * @param[in]  txt  Text part, e.g. "delete"
  * @param[out] buf  Buffer for the result
  * @retval true Keybinding exists

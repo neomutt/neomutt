@@ -262,12 +262,12 @@ static void test_parse_unbind_behaviour(void)
   TEST_CHECK(has_keymap("index", "y", OP_DISPLAY_MESSAGE));
   TEST_CHECK(has_keymap("pager", "y", OP_EXIT));
   TEST_CHECK(has_keymap("index", "x", OP_MACRO));
-  TEST_CHECK(has_binding("index", OP_MAIN_NEXT_UNDELETED));
+  TEST_CHECK(has_binding("index", OP_SELECT_NEXT_UNDELETED_ENTRY));
   run_unbind_command(&UnBind, line, pc, pe, "index y");
   TEST_CHECK(!has_keymap("index", "y", OP_DISPLAY_MESSAGE));
   TEST_CHECK(has_keymap("pager", "y", OP_EXIT));
   TEST_CHECK(has_keymap("index", "x", OP_MACRO));
-  TEST_CHECK(has_binding("index", OP_MAIN_NEXT_UNDELETED));
+  TEST_CHECK(has_binding("index", OP_SELECT_NEXT_UNDELETED_ENTRY));
   km_cleanup(neomutt_get_module_data(NeoMutt, MODULE_ID_KEY));
 
   TEST_CASE("unbind index removes all regular bindings and restores fallbacks");
@@ -276,12 +276,12 @@ static void test_parse_unbind_behaviour(void)
   km_bind(menu_find_by_name("pager"), "y", OP_EXIT, NULL, NULL, NULL);
   TEST_CHECK(has_keymap("index", "y", OP_DISPLAY_MESSAGE));
   TEST_CHECK(has_keymap("pager", "y", OP_EXIT));
-  TEST_CHECK(has_binding("index", OP_MAIN_NEXT_UNDELETED));
+  TEST_CHECK(has_binding("index", OP_SELECT_NEXT_UNDELETED_ENTRY));
   run_unbind_command(&UnBind, line, pc, pe, "index");
   TEST_CHECK(!has_keymap("index", "y", OP_DISPLAY_MESSAGE));
   TEST_CHECK(has_keymap("pager", "y", OP_EXIT));
   TEST_CHECK(has_binding("index", OP_DISPLAY_MESSAGE));
-  TEST_CHECK(!has_binding("index", OP_MAIN_NEXT_UNDELETED));
+  TEST_CHECK(!has_binding("index", OP_SELECT_NEXT_UNDELETED_ENTRY));
   km_cleanup(neomutt_get_module_data(NeoMutt, MODULE_ID_KEY));
 
   TEST_CASE("unbind * y removes one regular binding from all menus");
@@ -319,14 +319,14 @@ static void test_parse_unbind_restore_defaults(void)
   TEST_CASE("unbind * restores fallback bindings");
   init_menus();
   TEST_CHECK(has_binding("generic", OP_DISPLAY_HELP));
-  TEST_CHECK(has_binding("index", OP_MAIN_NEXT_UNDELETED));
+  TEST_CHECK(has_binding("index", OP_SELECT_NEXT_UNDELETED_ENTRY));
   parse_error_reset(pe);
   buf_strcpy(line, "*");
   buf_seek(line, 0);
   TEST_CHECK_NUM_EQ(parse_unbind(&UnBind, line, pc, pe), MUTT_CMD_SUCCESS);
   TEST_CHECK(has_binding("generic", OP_DISPLAY_HELP));
   TEST_CHECK(has_binding("index", OP_DISPLAY_MESSAGE));
-  TEST_CHECK(!has_binding("index", OP_MAIN_NEXT_UNDELETED));
+  TEST_CHECK(!has_binding("index", OP_SELECT_NEXT_UNDELETED_ENTRY));
   km_cleanup(neomutt_get_module_data(NeoMutt, MODULE_ID_KEY));
 
   TEST_CASE("unbind * * removes fallback bindings too");

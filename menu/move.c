@@ -603,7 +603,19 @@ MenuRedrawFlags menu_next_page(struct Menu *menu, int count)
  */
 MenuRedrawFlags menu_view_home(struct Menu *menu)
 {
-  return menu_move_view_relative(menu, 0 - menu->max);
+  if (menu->max == 0)
+    return MENU_REDRAW_NONE;
+
+  const int new_top = 0;
+  const int page_len = MAX(menu->page_len, 1);
+
+  int index = menu->current;
+  if (index < new_top)
+    index = new_top;
+  else if (index >= (new_top + page_len))
+    index = MIN(new_top + page_len - 1, menu->max - 1);
+
+  return menu_set_and_notify(menu, new_top, index);
 }
 
 /**
@@ -615,5 +627,28 @@ MenuRedrawFlags menu_view_home(struct Menu *menu)
  */
 MenuRedrawFlags menu_view_end(struct Menu *menu)
 {
-  return menu_move_view_relative(menu, menu->max);
+  if (menu->max == 0)
+    return MENU_REDRAW_NONE;
+
+  const int page_len = MAX(menu->page_len, 1);
+  int new_top = 0;
+
+  if (menu->max > page_len)
+  {
+    const bool c_menu_move_off = cs_subset_bool(menu->sub, "menu_move_off");
+    short c_menu_context = cs_subset_number(menu->sub, "menu_context");
+    c_menu_context = MIN(c_menu_context, (page_len / 2));
+
+    new_top = c_menu_move_off ? (menu->max - c_menu_context - 1) : (menu->max - page_len);
+    if (new_top < 0)
+      new_top = 0;
+  }
+
+  int index = menu->current;
+  if (index < new_top)
+    index = new_top;
+  else if (index >= (new_top + page_len))
+    index = MIN(new_top + page_len - 1, menu->max - 1);
+
+  return menu_set_and_notify(menu, new_top, index);
 }

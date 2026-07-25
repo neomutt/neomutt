@@ -59,24 +59,24 @@ static const char *Function_not_permitted_in_attach_message_mode = N_(
 static const struct MenuFuncOp OpAttach[] = { /* map: attach */
   { "bounce-message",                OP_BOUNCE_MESSAGE },
   { "check-traditional-pgp",         OP_CHECK_TRADITIONAL },
-  { "collapse-parts",                OP_ATTACH_COLLAPSE },
+  { "collapse-parts",                OP_TOGGLE_TREE },
   { "compose-to-sender",             OP_COMPOSE_TO_SENDER },
   { "delete-entry",                  OP_ATTACH_DELETE },
   { "display-toggle-weed",           OP_DISPLAY_MESSAGE_HEADERS },
   { "edit-type",                     OP_ATTACH_EDIT_CONTENT_TYPE },
   { "extract-keys",                  OP_EXTRACT_KEYS },
-  { "followup-message",              OP_FOLLOWUP },
+  { "followup-message",              OP_NNTP_FOLLOWUP_MESSAGE },
   { "forward-message",               OP_FORWARD_MESSAGE },
-  { "forward-to-group",              OP_FORWARD_TO_GROUP },
-  { "group-chat-reply",              OP_GROUP_CHAT_REPLY },
-  { "group-reply",                   OP_GROUP_REPLY },
+  { "forward-to-group",              OP_NNTP_FORWARD_TO_GROUP },
+  { "group-chat-reply",              OP_REPLY_GROUP_CHAT },
+  { "group-reply",                   OP_REPLY_ALL },
   { "list-reply",                    OP_LIST_REPLY },
   { "list-subscribe",                OP_LIST_SUBSCRIBE },
   { "list-unsubscribe",              OP_LIST_UNSUBSCRIBE },
-  { "pipe-entry",                    OP_PIPE },
-  { "pipe-message",                  OP_PIPE },
+  { "pipe-entry",                    OP_PIPE_ENTRY },
+  { "pipe-message",                  OP_PIPE_ENTRY },
   { "print-entry",                   OP_PRINT_ENTRY },
-  { "reply",                         OP_REPLY },
+  { "reply",                         OP_REPLY_SENDER },
   { "resend-message",                OP_RESEND },
   { "save-entry",                    OP_ATTACH_SAVE_ATTACHMENT },
   { "undelete-entry",                OP_ATTACH_UNDELETE },
@@ -91,7 +91,6 @@ static const struct MenuFuncOp OpAttach[] = { /* map: attach */
  * AttachDefaultBindings - Key bindings for the Attachment Menu
  */
 static const struct MenuOpSeq AttachDefaultBindings[] = { /* map: attach */
-  { OP_ATTACH_COLLAPSE,                    "v" },
   { OP_ATTACH_DELETE,                      "d" },
   { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT,  "<keypadenter>" },
   { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT,  "\n" },             // <Enter>
@@ -99,7 +98,6 @@ static const struct MenuOpSeq AttachDefaultBindings[] = { /* map: attach */
   { OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP,  "m" },
   { OP_ATTACH_DISPLAY_ATTACHMENT_TEXT,     "T" },
   { OP_ATTACH_EDIT_CONTENT_TYPE,           "\005" },           // <Ctrl-E>
-  { OP_PRINT_ENTRY,                        "p" },
   { OP_ATTACH_SAVE_ATTACHMENT,             "s" },
   { OP_ATTACH_UNDELETE,                    "u" },
   { OP_BOUNCE_MESSAGE,                     "b" },
@@ -108,11 +106,13 @@ static const struct MenuOpSeq AttachDefaultBindings[] = { /* map: attach */
   { OP_EXTRACT_KEYS,                       "\013" },           // <Ctrl-K>
   { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
   { OP_FORWARD_MESSAGE,                    "f" },
-  { OP_GROUP_REPLY,                        "g" },
   { OP_LIST_REPLY,                         "L" },
-  { OP_PIPE,                               "|" },
-  { OP_REPLY,                              "r" },
+  { OP_PIPE_ENTRY,                         "|" },
+  { OP_PRINT_ENTRY,                        "p" },
+  { OP_REPLY_ALL,                          "g" },
+  { OP_REPLY_SENDER,                       "r" },
   { OP_RESEND,                             "\033e" },          // <Alt-e>
+  { OP_TOGGLE_TREE,                        "v" },
   { 0, NULL },
 };
 // clang-format on
@@ -680,10 +680,10 @@ static int op_list_unsubscribe(struct AttachFunctionData *fdata, const struct Ke
  * op_reply - reply to a message - Implements ::attach_function_t - @ingroup attach_function_api
  *
  * This function handles:
- * - OP_GROUP_CHAT_REPLY
- * - OP_GROUP_REPLY
  * - OP_LIST_REPLY
- * - OP_REPLY
+ * - OP_REPLY_ALL
+ * - OP_REPLY_GROUP_CHAT
+ * - OP_REPLY_SENDER
  */
 static int op_reply(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -693,9 +693,9 @@ static int op_reply(struct AttachFunctionData *fdata, const struct KeyEvent *eve
 
   const int op = event->op;
   SendFlags flags = SEND_REPLY;
-  if (op == OP_GROUP_REPLY)
+  if (op == OP_REPLY_ALL)
     flags |= SEND_GROUP_REPLY;
-  else if (op == OP_GROUP_CHAT_REPLY)
+  else if (op == OP_REPLY_GROUP_CHAT)
     flags |= SEND_GROUP_CHAT_REPLY;
   else if (op == OP_LIST_REPLY)
     flags |= SEND_LIST_REPLY;
@@ -780,14 +780,12 @@ static int op_forward_to_group(struct AttachFunctionData *fdata, const struct Ke
  */
 static const struct AttachFunction AttachFunctions[] = {
   // clang-format off
-  { OP_ATTACH_COLLAPSE,                   op_attach_collapse },
   { OP_ATTACH_DELETE,                     op_attach_delete },
   { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT, op_attach_view },
   { OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP, op_attach_view_mailcap },
   { OP_ATTACH_DISPLAY_ATTACHMENT_PAGER,   op_attach_view_pager },
   { OP_ATTACH_DISPLAY_ATTACHMENT_TEXT,    op_attach_view_text },
   { OP_ATTACH_EDIT_CONTENT_TYPE,          op_attach_edit_type },
-  { OP_PRINT_ENTRY,                       op_attach_print },
   { OP_ATTACH_SAVE_ATTACHMENT,            op_attach_save },
   { OP_ATTACH_UNDELETE,                   op_attach_undelete },
   { OP_BOUNCE_MESSAGE,                    op_bounce_message },
@@ -796,18 +794,20 @@ static const struct AttachFunction AttachFunctions[] = {
   { OP_DISPLAY_MESSAGE_HEADERS,           op_attach_view },
   { OP_EXIT,                              op_quit },
   { OP_EXTRACT_KEYS,                      op_extract_keys },
-  { OP_FOLLOWUP,                          op_followup },
   { OP_FORWARD_MESSAGE,                   op_forward_message },
-  { OP_FORWARD_TO_GROUP,                  op_forward_to_group },
-  { OP_GROUP_CHAT_REPLY,                  op_reply },
-  { OP_GROUP_REPLY,                       op_reply },
   { OP_LIST_REPLY,                        op_reply },
   { OP_LIST_SUBSCRIBE,                    op_list_subscribe },
   { OP_LIST_UNSUBSCRIBE,                  op_list_unsubscribe },
-  { OP_PIPE,                              op_attach_pipe },
+  { OP_NNTP_FOLLOWUP_MESSAGE,             op_followup },
+  { OP_NNTP_FORWARD_TO_GROUP,             op_forward_to_group },
+  { OP_PIPE_ENTRY,                        op_attach_pipe },
+  { OP_PRINT_ENTRY,                       op_attach_print },
   { OP_QUIT,                              op_quit },
-  { OP_REPLY,                             op_reply },
+  { OP_REPLY_ALL,                         op_reply },
+  { OP_REPLY_GROUP_CHAT,                  op_reply },
+  { OP_REPLY_SENDER,                      op_reply },
   { OP_RESEND,                            op_resend },
+  { OP_TOGGLE_TREE,                       op_attach_collapse },
   { 0, NULL },
   // clang-format on
 };

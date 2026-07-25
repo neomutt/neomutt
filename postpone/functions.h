@@ -60,7 +60,7 @@ typedef int (*postpone_function_t)(struct PostponeData *pd, const struct KeyEven
  */
 struct PostponeFunction
 {
-  int op;                       ///< Op code, e.g. OP_DELETE
+  int op;                       ///< Op code, e.g. OP_DELETE_MESSAGE
   postpone_function_t function; ///< Function to call
 };
 

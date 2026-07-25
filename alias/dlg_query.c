@@ -99,11 +99,11 @@
 static const struct Mapping QueryHelp[] = {
   // clang-format off
   { N_("Exit"),       OP_EXIT },
-  { N_("Mail"),       OP_MAIL },
-  { N_("New Query"),  OP_QUERY },
+  { N_("Mail"),       OP_COMPOSE_MESSAGE },
+  { N_("New Query"),  OP_VIEW_ADDRESS_QUERY },
   { N_("Make Alias"), OP_CREATE_ALIAS },
-  { N_("Sort"),       OP_SORT },
-  { N_("Rev-Sort"),   OP_SORT_REVERSE },
+  { N_("Sort"),       OP_SORT_ENTRIES },
+  { N_("Rev-Sort"),   OP_SORT_ENTRIES_REVERSE },
   { N_("Search"),     OP_SEARCH_FORWARD },
   { N_("Help"),       OP_DISPLAY_HELP },
   { NULL, 0 },

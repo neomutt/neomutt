@@ -40,7 +40,7 @@
  * km_bind - Set up a key binding
  * @param md      Menu Definition
  * @param key_str Key string
- * @param op      Operation, e.g. OP_DELETE
+ * @param op      Operation, e.g. OP_DELETE_MESSAGE
  * @param macro   Macro string
  * @param desc    Description of macro (OPTIONAL)
  * @param err     Buffer for error message
@@ -135,7 +135,7 @@ enum CommandResult km_bind(const struct MenuDefinition *md, const char *key_str,
 /**
  * km_find_func - Find a function's mapping in a Menu
  * @param md    Menu Definition
- * @param func  Function, e.g. OP_DELETE
+ * @param func  Function, e.g. OP_DELETE_MESSAGE
  * @retval ptr Keymap for the function
  */
 struct Keymap *km_find_func(const struct MenuDefinition *md, int func)
@@ -269,7 +269,7 @@ struct MenuDefinition *menu_find_by_name(const char *name)
 /**
  * is_bound - Does a function have a keybinding?
  * @param md Menu Definition
- * @param op Operation, e.g. OP_DELETE
+ * @param op Operation, e.g. OP_DELETE_MESSAGE
  * @retval true A key is bound to that operation
  */
 bool is_bound(const struct MenuDefinition *md, int op)

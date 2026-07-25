@@ -49,7 +49,7 @@ static const struct CommandTest Tests[] = {
 
 static const struct MenuFuncOp OpIndex[] = {
   // clang-format off
-  { "next-undeleted",         OP_MAIN_NEXT_UNDELETED },
+  { "next-undeleted",         OP_SELECT_NEXT_UNDELETED_ENTRY },
   { "sidebar-toggle-visible", OP_SIDEBAR_TOGGLE_VISIBLE },
   { NULL, 0 },
   // clang-format on
@@ -57,7 +57,7 @@ static const struct MenuFuncOp OpIndex[] = {
 
 static const struct MenuFuncOp OpPager[] = {
   // clang-format off
-  { "next-undeleted",         OP_MAIN_NEXT_UNDELETED },
+  { "next-undeleted",         OP_SELECT_NEXT_UNDELETED_ENTRY },
   { "sidebar-toggle-visible", OP_SIDEBAR_TOGGLE_VISIBLE },
   { "help",                   OP_DISPLAY_HELP },
   { NULL, 0 },

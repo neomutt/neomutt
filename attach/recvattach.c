@@ -947,7 +947,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
       }
 
       case OP_SELECT_NEXT_ENTRY:
-      case OP_MAIN_NEXT_UNDELETED: /* hack */
+      case OP_SELECT_NEXT_UNDELETED_ENTRY: /* hack */
       {
         const int index = menu_get_index(menu) + 1;
         if (index < menu->max)
@@ -963,7 +963,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
       }
 
       case OP_SELECT_PREVIOUS_ENTRY:
-      case OP_MAIN_PREV_UNDELETED: /* hack */
+      case OP_SELECT_PREVIOUS_UNDELETED_ENTRY: /* hack */
       {
         const int index = menu_get_index(menu) - 1;
         if (index >= 0)
@@ -994,7 +994,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
         break;
       }
       /* functions which are passed through from the pager */
-      case OP_PIPE:
+      case OP_PIPE_ENTRY:
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         struct AttachPtrArray aa = ARRAY_HEAD_INITIALIZER;
@@ -1032,7 +1032,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
         }
         FALLTHROUGH;
 
-      case OP_ATTACH_COLLAPSE:
+      case OP_TOGGLE_TREE:
         if (recv)
           return op;
         FALLTHROUGH;

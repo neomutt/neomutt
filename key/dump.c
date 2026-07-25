@@ -101,7 +101,7 @@ void escape_macro(const char *macro, struct Buffer *buf)
 /**
  * help_lookup_function - Find a keybinding for an operation
  * @param md   Menu Definition
- * @param op   Operation, e.g. OP_DELETE
+ * @param op   Operation, e.g. OP_DELETE_MESSAGE
  * @retval str  Key binding
  * @retval NULL No key binding found
  */
