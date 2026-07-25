@@ -43,6 +43,7 @@
  * | color/quoted.c      | @subpage color_quote       |
  * | color/regex.c       | @subpage color_regex       |
  * | color/simple.c      | @subpage color_simple      |
+ * | color/theme.c       | @subpage color_theme       |
  */
 
 #ifndef MUTT_COLOR_LIB_H
@@ -64,6 +65,7 @@
 #include "quoted.h"
 #include "regex4.h"
 #include "simple2.h"
+#include "theme.h"
 // IWYU pragma: end_keep
 
 #endif /* MUTT_COLOR_LIB_H */

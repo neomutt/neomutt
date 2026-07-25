@@ -1,5 +1,8 @@
 DATA_DIRS=  colorschemes logo account-command \
-	    account-command/gpg-json account-command/macos-keychain
+	    account-command/gpg-json account-command/macos-keychain \
+	    themes/default themes/zenburn themes/solarized-dark \
+	    themes/ayu-dark themes/neonwolf themes/vombatidae \
+	    themes/nightfox
 all-data:
 
 clean-data:

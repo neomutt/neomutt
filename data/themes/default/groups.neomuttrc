@@ -1,0 +1,80 @@
+# vim: filetype=neomuttrc
+#
+# Default NeoMutt Theme
+#
+# This theme resets all color objects to terminal defaults.
+# It serves as the template for what a complete theme must cover.
+
+# Core UI
+color normal        default         default
+color error         brightred       default
+color warning       brightyellow    default
+color message       default         default
+color indicator     reverse
+color status        black           white
+color search        black           brightyellow
+color tree          default         default
+color tilde         blue            default
+color markers       brightred       default
+color attachment    brightmagenta   default
+color signature     default         default
+color prompt        default         default
+color options       default         default
+color progress      white           blue
+
+# Text attributes
+color bold          default         default
+color italic        default         default
+color underline     default         default
+
+# Stripes
+color stripe_even   default         default
+color stripe_odd    default         default
+
+# Sidebar
+color sidebar_background    default     default
+color sidebar_divider       default     default
+color sidebar_flagged       brightred   default
+color sidebar_highlight     reverse
+color sidebar_indicator     reverse
+color sidebar_new           brightgreen default
+color sidebar_ordinary      default     default
+color sidebar_spool_file    brightgreen default
+color sidebar_unread        brightblue  default
+
+# Compose
+color compose_header            brightblue  default
+color compose_security_both     brightgreen default
+color compose_security_encrypt  brightgreen default
+color compose_security_none     default     default
+color compose_security_sign     brightblue  default
+
+# Headers
+color hdrdefault    brightcyan      default
+color header        brightgreen     default     "^(From|To|Cc|Bcc)"
+color header        brightyellow    default     "^(Subject|Date)"
+
+# Quoted text
+color quoted0       blue            default
+color quoted1       cyan            default
+color quoted2       green           default
+color quoted3       yellow          default
+color quoted4       red             default
+color quoted5       magenta         default
+color quoted6       blue            default
+color quoted7       cyan            default
+color quoted8       green           default
+color quoted9       yellow          default
+
+# Index
+color index         default         default     "~A"
+color index         brightgreen     default     "~N"
+color index         brightgreen     default     "~U"
+color index         brightred       default     "~F"
+color index         red             default     "~D"
+
+# Body patterns
+color body          brightblue      default     "(https?|ftp)://[^ >)\"\t]+"
+color body          brightblue      default     "[-a-z_0-9.+]+@[-a-z_0-9.]+"
+color body          brightgreen     default     "^gpg: Good signature.*"
+color body          brightred       default     "^gpg: BAD signature.*"

@@ -1,0 +1,28 @@
+# vim: filetype=neomuttrc
+#
+# Zenburn Palette
+#
+# Base colors extracted from the Zenburn colorscheme.
+# Each variable defines a raw color value.
+
+# Background shades
+set my_bg0 = "color234"
+set my_bg1 = "color236"
+set my_bg2 = "color237"
+set my_bg3 = "color238"
+
+# Foreground shades
+set my_fg0 = "color223"
+set my_fg1 = "color188"
+set my_fg2 = "color247"
+set my_fg3 = "color242"
+
+# Accent colors
+set my_red     = "color174"
+set my_green   = "color108"
+set my_yellow  = "color144"
+set my_blue    = "color109"
+set my_cyan    = "color116"
+set my_white   = "color188"
+set my_orange  = "color142"
+set my_dimred  = "color115"
