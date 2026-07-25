@@ -1127,13 +1127,7 @@ static int tls_socket_write(struct Connection *conn, const char *buf, size_t cou
     sent += rc;
   } while (sent < count);
 
-  // sent is a size_t accumulator narrowed into this function's int return
-  // type, mandated by the shared Connection::write() interface -- the same
-  // pattern flagged by Coverity CID 392753/392751 in raw.c/tunnel.c, though
-  // not currently flagged here. The sole caller of conn->write(),
-  // mutt_socket_write_d(), already takes an int len, so count is bounded to
-  // INT_MAX before it ever reaches here -- see #4940 for the full
-  // call-graph trace. Explicit cast documents the narrowing is safe.
+  // Narrowed to int for the Connection::write() interface; see #4940.
   return (int) sent;
 }
 
