@@ -1,0 +1,44 @@
+name: Clang Format
+
+on:
+  pull_request:
+  push:
+    branches:
+      - 'main'
+      - 'devel/**'
+      - 'copilot/**'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check Formatting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+
+      - name: Install clang-format
+        run: sudo apt-get install -y clang-format
+
+      - name: Check formatting
+        run: |
+          FAIL=0
+          while IFS= read -r file; do
+            if ! clang-format -style=file "$file" | cmp -s "$file" -; then
+              echo "::error file=$file::needs clang-format"
+              FAIL=1
+            fi
+          done < <(git ls-files -- ':!autosetup/' ':!docs/' '*.c')
+
+          if [ "$FAIL" -ne 0 ]; then
+            echo "One or more files need clang-format. Run: clang-format -style=file -i <file>"
+            exit 1
+          fi
