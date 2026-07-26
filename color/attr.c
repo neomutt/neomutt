@@ -167,7 +167,7 @@ struct AttrColor attr_color_copy(const struct AttrColor *ac)
   if (ac)
     return *ac;
   else
-    return (struct AttrColor) { 0 };
+    return (struct AttrColor){ 0 };
 }
 
 /**

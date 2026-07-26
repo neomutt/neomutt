@@ -229,7 +229,7 @@ static bool init_config(struct NeoMutt *n)
   if (!rc)
     return false;
 
-  // Post-processing
+    // Post-processing
 #ifdef ENABLE_NLS
   localise_config(n->sub->cs);
 #endif

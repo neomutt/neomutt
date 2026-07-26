@@ -85,7 +85,11 @@ struct SetTest
  */
 static void test_command_set_expand_value(void)
 {
+  // clang-format off
+  // clang-format 18 misaligns the pointer in a local prototype like this
+  // (contradicts PointerAlignment: Right); guarded rather than accepted.
   void command_set_expand_value(uint32_t type, struct Buffer *value);
+  // clang-format on
 
   mutt_str_replace(&NeoMutt->home_dir, "/home/neomutt");
   mutt_str_replace(&NeoMutt->username, "neomutt");
