@@ -49,11 +49,22 @@ jobs:
           # feature flags used to configure this build, and running IWYU on
           # them anyway produces spurious compile errors unrelated to includes.
           #
-          # Excludes files flatcap ignores in his own local IWYU runs (#4962):
-          # debug/*.[ch], color/debug.[ch], conn/openssl.c, gui/resize.c,
-          # gui/terminal.c, imap/auth_sasl.c.
+          # Excludes files flatcap ignores in his own local IWYU runs (#4962),
+          # plus two machine-generated files not meant for include-hygiene
+          # checks at all: debug/*.[ch], color/debug.[ch], conn/openssl.c,
+          # gui/resize.c, gui/terminal.c, imap/auth_sasl.c, git_ver.c,
+          # conststrings.c.
+          #
+          # `compile_commands.json`'s `file` field is repo-root-relative with
+          # no leading slash (e.g. "gui/resize.c", not "/gui/resize.c") --
+          # patterns below use `(^|/)` rather than a bare leading `/`, which
+          # would never match and silently exclude nothing. Confirmed via a
+          # local build: the bare-`/` version matched zero files against a
+          # real compile_commands.json, letting all six targeted files
+          # through unfiltered -- caught by flatcap running the Action
+          # locally and diffing against his own manual IWYU runs (#4964).
           tac compile_commands.json | sed '2 s/.$//' | tac | jq -r '.[] | .file' \
-            | grep -vE '/debug/[^/]+\.[ch]$|/color/debug\.[ch]$|/conn/openssl\.c$|/gui/resize\.c$|/gui/terminal\.c$|/imap/auth_sasl\.c$' \
+            | grep -vE '(^|/)debug/[^/]+\.[ch]$|(^|/)color/debug\.[ch]$|(^|/)conn/openssl\.c$|(^|/)gui/resize\.c$|(^|/)gui/terminal\.c$|(^|/)imap/auth_sasl\.c$|(^|/)git_ver\.c$|(^|/)conststrings\.c$' \
             | xargs iwyu-tool/bin/iwyu.sh 2>&1 | tee iwyu-report.txt || true
 
       - name: Upload IWYU Report
