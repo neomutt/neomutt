@@ -18,7 +18,7 @@ jobs:
   iwyu:
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
-    container: ghcr.io/neomutt/ubuntu
+    container: ghcr.io/neomutt/fedora:44
     permissions:
       contents: read
 
@@ -31,9 +31,6 @@ jobs:
         with:
           repository: neomutt/iwyu
           path: iwyu-tool
-
-      - name: Install IWYU
-        run: apt-get update && apt-get install -y iwyu
 
       - name: Configure NeoMutt
         run: |
@@ -51,7 +48,12 @@ jobs:
           # find -- some source files (e.g. conn/gsasl.c) are excluded by the
           # feature flags used to configure this build, and running IWYU on
           # them anyway produces spurious compile errors unrelated to includes.
+          #
+          # Excludes files flatcap ignores in his own local IWYU runs (#4962):
+          # debug/*.[ch], color/debug.[ch], conn/openssl.c, gui/resize.c,
+          # gui/terminal.c, imap/auth_sasl.c.
           tac compile_commands.json | sed '2 s/.$//' | tac | jq -r '.[] | .file' \
+            | grep -vE '/debug/[^/]+\.[ch]$|/color/debug\.[ch]$|/conn/openssl\.c$|/gui/resize\.c$|/gui/terminal\.c$|/imap/auth_sasl\.c$' \
             | xargs iwyu-tool/bin/iwyu.sh 2>&1 | tee iwyu-report.txt || true
 
       - name: Upload IWYU Report
