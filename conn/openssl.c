@@ -1249,7 +1249,7 @@ static int ssl_setup(struct Connection *conn)
     SSL_CTX_set_options(sockdata(conn)->sctx, SSL_OP_NO_TLSv1_2);
 #endif
 
-    // Deprecated protocols
+  // Deprecated protocols
 #ifdef SSL_OP_NO_TLSv1_1
   SSL_CTX_set_options(sockdata(conn)->sctx, SSL_OP_NO_TLSv1_1);
 #endif

@@ -159,7 +159,7 @@ struct SimpleDialogWindows simple_dialog_new(const struct MenuDefinition *md,
   notify_observer_add(dlg->notify, NT_WINDOW, simple_window_observer, dlg);
   dialog_push(dlg);
 
-  return (struct SimpleDialogWindows){ dlg, win_sbar, win_menu->wdata };
+  return (struct SimpleDialogWindows) { dlg, win_sbar, win_menu->wdata };
 }
 
 /**

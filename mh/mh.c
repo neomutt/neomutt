@@ -958,7 +958,7 @@ static enum MxStatus mh_check(struct Mailbox *m)
   if (!modified)
     return MX_STATUS_OK;
 
-    /* Update the modification times on the mailbox.
+  /* Update the modification times on the mailbox.
    *
    * The monitor code notices changes in the open mailbox too quickly.
    * In practice, this sometimes leads to all the new messages not being

@@ -26,7 +26,11 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Install clang-format
-        run: sudo apt-get install -y clang-format
+        # Pinned rather than `apt-get install`, which floats to whatever
+        # version the runner image ships - that drifted from contributors'
+        # local versions and produced conflicting reformats (see PR #4965).
+        # Version matches flatcap's own local clang-format.
+        run: pip install clang-format==22.1.8
 
       - name: Check formatting
         run: |

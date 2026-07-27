@@ -282,7 +282,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
   if (b && (b->type == TYPE_TEXT) && (!b->noconv && !b->force_charset))
   {
     mutt_param_set(&b->parameter, "charset",
-                   (!info->hibin                                 ? "us-ascii" :
+                   (!info->hibin ? "us-ascii" :
                     c_charset && !mutt_ch_is_us_ascii(c_charset) ? c_charset :
                                                                    "unknown-8bit"));
   }
