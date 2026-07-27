@@ -51,7 +51,7 @@ int  mutt_count_body_parts  (struct Email *e, FILE *fp);
 void mutt_parse_mime_message(struct Email *e, FILE *fp);
 
 struct AttachMatch *attachmatch_new (void);
-void                attachmatch_free(struct AttachMatch **ptr);
+void                attachmatch_free(void **ptr);
 
 enum CommandResult parse_mime_lookup  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 enum CommandResult parse_unmime_lookup(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);

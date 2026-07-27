@@ -60,15 +60,16 @@ struct AttachMatch
  * @note We don't free minor because it is either a pointer into major,
  *       or a static string.
  */
-void attachmatch_free(struct AttachMatch **ptr)
+void attachmatch_free(void **ptr)
 {
   if (!ptr || !*ptr)
     return;
 
-  struct AttachMatch *am = *ptr;
+  struct AttachMatch **am_ptr = (struct AttachMatch **) ptr;
+  struct AttachMatch *am = *am_ptr;
   regfree(&am->minor_regex);
   FREE(&am->major);
-  FREE(ptr);
+  FREE(am_ptr);
 }
 
 /**
@@ -576,10 +577,10 @@ enum CommandResult parse_unattachments(const struct Command *cmd, struct Buffer 
 
   if (op == '*')
   {
-    mutt_list_free_type(&mod_data->attach_allow, (list_free_t) attachmatch_free);
-    mutt_list_free_type(&mod_data->attach_exclude, (list_free_t) attachmatch_free);
-    mutt_list_free_type(&mod_data->inline_allow, (list_free_t) attachmatch_free);
-    mutt_list_free_type(&mod_data->inline_exclude, (list_free_t) attachmatch_free);
+    mutt_list_free_type(&mod_data->attach_allow, attachmatch_free);
+    mutt_list_free_type(&mod_data->attach_exclude, attachmatch_free);
+    mutt_list_free_type(&mod_data->inline_allow, attachmatch_free);
+    mutt_list_free_type(&mod_data->inline_exclude, attachmatch_free);
 
     mutt_debug(LL_NOTIFY, "NT_ATTACH_DELETE_ALL\n");
     notify_send(mod_data->attachments_notify, NT_ATTACH, NT_ATTACH_DELETE_ALL, NULL);

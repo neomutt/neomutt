@@ -92,10 +92,10 @@ static bool attach_cleanup(struct NeoMutt *n, void *data)
   notify_free(&mod_data->attachments_notify);
 
   /* Lists of AttachMatch */
-  mutt_list_free_type(&mod_data->attach_allow, (list_free_t) attachmatch_free);
-  mutt_list_free_type(&mod_data->attach_exclude, (list_free_t) attachmatch_free);
-  mutt_list_free_type(&mod_data->inline_allow, (list_free_t) attachmatch_free);
-  mutt_list_free_type(&mod_data->inline_exclude, (list_free_t) attachmatch_free);
+  mutt_list_free_type(&mod_data->attach_allow, attachmatch_free);
+  mutt_list_free_type(&mod_data->attach_exclude, attachmatch_free);
+  mutt_list_free_type(&mod_data->inline_allow, attachmatch_free);
+  mutt_list_free_type(&mod_data->inline_exclude, attachmatch_free);
 
   mutt_list_free(&mod_data->mime_lookup);
 
