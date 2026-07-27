@@ -95,7 +95,7 @@ static const struct Mapping AttachmentHelp[] = {
   { N_("Save"),  OP_ATTACH_SAVE },
   { N_("Pipe"),  OP_PIPE },
   { N_("Print"), OP_ATTACH_PRINT },
-  { N_("Help"),  OP_HELP },
+  { N_("Help"),  OP_DISPLAY_HELP },
   { NULL, 0 },
   // clang-format on
 };

@@ -107,7 +107,7 @@ static const struct Mapping IndexHelp[] = {
   { N_("Mail"),  OP_MAIL },
   { N_("Reply"), OP_REPLY },
   { N_("Group"), OP_GROUP_REPLY },
-  { N_("Help"),  OP_HELP },
+  { N_("Help"),  OP_DISPLAY_HELP },
   { NULL, 0 },
   // clang-format on
 };
@@ -122,7 +122,7 @@ const struct Mapping IndexNewsHelp[] = {
   { N_("Post"),     OP_POST },
   { N_("Followup"), OP_FOLLOWUP },
   { N_("Catchup"),  OP_CATCHUP },
-  { N_("Help"),     OP_HELP },
+  { N_("Help"),     OP_DISPLAY_HELP },
   { NULL, 0 },
   // clang-format on
 };
@@ -1172,8 +1172,8 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
   {
     /* Clear the tag prefix unless we just started it.
      * Don't clear the prefix on a timeout, but do clear on an abort */
-    if (priv->tag_prefix && (op != OP_TAG_PREFIX) &&
-        (op != OP_TAG_PREFIX_COND) && (op != OP_TIMEOUT))
+    if (priv->tag_prefix && (op != OP_APPLY_TO_TAGGED) &&
+        (op != OP_APPLY_TO_TAGGED_BEGIN) && (op != OP_TIMEOUT))
     {
       priv->tag_prefix = false;
     }
@@ -1346,7 +1346,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 
     /* special handling for the priv->tag-prefix function */
     const bool c_auto_tag = cs_subset_bool(shared->sub, "auto_tag");
-    if ((op == OP_TAG_PREFIX) || (op == OP_TAG_PREFIX_COND))
+    if ((op == OP_APPLY_TO_TAGGED) || (op == OP_APPLY_TO_TAGGED_BEGIN))
     {
       /* A second priv->tag-prefix command aborts */
       if (priv->tag_prefix)
@@ -1364,11 +1364,11 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 
       if (shared->mailbox->msg_tagged == 0)
       {
-        if (op == OP_TAG_PREFIX)
+        if (op == OP_APPLY_TO_TAGGED)
         {
           mutt_error(_("No tagged messages"));
         }
-        else if (op == OP_TAG_PREFIX_COND)
+        else if (op == OP_APPLY_TO_TAGGED_BEGIN)
         {
           mutt_flush_macro_to_endcond();
           mutt_message(_("Nothing to do"));

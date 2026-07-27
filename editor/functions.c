@@ -61,7 +61,7 @@ static const struct MenuFuncOp OpEditor[] = { /* map: editor */
   { "eol",                           OP_EDITOR_EOL },
   { "forward-char",                  OP_EDITOR_FORWARD_CHAR },
   { "forward-word",                  OP_EDITOR_FORWARD_WORD },
-  { "help",                          OP_HELP },
+  { "help",                          OP_DISPLAY_HELP },
   { "history-down",                  OP_EDITOR_HISTORY_DOWN },
   { "history-search",                OP_EDITOR_HISTORY_SEARCH },
   { "history-up",                    OP_EDITOR_HISTORY_UP },
@@ -72,7 +72,7 @@ static const struct MenuFuncOp OpEditor[] = { /* map: editor */
   { "kill-word",                     OP_EDITOR_KILL_WORD },
   { "mailbox-cycle",                 OP_EDITOR_MAILBOX_CYCLE },
   { "quote-char",                    OP_EDITOR_QUOTE_CHAR },
-  { "redraw-screen",                 OP_REDRAW },
+  { "redraw-screen",                 OP_REDRAW_SCREEN },
   { "transpose-chars",               OP_EDITOR_TRANSPOSE_CHARS },
   { "upcase-word",                   OP_EDITOR_UPCASE_WORD },
   // Deprecated
@@ -115,8 +115,8 @@ static const struct MenuOpSeq EditorDefaultBindings[] = { /* map: editor */
   { OP_EDITOR_MAILBOX_CYCLE,               " " },              // <Space>
   { OP_EDITOR_QUOTE_CHAR,                  "\026" },           // <Ctrl-V>
   { OP_EDITOR_UPCASE_WORD,                 "\033u" },          // <Alt-u>
-  { OP_HELP,                               "\033?" },          // <Alt-?>
-  { OP_REDRAW,                             "\014" },           // <Ctrl-L>
+  { OP_REDRAW_SCREEN,                      "\014" },           // <Ctrl-L>
+  { OP_DISPLAY_HELP,                          "\033?" },          // <Alt-?>
   { 0, NULL },
 };
 // clang-format on
@@ -471,18 +471,18 @@ static int op_editor_transpose_chars(struct EnterFunctionData *fdata,
 }
 
 /**
- * op_help - Display Help - Implements ::enter_function_t - @ingroup enter_function_api
+ * op_display_help - Display Help - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_help(struct EnterFunctionData *fdata, const struct KeyEvent *event)
+static int op_display_help(struct EnterFunctionData *fdata, const struct KeyEvent *event)
 {
   mutt_help(fdata->mod_data->md_editor);
   return FR_SUCCESS;
 }
 
 /**
- * op_redraw - Redraw the screen - Implements ::enter_function_t - @ingroup enter_function_api
+ * op_redraw_screen - Redraw the screen - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_redraw(struct EnterFunctionData *fdata, const struct KeyEvent *event)
+static int op_redraw_screen(struct EnterFunctionData *fdata, const struct KeyEvent *event)
 {
   mutt_clear_error();
   clearok(stdscr, true);
@@ -523,8 +523,8 @@ static const struct EnterFunction EnterFunctions[] = {
   { OP_EDITOR_QUOTE_CHAR,         op_editor_quote_char },
   { OP_EDITOR_TRANSPOSE_CHARS,    op_editor_transpose_chars },
   { OP_EDITOR_UPCASE_WORD,        op_editor_capitalize_word },
-  { OP_HELP,                      op_help },
-  { OP_REDRAW,                    op_redraw },
+  { OP_REDRAW_SCREEN,             op_redraw_screen },
+  { OP_DISPLAY_HELP,                 op_display_help },
   { 0, NULL },
   // clang-format on
 };
