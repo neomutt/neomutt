@@ -23,7 +23,8 @@ jobs:
 
     env:
       ASAN_OPTIONS: detect_leaks=1:color=never:log_path=asan:print_legend=false:print_summary=false
-      CONFIGURE_OPTIONS: --asan --autocrypt --gdbm --gnutls --gpgme --gss --lmdb --lua --lz4 --notmuch --sasl --tdb --with-lock=fcntl --zlib --zstd
+      UBSAN_OPTIONS: print_stacktrace=1:halt_on_error=1:log_path=ubsan
+      CONFIGURE_OPTIONS: --asan --ubsan --autocrypt --gdbm --gnutls --gpgme --gss --lmdb --lua --lz4 --notmuch --sasl --tdb --with-lock=fcntl --zlib --zstd
       # Force Node 24 until github-actions-cpu-cores gets a new release
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
@@ -66,6 +67,7 @@ jobs:
     - name: Run Tests
       run: |
         export ASAN_OPTIONS="$ASAN_OPTIONS"
+        export UBSAN_OPTIONS="$UBSAN_OPTIONS"
         export NEOMUTT_TEST_DIR="$GITHUB_WORKSPACE/test-files"
         make test
 
@@ -75,6 +77,15 @@ jobs:
       with:
         name: asan-log
         path: ${{ github.workspace }}/asan.*
+        retention-days: 10
+        if-no-files-found: ignore
+
+    - name: Upload UBSAN Log
+      uses: actions/upload-artifact@v7
+      if: failure()
+      with:
+        name: ubsan-log
+        path: ${{ github.workspace }}/ubsan.*
         retention-days: 10
         if-no-files-found: ignore
 
