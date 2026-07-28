@@ -1,0 +1,54 @@
+name: clang-tidy
+
+on:
+  schedule:
+    - cron: '10 4 * * 1'
+      # Mondays at 04:10
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  clang-tidy:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    container: ghcr.io/neomutt/fedora:44
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+
+      - name: Install clang-tidy
+        run: command -v clang-tidy || dnf install -y clang-tools-extra
+
+      - name: Configure NeoMutt
+        run: |
+          CC=clang ./configure --autocrypt --fmemopen --gdbm --gnutls --gpgme --gss \
+            --lmdb --lua --lz4 --notmuch --pcre2 --rocksdb --sasl --tdb \
+            --with-lock=fcntl --zlib --zstd --compile-commands --disable-doc
+
+      - name: Build (generates compile_commands.json)
+        run: make -j "$(nproc)" compile_commands.json
+
+      - name: Fix trailing comma in compile_commands.json
+        # The Makefile's own JSON assembly leaves a trailing comma before the
+        # closing bracket -- same known quirk iwyu.yml works around.
+        run: |
+          tac compile_commands.json | sed '2 s/,$//' | tac > compile_commands.json.fixed
+          mv compile_commands.json.fixed compile_commands.json
+
+      - name: Run clang-tidy
+        run: |
+          jq -r '.[] | .file' compile_commands.json \
+            | xargs clang-tidy -p . 2>&1 | tee clang-tidy-report.txt || true
+
+      - name: Upload clang-tidy Report
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: clang-tidy-report
+          path: clang-tidy-report.txt

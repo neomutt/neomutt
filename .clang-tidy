@@ -1,0 +1,27 @@
+---
+# Report-only static analysis, run via .github/workflows/clang-tidy.yml.
+# Findings don't fail CI (the workflow uploads a report artifact instead) --
+# this is a starting check set, expected to be refined over time.
+Checks: >
+  -*,
+  bugprone-*,
+  clang-analyzer-*,
+  -bugprone-multi-level-implicit-pointer-conversion,
+  -bugprone-easily-swappable-parameters,
+  -clang-analyzer-security.insecureAPI.*
+# bugprone-multi-level-implicit-pointer-conversion: fires on every call to
+# the codebase's own FREE()/ARRAY_FREE() macros, which take a `void *` via an
+# intentional implicit conversion -- a systemic false positive against an
+# established, universal idiom here, not a real defect class.
+#
+# bugprone-easily-swappable-parameters: fires on almost any function with two
+# adjacent same-typed pointer parameters (e.g. any (haystack, needle)-style
+# string function) -- too subjective/noisy to be useful as a default-on
+# check.
+#
+# clang-analyzer-security.insecureAPI.*: suggests C11 Annex K bounds-checked
+# functions (memcpy_s, snprintf_s, etc.) that glibc doesn't implement and
+# this project doesn't use -- pure noise on every memcpy/memmove/snprintf
+# call.
+WarningsAsErrors: ''
+HeaderFilterRegex: '.*'
