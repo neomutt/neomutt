@@ -298,8 +298,14 @@ static struct SmimeKey *smime_parse_key(char *buf)
             case 's':
               key->flags |= KEYFLAG_CANSIGN;
               break;
+
+            default:
+              break;
           }
         }
+        break;
+
+      default:
         break;
     }
   }
@@ -2173,6 +2179,8 @@ SecurityFlags smime_class_send_menu(struct Email *e)
                   rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
                                                 "des3", errmsg);
                   break;
+                default:
+                  break;
               }
               break;
 
@@ -2192,6 +2200,8 @@ SecurityFlags smime_class_send_menu(struct Email *e)
                 case 3:
                   rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
                                                 "rc2-128", errmsg);
+                  break;
+                default:
                   break;
               }
               break;
@@ -2213,6 +2223,8 @@ SecurityFlags smime_class_send_menu(struct Email *e)
                   rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
                                                 "aes256", errmsg);
                   break;
+                default:
+                  break;
               }
               break;
 
@@ -2224,6 +2236,9 @@ SecurityFlags smime_class_send_menu(struct Email *e)
             case -1: /* Ctrl-G or Enter */
               choice = 0;
               break;
+
+            default:
+              break;
           }
 
           if ((CSR_RESULT(rc) != CSR_SUCCESS) && !buf_is_empty(errmsg))
@@ -2233,6 +2248,9 @@ SecurityFlags smime_class_send_menu(struct Email *e)
         } while (choice == -1);
         break;
       }
+
+      default:
+        break;
     }
   }
 

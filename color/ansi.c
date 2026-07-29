@@ -68,6 +68,8 @@ static void ansi_color_list_add(struct AttrColorList *acl, struct AnsiColor *ans
       case A_UNDERLINE:
         ansi->attr_color = simple_color_get(MT_COLOR_UNDERLINE);
         return;
+      default:
+        break;
     }
   }
 

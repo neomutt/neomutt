@@ -1591,6 +1591,8 @@ int main(int argc, char *argv[], char *envp[])
         case 1:
           mutt_error(_("Mailbox is empty"));
           goto done; // TEST42: neomutt -z -f /dev/null
+        default:
+          break;
       }
     }
 

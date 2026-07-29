@@ -1808,6 +1808,10 @@ full_fcc:
         case 3:  /* (s)kip */
           rc = 0;
           break;
+
+        default:
+          rc = 0;
+          break;
       }
     }
   }

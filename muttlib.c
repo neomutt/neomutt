@@ -383,6 +383,9 @@ bool mutt_needs_mailcap(struct Body *b)
     case TYPE_MULTIPART:
     case TYPE_MESSAGE:
       return false;
+
+    default:
+      break;
   }
 
   return true;
@@ -554,6 +557,9 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
         case 2: /* no */
           FREE(directory);
           return 1;
+        default:
+          FREE(directory);
+          return -1;
       }
     }
     /* L10N: Means "The path you specified as the destination file is a directory."
@@ -593,6 +599,8 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
         break;
       case 1: /* overwrite */
         break;
+      default:
+        return -1;
     }
   }
   return 0;

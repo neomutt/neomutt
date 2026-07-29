@@ -2697,6 +2697,9 @@ static int op_display_headers(struct ComposeFunctionData *fdata, const struct Ke
     case OP_ATTACH_VIEW_TEXT:
       mode = MUTT_VA_AS_TEXT;
       break;
+
+    default:
+      break;
   }
 
   if (mode == MUTT_VA_REGULAR)

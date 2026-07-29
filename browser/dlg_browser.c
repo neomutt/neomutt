@@ -950,6 +950,9 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
         case BROWSER_SORT_UNSORTED:
           browser_track = true;
           break;
+
+        default:
+          break;
       }
 
       /* We use mutt_browser_select_dir to initialize the two

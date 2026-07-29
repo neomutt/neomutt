@@ -93,6 +93,9 @@ static void autocrypt_compose_menu(struct Email *e, const struct ConfigSubset *s
         e->security |= SEC_OPPENCRYPT;
       break;
     }
+
+    default:
+      break;
   }
 }
 #endif

@@ -1243,6 +1243,8 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
           continue;
         case -2:
           goto bail;
+        default:
+          continue;
       }
 
       if (!ftello(fp))

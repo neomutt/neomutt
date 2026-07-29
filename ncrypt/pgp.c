@@ -2101,6 +2101,9 @@ SecurityFlags pgp_class_send_menu(struct Email *e)
         e->security &= ~SEC_ENCRYPT;
         e->security |= SEC_SIGN;
         break;
+
+      default:
+        break;
     }
   }
 

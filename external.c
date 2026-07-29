@@ -530,6 +530,9 @@ bool mutt_select_sort(bool reverse)
     case 11: /* (l)abel */
       sort = EMAIL_SORT_LABEL;
       break;
+
+    default:
+      return false;
   }
 
   const unsigned char c_use_threads = cs_subset_enum(NeoMutt->sub, "use_threads");
@@ -908,6 +911,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailArray *ea,
         break;
       /* fatal error, abort */
       case -1:
+      default:
         goto errcleanup;
     }
   }

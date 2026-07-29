@@ -1129,6 +1129,9 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       if (!e->env)
         return false;
       return pat->pat_not ^ (e->env->newsgroups && patmatch(pat, e->env->newsgroups));
+
+    default:
+      break;
   }
   mutt_error(_("error: unknown op %d (report this error)"), pat->op);
   return false;
@@ -1201,6 +1204,9 @@ bool mutt_pattern_alias_exec(struct Pattern *pat, PatternExecFlags flags,
       return pat->pat_not ^ (perform_alias_and(pat->child, flags, av, cache) > 0);
     case MUTT_PAT_OR:
       return pat->pat_not ^ (perform_alias_or(pat->child, flags, av, cache) > 0);
+
+    default:
+      break;
   }
 
   return false;

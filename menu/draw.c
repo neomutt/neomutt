@@ -243,6 +243,8 @@ static void print_enriched_string(struct MuttWindow *win, int index,
           case MUTT_TREE_MISSING:
             mutt_window_addch(win, '?');
             break;
+          default:
+            break;
         }
         s++;
         n--;

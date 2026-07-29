@@ -535,6 +535,8 @@ static int op_search(struct AliasFunctionData *fdata, const struct KeyEvent *eve
     case OP_SEARCH_OPPOSITE:
       flags |= SEARCH_OPPOSITE;
       break;
+    default:
+      break;
   }
 
   struct Menu *menu = mdata->menu;
@@ -588,6 +590,10 @@ static int op_sort(struct AliasFunctionData *fdata, const struct KeyEvent *event
 
     case 4: /* (u)nsorted */
       sort = ALIAS_SORT_UNSORTED;
+      break;
+
+    default:
+      resort = false;
       break;
   }
 

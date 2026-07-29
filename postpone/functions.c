@@ -248,6 +248,9 @@ static int op_search(struct PostponeData *pd, const struct KeyEvent *event)
     case OP_SEARCH_OPPOSITE:
       flags |= SEARCH_OPPOSITE;
       break;
+
+    default:
+      break;
   }
 
   int index = menu_get_index(pd->menu);

@@ -188,6 +188,8 @@ static bool compile_search_self(const struct ImapAccountData *adata,
       imap_quote_string(term, sizeof(term), pat->p.str, false);
       buf_addstr(buf, term);
       break;
+    default:
+      return false;
   }
   return true;
 }

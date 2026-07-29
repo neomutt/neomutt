@@ -70,6 +70,7 @@ static int op_generic_select_entry(struct SmimeData *sd, const struct KeyEvent *
         s = _("ID is expired/disabled/revoked. Do you really want to use the key?");
         break;
       case 'u':
+      default:
         s = _("ID has undefined validity. Do you really want to use the key?");
         break;
       case 'v':

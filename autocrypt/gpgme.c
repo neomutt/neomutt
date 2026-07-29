@@ -305,6 +305,10 @@ int mutt_autocrypt_gpgme_select_or_create_key(struct Address *addr, struct Buffe
 
     case 1: /* create new */
       rc = mutt_autocrypt_gpgme_create_key(addr, keyid, keydata);
+      break;
+
+    default:
+      break;
   }
 
   return rc;

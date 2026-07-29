@@ -233,6 +233,7 @@ static int pop_capabilities(struct PopAccountData *adata, int mode)
         break;
       }
       case -1:
+      default:
         return -1;
     }
   }

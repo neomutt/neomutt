@@ -193,6 +193,7 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
       break;
     }
     case -3:
+    default:
     {
       mutt_error(_("Can't write header to temporary file"));
       break;

@@ -571,6 +571,8 @@ static void print_compile_options(const struct CompileOption *co, FILE *fp, bool
         else
           fmt = "%s ";
         break;
+      default:
+        break;
     }
     fprintf(fp, fmt, co[i].name);
   }

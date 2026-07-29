@@ -1163,6 +1163,8 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e,
               case 'r':
                 e->replied = true;
                 break;
+              default:
+                break;
             }
             body++;
           }

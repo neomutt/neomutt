@@ -1262,6 +1262,10 @@ static int op_sort(struct BrowserPrivateData *priv, const struct KeyEvent *event
     case 7: /* do(n)'t sort */
       sort = BROWSER_SORT_UNSORTED;
       break;
+
+    default:
+      resort = false;
+      break;
   }
 
   if (!resort)

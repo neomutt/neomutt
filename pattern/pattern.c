@@ -409,6 +409,9 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
           case MUTT_UNTAG:
             mutt_set_flag(m, e, MUTT_TAG, (op == MUTT_TAG), true);
             break;
+
+          default:
+            break;
         }
       }
     }

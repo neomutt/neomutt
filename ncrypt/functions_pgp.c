@@ -92,6 +92,7 @@ static int op_generic_select_entry(struct PgpData *pd, const struct KeyEvent *ev
       switch ((*pkey)->trust & 0x03)
       {
         case 0:
+        default:
           str = _("ID has undefined validity. Do you really want to use the key?");
           break;
         case 1:

@@ -378,6 +378,8 @@ static enum PopAuthRes pop_auth_apop(struct PopAccountData *adata, const char *m
       return POP_A_SUCCESS;
     case -1:
       return POP_A_SOCKET;
+    default:
+      break;
   }
 
   // L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
@@ -437,6 +439,8 @@ static enum PopAuthRes pop_auth_user(struct PopAccountData *adata, const char *m
       return POP_A_SUCCESS;
     case -1:
       return POP_A_SOCKET;
+    default:
+      break;
   }
 
   mutt_error("%s %s", _("Login failed"), adata->err_msg);
@@ -480,6 +484,8 @@ static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *
       return POP_A_SUCCESS;
     case -1:
       return POP_A_SOCKET;
+    default:
+      break;
   }
 
   /* The error response was a SASL continuation, so "continue" it.
@@ -587,6 +593,9 @@ int pop_authenticate(struct PopAccountData *adata)
               }
               case -2:
                 rc = POP_A_FAILURE;
+                break;
+              default:
+                break;
             }
           }
 
@@ -622,6 +631,9 @@ int pop_authenticate(struct PopAccountData *adata)
           }
           case -2:
             rc = POP_A_FAILURE;
+            break;
+          default:
+            break;
         }
       }
 
@@ -647,6 +659,10 @@ int pop_authenticate(struct PopAccountData *adata)
     case POP_A_UNAVAIL:
       if (attempts == 0)
         mutt_error(_("No authenticators available"));
+      break;
+
+    default:
+      break;
   }
 
   return -2;

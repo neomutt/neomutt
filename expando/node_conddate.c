@@ -107,6 +107,9 @@ time_t cutoff_number(char period, int count)
     case 'M':
       tm.tm_min -= count;
       break;
+
+    default:
+      break;
   }
 
   return mktime(&tm);
@@ -157,6 +160,9 @@ time_t cutoff_this(char period)
       else
         bow = tm.tm_wday - 1; // LCOV_EXCL_LINE
       tm.tm_mday -= bow;
+      break;
+
+    default:
       break;
   }
 

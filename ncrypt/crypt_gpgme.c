@@ -1348,6 +1348,8 @@ static void show_one_sig_validity(gpgme_ctx_t ctx, int idx, struct State *state)
     case GPGME_VALIDITY_ULTIMATE:
       txt = NULL;
       break;
+    default:
+      break;
   }
   if (txt)
     state_puts(state, txt);
@@ -4077,6 +4079,9 @@ static SecurityFlags gpgme_send_menu(struct Email *e, bool is_smime)
       case 's': /* (s)ign */
         e->security &= ~SEC_ENCRYPT;
         e->security |= SEC_SIGN;
+        break;
+
+      default:
         break;
     }
   }

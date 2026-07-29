@@ -316,6 +316,9 @@ bool eat_message_range(struct Pattern *pat, PatternCompFlags flags,
           s->dptr++;
         SKIPWS(s->dptr);
         return true;
+
+      default:
+        break;
     }
   }
   return false;

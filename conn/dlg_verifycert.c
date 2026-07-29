@@ -121,6 +121,8 @@ static int menu_dialog_translate_op(int op)
       return OP_BOTTOM_PAGE;
     case OP_CURRENT_MIDDLE:
       return OP_MIDDLE_PAGE;
+    default:
+      break;
   }
 
   return op;
@@ -275,6 +277,9 @@ int dlg_certificate(const char *title, struct StringArray *carr, bool allow_alwa
       case OP_SEARCH_REVERSE:
         mutt_error(_("Search is not implemented for this menu"));
         continue;
+
+      default:
+        break;
     }
 
     (void) menu_function_dispatcher(menu->win, &event);

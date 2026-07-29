@@ -270,6 +270,8 @@ static void qp_decode_line(char *dest, char *src, size_t *l, int last)
         soft = true;
         s++;
         break; /* soft line break */
+      default:
+        break;
     }
   }
 

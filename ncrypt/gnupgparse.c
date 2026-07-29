@@ -224,6 +224,8 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
           case 'u':
             trust = 3;
             break;
+          default:
+            break;
         }
 
         if (!is_uid && !(*is_subkey && c_pgp_ignore_subkeys))
@@ -370,6 +372,9 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
 
             case 's':
               flags |= KEYFLAG_CANSIGN;
+              break;
+
+            default:
               break;
           }
         }

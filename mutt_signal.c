@@ -83,6 +83,9 @@ static void curses_signal_handler(int sig)
     case SIGINT:
       SigInt = true;
       break;
+
+    default:
+      break;
   }
   errno = save_errno;
 }

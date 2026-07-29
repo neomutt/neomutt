@@ -2983,6 +2983,9 @@ static int op_search(struct IndexFunctionData *fdata, const struct KeyEvent *eve
     case OP_SEARCH_OPPOSITE:
       flags |= SEARCH_OPPOSITE;
       break;
+
+    default:
+      break;
   }
 
   // Initiating a search can happen on an empty mailbox, but
@@ -3820,6 +3823,9 @@ static int op_main_windowed_vfolder(struct IndexFunctionData *fdata,
       break;
     case OP_MAIN_WINDOWED_VFOLDER_RESET:
       nm_query_window_reset();
+      break;
+
+    default:
       break;
   }
 
