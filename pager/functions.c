@@ -923,7 +923,8 @@ static int op_save(struct PagerFunctionData *fdata, const struct KeyEvent *event
 
   // Save the current read position
   long pos = ftell(priv->fp);
-  rewind(priv->fp);
+  fseek(priv->fp, 0, SEEK_SET);
+  clearerr(priv->fp);
 
   struct FileCompletionData cdata = { false, NULL, NULL, NULL, NULL };
   if ((mw_get_field(_("Save to file: "), buf, MUTT_COMP_CLEAR, HC_FILE,

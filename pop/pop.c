@@ -173,10 +173,12 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
   {
     case 0:
     {
-      rewind(fp);
+      fseek(fp, 0, SEEK_SET);
+      clearerr(fp);
       e->env = mutt_rfc822_read_header(fp, e, false, false);
       e->body->length = length - e->body->offset + 1;
-      rewind(fp);
+      fseek(fp, 0, SEEK_SET);
+      clearerr(fp);
       while (!feof(fp))
       {
         e->body->length--;
@@ -1103,7 +1105,8 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e
     cache->index = e->index;
     cache->path = buf_strdup(path);
   }
-  rewind(msg->fp);
+  fseek(msg->fp, 0, SEEK_SET);
+  clearerr(msg->fp);
 
   /* Detach the private data */
   e->edata = NULL;
@@ -1135,7 +1138,8 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e
     e->security = crypt_query(e->body);
 
   mutt_clear_error();
-  rewind(msg->fp);
+  fseek(msg->fp, 0, SEEK_SET);
+  clearerr(msg->fp);
 
   success = true;
 

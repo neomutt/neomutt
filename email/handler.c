@@ -591,7 +591,8 @@ static int autoview_handler(struct Body *b_email, struct State *state)
     {
       unlink(buf_string(tempfile));
       fflush(fp_in);
-      rewind(fp_in);
+      fseek(fp_in, 0, SEEK_SET);
+      clearerr(fp_in);
       pid = filter_create_fd(buf_string(cmd), NULL, &fp_out, &fp_err,
                              fileno(fp_in), -1, -1, NeoMutt->env);
     }

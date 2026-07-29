@@ -1014,7 +1014,10 @@ static int fetch_tempfile(char *line, void *data)
   FILE *fp = data;
 
   if (!line)
-    rewind(fp);
+  {
+    fseek(fp, 0, SEEK_SET);
+    clearerr(fp);
+  }
   else if ((fputs(line, fp) == EOF) || (fputc('\n', fp) == EOF))
     return -1;
   return 0;
@@ -1113,7 +1116,8 @@ static int parse_overview_line(char *line, void *data)
       return -1;
     }
   }
-  rewind(fp);
+  fseek(fp, 0, SEEK_SET);
+  clearerr(fp);
 
   /* allocate memory for headers */
   mx_alloc_memory(m, m->msg_count);
@@ -2776,7 +2780,8 @@ static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, struct Email *
   if (WithCrypto)
     e->security = crypt_query(e->body);
 
-  rewind(msg->fp);
+  fseek(msg->fp, 0, SEEK_SET);
+  clearerr(msg->fp);
   mutt_clear_error();
   return true;
 }

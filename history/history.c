@@ -256,7 +256,8 @@ static void shrink_histfile(void)
       mutt_perror(_("Can't create temporary file"));
       goto cleanup;
     }
-    rewind(fp);
+    fseek(fp, 0, SEEK_SET);
+    clearerr(fp);
     line = 0;
     while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, MUTT_RL_NONE)))
     {
@@ -288,7 +289,8 @@ cleanup:
       fp = mutt_file_fopen(c_history_file, "w");
       if (fp)
       {
-        rewind(fp_tmp);
+        fseek(fp_tmp, 0, SEEK_SET);
+        clearerr(fp_tmp);
         mutt_file_copy_stream(fp_tmp, fp);
         mutt_file_fclose(&fp);
       }

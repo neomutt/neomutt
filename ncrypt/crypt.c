@@ -934,7 +934,8 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailArray *ea)
     }
     mx_msg_close(m, &msg);
 
-    rewind(fp_out);
+    fseek(fp_out, 0, SEEK_SET);
+    clearerr(fp_out);
   }
 
   mutt_file_fclose(&fp_out);

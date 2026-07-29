@@ -272,7 +272,8 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
     slist_free(&chs);
   }
 
-  rewind(fp);
+  fseek(fp, 0, SEEK_SET);
+  clearerr(fp);
   while ((r = fread(buf, 1, sizeof(buf), fp)))
     mutt_update_content_info(info, &cstate, buf, r);
   mutt_update_content_info(info, &cstate, 0, 0);

@@ -201,7 +201,8 @@ static short pgp_find_hash(const char *fname)
   }
 
   pgp_dearmor(fp_in, fp_out);
-  rewind(fp_out);
+  fseek(fp_out, 0, SEEK_SET);
+  clearerr(fp_out);
 
   unsigned char *p = pgp_read_packet(fp_out, &l);
   if (p)

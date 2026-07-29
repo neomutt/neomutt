@@ -87,7 +87,7 @@ int mutt_randbuf(void *buf, size_t buflen)
       mutt_error(_("open /dev/urandom: %s"), strerror(errno));
       return -1;
     }
-    setbuf(FpRandom, NULL);
+    setvbuf(FpRandom, NULL, _IONBF, 0);
   }
   if (fread(buf, 1, buflen, FpRandom) != buflen)
   {

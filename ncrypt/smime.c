@@ -740,9 +740,11 @@ static int smime_handle_cert_email(const char *certificate, const char *mailbox,
   filter_wait(pid);
 
   fflush(fp_out);
-  rewind(fp_out);
+  fseek(fp_out, 0, SEEK_SET);
+  clearerr(fp_out);
   fflush(fp_err);
-  rewind(fp_err);
+  fseek(fp_err, 0, SEEK_SET);
+  clearerr(fp_err);
 
   while ((fgets(email, sizeof(email), fp_out)))
   {
@@ -778,7 +780,8 @@ static int smime_handle_cert_email(const char *certificate, const char *mailbox,
     *buffer = MUTT_MEM_CALLOC(count, char *);
     count = 0;
 
-    rewind(fp_out);
+    fseek(fp_out, 0, SEEK_SET);
+    clearerr(fp_out);
     while ((fgets(email, sizeof(email), fp_out)))
     {
       size_t len = mutt_str_len(email);
@@ -846,9 +849,11 @@ static char *smime_extract_certificate(const char *infile)
   filter_wait(pid);
 
   fflush(fp_out);
-  rewind(fp_out);
+  fseek(fp_out, 0, SEEK_SET);
+  clearerr(fp_out);
   fflush(fp_err);
-  rewind(fp_err);
+  fseek(fp_err, 0, SEEK_SET);
+  clearerr(fp_err);
   empty = (fgetc(fp_out) == EOF);
   if (empty)
   {
@@ -884,9 +889,11 @@ static char *smime_extract_certificate(const char *infile)
   mutt_file_unlink(buf_string(pk7out));
 
   fflush(fp_cert);
-  rewind(fp_cert);
+  fseek(fp_cert, 0, SEEK_SET);
+  clearerr(fp_cert);
   fflush(fp_err);
-  rewind(fp_err);
+  fseek(fp_err, 0, SEEK_SET);
+  clearerr(fp_err);
   empty = (fgetc(fp_cert) == EOF);
   if (empty)
   {
@@ -959,9 +966,11 @@ static char *smime_extract_signer_certificate(const char *infile)
   filter_wait(pid);
 
   fflush(fp_out);
-  rewind(fp_out);
+  fseek(fp_out, 0, SEEK_SET);
+  clearerr(fp_out);
   fflush(fp_err);
-  rewind(fp_err);
+  fseek(fp_err, 0, SEEK_SET);
+  clearerr(fp_err);
   empty = (fgetc(fp_out) == EOF);
   if (empty)
   {
@@ -1048,9 +1057,11 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
   }
 
   fflush(fp_out);
-  rewind(fp_out);
+  fseek(fp_out, 0, SEEK_SET);
+  clearerr(fp_out);
   fflush(fp_err);
-  rewind(fp_err);
+  fseek(fp_err, 0, SEEK_SET);
+  clearerr(fp_err);
 
   mutt_file_copy_stream(fp_out, stdout);
   mutt_file_copy_stream(fp_err, stdout);
@@ -1271,12 +1282,14 @@ struct Body *smime_class_build_smime_entity(struct Body *b, char *certlist)
   mutt_file_unlink(buf_string(smime_infile));
 
   fflush(fp_out);
-  rewind(fp_out);
+  fseek(fp_out, 0, SEEK_SET);
+  clearerr(fp_out);
   empty = (fgetc(fp_out) == EOF);
   mutt_file_fclose(&fp_out);
 
   fflush(fp_smime_err);
-  rewind(fp_smime_err);
+  fseek(fp_smime_err, 0, SEEK_SET);
+  clearerr(fp_smime_err);
   while (fgets(buf, sizeof(buf) - 1, fp_smime_err))
   {
     err = true;
@@ -1447,7 +1460,8 @@ struct Body *smime_class_sign_message(struct Body *b, const struct AddressList *
   /* check for errors from OpenSSL */
   err = false;
   fflush(fp_smime_err);
-  rewind(fp_smime_err);
+  fseek(fp_smime_err, 0, SEEK_SET);
+  clearerr(fp_smime_err);
   while (fgets(buf, sizeof(buf) - 1, fp_smime_err))
   {
     err = true;
@@ -1456,7 +1470,8 @@ struct Body *smime_class_sign_message(struct Body *b, const struct AddressList *
   mutt_file_fclose(&fp_smime_err);
 
   fflush(fp_smime_out);
-  rewind(fp_smime_out);
+  fseek(fp_smime_out, 0, SEEK_SET);
+  clearerr(fp_smime_out);
   empty = (fgetc(fp_smime_out) == EOF);
   mutt_file_fclose(&fp_smime_out);
 
@@ -1658,7 +1673,8 @@ int smime_class_verify_one(struct Body *b, struct State *state, const char *temp
       size_t linelen = 0;
 
       fflush(fp_smime_err);
-      rewind(fp_smime_err);
+      fseek(fp_smime_err, 0, SEEK_SET);
+      clearerr(fp_smime_err);
 
       line = mutt_file_read_line(line, &linelen, fp_smime_err, NULL, MUTT_RL_NONE);
       if (linelen && mutt_istr_equal(line, "verification successful"))
@@ -1669,7 +1685,8 @@ int smime_class_verify_one(struct Body *b, struct State *state, const char *temp
   }
 
   fflush(fp_smime_err);
-  rewind(fp_smime_err);
+  fseek(fp_smime_err, 0, SEEK_SET);
+  clearerr(fp_smime_err);
   mutt_file_copy_stream(fp_smime_err, state->fp_out);
   mutt_file_fclose(&fp_smime_err);
 
@@ -1787,7 +1804,8 @@ static struct Body *smime_handle_entity(struct Body *b, struct State *state, FIL
   if (state->flags & STATE_DISPLAY)
   {
     fflush(fp_smime_err);
-    rewind(fp_smime_err);
+    fseek(fp_smime_err, 0, SEEK_SET);
+    clearerr(fp_smime_err);
 
     const int c = fgetc(fp_smime_err);
     if (c != EOF)
@@ -1810,7 +1828,8 @@ static struct Body *smime_handle_entity(struct Body *b, struct State *state, FIL
   }
 
   fflush(fp_smime_out);
-  rewind(fp_smime_out);
+  fseek(fp_smime_out, 0, SEEK_SET);
+  clearerr(fp_smime_out);
 
   if (type & SEC_ENCRYPT)
   {
@@ -1820,7 +1839,8 @@ static struct Body *smime_handle_entity(struct Body *b, struct State *state, FIL
       mutt_error(_("Decryption failed"));
       smime_class_void_passphrase();
     }
-    rewind(fp_smime_out);
+    fseek(fp_smime_out, 0, SEEK_SET);
+    clearerr(fp_smime_out);
   }
 
   if (fp_out_file)
@@ -1848,7 +1868,8 @@ static struct Body *smime_handle_entity(struct Body *b, struct State *state, FIL
     fputs(buf, fp_out);
   }
   fflush(fp_out);
-  rewind(fp_out);
+  fseek(fp_out, 0, SEEK_SET);
+  clearerr(fp_out);
 
   const long size = mutt_file_get_size_fp(fp_out);
   if (size == 0)
@@ -1875,7 +1896,8 @@ static struct Body *smime_handle_entity(struct Body *b, struct State *state, FIL
 
     if (state->fp_out)
     {
-      rewind(fp_out);
+      fseek(fp_out, 0, SEEK_SET);
+      clearerr(fp_out);
       FILE *fp_tmp_buffer = state->fp_in;
       state->fp_in = fp_out;
       mutt_body_handler(p, state);
@@ -1915,7 +1937,8 @@ static struct Body *smime_handle_entity(struct Body *b, struct State *state, FIL
     char *line = NULL;
     size_t linelen = 0;
 
-    rewind(fp_smime_err);
+    fseek(fp_smime_err, 0, SEEK_SET);
+    clearerr(fp_smime_err);
 
     line = mutt_file_read_line(line, &linelen, fp_smime_err, NULL, MUTT_RL_NONE);
     if (linelen && mutt_istr_equal(line, "verification successful"))
@@ -1971,7 +1994,8 @@ int smime_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
   fflush(fp_tmp);
   b->length = ftello(state.fp_out);
   b->offset = 0;
-  rewind(fp_tmp);
+  fseek(fp_tmp, 0, SEEK_SET);
+  clearerr(fp_tmp);
   state.fp_in = fp_tmp;
   state.fp_out = 0;
 
@@ -1995,7 +2019,10 @@ bail:
   b->offset = tmpoffset;
   mutt_file_fclose(&fp_tmp);
   if (*fp_out)
-    rewind(*fp_out);
+  {
+    fseek(*fp_out, 0, SEEK_SET);
+    clearerr(*fp_out);
+  }
 
   return rc;
 }

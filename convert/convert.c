@@ -96,7 +96,8 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
     ni += 1;
   }
 
-  rewind(fp);
+  fseek(fp, 0, SEEK_SET);
+  clearerr(fp);
   size_t ibl = 0;
   while (true)
   {

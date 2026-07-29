@@ -549,7 +549,8 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
   mx_msg_close(m, &msg);
 
   fflush(fp);
-  rewind(fp);
+  fseek(fp, 0, SEEK_SET);
+  clearerr(fp);
 
   body->email = email_new();
   body->email->offset = 0;
@@ -1195,14 +1196,16 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
     /* count the number of lines */
     int lines = 0;
     char line_buf[1024] = { 0 };
-    rewind(fp_tmp);
+    fseek(fp_tmp, 0, SEEK_SET);
+    clearerr(fp_tmp);
     while (fgets(line_buf, sizeof(line_buf), fp_tmp))
       lines++;
     fprintf(msg->fp, "Content-Length: " OFF_T_FMT "\n", (LOFF_T) ftello(fp_tmp));
     fprintf(msg->fp, "Lines: %d\n\n", lines);
 
     /* copy the body and clean up */
-    rewind(fp_tmp);
+    fseek(fp_tmp, 0, SEEK_SET);
+    clearerr(fp_tmp);
     rc = mutt_file_copy_stream(fp_tmp, msg->fp);
     if (mutt_file_fclose(&fp_tmp) != 0)
       rc = -1;

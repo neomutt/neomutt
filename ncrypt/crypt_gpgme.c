@@ -435,7 +435,8 @@ static gpgme_data_t body_to_data_object(struct Body *b, bool convert)
     unsigned char buf[1] = { 0 };
 
     data = create_gpgme_data();
-    rewind(fp_tmp);
+    fseek(fp_tmp, 0, SEEK_SET);
+    clearerr(fp_tmp);
     while ((c = fgetc(fp_tmp)) != EOF)
     {
       if (c == '\r')
@@ -589,7 +590,10 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
     }
   }
   if (fp_ret)
-    rewind(fp);
+  {
+    fseek(fp, 0, SEEK_SET);
+    clearerr(fp);
+  }
   else
     mutt_file_fclose(&fp);
   if (nread == -1)
@@ -1876,7 +1880,8 @@ restart:
   ctx = NULL;
 
   fflush(fp_out);
-  rewind(fp_out);
+  fseek(fp_out, 0, SEEK_SET);
+  clearerr(fp_out);
   const long size = mutt_file_get_size_fp(fp_out);
   if (size == 0)
   {
@@ -1962,7 +1967,8 @@ int pgp_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
     fflush(fp_decoded);
     b->length = ftello(fp_decoded);
     b->offset = 0;
-    rewind(fp_decoded);
+    fseek(fp_decoded, 0, SEEK_SET);
+    clearerr(fp_decoded);
     state.fp_in = fp_decoded;
     state.fp_out = 0;
   }
@@ -1978,7 +1984,8 @@ int pgp_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
   *b_dec = decrypt_part(b, &state, *fp_out, false, &is_signed);
   if (*b_dec)
   {
-    rewind(*fp_out);
+    fseek(*fp_out, 0, SEEK_SET);
+    clearerr(*fp_out);
     if (is_signed > 0)
       first_part->goodsig = true;
   }
@@ -2038,7 +2045,8 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
   fflush(fp_tmp);
   b->length = ftello(state.fp_out);
   b->offset = 0;
-  rewind(fp_tmp);
+  fseek(fp_tmp, 0, SEEK_SET);
+  clearerr(fp_tmp);
 
   memset(&state, 0, sizeof(state));
   state.fp_in = fp_tmp;
@@ -2057,7 +2065,8 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
   b->length = saved_b_length;
   b->offset = saved_b_offset;
   mutt_file_fclose(&fp_tmp);
-  rewind(*fp_out);
+  fseek(*fp_out, 0, SEEK_SET);
+  clearerr(*fp_out);
   if (*b_dec && !is_signed && !(*b_dec)->parts && mutt_is_application_smime(*b_dec))
   {
     /* Assume that this is a opaque signed s/mime message.  This is an ugly way
@@ -2089,7 +2098,8 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
     fflush(fp_tmp2);
     bb->length = ftello(state.fp_out);
     bb->offset = 0;
-    rewind(fp_tmp2);
+    fseek(fp_tmp2, 0, SEEK_SET);
+    clearerr(fp_tmp2);
     mutt_file_fclose(fp_out);
 
     memset(&state, 0, sizeof(state));
@@ -2109,7 +2119,8 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
     bb->length = saved_b_length;
     bb->offset = saved_b_offset;
     mutt_file_fclose(&fp_tmp2);
-    rewind(*fp_out);
+    fseek(*fp_out, 0, SEEK_SET);
+    clearerr(*fp_out);
     mutt_body_free(b_dec);
     *b_dec = b_tmp;
   }
@@ -2720,7 +2731,8 @@ int pgp_gpgme_application_handler(struct Body *b, struct State *state)
       {
         int c;
         char *expected_charset = gpgcharset && *gpgcharset ? gpgcharset : "utf-8";
-        rewind(fp_out);
+        fseek(fp_out, 0, SEEK_SET);
+        clearerr(fp_out);
         struct FgetConv *fc = mutt_ch_fgetconv_open(fp_out, expected_charset,
                                                     cc_charset(), MUTT_ICONV_HOOK_FROM);
         while ((c = mutt_ch_fgetconv(fc)) != EOF)

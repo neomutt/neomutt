@@ -1215,7 +1215,8 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 
     while (true)
     {
-      rewind(fp);
+      fseek(fp, 0, SEEK_SET);
+      clearerr(fp);
       memset(&h, 0, sizeof(h));
       h.edata = edata;
 
@@ -1301,7 +1302,8 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
       if (*maxuid < h.edata->uid)
         *maxuid = h.edata->uid;
 
-      rewind(fp);
+      fseek(fp, 0, SEEK_SET);
+      clearerr(fp);
       /* NOTE: if Date: header is missing, mutt_rfc822_read_header depends
        *   on h.received being set */
       e->env = mutt_rfc822_read_header(fp, e, false, false);
@@ -1593,7 +1595,8 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
 
     len++;
   }
-  rewind(fp);
+  fseek(fp, 0, SEEK_SET);
+  clearerr(fp);
 
   if (m->verbose)
   {
@@ -2148,7 +2151,8 @@ bool imap_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
 parsemsg:
   /* Update the header information.  Previously, we only downloaded a
    * portion of the headers, those required for the main display.  */
-  rewind(msg->fp);
+  fseek(msg->fp, 0, SEEK_SET);
+  clearerr(msg->fp);
   /* It may be that the Status header indicates a message is read, but the
    * IMAP server doesn't know the message has been \Seen. So we capture
    * the server's notion of 'read' and if it differs from the message info
@@ -2175,7 +2179,8 @@ parsemsg:
   e->body->length = ftell(msg->fp) - e->body->offset;
 
   mutt_clear_error();
-  rewind(msg->fp);
+  fseek(msg->fp, 0, SEEK_SET);
+  clearerr(msg->fp);
   imap_edata_get(e)->parsed = true;
 
   /* retry message parse if cached message is empty */

@@ -424,7 +424,8 @@ static void pgp_copy_clearsigned(FILE *fp_in, struct State *state, char *charset
   char buf[8192] = { 0 };
   bool complete, armor_header;
 
-  rewind(fp_in);
+  fseek(fp_in, 0, SEEK_SET);
+  clearerr(fp_in);
 
   /* fromcode comes from the MIME Content-Type charset label. It might
    * be a wrong label, so we want the ability to do corrections via
@@ -634,7 +635,8 @@ int pgp_class_application_handler(struct Body *b, struct State *state)
            * -2 and -1 indicate part or all of the content was plaintext.  */
           if (needpass)
           {
-            rewind(fp_pgp_err);
+            fseek(fp_pgp_err, 0, SEEK_SET);
+            clearerr(fp_pgp_err);
             decrypt_okay_rc = pgp_check_decryption_okay(fp_pgp_err);
             if (decrypt_okay_rc <= -3)
               mutt_file_fclose(&fp_pgp_out);
@@ -642,7 +644,8 @@ int pgp_class_application_handler(struct Body *b, struct State *state)
 
           if (state->flags & STATE_DISPLAY)
           {
-            rewind(fp_pgp_err);
+            fseek(fp_pgp_err, 0, SEEK_SET);
+            clearerr(fp_pgp_err);
             crypt_current_time(state, "PGP");
             int checksig_rc = pgp_copy_checksig(fp_pgp_err, state->fp_out);
 
@@ -667,7 +670,8 @@ int pgp_class_application_handler(struct Body *b, struct State *state)
         /* TODO: maybe on failure neomutt should include the original undecoded text. */
         if (fp_pgp_out)
         {
-          rewind(fp_pgp_out);
+          fseek(fp_pgp_out, 0, SEEK_SET);
+          clearerr(fp_pgp_out);
           c = fgetc(fp_pgp_out);
           ungetc(c, fp_pgp_out);
         }
@@ -697,7 +701,8 @@ int pgp_class_application_handler(struct Body *b, struct State *state)
 
       if (clearsign)
       {
-        rewind(fp_tmp);
+        fseek(fp_tmp, 0, SEEK_SET);
+        clearerr(fp_tmp);
         pgp_copy_clearsigned(fp_tmp, state, body_charset);
       }
       else if (fp_pgp_out)
@@ -709,7 +714,8 @@ int pgp_class_application_handler(struct Body *b, struct State *state)
         mutt_debug(LL_DEBUG3, "pgp: recoding inline from [%s] to [%s]\n",
                    expected_charset, cc_charset());
 
-        rewind(fp_pgp_out);
+        fseek(fp_pgp_out, 0, SEEK_SET);
+        clearerr(fp_pgp_out);
         state_set_prefix(state);
         fc = mutt_ch_fgetconv_open(fp_pgp_out, expected_charset, cc_charset(),
                                    MUTT_ICONV_HOOK_FROM);
@@ -939,7 +945,8 @@ int pgp_class_verify_one(struct Body *b, struct State *state, const char *tempfi
 
     mutt_file_fclose(&fp_pgp_out);
     fflush(fp_pgp_err);
-    rewind(fp_pgp_err);
+    fseek(fp_pgp_err, 0, SEEK_SET);
+    clearerr(fp_pgp_err);
 
     if (pgp_copy_checksig(fp_pgp_err, state->fp_out) >= 0)
       badsig = 0;
@@ -1108,7 +1115,8 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *state,
   mutt_file_unlink(buf_string(tempfile));
 
   fflush(fp_pgp_err);
-  rewind(fp_pgp_err);
+  fseek(fp_pgp_err, 0, SEEK_SET);
+  clearerr(fp_pgp_err);
   if (pgp_check_decryption_okay(fp_pgp_err) < 0)
   {
     mutt_error(_("Decryption failed"));
@@ -1119,7 +1127,8 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *state,
 
   if (state->flags & STATE_DISPLAY)
   {
-    rewind(fp_pgp_err);
+    fseek(fp_pgp_err, 0, SEEK_SET);
+    clearerr(fp_pgp_err);
     if ((pgp_copy_checksig(fp_pgp_err, state->fp_out) == 0) && !rv)
       p->goodsig = true;
     else
@@ -1129,7 +1138,8 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *state,
   mutt_file_fclose(&fp_pgp_err);
 
   fflush(fp_out);
-  rewind(fp_out);
+  fseek(fp_out, 0, SEEK_SET);
+  clearerr(fp_out);
 
   if (fgetc(fp_out) == EOF)
   {
@@ -1138,7 +1148,8 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *state,
     goto cleanup;
   }
 
-  rewind(fp_out);
+  fseek(fp_out, 0, SEEK_SET);
+  clearerr(fp_out);
   const long size = mutt_file_get_size_fp(fp_out);
   if (size == 0)
   {
@@ -1216,7 +1227,8 @@ int pgp_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
     fflush(fp_decoded);
     b->length = ftello(fp_decoded);
     b->offset = 0;
-    rewind(fp_decoded);
+    fseek(fp_decoded, 0, SEEK_SET);
+    clearerr(fp_decoded);
     state.fp_in = fp_decoded;
     state.fp_out = 0;
   }
@@ -1232,7 +1244,8 @@ int pgp_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
   *b_dec = pgp_decrypt_part(b, &state, *fp_out, p);
   if (!*b_dec)
     rc = -1;
-  rewind(*fp_out);
+  fseek(*fp_out, 0, SEEK_SET);
+  clearerr(*fp_out);
 
 bail:
   if (need_decode)
@@ -1675,13 +1688,15 @@ struct Body *pgp_class_encrypt_message(struct Body *b, char *keylist, bool sign,
   unlink(buf_string(pgpinfile));
 
   fflush(fp_out);
-  rewind(fp_out);
+  fseek(fp_out, 0, SEEK_SET);
+  clearerr(fp_out);
   if (!empty)
     empty = (fgetc(fp_out) == EOF);
   mutt_file_fclose(&fp_out);
 
   fflush(fp_pgp_err);
-  rewind(fp_pgp_err);
+  fseek(fp_pgp_err, 0, SEEK_SET);
+  clearerr(fp_pgp_err);
   while (fgets(buf, sizeof(buf) - 1, fp_pgp_err))
   {
     err = true;
@@ -1850,8 +1865,10 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *b, SecurityFlags fla
   fflush(fp_pgp_out);
   fflush(fp_pgp_err);
 
-  rewind(fp_pgp_out);
-  rewind(fp_pgp_err);
+  fseek(fp_pgp_out, 0, SEEK_SET);
+  clearerr(fp_pgp_out);
+  fseek(fp_pgp_err, 0, SEEK_SET);
+  clearerr(fp_pgp_err);
 
   if (!empty)
     empty = (fgetc(fp_pgp_out) == EOF);
