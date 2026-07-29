@@ -50,8 +50,8 @@ struct Mailbox;
  * - libnotmuch 5.1 released with notmuch 0.26. notmuch 0.26.1 fixed version.
  */
 #define LIBNOTMUCH_CHECK_VERSION(major, minor, micro)                              \
-  (major == 5 && minor == 4 && HAVE_NOTMUCH_DATABASE_OPEN_WITH_CONFIG)          || \
-  (major == 5 && minor == 1 && HAVE_NOTMUCH_DATABASE_INDEX_FILE)                || \
+  ((major) == 5 && (minor) == 4 && HAVE_NOTMUCH_DATABASE_OPEN_WITH_CONFIG)      || \
+  ((major) == 5 && (minor) == 1 && HAVE_NOTMUCH_DATABASE_INDEX_FILE)            || \
   ((LIBNOTMUCH_MAJOR_VERSION > (major) ||                                          \
    (LIBNOTMUCH_MAJOR_VERSION == (major) && LIBNOTMUCH_MINOR_VERSION > (minor))  || \
    (LIBNOTMUCH_MAJOR_VERSION == (major) &&                                         \

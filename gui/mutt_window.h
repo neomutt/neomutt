@@ -49,7 +49,7 @@ enum MuttWindowSize
   MUTT_WIN_SIZE_MINIMISE,  ///< Window size depends on its children
 };
 
-#define MUTT_WIN_SIZE_UNLIMITED -1 ///< Use as much space as possible
+#define MUTT_WIN_SIZE_UNLIMITED (-1) ///< Use as much space as possible
 
 /**
  * struct WindowState - The current, or old, state of a Window

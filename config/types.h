@@ -119,7 +119,7 @@ enum ConfigTypeField
 #define D_SORT_LAST                D_CUSTOM_BIT_0                      ///< Sort flag for -last prefix
 #define D_SORT_REVERSE             D_CUSTOM_BIT_1                      ///< Sort flag for -reverse prefix
 
-#define IS_MAILBOX(flags)   ((CONFIG_TYPE(flags) == DT_STRING) && (flags & D_STRING_MAILBOX))
-#define IS_COMMAND(flags)   ((CONFIG_TYPE(flags) == DT_STRING) && (flags & D_STRING_COMMAND))
+#define IS_MAILBOX(flags)   ((CONFIG_TYPE(flags) == DT_STRING) && ((flags) & D_STRING_MAILBOX))
+#define IS_COMMAND(flags)   ((CONFIG_TYPE(flags) == DT_STRING) && ((flags) & D_STRING_COMMAND))
 
 #endif /* MUTT_CONFIG_TYPES_H */

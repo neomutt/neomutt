@@ -49,12 +49,12 @@ struct Progress;
 #define IMAP_LOG_PASS  5   ///< Log passwords (dangerous!)
 
 /* IMAP command responses. Used in ImapCommand.state too */
-#define IMAP_RES_NO       -2  ///< `<tag> NO ...`
-#define IMAP_RES_BAD      -1  ///< `<tag> BAD ...`
-#define IMAP_RES_OK        0  ///< `<tag> OK ...`
-#define IMAP_RES_CONTINUE  1  ///< `* ...`
-#define IMAP_RES_RESPOND   2  ///< `+`
-#define IMAP_RES_NEW       3  ///< ImapCommand.state additions
+#define IMAP_RES_NO       (-2)  ///< `<tag> NO ...`
+#define IMAP_RES_BAD      (-1)  ///< `<tag> BAD ...`
+#define IMAP_RES_OK         0   ///< `<tag> OK ...`
+#define IMAP_RES_CONTINUE   1   ///< `* ...`
+#define IMAP_RES_RESPOND    2   ///< `+`
+#define IMAP_RES_NEW        3   ///< ImapCommand.state additions
 
 /// Length of IMAP sequence buffer
 #define SEQ_LEN 16

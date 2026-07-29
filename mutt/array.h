@@ -107,7 +107,7 @@
  *       explicitly set. In that case, the memory returned is all zeroes.
  */
 #define ARRAY_GET(head, idx)                                                   \
-  ((idx >= 0) && ((head)->size > (idx)) ? &(head)->entries[(idx)] : NULL)
+  (((idx) >= 0) && ((head)->size > (idx)) ? &(head)->entries[(idx)] : NULL)
 
 /**
  * ARRAY_SET - Set an element in the array
@@ -261,7 +261,7 @@
 #define ARRAY_FOREACH_FROM_TO(elem, head, from, to)                            \
   for (int ARRAY_FOREACH_IDX_##elem = (from);                                  \
        (ARRAY_FOREACH_IDX_##elem < (to)) &&                                    \
-       (elem = ARRAY_GET(head, ARRAY_FOREACH_IDX_##elem));                     \
+       ((elem) = ARRAY_GET(head, ARRAY_FOREACH_IDX_##elem));                   \
        ARRAY_FOREACH_IDX_##elem++)
 
 /**
@@ -312,7 +312,7 @@
 #define ARRAY_FOREACH_REVERSE_FROM_TO(elem, head, from, to)                    \
   for (int ARRAY_FOREACH_IDX_##elem = (from) - 1;                              \
        (ARRAY_FOREACH_IDX_##elem >= (to)) &&                                   \
-       (elem = ARRAY_GET(head, ARRAY_FOREACH_IDX_##elem));                     \
+       ((elem) = ARRAY_GET(head, ARRAY_FOREACH_IDX_##elem));                   \
        ARRAY_FOREACH_IDX_##elem--)
 
 /**
@@ -322,7 +322,7 @@
  * @retval n   The index of element in the array
  */
 #define ARRAY_IDX(head, elem)                                                  \
-  (elem - (head)->entries)
+  ((elem) - (head)->entries)
 
 /**
  * ARRAY_INSERT - Insert an element into the, shifting up the subsequent entries

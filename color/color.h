@@ -99,7 +99,7 @@ enum ColorId
 
 extern const struct Mapping ColorFields[];
 
-#define COLOR_DEFAULT -1
+#define COLOR_DEFAULT (-1)
 
 struct ColorModuleData;
 

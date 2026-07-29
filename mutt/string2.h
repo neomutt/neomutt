@@ -51,7 +51,7 @@ void string_array_clear(struct StringArray *arr);
  * on some systems */
 #define SKIPWS(ch)                                                             \
   while (*(ch) && mutt_isspace(*(ch)))                              \
-    ch++;
+    (ch)++;
 
 #define terminate_string(str, strlen, buflen)                                  \
   (str)[MIN((strlen), (buflen))] = '\0'

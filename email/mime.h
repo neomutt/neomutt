@@ -91,7 +91,8 @@ extern const char MimeSpecials[];
 
 /// Get the type name of a body part
 #define BODY_TYPE(body)                                                        \
-  ((body->type == TYPE_OTHER) && body->xtype ? body->xtype : BodyTypes[(body->type)])
+  (((body)->type == TYPE_OTHER) && (body)->xtype ? (body)->xtype :             \
+                                                   BodyTypes[((body)->type)])
 
 /// Get the encoding name for an encoding type
 #define ENCODING(x) BodyEncodings[(x)]

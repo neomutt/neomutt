@@ -146,7 +146,7 @@ static inline int email_msgno(struct Email *e)
   return e->msgno + 1;
 }
 
-#define MUTT_MAXRANGE -1
+#define MUTT_MAXRANGE (-1)
 
 extern const struct PatternFlags Flags[];
 
