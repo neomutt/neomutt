@@ -1290,9 +1290,6 @@ static int op_attach_detach(struct ComposeFunctionData *fdata, const struct KeyE
         continue;
       struct AttachPtr *ap = *app;
 
-      if (ap->unowned)
-        ap->body->unlink = false;
-
       const int index = body_index(actx, ap->body);
       if ((index >= 0) && (delete_attachment(actx, index, fdata->n->sub) == 0))
         rc = FR_SUCCESS;
@@ -1313,10 +1310,6 @@ static int op_attach_detach(struct ComposeFunctionData *fdata, const struct KeyE
   }
   else
   {
-    struct AttachPtr *cur_att = current_attachment(actx, menu);
-    if (cur_att->unowned)
-      cur_att->body->unlink = false;
-
     const int index = menu_get_index(menu);
     if (delete_attachment(actx, index, fdata->n->sub) == -1)
     {
