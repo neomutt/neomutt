@@ -490,6 +490,16 @@ int mutt_thread_set_flag(struct Mailbox *m, struct Email *e,
   return 0;
 }
 
+struct Email *mview_email_at(const struct MailboxView *mv, int num)
+{
+  return NULL;
+}
+
+int mview_email_count(const struct MailboxView *mv)
+{
+  return 0;
+}
+
 void mview_free(struct MailboxView **ptr)
 {
 }
