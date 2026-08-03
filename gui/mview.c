@@ -366,6 +366,46 @@ bool message_is_tagged(struct Email *e)
 }
 
 /**
+ * mview_email_count - Number of Emails in a MailboxView
+ * @param mv MailboxView
+ * @retval num Number of Emails
+ *
+ * This safely gets the result of the following:
+ * - `mv->mailbox->msg_count`
+ */
+int mview_email_count(const struct MailboxView *mv)
+{
+  if (!mv || !mv->mailbox)
+    return 0;
+
+  return mv->mailbox->msg_count;
+}
+
+/**
+ * mview_email_at - Get an Email by physical (insertion-order) index
+ * @param mv  MailboxView
+ * @param num Physical index number (0-based; matches Email::msgno)
+ * @retval ptr  Email
+ * @retval NULL No Email selected, or bad index values
+ *
+ * This safely gets the result of the following:
+ * - `mv->mailbox->emails[num]`
+ *
+ * @note This is physical/insertion order, NOT display/sort order.
+ *       For display (vnum) order, see mutt_get_virt_email().
+ */
+struct Email *mview_email_at(const struct MailboxView *mv, int num)
+{
+  if (!mv || !mv->mailbox || !mv->mailbox->emails)
+    return NULL;
+
+  if ((num < 0) || (num >= mv->mailbox->msg_count))
+    return NULL;
+
+  return mv->mailbox->emails[num];
+}
+
+/**
  * mutt_get_virt_email - Get a virtual Email
  * @param m    Mailbox
  * @param vnum Virtual index number

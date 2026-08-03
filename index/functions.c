@@ -1292,18 +1292,18 @@ static int op_jump(struct IndexFunctionData *fdata, const struct KeyEvent *event
     }
   }
 
-  if ((num < 1) || (num > shared->mailbox->msg_count))
+  if ((num < 1) || (num > mview_email_count(shared->mailbox_view)))
   {
     mutt_warning(_("Invalid message number"));
   }
-  else if (!shared->mailbox->emails[num - 1] ||
-           !shared->mailbox->emails[num - 1]->visible)
+  else if (!mview_email_at(shared->mailbox_view, num - 1) ||
+           !mview_email_at(shared->mailbox_view, num - 1)->visible)
   {
     mutt_warning(_("That message is not visible"));
   }
   else
   {
-    struct Email *e = shared->mailbox->emails[num - 1];
+    struct Email *e = mview_email_at(shared->mailbox_view, num - 1);
 
     if (mutt_messages_in_thread(shared->mailbox, e, MIT_POSITION) > 1)
     {
