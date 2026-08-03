@@ -172,11 +172,9 @@ void subjectrx_clear_mods(struct MailboxView *mv)
   if (!mv || !mv->mailbox)
     return;
 
-  struct Mailbox *m = mv->mailbox;
-
-  for (int i = 0; i < m->msg_count; i++)
+  for (int i = 0; i < mview_email_count(mv); i++)
   {
-    struct Email *e = m->emails[i];
+    struct Email *e = mview_email_at(mv, i);
     if (!e || !e->env)
       continue;
     FREE(&e->env->disp_subj);
