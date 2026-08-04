@@ -41,12 +41,12 @@
  * OpFuzzy - Functions for the Fuzzy Window
  */
 static const struct MenuFuncOp OpFuzzy[] = { /* map: fuzzy */
-  { "first-entry",                   OP_SELECT_FIRST_ENTRY },
-  { "last-entry",                    OP_SELECT_LAST_ENTRY },
-  { "next-entry",                    OP_SELECT_NEXT_ENTRY },
-  { "next-page",                     OP_SCROLL_PAGE_DOWN },
-  { "previous-entry",                OP_SELECT_PREVIOUS_ENTRY },
-  { "previous-page",                 OP_SCROLL_PAGE_UP },
+  { "scroll-page-down",              OP_SCROLL_PAGE_DOWN },
+  { "scroll-page-up",                OP_SCROLL_PAGE_UP },
+  { "select-first-entry",            OP_SELECT_FIRST_ENTRY },
+  { "select-last-entry",             OP_SELECT_LAST_ENTRY },
+  { "select-next-entry",             OP_SELECT_NEXT_ENTRY },
+  { "select-previous-entry",         OP_SELECT_PREVIOUS_ENTRY },
   { NULL, 0 },
 };
 
