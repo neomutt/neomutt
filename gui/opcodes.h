@@ -527,8 +527,8 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_TOGGLE_NEW_FLAG,                    N_("Toggle a message's 'new' flag")) \
   /* L10N: Help for Index function: <toggle-read-messages> */ \
   _fmt(OP_TOGGLE_READ_MESSAGES,               N_("Toggle view of read messages")) \
-  /* L10N: Help for Browser function: <uncatchup> */ \
-  _fmt(OP_UNCATCHUP,                          N_("Mark all articles in newsgroup as unread")) \
+  /* L10N: Help for Browser function: <nntp-mark-newsgroup-unread> */ \
+  _fmt(OP_NNTP_MARK_NEWSGROUP_UNREAD,         N_("Mark all articles in newsgroup as unread")) \
   /* L10N: Help for Alias function: <undelete-alias> */ \
   _fmt(OP_UNDELETE_ALIAS,                     N_("Undelete the current alias")) \
   /* L10N: Help for Alias, Postpone, Index function: <undelete-message> */ \
