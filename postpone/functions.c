@@ -47,8 +47,12 @@
  * OpPostpone - Functions for the Postpone Menu
  */
 static const struct MenuFuncOp OpPostpone[] = { /* map: postpone */
-  { "delete-entry",                  OP_DELETE_MESSAGE },
-  { "undelete-entry",                OP_UNDELETE_MESSAGE },
+  { "delete-message",                OP_DELETE_MESSAGE },
+  { "undelete-message",              OP_UNDELETE_MESSAGE },
+
+  // Deprecated
+  { "delete-entry",                  OP_DELETE_MESSAGE,   MFF_DEPRECATED },
+  { "undelete-entry",                OP_UNDELETE_MESSAGE, MFF_DEPRECATED },
   { NULL, 0 },
 };
 

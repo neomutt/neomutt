@@ -35,7 +35,7 @@ const char *opcodes_get_name       (int op);
 #define OP_TIMEOUT     (-2) ///< 1 second with no events
 #define OP_ABORT       (-1) ///< $abort_key pressed (Ctrl-G)
 
-// clang-format off
+// Generic Functions
 #define OPS_DIALOG(_fmt) \
   /* L10N: Help for Generic function: <exit> */ \
   _fmt(OP_EXIT,                               N_("Exit a menu")) \
@@ -176,6 +176,7 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Generic function: <sort-entries-reverse> */ \
   _fmt(OP_SORT_ENTRIES_REVERSE,               N_("Sort entries in reverse order")) \
 
+
 #define OPS_EDITOR(_fmt) \
   /* L10N: Help for Editor function: <backspace> */ \
   _fmt(OP_EDITOR_BACKSPACE,                   N_("Delete the char in front of the cursor")) \
@@ -235,7 +236,7 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_ATTACH_ATTACH_NEWS_MESSAGE,         N_("Attach news articles to this message")) \
   /* L10N: Help for Compose function: <attach-new-mime> */ \
   _fmt(OP_ATTACH_ATTACH_NEW_MIME,             N_("Compose new attachment using mailcap entry")) \
-  /* L10N: Help for Attach function: <delete-entry> */ \
+  /* L10N: Help for Attach function: <delete-attachment> */ \
   _fmt(OP_ATTACH_DELETE,                      N_("Delete the current entry")) \
   /* L10N: Help for Compose function: <detach-file> */ \
   _fmt(OP_ATTACH_DETACH,                      N_("Delete the current entry")) \
@@ -283,7 +284,7 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_ATTACH_TOGGLE_RECODE,               N_("Toggle recoding of this attachment")) \
   /* L10N: Help for Compose function: <toggle-unlink> */ \
   _fmt(OP_ATTACH_TOGGLE_UNLINK,               N_("Toggle whether to delete file after sending it")) \
-  /* L10N: Help for Attach function: <undelete-entry> */ \
+  /* L10N: Help for Attach function: <undelete-attachment> */ \
   _fmt(OP_ATTACH_UNDELETE,                    N_("Undelete the current entry")) \
   /* L10N: Help for Compose function: <ungroup-attachments> */ \
   _fmt(OP_ATTACH_UNGROUP_ATTACHMENTS,         N_("Ungroup 'multipart' attachment")) \
@@ -625,13 +626,13 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_SHOW_IDENTITY,                      N_("Show the full identity of the key/certificate")) \
 
 #define OPS_PREVIEW(_fmt) \
-  /* L10N: Help for Compose function <preview-scroll-end> */ \
+  /* L10N: Help for Compose function: <preview-scroll-end> */ \
   _fmt(OP_PREVIEW_SCROLL_END,                 N_("Scroll to the bottom")) \
   /* L10N: Help for Compose function: <preview-scroll-half-down> */ \
   _fmt(OP_PREVIEW_SCROLL_HALF_DOWN,           N_("Scroll down half a page")) \
   /* L10N: Help for Compose function: <preview-scroll-half-up> */ \
   _fmt(OP_PREVIEW_SCROLL_HALF_UP,             N_("Scroll up half a page")) \
-  /* L10N: Help for Compose function <preview-scroll-home> */ \
+  /* L10N: Help for Compose function: <preview-scroll-home> */ \
   _fmt(OP_PREVIEW_SCROLL_HOME,                N_("Scroll to the top")) \
   /* L10N: Help for Compose function: <preview-scroll-line-down> */ \
   _fmt(OP_PREVIEW_SCROLL_LINE_DOWN,           N_("Scroll down one line")) \
@@ -645,13 +646,13 @@ const char *opcodes_get_name       (int op);
 #define OPS_SIDEBAR(_fmt) \
   /* L10N: Help for Sidebar function: <sidebar-activate-entry> */ \
   _fmt(OP_SIDEBAR_ACTIVATE_ENTRY,             N_("Open highlighted mailbox")) \
-  /* L10N: Help for Generic function <sidebar-scroll-end> */ \
+  /* L10N: Help for Generic function: <sidebar-scroll-end> */ \
   _fmt(OP_SIDEBAR_SCROLL_END,                 N_("Scroll to the bottom")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-half-down> */ \
   _fmt(OP_SIDEBAR_SCROLL_HALF_DOWN,           N_("Scroll down half a page")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-half-up> */ \
   _fmt(OP_SIDEBAR_SCROLL_HALF_UP,             N_("Scroll up half a page")) \
-  /* L10N: Help for Generic function <sidebar-scroll-home> */ \
+  /* L10N: Help for Generic function: <sidebar-scroll-home> */ \
   _fmt(OP_SIDEBAR_SCROLL_HOME,                N_("Scroll to the top")) \
   /* L10N: Help for Sidebar function: <sidebar-scroll-line-down> */ \
   _fmt(OP_SIDEBAR_SCROLL_LINE_DOWN,           N_("Scroll down one line")) \
@@ -734,6 +735,5 @@ enum MuttOps {
 #undef DEFINE_OPS
   OP_MAX,
 };
-// clang-format on
 
 #endif /* MUTT_GUI_OPCODES_H */

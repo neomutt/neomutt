@@ -60,7 +60,7 @@ static const struct MenuFuncOp OpAttach[] = { /* map: attach */
   { "bounce-message",                OP_BOUNCE_MESSAGE },
   { "check-traditional-pgp",         OP_CHECK_TRADITIONAL },
   { "compose-to-sender",             OP_COMPOSE_TO_SENDER },
-  { "delete-entry",                  OP_ATTACH_DELETE },
+  { "delete-attachment",             OP_ATTACH_DELETE },
   { "display-attachment-default",    OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT },
   { "display-attachment-mailcap",    OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP },
   { "display-attachment-pager",      OP_ATTACH_DISPLAY_ATTACHMENT_PAGER },
@@ -79,11 +79,11 @@ static const struct MenuFuncOp OpAttach[] = { /* map: attach */
   { "reply-sender",                  OP_REPLY_SENDER },
   { "resend-message",                OP_RESEND },
   { "save-attachment",               OP_ATTACH_SAVE_ATTACHMENT },
-  { "undelete-entry",                OP_ATTACH_UNDELETE },
-
+  { "undelete-attachment",           OP_ATTACH_UNDELETE },
 
   // Deprecated
   { "collapse-parts",                OP_TOGGLE_TREE,                       MFF_DEPRECATED },
+  { "delete-entry",                  OP_ATTACH_DELETE,                     MFF_DEPRECATED },
   { "display-toggle-weed",           OP_DISPLAY_MESSAGE_HEADERS,           MFF_DEPRECATED },
   { "edit-type",                     OP_ATTACH_EDIT_CONTENT_TYPE,          MFF_DEPRECATED },
   { "followup-message",              OP_NNTP_FOLLOWUP_MESSAGE,             MFF_DEPRECATED },
@@ -93,6 +93,7 @@ static const struct MenuFuncOp OpAttach[] = { /* map: attach */
   { "pipe-message",                  OP_PIPE_ENTRY,                        MFF_DEPRECATED },
   { "reply",                         OP_REPLY_SENDER,                      MFF_DEPRECATED },
   { "save-entry",                    OP_ATTACH_SAVE_ATTACHMENT,            MFF_DEPRECATED },
+  { "undelete-entry",                OP_ATTACH_UNDELETE,                   MFF_DEPRECATED },
   { "view-attach",                   OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT, MFF_DEPRECATED },
   { "view-mailcap",                  OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP, MFF_DEPRECATED },
   { "view-pager",                    OP_ATTACH_DISPLAY_ATTACHMENT_PAGER,   MFF_DEPRECATED },
