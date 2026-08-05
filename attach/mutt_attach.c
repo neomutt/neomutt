@@ -67,18 +67,15 @@
  */
 int mutt_get_tmp_attachment(struct Body *b)
 {
-  char type[256] = { 0 };
-
   if (b->unlink)
     return 0;
 
   struct Buffer *tempfile = buf_pool_get();
-  struct MailcapEntry *entry = mailcap_entry_new();
-  snprintf(type, sizeof(type), "%s/%s", BODY_TYPE(b), b->subtype);
-  mailcap_lookup(b, type, sizeof(type), entry, MUTT_MC_NONE);
-  mailcap_expand_filename(entry->nametemplate, b->filename, tempfile);
-
-  mailcap_entry_free(&entry);
+  const char *suffix = strrchr(b->filename, '.');
+  if (suffix && *(suffix + 1))
+    buf_mktemp_full(tempfile, "neomutt", suffix + 1, __FILE__, __LINE__, "tmp_dir");
+  else
+    buf_mktemp(tempfile);
 
   FILE *fp_in = NULL;
   FILE *fp_out = NULL;
