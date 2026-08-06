@@ -1215,7 +1215,7 @@ static int op_attach_attach_message(struct ComposeFunctionData *fdata,
   dialog_pop();
   mutt_window_free(&dlg);
 
-  if (!shared->mailbox)
+  if (shared->mailbox)
   {
     /* Restore old $sort variables */
     cs_subset_str_native_set(shared->sub, "sort", old_sort, NULL);
@@ -1223,7 +1223,6 @@ static int op_attach_attach_message(struct ComposeFunctionData *fdata,
     cs_subset_str_native_set(shared->sub, "use_threads", old_use_threads, NULL);
     menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
     notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
-    return FR_SUCCESS;
   }
 
   bool added_attachment = false;
