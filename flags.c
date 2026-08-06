@@ -525,6 +525,12 @@ int mw_change_flag(struct Mailbox *m, struct EmailArray *ea, bool bf)
       return -1;
   }
 
+  if (m->readonly && (flag != MUTT_TAG))
+  {
+    mutt_error(_("Mailbox is read-only"));
+    return -1;
+  }
+
   mutt_emails_set_flag(m, ea, flag, bf);
   return 0;
 }

@@ -3035,7 +3035,7 @@ static int op_tag(struct IndexFunctionData *fdata, const struct KeyEvent *event)
     {
       struct Email *e = m->emails[i];
       if (!e)
-        break;
+        continue;
       if (e->visible)
         mutt_set_flag(m, e, MUTT_TAG, false, true);
     }
@@ -3953,7 +3953,7 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_MAIN_CHANGE_FOLDER_READONLY,      op_main_change_folder,       CHECK_NONE },
   { OP_MAIN_CHANGE_GROUP,                op_main_change_group,        CHECK_NONE },
   { OP_MAIN_CHANGE_GROUP_READONLY,       op_main_change_group,        CHECK_NONE },
-  { OP_MAIN_CLEAR_FLAG,                  op_main_set_flag,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
+  { OP_MAIN_CLEAR_FLAG,                  op_main_set_flag,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_CLOSE_ALL_THREADS,           op_main_close_all_threads,   CHECK_IN_MAILBOX },
   { OP_MAIN_CLOSE_THREAD,                op_main_close_thread,        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_COLLAPSE_ALL,                op_main_collapse_all,        CHECK_IN_MAILBOX },
@@ -3987,7 +3987,7 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_MAIN_READ_SUBTHREAD,              op_main_read_thread,         CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_MAIN_READ_THREAD,                 op_main_read_thread,         CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_MAIN_ROOT_MESSAGE,                op_main_root_message,        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_MAIN_SET_FLAG,                    op_main_set_flag,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
+  { OP_MAIN_SET_FLAG,                    op_main_set_flag,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_SHOW_LIMIT,                  op_main_show_limit,          CHECK_IN_MAILBOX },
   { OP_MAIN_SYNC_FOLDER,                 op_main_sync_folder,         CHECK_NONE },
   { OP_MAIN_TAG_PATTERN,                 op_main_tag_pattern,         CHECK_IN_MAILBOX },
