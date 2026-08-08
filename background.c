@@ -64,6 +64,10 @@ struct BackgroundJob
 static struct BackgroundJob Jobs[MAX_JOBS] = { 0 };
 static struct Buffer *LastCommand = NULL;
 
+/// Events of a macro paused by bg_wait(), resumed when the jobs finish
+static struct KeyEventArray Parked = ARRAY_HEAD_INITIALIZER;
+static bool ParkedActive = false;
+
 // -----------------------------------------------------------------------------
 
 /**
@@ -244,7 +248,41 @@ int bg_reap(void)
 }
 
 /**
- * bg_timeout_observer - Reap finished jobs - Implements ::observer_t - @ingroup observer_api
+ * bg_jobs_running - Do any background jobs still run?
+ * @retval true If any job is still running
+ */
+static bool bg_jobs_running(void)
+{
+  for (int i = 0; i < MAX_JOBS; i++)
+  {
+    if (Jobs[i].running)
+      return true;
+  }
+  return false;
+}
+
+/**
+ * bg_user_in_index - Is the user looking at the Index?
+ * @retval true If the focused window is the Index
+ *
+ * A parked macro is only resumed in the Index.  Elsewhere (job dialog,
+ * composer, field editor) its keys would be swallowed or typed into the
+ * wrong window.
+ */
+static bool bg_user_in_index(void)
+{
+  struct MuttWindow *win = window_get_focus();
+  while (win)
+  {
+    if (win->type == WT_DLG_INDEX)
+      return true;
+    win = win->parent;
+  }
+  return false;
+}
+
+/**
+ * bg_timeout_observer - Reap finished jobs and resume a parked macro - Implements ::observer_t - @ingroup observer_api
  */
 static int bg_timeout_observer(struct NotifyCallback *nc)
 {
@@ -252,53 +290,42 @@ static int bg_timeout_observer(struct NotifyCallback *nc)
     return 0;
 
   bg_reap();
+
+  // Resume a parked macro once all jobs have finished
+  if (ParkedActive && !bg_jobs_running() && bg_user_in_index())
+  {
+    // Parked holds the events in processing order; push_first re-queues
+    // them so they pop in the same order, after any current macro
+    for (size_t i = 0; i < ARRAY_SIZE(&Parked); i++)
+    {
+      const struct KeyEvent event = *ARRAY_GET(&Parked, i);
+      mutt_push_macro_event_first(event.ch, event.op);
+    }
+    ARRAY_FREE(&Parked);
+    ParkedActive = false;
+  }
   return 0;
 }
 
 /**
  * bg_wait - Wait for all background commands to finish
  *
- * Blocks until every running job has finished, polling the 1s timeout tick.
- * Keys pressed meanwhile are queued and processed afterwards.
- * A macro continues with its remaining keys once the wait ends.
- * Ctrl-G aborts the wait and the rest of the macro.
+ * The rest of the current macro is parked and resumes automatically once
+ * every running job has finished (see bg_timeout_observer).  The UI keeps
+ * working normally while the jobs run.
  */
 void bg_wait(void)
 {
-  while (true)
-  {
-    bg_reap();
-    bool any = false;
-    for (int i = 0; i < MAX_JOBS; i++)
-    {
-      if (Jobs[i].running)
-      {
-        any = true;
-        break;
-      }
-    }
-    if (!any)
-      return;
+  // Nothing to wait for: the macro continues
+  if (!bg_jobs_running())
+    return;
 
-    // GETCH_IGNORE_MACRO: don't consume the rest of a running macro
-    const struct KeyEvent event = mutt_getch(GETCH_IGNORE_MACRO);
-    if (event.op == OP_TIMEOUT)
-    {
-      window_redraw(NULL);
-      continue;
-    }
-    if (event.op == OP_ABORT) // Ctrl-G: stop waiting and drop the rest of the macro
-    {
-      mutt_flush_macro_to_endcond();
-      return;
-    }
-    if (event.op < OP_NULL) // repaint etc.
-      continue;
+  // The op dispatch clears the message line; re-show the start notification
+  mutt_message(_("Background command started: %s"), buf_string(LastCommand));
 
-    // Queue the key so it's processed after the wait: insert at the front,
-    // the macro buffer pops from the back
-    mutt_push_macro_event_first(event.ch, (event.op > OP_NULL) ? event.op : OP_NULL);
-  }
+  // Park the rest of the macro; bg_timeout_observer resumes it
+  mutt_take_macro_events(&Parked);
+  ParkedActive = true;
 }
 
 /**
@@ -440,5 +467,6 @@ void bg_cleanup(void)
 {
   for (int i = 0; i < MAX_JOBS; i++)
     job_slot_free(&Jobs[i]);
+  ARRAY_FREE(&Parked);
   buf_free(&LastCommand);
 }
