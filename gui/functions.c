@@ -62,6 +62,8 @@ static const struct MenuFuncOp OpGeneric[] = { /* map: generic */
   ** bindings for all menus (except as noted).
   ** </para>
   */
+  { "background-command",            OP_BACKGROUND_COMMAND },
+  { "background-output",             OP_BACKGROUND_OUTPUT },
   { "bottom-page",                   OP_BOTTOM_PAGE },
   { "check-stats",                   OP_CHECK_STATS },
   { "current-bottom",                OP_CURRENT_BOTTOM },

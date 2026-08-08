@@ -130,6 +130,7 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "sidebar/lib.h"
+#include "background.h"
 #include "external.h"
 #include "globals.h"
 #include "mutt_logging.h"
@@ -1164,6 +1165,7 @@ int main(int argc, char *argv[], char *envp[])
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, main_hist_observer, NULL);
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, main_log_observer, NULL);
   notify_observer_add(NeoMutt->notify, NT_TIMEOUT, main_timeout_observer, NULL);
+  bg_init();
 
   if (cli->tui.start_postponed)
   {
@@ -1656,6 +1658,7 @@ done:
   buf_pool_release(&tempfile);
   if (NeoMutt)
     envlist_free(&NeoMutt->env);
+  bg_cleanup();
   external_cleanup();
   mutt_ch_cache_cleanup();
   command_line_free(&cli);

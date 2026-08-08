@@ -38,6 +38,7 @@
 #include "key/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
+#include "background.h"
 #include "curs_lib.h"
 #include "external.h"
 #include "mutt_curses.h"
@@ -63,6 +64,24 @@ static int op_enter_command(struct MuttWindow *win, const struct KeyEvent *event
 {
   mutt_enter_command(win);
   window_redraw(NULL);
+  return FR_SUCCESS;
+}
+
+/**
+ * op_background_command - Run a command in the background - Implements ::global_function_t - @ingroup global_function_api
+ */
+static int op_background_command(struct MuttWindow *win, const struct KeyEvent *event)
+{
+  bg_start_command();
+  return FR_SUCCESS;
+}
+
+/**
+ * op_background_output - View the output of a background command - Implements ::global_function_t - @ingroup global_function_api
+ */
+static int op_background_output(struct MuttWindow *win, const struct KeyEvent *event)
+{
+  dlg_output();
   return FR_SUCCESS;
 }
 
@@ -173,6 +192,8 @@ static int op_what_key(struct MuttWindow *win, const struct KeyEvent *event)
  */
 static const struct GlobalFunction GlobalFunctions[] = {
   // clang-format off
+  { OP_BACKGROUND_COMMAND,    op_background_command },
+  { OP_BACKGROUND_OUTPUT,     op_background_output },
   { OP_CHECK_STATS,           op_check_stats },
   { OP_ENTER_COMMAND,         op_enter_command },
   { OP_FORGET_PASSPHRASE,     op_forget_passphrase },

@@ -141,6 +141,10 @@ const char *opcodes_get_name       (int op);
 #define OPS_CORE(_fmt) \
   /* L10N: Help for Index function: <alias-dialog> */ \
   _fmt(OP_ALIAS_DIALOG,                       N_("Open the aliases dialog")) \
+  /* L10N: Help for Generic function: <background-command> */ \
+  _fmt(OP_BACKGROUND_COMMAND,                 N_("Run a command in the background")) \
+  /* L10N: Help for Generic function: <background-output> */ \
+  _fmt(OP_BACKGROUND_OUTPUT,                  N_("View the output of a background command")) \
   /* L10N: Help for Pager: <bottom-page> */ \
   _fmt(OP_BOTTOM_PAGE,                        N_("Move to the bottom of the page")) \
   /* L10N: Help for Attach, Index function: <bounce-message> */ \

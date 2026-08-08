@@ -52,6 +52,7 @@ static const struct Mapping WindowNames[] = {
   { "WT_DLG_ALIAS",       WT_DLG_ALIAS },
   { "WT_DLG_ATTACH",      WT_DLG_ATTACH },
   { "WT_DLG_AUTOCRYPT",   WT_DLG_AUTOCRYPT },
+  { "WT_DLG_BACKGROUND",  WT_DLG_BACKGROUND },
   { "WT_DLG_BROWSER",     WT_DLG_BROWSER },
   { "WT_DLG_CERTIFICATE", WT_DLG_CERTIFICATE },
   { "WT_DLG_COMPOSE",     WT_DLG_COMPOSE },
