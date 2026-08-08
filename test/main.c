@@ -103,6 +103,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_bg_cleanup)                                           \
   NEOMUTT_TEST_ITEM(test_bg_job_start)                                         \
   NEOMUTT_TEST_ITEM(test_bg_reap)                                              \
+  NEOMUTT_TEST_ITEM(test_bg_wait)                                              \
                                                                                \
   /* body */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_body_cmp_strict)                                 \

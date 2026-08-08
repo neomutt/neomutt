@@ -61,7 +61,8 @@ BASE64_OBJS	= test/base64/mutt_b64_buffer_decode.o \
 
 BACKGROUND_OBJS	= test/background/bg_cleanup.o \
 		  test/background/bg_job_start.o \
-		  test/background/bg_reap.o
+		  test/background/bg_reap.o \
+		  test/background/bg_wait.o
 
 BODY_OBJS	= test/body/mutt_body_cmp_strict.o \
 		  test/body/mutt_body_free.o \

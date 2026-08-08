@@ -145,6 +145,8 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_BACKGROUND_COMMAND,                 N_("Run a command in the background")) \
   /* L10N: Help for Generic function: <background-output> */ \
   _fmt(OP_BACKGROUND_OUTPUT,                  N_("View the output of a background command")) \
+  /* L10N: Help for Generic function: <background-wait> */ \
+  _fmt(OP_BACKGROUND_WAIT,                    N_("Wait for background commands to finish")) \
   /* L10N: Help for Pager: <bottom-page> */ \
   _fmt(OP_BOTTOM_PAGE,                        N_("Move to the bottom of the page")) \
   /* L10N: Help for Attach, Index function: <bounce-message> */ \

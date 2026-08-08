@@ -1,6 +1,6 @@
 /**
  * @file
- * Run external commands in the background
+ * Test code for bg_wait()
  *
  * @authors
  * Copyright (C) 2026 Reza Jelveh
@@ -20,16 +20,17 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_BACKGROUND_H
-#define MUTT_BACKGROUND_H
+#define TEST_NO_MAIN
+#include "config.h"
+#include "acutest.h"
+#include "background.h"
+#include "test_common.h"
 
-void bg_cleanup(void);
-void bg_init(void);
-int bg_job_exit_code(int slot);
-int bg_job_start(const char *cmd);
-int bg_reap(void);
-void bg_start_command(void);
-void bg_wait(void);
-void dlg_output(void);
+void test_bg_wait(void)
+{
+  // void bg_wait(void)
 
-#endif /* MUTT_BACKGROUND_H */
+  // With no jobs it returns immediately (the wait loop needs a GUI, so it
+  // cannot be exercised in the test harness)
+  bg_wait();
+}

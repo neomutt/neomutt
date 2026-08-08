@@ -64,6 +64,7 @@ static const struct MenuFuncOp OpGeneric[] = { /* map: generic */
   */
   { "background-command",            OP_BACKGROUND_COMMAND },
   { "background-output",             OP_BACKGROUND_OUTPUT },
+  { "background-wait",               OP_BACKGROUND_WAIT },
   { "bottom-page",                   OP_BOTTOM_PAGE },
   { "check-stats",                   OP_CHECK_STATS },
   { "current-bottom",                OP_CURRENT_BOTTOM },

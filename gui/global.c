@@ -86,6 +86,15 @@ static int op_background_output(struct MuttWindow *win, const struct KeyEvent *e
 }
 
 /**
+ * op_background_wait - Wait for background commands to finish - Implements ::global_function_t - @ingroup global_function_api
+ */
+static int op_background_wait(struct MuttWindow *win, const struct KeyEvent *event)
+{
+  bg_wait();
+  return FR_SUCCESS;
+}
+
+/**
  * op_forget_passphrase - Wipe passphrases from memory - Implements ::global_function_t - @ingroup global_function_api
  */
 static int op_forget_passphrase(struct MuttWindow *win, const struct KeyEvent *event)
@@ -194,6 +203,7 @@ static const struct GlobalFunction GlobalFunctions[] = {
   // clang-format off
   { OP_BACKGROUND_COMMAND,    op_background_command },
   { OP_BACKGROUND_OUTPUT,     op_background_output },
+  { OP_BACKGROUND_WAIT,       op_background_wait },
   { OP_CHECK_STATS,           op_check_stats },
   { OP_ENTER_COMMAND,         op_enter_command },
   { OP_FORGET_PASSPHRASE,     op_forget_passphrase },
