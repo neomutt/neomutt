@@ -147,12 +147,23 @@ static const struct Mapping BgHelp[] = {
 };
 
 /**
+ * bg_order_free - Free the row-to-slot mapping - Implements Menu::mdata_free() - @ingroup menu_mdata_free
+ */
+static void bg_order_free(struct Menu *menu, void **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  FREE(ptr);
+}
+
+/**
  * dlg_output - List the background commands and view their output - @ingroup gui_dlg
  */
 void dlg_output(void)
 {
   // Map menu rows to job slots (the slots may not be contiguous)
-  int order[MAX_JOBS];
+  int *order = mutt_mem_calloc(MAX_JOBS, sizeof(int));
   int n_jobs = 0;
   for (int i = 0; i < MAX_JOBS; i++)
   {
@@ -162,6 +173,7 @@ void dlg_output(void)
 
   if (n_jobs == 0)
   {
+    FREE(&order);
     mutt_message(_("No background commands"));
     return;
   }
@@ -170,8 +182,8 @@ void dlg_output(void)
   struct SimpleDialogWindows sdw = simple_dialog_new(md_generic, WT_DLG_BACKGROUND, BgHelp);
 
   struct Menu *menu = sdw.menu;
-  menu->mdata = order; // Menu doesn't own the data
-  menu->mdata_free = NULL;
+  menu->mdata = order;
+  menu->mdata_free = bg_order_free;
   menu->make_entry = bg_make_entry;
   menu->max = n_jobs;
   menu->show_indicator = true;
@@ -181,7 +193,7 @@ void dlg_output(void)
   struct MuttWindow *old_focus = window_set_focus(menu->win);
   // ---------------------------------------------------------------------------
   // Event Loop
-  int choice = -1;
+  int slot = -1;
   struct KeyEvent event = { 0, OP_NULL };
   int op = OP_NULL;
   do
@@ -200,7 +212,7 @@ void dlg_output(void)
 
     if (op == OP_GENERIC_SELECT_ENTRY)
     {
-      choice = menu->current;
+      slot = order[menu->current];
       break;
     }
 
@@ -214,8 +226,8 @@ void dlg_output(void)
   window_set_focus(old_focus);
   simple_dialog_free(&sdw.dlg);
 
-  if (choice >= 0)
-    bg_view_output(&Jobs[order[choice]]);
+  if (slot >= 0)
+    bg_view_output(&Jobs[slot]);
 }
 
 // -----------------------------------------------------------------------------
