@@ -59,6 +59,10 @@ BASE64_OBJS	= test/base64/mutt_b64_buffer_decode.o \
 		  test/base64/mutt_b64_encode.o \
 		  test/base64/mutt_b64_encode_urlsafe.o
 
+BACKGROUND_OBJS	= test/background/bg_cleanup.o \
+		  test/background/bg_job_start.o \
+		  test/background/bg_reap.o
+
 BODY_OBJS	= test/body/mutt_body_cmp_strict.o \
 		  test/body/mutt_body_free.o \
 		  test/body/mutt_body_new.o
@@ -726,7 +730,8 @@ URL_OBJS	= test/url/url_check_scheme.o \
 		  test/url/url_tostring.o
 
 # Cherry-picked objects
-MISC_OBJS	= commands/commands.o \
+MISC_OBJS	= background.o \
+		  commands/commands.o \
 		  mutt_config.o \
 		  muttlib.o \
 		  pattern/pattern.o
@@ -762,6 +767,7 @@ TEST_OBJS	= test/common.o test/main.o test/module.o \
 		  $(ATOI_OBJS) \
 		  $(ATTACH_OBJS) \
 		  $(BASE64_OBJS) \
+		  $(BACKGROUND_OBJS) \
 		  $(BODY_OBJS) \
 		  $(BUFFER_OBJS) \
 		  $(CHARSET_OBJS) \

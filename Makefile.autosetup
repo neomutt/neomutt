@@ -61,7 +61,7 @@ default:	all
 ###############################################################################
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
-NEOMUTTOBJS=	conststrings.o editmsg.o external.o flags.o git_ver.o \
+NEOMUTTOBJS=	background.o conststrings.o editmsg.o external.o flags.o git_ver.o \
 		globals.o help.o module.o mutt_config.o mutt_logging.o \
 		mutt_mailbox.o mutt_signal.o mutt_socket.o muttlib.o mx.o \
 		system.o usage.o version.o

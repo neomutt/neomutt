@@ -77,6 +77,7 @@ enum WindowType
   WT_DLG_ALIAS,       ///< Alias Dialog,        dlg_alias()
   WT_DLG_ATTACH,      ///< Attach Dialog,       dlg_attach()
   WT_DLG_AUTOCRYPT,   ///< Autocrypt Dialog,    dlg_autocrypt()
+  WT_DLG_BACKGROUND,  ///< Background Dialog,   dlg_output()
   WT_DLG_BROWSER,     ///< Browser Dialog,      dlg_browser()
   WT_DLG_CERTIFICATE, ///< Certificate Dialog,  dlg_certificate()
   WT_DLG_COMPOSE,     ///< Compose Dialog,      dlg_compose()

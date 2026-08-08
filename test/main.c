@@ -99,6 +99,11 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_b64_encode)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_b64_encode_urlsafe)                              \
                                                                                \
+  /* background */                                                             \
+  NEOMUTT_TEST_ITEM(test_bg_cleanup)                                           \
+  NEOMUTT_TEST_ITEM(test_bg_job_start)                                         \
+  NEOMUTT_TEST_ITEM(test_bg_reap)                                              \
+                                                                               \
   /* body */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_body_cmp_strict)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_body_free)                                       \
