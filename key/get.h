@@ -106,6 +106,7 @@ int              mutt_monitor_getch          (void);
 void             mutt_push_macro_event       (int ch, int op);
 void             mutt_push_macro_event_first (int ch, int op);
 void             mutt_push_macro_repeated    (char *macro, int count);
+void             mutt_take_macro_events      (struct KeyEventArray *dst);
 void             mutt_unget_ch               (int ch);
 void             mutt_unget_op               (int op);
 

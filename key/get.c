@@ -193,6 +193,23 @@ void mutt_push_macro_event_first(int ch, int op)
 }
 
 /**
+ * mutt_take_macro_events - Remove all events from the macro buffer
+ * @param dst Array to receive the events
+ *
+ * All pending macro events are moved to @a dst, in the order they would
+ * have been processed.  The macro buffer is left empty.
+ */
+void mutt_take_macro_events(struct KeyEventArray *dst)
+{
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
+  while (!ARRAY_EMPTY(&mod_data->macro_events))
+  {
+    struct KeyEvent *event = array_pop(&mod_data->macro_events);
+    array_add(dst, event->ch, event->op);
+  }
+}
+
+/**
  * mutt_flush_macro_to_endcond - Drop a macro from the input buffer
  *
  * All the macro text is deleted until an OP_END_COND command,
