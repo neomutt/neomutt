@@ -57,47 +57,47 @@ static const char *Function_not_permitted_in_attach_message_mode = N_(
  * OpAttach - Functions for the Attach Menu
  */
 static const struct MenuFuncOp OpAttach[] = { /* map: attach */
-  { "bounce-message",                OP_BOUNCE_MESSAGE },
-  { "check-traditional-pgp",         OP_CHECK_TRADITIONAL },
-  { "compose-to-sender",             OP_COMPOSE_TO_SENDER },
+  { "bounce-message",                OP_ATT_BOUNCE_MESSAGE },
+  { "check-traditional-pgp",         OP_ATT_CHECK_TRADITIONAL },
+  { "compose-to-sender",             OP_ATT_COMPOSE_TO_SENDER },
   { "delete-attachment",             OP_ATTACH_DELETE },
-  { "display-attachment-default",    OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT },
-  { "display-attachment-mailcap",    OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP },
-  { "display-attachment-pager",      OP_ATTACH_DISPLAY_ATTACHMENT_PAGER },
-  { "display-attachment-text",       OP_ATTACH_DISPLAY_ATTACHMENT_TEXT },
-  { "display-message-headers",       OP_DISPLAY_MESSAGE_HEADERS },
-  { "edit-content-type",             OP_ATTACH_EDIT_CONTENT_TYPE },
-  { "extract-keys",                  OP_EXTRACT_KEYS },
-  { "forward-message",               OP_FORWARD_MESSAGE },
-  { "list-reply",                    OP_LIST_REPLY },
-  { "list-subscribe",                OP_LIST_SUBSCRIBE },
-  { "list-unsubscribe",              OP_LIST_UNSUBSCRIBE },
-  { "nntp-followup-message",         OP_NNTP_FOLLOWUP_MESSAGE },
-  { "nntp-forward-to-group",         OP_NNTP_FORWARD_TO_GROUP },
-  { "reply-all",                     OP_REPLY_ALL },
-  { "reply-group-chat",              OP_REPLY_GROUP_CHAT },
-  { "reply-sender",                  OP_REPLY_SENDER },
-  { "resend-message",                OP_RESEND },
-  { "save-attachment",               OP_ATTACH_SAVE_ATTACHMENT },
+  { "display-attachment-default",    OP_ATT_DISPLAY_ATTACHMENT_DEFAULT },
+  { "display-attachment-mailcap",    OP_ATT_DISPLAY_ATTACHMENT_MAILCAP },
+  { "display-attachment-pager",      OP_ATT_DISPLAY_ATTACHMENT_PAGER },
+  { "display-attachment-text",       OP_ATT_DISPLAY_ATTACHMENT_TEXT },
+  { "display-message-headers",       OP_ATT_DISPLAY_MESSAGE_HEADERS },
+  { "edit-content-type",             OP_ATT_ATTACH_EDIT_CONTENT_TYPE },
+  { "extract-keys",                  OP_ATT_EXTRACT_KEYS },
+  { "forward-message",               OP_ATT_FORWARD_MESSAGE },
+  { "list-reply",                    OP_ATT_LIST_REPLY },
+  { "list-subscribe",                OP_ATT_LIST_SUBSCRIBE },
+  { "list-unsubscribe",              OP_ATT_LIST_UNSUBSCRIBE },
+  { "nntp-followup-message",         OP_ATT_NNTP_FOLLOWUP_MESSAGE },
+  { "nntp-forward-to-group",         OP_ATT_NNTP_FORWARD_TO_GROUP },
+  { "reply-all",                     OP_ATT_REPLY_ALL },
+  { "reply-group-chat",              OP_ATT_REPLY_GROUP_CHAT },
+  { "reply-sender",                  OP_ATT_REPLY_SENDER },
+  { "resend-message",                OP_ATT_RESEND },
+  { "save-attachment",               OP_ATT_ATTACH_SAVE_ATTACHMENT },
   { "undelete-attachment",           OP_ATTACH_UNDELETE },
 
   // Deprecated
   { "collapse-parts",                OP_TOGGLE_TREE,                       MFF_DEPRECATED },
   { "delete-entry",                  OP_ATTACH_DELETE,                     MFF_DEPRECATED },
-  { "display-toggle-weed",           OP_DISPLAY_MESSAGE_HEADERS,           MFF_DEPRECATED },
-  { "edit-type",                     OP_ATTACH_EDIT_CONTENT_TYPE,          MFF_DEPRECATED },
-  { "followup-message",              OP_NNTP_FOLLOWUP_MESSAGE,             MFF_DEPRECATED },
-  { "forward-to-group",              OP_NNTP_FORWARD_TO_GROUP,             MFF_DEPRECATED },
-  { "group-chat-reply",              OP_REPLY_GROUP_CHAT,                  MFF_DEPRECATED },
-  { "group-reply",                   OP_REPLY_ALL,                         MFF_DEPRECATED },
+  { "display-toggle-weed",           OP_ATT_DISPLAY_MESSAGE_HEADERS,           MFF_DEPRECATED },
+  { "edit-type",                     OP_ATT_ATTACH_EDIT_CONTENT_TYPE,          MFF_DEPRECATED },
+  { "followup-message",              OP_ATT_NNTP_FOLLOWUP_MESSAGE,             MFF_DEPRECATED },
+  { "forward-to-group",              OP_ATT_NNTP_FORWARD_TO_GROUP,             MFF_DEPRECATED },
+  { "group-chat-reply",              OP_ATT_REPLY_GROUP_CHAT,                  MFF_DEPRECATED },
+  { "group-reply",                   OP_ATT_REPLY_ALL,                         MFF_DEPRECATED },
   { "pipe-message",                  OP_PIPE_ENTRY,                        MFF_DEPRECATED },
-  { "reply",                         OP_REPLY_SENDER,                      MFF_DEPRECATED },
-  { "save-entry",                    OP_ATTACH_SAVE_ATTACHMENT,            MFF_DEPRECATED },
+  { "reply",                         OP_ATT_REPLY_SENDER,                      MFF_DEPRECATED },
+  { "save-entry",                    OP_ATT_ATTACH_SAVE_ATTACHMENT,            MFF_DEPRECATED },
   { "undelete-entry",                OP_ATTACH_UNDELETE,                   MFF_DEPRECATED },
-  { "view-attach",                   OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT, MFF_DEPRECATED },
-  { "view-mailcap",                  OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP, MFF_DEPRECATED },
-  { "view-pager",                    OP_ATTACH_DISPLAY_ATTACHMENT_PAGER,   MFF_DEPRECATED },
-  { "view-text",                     OP_ATTACH_DISPLAY_ATTACHMENT_TEXT,    MFF_DEPRECATED },
+  { "view-attach",                   OP_ATT_DISPLAY_ATTACHMENT_DEFAULT, MFF_DEPRECATED },
+  { "view-mailcap",                  OP_ATT_DISPLAY_ATTACHMENT_MAILCAP, MFF_DEPRECATED },
+  { "view-pager",                    OP_ATT_DISPLAY_ATTACHMENT_PAGER,   MFF_DEPRECATED },
+  { "view-text",                     OP_ATT_DISPLAY_ATTACHMENT_TEXT,    MFF_DEPRECATED },
   { NULL, 0 },
 };
 
@@ -106,26 +106,26 @@ static const struct MenuFuncOp OpAttach[] = { /* map: attach */
  */
 static const struct MenuOpSeq AttachDefaultBindings[] = { /* map: attach */
   { OP_ATTACH_DELETE,                      "d" },
-  { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT,  "<keypadenter>" },
-  { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT,  "\n" },             // <Enter>
-  { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT,  "\r" },             // <Return>
-  { OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP,  "m" },
-  { OP_ATTACH_DISPLAY_ATTACHMENT_TEXT,     "T" },
-  { OP_ATTACH_EDIT_CONTENT_TYPE,           "\005" },           // <Ctrl-E>
-  { OP_ATTACH_SAVE_ATTACHMENT,             "s" },
+  { OP_ATT_DISPLAY_ATTACHMENT_DEFAULT,  "<keypadenter>" },
+  { OP_ATT_DISPLAY_ATTACHMENT_DEFAULT,  "\n" },             // <Enter>
+  { OP_ATT_DISPLAY_ATTACHMENT_DEFAULT,  "\r" },             // <Return>
+  { OP_ATT_DISPLAY_ATTACHMENT_MAILCAP,  "m" },
+  { OP_ATT_DISPLAY_ATTACHMENT_TEXT,     "T" },
+  { OP_ATT_ATTACH_EDIT_CONTENT_TYPE,           "\005" },           // <Ctrl-E>
+  { OP_ATT_ATTACH_SAVE_ATTACHMENT,             "s" },
   { OP_ATTACH_UNDELETE,                    "u" },
-  { OP_BOUNCE_MESSAGE,                     "b" },
-  { OP_CHECK_TRADITIONAL,                  "\033P" },          // <Alt-P>
-  { OP_DISPLAY_MESSAGE_HEADERS,            "h" },
-  { OP_EXTRACT_KEYS,                       "\013" },           // <Ctrl-K>
+  { OP_ATT_BOUNCE_MESSAGE,                     "b" },
+  { OP_ATT_CHECK_TRADITIONAL,                  "\033P" },          // <Alt-P>
+  { OP_ATT_DISPLAY_MESSAGE_HEADERS,            "h" },
+  { OP_ATT_EXTRACT_KEYS,                       "\013" },           // <Ctrl-K>
   { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
-  { OP_FORWARD_MESSAGE,                    "f" },
-  { OP_LIST_REPLY,                         "L" },
+  { OP_ATT_FORWARD_MESSAGE,                    "f" },
+  { OP_ATT_LIST_REPLY,                         "L" },
   { OP_PIPE_ENTRY,                         "|" },
   { OP_PRINT_ENTRY,                        "p" },
-  { OP_REPLY_ALL,                          "g" },
-  { OP_REPLY_SENDER,                       "r" },
-  { OP_RESEND,                             "\033e" },          // <Alt-e>
+  { OP_ATT_REPLY_ALL,                          "g" },
+  { OP_ATT_REPLY_SENDER,                       "r" },
+  { OP_ATT_RESEND,                             "\033e" },          // <Alt-e>
   { OP_TOGGLE_TREE,                        "v" },
   { 0, NULL },
 };
@@ -509,8 +509,8 @@ static int op_attach_undelete(struct AttachFunctionData *fdata, const struct Key
  * op_attach_view - view attachment using mailcap entry if necessary - Implements ::attach_function_t - @ingroup attach_function_api
  *
  * This function handles:
- * - OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT
- * - OP_DISPLAY_MESSAGE_HEADERS
+ * - OP_ATT_DISPLAY_ATTACHMENT_DEFAULT
+ * - OP_ATT_DISPLAY_MESSAGE_HEADERS
  */
 static int op_attach_view(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -694,10 +694,10 @@ static int op_list_unsubscribe(struct AttachFunctionData *fdata, const struct Ke
  * op_reply - reply to a message - Implements ::attach_function_t - @ingroup attach_function_api
  *
  * This function handles:
- * - OP_LIST_REPLY
- * - OP_REPLY_ALL
- * - OP_REPLY_GROUP_CHAT
- * - OP_REPLY_SENDER
+ * - OP_ATT_LIST_REPLY
+ * - OP_ATT_REPLY_ALL
+ * - OP_ATT_REPLY_GROUP_CHAT
+ * - OP_ATT_REPLY_SENDER
  */
 static int op_reply(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -707,11 +707,11 @@ static int op_reply(struct AttachFunctionData *fdata, const struct KeyEvent *eve
 
   const int op = event->op;
   SendFlags flags = SEND_REPLY;
-  if (op == OP_REPLY_ALL)
+  if (op == OP_ATT_REPLY_ALL)
     flags |= SEND_GROUP_REPLY;
-  else if (op == OP_REPLY_GROUP_CHAT)
+  else if (op == OP_ATT_REPLY_GROUP_CHAT)
     flags |= SEND_GROUP_CHAT_REPLY;
-  else if (op == OP_LIST_REPLY)
+  else if (op == OP_ATT_LIST_REPLY)
     flags |= SEND_LIST_REPLY;
 
   struct AttachPtrArray aa = ARRAY_HEAD_INITIALIZER;
@@ -795,32 +795,32 @@ static int op_forward_to_group(struct AttachFunctionData *fdata, const struct Ke
 static const struct AttachFunction AttachFunctions[] = {
   // clang-format off
   { OP_ATTACH_DELETE,                     op_attach_delete },
-  { OP_ATTACH_DISPLAY_ATTACHMENT_DEFAULT, op_attach_view },
-  { OP_ATTACH_DISPLAY_ATTACHMENT_MAILCAP, op_attach_view_mailcap },
-  { OP_ATTACH_DISPLAY_ATTACHMENT_PAGER,   op_attach_view_pager },
-  { OP_ATTACH_DISPLAY_ATTACHMENT_TEXT,    op_attach_view_text },
-  { OP_ATTACH_EDIT_CONTENT_TYPE,          op_attach_edit_type },
-  { OP_ATTACH_SAVE_ATTACHMENT,            op_attach_save },
+  { OP_ATT_DISPLAY_ATTACHMENT_DEFAULT, op_attach_view },
+  { OP_ATT_DISPLAY_ATTACHMENT_MAILCAP, op_attach_view_mailcap },
+  { OP_ATT_DISPLAY_ATTACHMENT_PAGER,   op_attach_view_pager },
+  { OP_ATT_DISPLAY_ATTACHMENT_TEXT,    op_attach_view_text },
+  { OP_ATT_ATTACH_EDIT_CONTENT_TYPE,          op_attach_edit_type },
+  { OP_ATT_ATTACH_SAVE_ATTACHMENT,            op_attach_save },
   { OP_ATTACH_UNDELETE,                   op_attach_undelete },
-  { OP_BOUNCE_MESSAGE,                    op_bounce_message },
-  { OP_CHECK_TRADITIONAL,                 op_check_traditional },
-  { OP_COMPOSE_TO_SENDER,                 op_compose_to_sender },
-  { OP_DISPLAY_MESSAGE_HEADERS,           op_attach_view },
+  { OP_ATT_BOUNCE_MESSAGE,                    op_bounce_message },
+  { OP_ATT_CHECK_TRADITIONAL,                 op_check_traditional },
+  { OP_ATT_COMPOSE_TO_SENDER,                 op_compose_to_sender },
+  { OP_ATT_DISPLAY_MESSAGE_HEADERS,           op_attach_view },
   { OP_EXIT,                              op_quit },
-  { OP_EXTRACT_KEYS,                      op_extract_keys },
-  { OP_FORWARD_MESSAGE,                   op_forward_message },
-  { OP_LIST_REPLY,                        op_reply },
-  { OP_LIST_SUBSCRIBE,                    op_list_subscribe },
-  { OP_LIST_UNSUBSCRIBE,                  op_list_unsubscribe },
-  { OP_NNTP_FOLLOWUP_MESSAGE,             op_followup },
-  { OP_NNTP_FORWARD_TO_GROUP,             op_forward_to_group },
+  { OP_ATT_EXTRACT_KEYS,                      op_extract_keys },
+  { OP_ATT_FORWARD_MESSAGE,                   op_forward_message },
+  { OP_ATT_LIST_REPLY,                        op_reply },
+  { OP_ATT_LIST_SUBSCRIBE,                    op_list_subscribe },
+  { OP_ATT_LIST_UNSUBSCRIBE,                  op_list_unsubscribe },
+  { OP_ATT_NNTP_FOLLOWUP_MESSAGE,             op_followup },
+  { OP_ATT_NNTP_FORWARD_TO_GROUP,             op_forward_to_group },
   { OP_PIPE_ENTRY,                        op_attach_pipe },
   { OP_PRINT_ENTRY,                       op_attach_print },
   { OP_QUIT,                              op_quit },
-  { OP_REPLY_ALL,                         op_reply },
-  { OP_REPLY_GROUP_CHAT,                  op_reply },
-  { OP_REPLY_SENDER,                      op_reply },
-  { OP_RESEND,                            op_resend },
+  { OP_ATT_REPLY_ALL,                         op_reply },
+  { OP_ATT_REPLY_GROUP_CHAT,                  op_reply },
+  { OP_ATT_REPLY_SENDER,                      op_reply },
+  { OP_ATT_RESEND,                            op_resend },
   { OP_TOGGLE_TREE,                       op_attach_collapse },
   { 0, NULL },
   // clang-format on

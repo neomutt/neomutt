@@ -36,7 +36,7 @@ struct SubMenu;
 struct MenuFuncOp
 {
   const char   *name;    ///< Name of the function
-  int           op;      ///< Operation, e.g. OP_DELETE_MESSAGE
+  int           op;      ///< Operation, e.g. OP_SELECT_NEXT_ENTRY
   MenuFuncFlags flags;   ///< Flags, e.g. MFF_DEPRECATED
 };
 
@@ -45,7 +45,7 @@ struct MenuFuncOp
  */
 struct MenuOpSeq
 {
-  int op;           ///< Operation, e.g. OP_DELETE_MESSAGE
+  int op;           ///< Operation, e.g. OP_SELECT_NEXT_ENTRY
   const char *seq;  ///< Default key binding
 };
 

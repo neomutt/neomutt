@@ -71,7 +71,7 @@ static const struct MenuFuncOp OpPager[] = { /* map: pager */
 
   // Deprecated
   { "bottom",            OP_SELECT_LAST_ENTRY,                 MFF_DEPRECATED },
-  { "buffy-list",        OP_SHOW_MAILBOXES,                    MFF_DEPRECATED },
+  { "buffy-list",        OP_IND_SHOW_MAILBOXES,                    MFF_DEPRECATED },
   { "error-history",     OP_DISPLAY_LOG,                       MFF_DEPRECATED },
   { "mark-as-new",       OP_TOGGLE_NEW_FLAG,                   MFF_DEPRECATED },
   { "search-toggle",     OP_PAGER_TOGGLE_SEARCH_HIGHLIGHTING,  MFF_DEPRECATED },

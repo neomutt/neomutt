@@ -78,13 +78,13 @@ static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
   { "goto-root",                     OP_GOTO_ROOT },
   { "goto-selected-directory",       OP_DESCEND_DIRECTORY },
   { "limit",                         OP_BROWSER_LIMIT },
-  { "nntp-mark-newsgroup-read",      OP_NNTP_MARK_NEWSGROUP_READ },
+  { "nntp-mark-newsgroup-read",      OP_BRO_NNTP_MARK_NEWSGROUP_READ },
   { "nntp-mark-newsgroup-unread",    OP_NNTP_MARK_NEWSGROUP_UNREAD },
   { "reload-active",                 OP_LOAD_ACTIVE },
   { "rename-mailbox",                OP_RENAME_MAILBOX },
   { "select-new",                    OP_BROWSER_NEW_FILE },
   { "show-full-path",                OP_BROWSER_TELL },
-  { "show-mailboxes",                OP_SHOW_MAILBOXES },
+  { "show-mailboxes",                OP_BRO_SHOW_MAILBOXES },
   { "subscribe",                     OP_BROWSER_SUBSCRIBE },
   { "subscribe-pattern",             OP_SUBSCRIBE_PATTERN },
   { "toggle-mailboxes",              OP_TOGGLE_MAILBOXES },
@@ -93,14 +93,14 @@ static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
   { "unsubscribe-pattern",           OP_UNSUBSCRIBE_PATTERN },
 
   // Deprecated
-  { "buffy-list",                    OP_SHOW_MAILBOXES,              MFF_DEPRECATED },
-  { "catchup",                       OP_NNTP_MARK_NEWSGROUP_READ,    MFF_DEPRECATED },
+  { "buffy-list",                    OP_BRO_SHOW_MAILBOXES,              MFF_DEPRECATED },
+  { "catchup",                       OP_BRO_NNTP_MARK_NEWSGROUP_READ,    MFF_DEPRECATED },
   { "change-dir",                    OP_CHANGE_DIRECTORY,            MFF_DEPRECATED },
   { "check-new",                     OP_CHECK_STATS,                 MFF_DEPRECATED },
   { "descend-directory",             OP_DESCEND_DIRECTORY,           MFF_DEPRECATED },
   { "display-filename",              OP_BROWSER_TELL,                MFF_DEPRECATED },
   { "enter-mask",                    OP_BROWSER_LIMIT,               MFF_DEPRECATED },
-  { "mailbox-list",                  OP_SHOW_MAILBOXES,              MFF_DEPRECATED },
+  { "mailbox-list",                  OP_BRO_SHOW_MAILBOXES,              MFF_DEPRECATED },
   { "sort",                          OP_SORT_ENTRIES,                MFF_DEPRECATED },
   { "sort-reverse",                  OP_SORT_ENTRIES_REVERSE,        MFF_DEPRECATED },
   { "uncatchup",                     OP_NNTP_MARK_NEWSGROUP_UNREAD,  MFF_DEPRECATED },
@@ -125,7 +125,7 @@ static const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
   { OP_DELETE_MAILBOX,                     "d" },
   { OP_GOTO_PARENT,                        "p" },
   { OP_RENAME_MAILBOX,                     "r" },
-  { OP_SHOW_MAILBOXES,                     "." },
+  { OP_BRO_SHOW_MAILBOXES,                     "." },
   { OP_SORT_ENTRIES,                       "o" },
   { OP_SORT_ENTRIES_REVERSE,               "O" },
   { OP_TOGGLE_MAILBOXES,                   "\t" },             // <Tab>
@@ -501,7 +501,7 @@ static struct NntpMboxData *browser_apply_catchup(struct FolderFilePtrArray *ffp
  * op_catchup - Mark all articles in newsgroup as read - Implements ::browser_function_t - @ingroup browser_function_api
  *
  * This function handles:
- * - OP_NNTP_MARK_NEWSGROUP_READ
+ * - OP_BRO_NNTP_MARK_NEWSGROUP_READ
  * - OP_NNTP_MARK_NEWSGROUP_UNREAD
  *
  * Supports repeat-count: `5<catchup>` operates on the current entry and the
@@ -533,7 +533,7 @@ static int op_catchup(struct BrowserPrivateData *priv, const struct KeyEvent *ev
 
   struct NntpMboxData *mdata = browser_apply_catchup(&ffpa, priv->mailbox,
                                                      mod_data->current_news_srv,
-                                                     (event->op == OP_NNTP_MARK_NEWSGROUP_READ));
+                                                     (event->op == OP_BRO_NNTP_MARK_NEWSGROUP_READ));
   ARRAY_FREE(&ffpa);
 
   if (mdata)
@@ -1477,10 +1477,10 @@ static const struct BrowserFunction BrowserFunctions[] = {
   { OP_GOTO_PARENT,                  op_change_directory },
   { OP_GOTO_ROOT,                    op_change_directory },
   { OP_LOAD_ACTIVE,                  op_load_active },
-  { OP_NNTP_MARK_NEWSGROUP_READ,     op_catchup },
+  { OP_BRO_NNTP_MARK_NEWSGROUP_READ,     op_catchup },
   { OP_QUIT,                         op_quit },
   { OP_RENAME_MAILBOX,               op_rename_mailbox },
-  { OP_SHOW_MAILBOXES,               op_mailbox_list },
+  { OP_BRO_SHOW_MAILBOXES,               op_mailbox_list },
   { OP_SORT_ENTRIES,                 op_sort },
   { OP_SORT_ENTRIES_REVERSE,         op_sort },
   { OP_SUBSCRIBE_PATTERN,            op_subscribe_pattern },

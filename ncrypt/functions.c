@@ -41,12 +41,12 @@
  * OpPgp - Functions for the Pgp Menu
  */
 static const struct MenuFuncOp OpPgp[] = { /* map: pgp */
-  { "display-details",               OP_DISPLAY_DETAILS },
-  { "show-identity",                 OP_SHOW_IDENTITY },
+  { "display-details",               OP_PGP_DISPLAY_DETAILS },
+  { "show-identity",                 OP_PGP_SHOW_IDENTITY },
 
   // Deprecated
-  { "verify-key",                    OP_DISPLAY_DETAILS, MFF_DEPRECATED },
-  { "view-name",                     OP_SHOW_IDENTITY,   MFF_DEPRECATED },
+  { "verify-key",                    OP_PGP_DISPLAY_DETAILS, MFF_DEPRECATED },
+  { "view-name",                     OP_PGP_SHOW_IDENTITY,   MFF_DEPRECATED },
   { NULL, 0 },
 };
 
@@ -55,12 +55,12 @@ static const struct MenuFuncOp OpPgp[] = { /* map: pgp */
  */
 static const struct MenuFuncOp OpSmime[] = { /* map: smime */
 #ifdef CRYPT_BACKEND_GPGME
-  { "display-details",               OP_DISPLAY_DETAILS },
-  { "show-identity",                 OP_SHOW_IDENTITY },
+  { "display-details",               OP_SMI_DISPLAY_DETAILS },
+  { "show-identity",                 OP_SMI_SHOW_IDENTITY },
 
   // Deprecated
-  { "verify-key",                    OP_DISPLAY_DETAILS, MFF_DEPRECATED },
-  { "view-name",                     OP_SHOW_IDENTITY,   MFF_DEPRECATED },
+  { "verify-key",                    OP_SMI_DISPLAY_DETAILS, MFF_DEPRECATED },
+  { "view-name",                     OP_SMI_SHOW_IDENTITY,   MFF_DEPRECATED },
 #endif
   { NULL, 0 },
 };
@@ -69,8 +69,8 @@ static const struct MenuFuncOp OpSmime[] = { /* map: smime */
  * PgpDefaultBindings - Key bindings for the Pgp Menu
  */
 static const struct MenuOpSeq PgpDefaultBindings[] = { /* map: pgp */
-  { OP_DISPLAY_DETAILS,                    "c" },
-  { OP_SHOW_IDENTITY,                      "%" },
+  { OP_PGP_DISPLAY_DETAILS,                    "c" },
+  { OP_PGP_SHOW_IDENTITY,                      "%" },
   { 0, NULL },
 };
 
@@ -79,8 +79,8 @@ static const struct MenuOpSeq PgpDefaultBindings[] = { /* map: pgp */
  */
 static const struct MenuOpSeq SmimeDefaultBindings[] = { /* map: smime */
 #ifdef CRYPT_BACKEND_GPGME
-  { OP_DISPLAY_DETAILS,                    "c" },
-  { OP_SHOW_IDENTITY,                      "%" },
+  { OP_SMI_DISPLAY_DETAILS,                    "c" },
+  { OP_SMI_SHOW_IDENTITY,                      "%" },
 #endif
   { 0, NULL },
 };

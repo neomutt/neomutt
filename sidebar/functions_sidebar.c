@@ -86,7 +86,7 @@ static const struct MenuFuncOp OpSidebar[] = { /* map: sidebar */
   { "sidebar-prev",           OP_SIDEBAR_SELECT_PREVIOUS_ENTRY,       MFF_DEPRECATED },
   { "sidebar-prev-new",       OP_SIDEBAR_SELECT_PREVIOUS_NEW_ENTRY,   MFF_DEPRECATED },
   { "sidebar-start-search",   OP_SIDEBAR_SEARCH,                      MFF_DEPRECATED },
-  { "sidebar-toggle-virtual", OP_SIDEBAR_TOGGLE_VIRTUAL,              MFF_DEPRECATED },
+  { "sidebar-toggle-virtual", OP_NULL,                                MFF_DEPRECATED },
   { NULL, 0 },
 };
 
@@ -894,15 +894,6 @@ static int op_sidebar_toggle_visible(struct SidebarFunctionData *fdata,
   return FR_SUCCESS;
 }
 
-/**
- * op_sidebar_toggle_virtual - Deprecated - Implements ::sidebar_function_t - @ingroup sidebar_function_api
- */
-static int op_sidebar_toggle_virtual(struct SidebarFunctionData *fdata,
-                                     const struct KeyEvent *event)
-{
-  return FR_SUCCESS;
-}
-
 // -----------------------------------------------------------------------------
 
 /**
@@ -933,7 +924,6 @@ static const struct SidebarFunction SidebarFunctions[] = {
   { OP_SIDEBAR_SELECT_PAGE_TOP,              op_sidebar_select_page_top },
   { OP_SIDEBAR_SELECT_PREVIOUS_ENTRY,        op_sidebar_select_previous_entry },
   { OP_SIDEBAR_SELECT_PREVIOUS_NEW_ENTRY,    op_sidebar_select_previous_new_entry },
-  { OP_SIDEBAR_TOGGLE_VIRTUAL,               op_sidebar_toggle_virtual },
   { OP_SIDEBAR_TOGGLE_VISIBLE,               op_sidebar_toggle_visible },
   { 0, NULL },
   // clang-format on

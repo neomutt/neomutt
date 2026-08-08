@@ -46,8 +46,8 @@ const struct ListAction ListActions[] = {
   // clang-format off
   { N_("Help"),        OP_LIST_HELP,        offsetof(struct Rfc2369ListHeaders, help)        },
   { N_("Post"),        OP_LIST_POST,        offsetof(struct Rfc2369ListHeaders, post)        },
-  { N_("Subscribe"),   OP_LIST_SUBSCRIBE,   offsetof(struct Rfc2369ListHeaders, subscribe)   },
-  { N_("Unsubscribe"), OP_LIST_UNSUBSCRIBE, offsetof(struct Rfc2369ListHeaders, unsubscribe) },
+  { N_("Subscribe"),   OP_LIS_LIST_SUBSCRIBE,   offsetof(struct Rfc2369ListHeaders, subscribe)   },
+  { N_("Unsubscribe"), OP_LIS_LIST_UNSUBSCRIBE, offsetof(struct Rfc2369ListHeaders, unsubscribe) },
   { N_("Archives"),    OP_LIST_ARCHIVE,     offsetof(struct Rfc2369ListHeaders, archive)     },
   { N_("Owner"),       OP_LIST_OWNER,       offsetof(struct Rfc2369ListHeaders, owner)       },
   // clang-format on
@@ -65,8 +65,8 @@ static const struct MenuFuncOp OpList[] = { /* map: list */
   { "list-help",                     OP_LIST_HELP },
   { "list-owner",                    OP_LIST_OWNER },
   { "list-post",                     OP_LIST_POST },
-  { "list-subscribe",                OP_LIST_SUBSCRIBE },
-  { "list-unsubscribe",              OP_LIST_UNSUBSCRIBE },
+  { "list-subscribe",                OP_LIS_LIST_SUBSCRIBE },
+  { "list-unsubscribe",              OP_LIS_LIST_UNSUBSCRIBE },
   { NULL, 0 },
 };
 
@@ -78,8 +78,8 @@ static const struct MenuOpSeq ListDefaultBindings[] = { /* map: list */
   { OP_LIST_HELP,                          "h" },
   { OP_LIST_OWNER,                         "o" },
   { OP_LIST_POST,                          "p" },
-  { OP_LIST_SUBSCRIBE,                     "s" },
-  { OP_LIST_UNSUBSCRIBE,                   "u" },
+  { OP_LIS_LIST_SUBSCRIBE,                     "s" },
+  { OP_LIS_LIST_UNSUBSCRIBE,                   "u" },
   { 0, NULL },
 };
 // clang-format on
@@ -196,7 +196,7 @@ static int op_quit(struct ListData *ld, const struct KeyEvent *event)
  * @param event Event being handled
  * @retval enum #FunctionRetval
  *
- * For a specific list opcode (e.g. OP_LIST_UNSUBSCRIBE) the matching action is used.
+ * For a specific list opcode (e.g. OP_LIS_LIST_UNSUBSCRIBE) the matching action is used.
  * If there are several matches (e.g. mailto: and https: links), the first match
  * is selected, but the action is not performed.
  * For a generic selection the currently highlighted action is used.
@@ -256,8 +256,8 @@ static const struct MlistFunction MlistFunctions[] = {
   { OP_LIST_HELP,            op_select_action },
   { OP_LIST_OWNER,           op_select_action },
   { OP_LIST_POST,            op_select_action },
-  { OP_LIST_SUBSCRIBE,       op_select_action },
-  { OP_LIST_UNSUBSCRIBE,     op_select_action },
+  { OP_LIS_LIST_SUBSCRIBE,       op_select_action },
+  { OP_LIS_LIST_UNSUBSCRIBE,     op_select_action },
   { OP_QUIT,                 op_quit          },
   { 0, NULL },
   // clang-format on

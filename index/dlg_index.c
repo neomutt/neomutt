@@ -101,12 +101,12 @@
 static const struct Mapping IndexHelp[] = {
   // clang-format off
   { N_("Quit"),  OP_QUIT },
-  { N_("Del"),   OP_DELETE_MESSAGE },
-  { N_("Undel"), OP_UNDELETE_MESSAGE },
+  { N_("Del"),   OP_IND_DELETE_MESSAGE },
+  { N_("Undel"), OP_IND_UNDELETE_MESSAGE },
   { N_("Save"),  OP_MOVE_MESSAGE },
-  { N_("Mail"),  OP_COMPOSE_MESSAGE },
-  { N_("Reply"), OP_REPLY_SENDER },
-  { N_("Group"), OP_REPLY_ALL },
+  { N_("Mail"),  OP_IND_COMPOSE_MESSAGE },
+  { N_("Reply"), OP_IND_REPLY_SENDER },
+  { N_("Group"), OP_IND_REPLY_ALL },
   { N_("Help"),  OP_DISPLAY_HELP },
   { NULL, 0 },
   // clang-format on
@@ -116,12 +116,12 @@ static const struct Mapping IndexHelp[] = {
 const struct Mapping IndexNewsHelp[] = {
   // clang-format off
   { N_("Quit"),     OP_QUIT },
-  { N_("Del"),      OP_DELETE_MESSAGE },
-  { N_("Undel"),    OP_UNDELETE_MESSAGE },
+  { N_("Del"),      OP_IND_DELETE_MESSAGE },
+  { N_("Undel"),    OP_IND_UNDELETE_MESSAGE },
   { N_("Save"),     OP_MOVE_MESSAGE },
   { N_("Post"),     OP_NNTP_POST_MESSAGE },
-  { N_("Followup"), OP_NNTP_FOLLOWUP_MESSAGE },
-  { N_("Catchup"),  OP_NNTP_MARK_NEWSGROUP_READ },
+  { N_("Followup"), OP_IND_NNTP_FOLLOWUP_MESSAGE },
+  { N_("Catchup"),  OP_IND_NNTP_MARK_NEWSGROUP_READ },
   { N_("Help"),     OP_DISPLAY_HELP },
   { NULL, 0 },
   // clang-format on

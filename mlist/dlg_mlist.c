@@ -47,8 +47,8 @@ static const struct Mapping MlistHelp[] = {
   { N_("Help"),        OP_LIST_HELP },
   { N_("Owner"),       OP_LIST_OWNER },
   { N_("Post"),        OP_LIST_POST },
-  { N_("Subscribe"),   OP_LIST_SUBSCRIBE },
-  { N_("Unsubscribe"), OP_LIST_UNSUBSCRIBE },
+  { N_("Subscribe"),   OP_LIS_LIST_SUBSCRIBE },
+  { N_("Unsubscribe"), OP_LIS_LIST_UNSUBSCRIBE },
   { NULL, 0 },
   // clang-format on
 };

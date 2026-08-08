@@ -53,14 +53,14 @@
  * OpAlias - Functions for the Alias Menu
  */
 static const struct MenuFuncOp OpAlias[] = { /* map: alias */
-  { "compose-message",               OP_COMPOSE_MESSAGE },
+  { "compose-message",               OP_ALI_COMPOSE_MESSAGE },
   { "delete-alias",                  OP_DELETE_ALIAS },
   { "undelete-alias",                OP_UNDELETE_ALIAS },
 
   // Deprecated
   { "delete-entry",                  OP_DELETE_ALIAS,         MFF_DEPRECATED },
   { "limit",                         OP_LIMIT_ENTRIES,        MFF_DEPRECATED },
-  { "mail",                          OP_COMPOSE_MESSAGE,      MFF_DEPRECATED },
+  { "mail",                          OP_ALI_COMPOSE_MESSAGE,      MFF_DEPRECATED },
   { "sort-alias",                    OP_SORT_ENTRIES,         MFF_DEPRECATED },
   { "sort-alias-reverse",            OP_SORT_ENTRIES_REVERSE, MFF_DEPRECATED },
   { "undelete-entry",                OP_UNDELETE_ALIAS,       MFF_DEPRECATED },
@@ -71,15 +71,15 @@ static const struct MenuFuncOp OpAlias[] = { /* map: alias */
  * OpQuery - Functions for the external Query Menu
  */
 const struct MenuFuncOp OpQuery[] = { /* map: query */
-  { "compose-message",               OP_COMPOSE_MESSAGE },
-  { "create-alias",                  OP_CREATE_ALIAS },
+  { "compose-message",               OP_QUE_COMPOSE_MESSAGE },
+  { "create-alias",                  OP_QUE_CREATE_ALIAS },
   { "query-append",                  OP_QUERY_APPEND },
-  { "view-address-query",            OP_VIEW_ADDRESS_QUERY },
+  { "view-address-query",            OP_QUE_VIEW_ADDRESS_QUERY },
 
   // Deprecated
   { "limit",                         OP_LIMIT_ENTRIES,        MFF_DEPRECATED },
-  { "mail",                          OP_COMPOSE_MESSAGE,      MFF_DEPRECATED },
-  { "query",                         OP_VIEW_ADDRESS_QUERY,   MFF_DEPRECATED },
+  { "mail",                          OP_QUE_COMPOSE_MESSAGE,      MFF_DEPRECATED },
+  { "query",                         OP_QUE_VIEW_ADDRESS_QUERY,   MFF_DEPRECATED },
   { "sort",                          OP_SORT_ENTRIES,         MFF_DEPRECATED },
   { "sort-reverse",                  OP_SORT_ENTRIES_REVERSE, MFF_DEPRECATED },
   { NULL, 0 },
@@ -89,7 +89,7 @@ const struct MenuFuncOp OpQuery[] = { /* map: query */
  * AliasDefaultBindings - Key bindings for the Alias Menu
  */
 static const struct MenuOpSeq AliasDefaultBindings[] = { /* map: alias */
-  { OP_COMPOSE_MESSAGE,                    "m" },
+  { OP_ALI_COMPOSE_MESSAGE,                    "m" },
   { OP_DELETE_ALIAS,                       "d" },
   { OP_LIMIT_ENTRIES,                      "l" },
   { OP_SORT_ENTRIES,                       "o" },
@@ -105,8 +105,8 @@ static const struct MenuOpSeq AliasDefaultBindings[] = { /* map: alias */
  * QueryDefaultBindings - Key bindings for the external Query Menu
  */
 static const struct MenuOpSeq QueryDefaultBindings[] = { /* map: query */
-  { OP_COMPOSE_MESSAGE,                    "m" },
-  { OP_CREATE_ALIAS,                       "a" },
+  { OP_QUE_COMPOSE_MESSAGE,                    "m" },
+  { OP_QUE_CREATE_ALIAS,                       "a" },
   { OP_LIMIT_ENTRIES,                      "l" },
   { OP_QUERY_APPEND,                       "A" },
   { OP_SORT_ENTRIES,                       "o" },
@@ -114,7 +114,7 @@ static const struct MenuOpSeq QueryDefaultBindings[] = { /* map: query */
   { OP_TAG_PATTERN,                        "T" },
   { OP_TOGGLE_TAG,                         "<space>" },
   { OP_UNTAG_PATTERN,                      "\024" },           // <Ctrl-T>
-  { OP_VIEW_ADDRESS_QUERY,                 "Q" },
+  { OP_QUE_VIEW_ADDRESS_QUERY,                 "Q" },
   { 0, NULL },
 };
 // clang-format on
@@ -465,7 +465,7 @@ static int op_main_untag_pattern(struct AliasFunctionData *fdata, const struct K
  *
  * This function handles:
  * - OP_QUERY_APPEND
- * - OP_VIEW_ADDRESS_QUERY
+ * - OP_QUE_VIEW_ADDRESS_QUERY
  */
 static int op_query(struct AliasFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -478,7 +478,7 @@ static int op_query(struct AliasFunctionData *fdata, const struct KeyEvent *even
   }
 
   const int op = event->op;
-  if (op == OP_VIEW_ADDRESS_QUERY)
+  if (op == OP_QUE_VIEW_ADDRESS_QUERY)
   {
     ARRAY_FREE(&mdata->ava);
     aliaslist_clear(mdata->aa);
@@ -495,7 +495,7 @@ static int op_query(struct AliasFunctionData *fdata, const struct KeyEvent *even
 
   if (ARRAY_EMPTY(&aa))
   {
-    if (op == OP_VIEW_ADDRESS_QUERY)
+    if (op == OP_QUE_VIEW_ADDRESS_QUERY)
       menu->max = 0;
     return FR_NO_ACTION;
   }
@@ -621,8 +621,9 @@ static int op_sort(struct AliasFunctionData *fdata, const struct KeyEvent *event
 static const struct AliasFunction AliasFunctions[] = {
   // clang-format off
   { OP_ACTIVATE_ENTRY,         op_activate_entry },
-  { OP_COMPOSE_MESSAGE,        op_mail },
-  { OP_CREATE_ALIAS,           op_create_alias },
+  { OP_ALI_COMPOSE_MESSAGE,        op_mail },
+  { OP_QUE_COMPOSE_MESSAGE,        op_mail },
+  { OP_QUE_CREATE_ALIAS,           op_create_alias },
   { OP_DELETE_ALIAS,           op_delete },
   { OP_EXIT,                   op_quit },
   { OP_LIMIT_ENTRIES,          op_main_limit },
@@ -637,7 +638,7 @@ static const struct AliasFunction AliasFunctions[] = {
   { OP_TAG_PATTERN,            op_main_tag_pattern },
   { OP_UNDELETE_ALIAS,         op_delete },
   { OP_UNTAG_PATTERN,          op_main_untag_pattern },
-  { OP_VIEW_ADDRESS_QUERY,     op_query },
+  { OP_QUE_VIEW_ADDRESS_QUERY,     op_query },
   { 0, NULL },
   // clang-format on
 };

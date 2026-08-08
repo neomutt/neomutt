@@ -47,12 +47,12 @@
  * OpPostpone - Functions for the Postpone Menu
  */
 static const struct MenuFuncOp OpPostpone[] = { /* map: postpone */
-  { "delete-message",                OP_DELETE_MESSAGE },
-  { "undelete-message",              OP_UNDELETE_MESSAGE },
+  { "delete-message",                OP_POS_DELETE_MESSAGE },
+  { "undelete-message",              OP_POS_UNDELETE_MESSAGE },
 
   // Deprecated
-  { "delete-entry",                  OP_DELETE_MESSAGE,   MFF_DEPRECATED },
-  { "undelete-entry",                OP_UNDELETE_MESSAGE, MFF_DEPRECATED },
+  { "delete-entry",                  OP_POS_DELETE_MESSAGE,   MFF_DEPRECATED },
+  { "undelete-entry",                OP_POS_UNDELETE_MESSAGE, MFF_DEPRECATED },
   { NULL, 0 },
 };
 
@@ -60,9 +60,9 @@ static const struct MenuFuncOp OpPostpone[] = { /* map: postpone */
  * PostponeDefaultBindings - Key bindings for the Postpone Menu
  */
 static const struct MenuOpSeq PostponeDefaultBindings[] = { /* map: postpone */
-  { OP_DELETE_MESSAGE,                     "d" },
+  { OP_POS_DELETE_MESSAGE,                     "d" },
   { OP_TOGGLE_TAG,                         "t" },
-  { OP_UNDELETE_MESSAGE,                   "u" },
+  { OP_POS_UNDELETE_MESSAGE,                   "u" },
   { 0, NULL },
 };
 // clang-format on
@@ -166,8 +166,8 @@ static void postpone_apply_set_deleted(struct Mailbox *m, struct EmailArray *ea,
  * op_delete - Delete the current entry - Implements ::postpone_function_t - @ingroup postpone_function_api
  *
  * This function handles:
- * - OP_DELETE_MESSAGE
- * - OP_UNDELETE_MESSAGE
+ * - OP_POS_DELETE_MESSAGE
+ * - OP_POS_UNDELETE_MESSAGE
  *
  * Supports repeat-count: `5<delete-entry>` deletes the current entry and the
  * next 4. Overruns are silently capped at the end of the list.
@@ -179,7 +179,7 @@ static int op_delete(struct PostponeData *pd, const struct KeyEvent *event)
   struct Mailbox *m = mv->mailbox;
 
   const int index = menu_get_index(menu);
-  const bool bf = (event->op == OP_DELETE_MESSAGE);
+  const bool bf = (event->op == OP_POS_DELETE_MESSAGE);
 
   /* should deleted draft messages be saved in the trash folder? */
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
@@ -274,14 +274,14 @@ static int op_search(struct PostponeData *pd, const struct KeyEvent *event)
 static const struct PostponeFunction PostponeFunctions[] = {
   // clang-format off
   { OP_ACTIVATE_ENTRY,         op_activate_entry },
-  { OP_DELETE_MESSAGE,         op_delete },
+  { OP_POS_DELETE_MESSAGE,         op_delete },
   { OP_EXIT,                   op_quit },
   { OP_QUIT,                   op_quit },
   { OP_SEARCH_BACKWARD,        op_search },
   { OP_SEARCH_FORWARD,         op_search },
   { OP_SEARCH_NEXT,            op_search },
   { OP_SEARCH_PREVIOUS,        op_search },
-  { OP_UNDELETE_MESSAGE,       op_delete },
+  { OP_POS_UNDELETE_MESSAGE,       op_delete },
   { 0, NULL },
   // clang-format on
 };
