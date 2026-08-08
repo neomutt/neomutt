@@ -184,6 +184,7 @@ void dlg_output(void)
   {
     // Update the status of running jobs
     menu->redraw = MENU_REDRAW_FULL;
+    menu->win->actions |= WA_REPAINT;
 
     window_redraw(NULL);
 
@@ -252,6 +253,52 @@ static int bg_timeout_observer(struct NotifyCallback *nc)
 
   bg_reap();
   return 0;
+}
+
+/**
+ * bg_wait - Wait for all background commands to finish
+ *
+ * Blocks until every running job has finished, polling the 1s timeout tick.
+ * Keys pressed meanwhile are queued and processed afterwards.
+ * A macro continues with its remaining keys once the wait ends.
+ * Ctrl-G aborts the wait and the rest of the macro.
+ */
+void bg_wait(void)
+{
+  while (true)
+  {
+    bg_reap();
+    bool any = false;
+    for (int i = 0; i < MAX_JOBS; i++)
+    {
+      if (Jobs[i].running)
+      {
+        any = true;
+        break;
+      }
+    }
+    if (!any)
+      return;
+
+    // GETCH_IGNORE_MACRO: don't consume the rest of a running macro
+    const struct KeyEvent event = mutt_getch(GETCH_IGNORE_MACRO);
+    if (event.op == OP_TIMEOUT)
+    {
+      window_redraw(NULL);
+      continue;
+    }
+    if (event.op == OP_ABORT) // Ctrl-G: stop waiting and drop the rest of the macro
+    {
+      mutt_flush_macro_to_endcond();
+      return;
+    }
+    if (event.op < OP_NULL) // repaint etc.
+      continue;
+
+    // Queue the key so it's processed after the wait: insert at the front,
+    // the macro buffer pops from the back
+    mutt_push_macro_event_first(event.ch, (event.op > OP_NULL) ? event.op : OP_NULL);
+  }
 }
 
 /**

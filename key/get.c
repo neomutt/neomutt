@@ -177,6 +177,22 @@ void mutt_push_macro_event(int ch, int op)
 }
 
 /**
+ * mutt_push_macro_event_first - Add the character/operation to the front of the macro buffer
+ * @param ch Character to add
+ * @param op Operation to add
+ *
+ * Adds the ch/op to the front of the macro buffer, so it is processed after
+ * any events already queued.  The buffer pops from the back, so events pushed
+ * first are popped first.
+ */
+void mutt_push_macro_event_first(int ch, int op)
+{
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
+  struct KeyEvent event = { ch, op, 0 };
+  ARRAY_INSERT(&mod_data->macro_events, 0, event);
+}
+
+/**
  * mutt_flush_macro_to_endcond - Drop a macro from the input buffer
  *
  * All the macro text is deleted until an OP_END_COND command,
