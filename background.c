@@ -148,7 +148,7 @@ static const struct Mapping BgHelp[] = {
 void dlg_output(void)
 {
   // Map menu rows to job slots (the slots may not be contiguous)
-  int order[MAX_JOBS] = { 0 };
+  int order[MAX_JOBS];
   int n_jobs = 0;
   for (int i = 0; i < MAX_JOBS; i++)
   {
@@ -289,8 +289,7 @@ int bg_job_start(const char *cmd)
   if (!fp)
   {
     mutt_perror("fopen");
-    buf_pool_release(&file);
-    return -1;
+    goto fail;
   }
 
   const int fdn = open("/dev/null", O_RDONLY);
@@ -303,10 +302,8 @@ int bg_job_start(const char *cmd)
     if (fderr >= 0)
       close(fderr);
     mutt_file_fclose(&fp);
-    unlink(buf_string(file));
-    buf_pool_release(&file);
     mutt_perror("open");
-    return -1;
+    goto fail;
   }
 
   pid_t pid = filter_create_fd(cmd, NULL, NULL, NULL, fdn, fdout, fderr, NeoMutt->env);
@@ -316,10 +313,8 @@ int bg_job_start(const char *cmd)
 
   if (pid < 0)
   {
-    unlink(buf_string(file));
-    buf_pool_release(&file);
     mutt_error(_("Error starting background command"));
-    return -1;
+    goto fail;
   }
 
   job->pid = pid;
@@ -330,6 +325,11 @@ int bg_job_start(const char *cmd)
   buf_pool_release(&file);
 
   return job - Jobs;
+
+fail:
+  unlink(buf_string(file));
+  buf_pool_release(&file);
+  return -1;
 }
 
 /**
@@ -351,8 +351,6 @@ int bg_job_exit_code(int slot)
 void bg_start_command(void)
 {
   struct Buffer *cmd = buf_pool_get();
-  if (LastCommand)
-    buf_copy(cmd, LastCommand);
 
   if (mw_get_field(_("Background command: "), cmd, MUTT_COMP_NONE,
                    HC_EXT_COMMAND, &CompleteFileOps, NULL) != 0)
@@ -360,8 +358,12 @@ void bg_start_command(void)
     goto done;
   }
 
-  if (buf_is_empty(cmd))
-    goto done;
+  if (buf_is_empty(cmd)) // re-run the last command
+  {
+    if (!LastCommand)
+      goto done;
+    buf_copy(cmd, LastCommand);
+  }
 
   if (bg_job_start(buf_string(cmd)) < 0)
     goto done;
