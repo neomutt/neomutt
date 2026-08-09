@@ -67,7 +67,7 @@ static int op_subscribe_pattern(struct BrowserPrivateData *priv, const struct Ke
  * OpBrowser - Functions for the file Browser Menu
  */
 static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
-  { "choose-entry",                  OP_ACTIVATE_ENTRY },
+  { "choose-entry",                  OP_BRO_CHOOSE_ENTRY },
   { "create-mailbox",                OP_CREATE_MAILBOX },
   { "delete-mailbox",                OP_DELETE_MAILBOX },
   { "display-file",                  OP_BROWSER_VIEW_FILE },
@@ -970,6 +970,7 @@ static int op_jump(struct BrowserPrivateData *priv, const struct KeyEvent *event
  *
  * This function handles:
  * - OP_ACTIVATE_ENTRY
+ * - OP_BRO_CHOOSE_ENTRY
  * - OP_DESCEND_DIRECTORY
  */
 static int op_activate_entry(struct BrowserPrivateData *priv, const struct KeyEvent *event)
@@ -984,7 +985,10 @@ static int op_activate_entry(struct BrowserPrivateData *priv, const struct KeyEv
     return FR_ERROR;
   }
 
-  const int op = event->op;
+  int op = event->op;
+  if (op == OP_BRO_CHOOSE_ENTRY)
+    op = OP_ACTIVATE_ENTRY;
+
   int index = menu_get_index(priv->menu);
   struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
   if ((priv->menu->tag_prefix) && (op == OP_ACTIVATE_ENTRY))
@@ -1459,6 +1463,7 @@ static int op_toggle_mailboxes(struct BrowserPrivateData *priv, const struct Key
 static const struct BrowserFunction BrowserFunctions[] = {
   // clang-format off
   { OP_ACTIVATE_ENTRY,               op_activate_entry },
+  { OP_BRO_CHOOSE_ENTRY,             op_activate_entry },
   { OP_BROWSER_GOTO_FOLDER,          op_toggle_mailboxes },
   { OP_BROWSER_LIMIT,                op_browser_limit },
   { OP_BROWSER_NEW_FILE,             op_browser_new_file },

@@ -53,7 +53,7 @@
  * OpAlias - Functions for the Alias Menu
  */
 static const struct MenuFuncOp OpAlias[] = { /* map: alias */
-  { "compose-message",               OP_ALI_COMPOSE_MESSAGE },
+  { "compose-to",                    OP_ALI_COMPOSE_MESSAGE },
   { "delete-alias",                  OP_DELETE_ALIAS },
   { "undelete-alias",                OP_UNDELETE_ALIAS },
 

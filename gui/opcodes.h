@@ -37,8 +37,8 @@ const char *opcodes_get_name       (int op);
 
 // Alias Functions - Handled by alias_function_dispatcher()
 #define OPS_ALIAS(_fmt) \
-  /* L10N: Help for Alias Function: <compose-message> */ \
-  _fmt(OP_ALI_COMPOSE_MESSAGE,                    N_("Compose a new mail message")) \
+  /* L10N: Help for Alias Function: <compose-to> */ \
+  _fmt(OP_ALI_COMPOSE_MESSAGE,                    N_("Compose a new mail message to the current alias")) \
   /* L10N: Help for Alias Function: <delete-alias> */ \
   _fmt(OP_DELETE_ALIAS,                           N_("Delete the current alias")) \
   /* L10N: Help for Alias Function: <undelete-alias> */ \
@@ -63,7 +63,7 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Attach Function: <display-attachment-text> */ \
   _fmt(OP_ATT_DISPLAY_ATTACHMENT_TEXT,            N_("View attachment as text")) \
   /* L10N: Help for Attach Function: <display-message-headers> */ \
-  _fmt(OP_ATT_DISPLAY_MESSAGE_HEADERS,            N_("Display message and toggle header weeding")) \
+  _fmt(OP_ATT_DISPLAY_MESSAGE_HEADERS,            N_("Display the current message and toggle ignored headers")) \
   /* L10N: Help for Attach Function: <edit-content-type> */ \
   _fmt(OP_ATT_ATTACH_EDIT_CONTENT_TYPE,           N_("Edit attachment content type")) \
   /* L10N: Help for Attach Function: <extract-keys> */ \
@@ -101,33 +101,35 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Autocrypt Function: <delete-account> */ \
   _fmt(OP_AUTOCRYPT_DELETE_ACCT,                  N_("Delete the current account")) \
   /* L10N: Help for Autocrypt Function: <toggle-enabled> */ \
-  _fmt(OP_AUTOCRYPT_TOGGLE_ENABLED,                N_("Toggle the current account enabled/inactive")) \
+  _fmt(OP_AUTOCRYPT_TOGGLE_ENABLED,                N_("Enable/disable the current account")) \
   /* L10N: Help for Autocrypt Function: <toggle-prefer-encrypt> */ \
-  _fmt(OP_AUTOCRYPT_TOGGLE_PREFER,                N_("Toggle the current account prefer-encrypt flag"))
+  _fmt(OP_AUTOCRYPT_TOGGLE_PREFER,                N_("Toggle the prefer-encrypt attribute of the current account"))
 #else
 #define OPS_AUTOCRYPT(_)
 #endif
 
 // Browser functions
 #define OPS_BROWSER(_fmt) \
+  /* L10N: Help for Browser Function: <choose-entry> */ \
+  _fmt(OP_BRO_CHOOSE_ENTRY,                       N_("Choose the currently selected entry")) \
   /* L10N: Help for Browser Function: <create-mailbox> */ \
   _fmt(OP_CREATE_MAILBOX,                         N_("Create a new mailbox (IMAP only)")) \
   /* L10N: Help for Browser Function: <delete-mailbox> */ \
   _fmt(OP_DELETE_MAILBOX,                         N_("Delete the current mailbox (IMAP only)")) \
-  /* L10N: Help for Browser Function: <view-file> */ \
-  _fmt(OP_BROWSER_VIEW_FILE,                      N_("View file")) \
-  /* L10N: Help for Browser Function: <change-dir> */ \
-  _fmt(OP_CHANGE_DIRECTORY,                       N_("Change directories")) \
+  /* L10N: Help for Browser Function: <display-file> */ \
+  _fmt(OP_BROWSER_VIEW_FILE,                      N_("Display the current file")) \
+  /* L10N: Help for Browser Function: <goto-directory> */ \
+  _fmt(OP_CHANGE_DIRECTORY,                       N_("Change the directory to a different one")) \
   /* L10N: Help for Browser Function: <goto-folder> */ \
-  _fmt(OP_BROWSER_GOTO_FOLDER,                    N_("Swap the current folder position with $folder if it exists")) \
+  _fmt(OP_BROWSER_GOTO_FOLDER,                    N_("Change the directory to '$folder'")) \
   /* L10N: Help for Browser Function: <goto-home> */ \
-  _fmt(OP_GOTO_HOME,                              N_("Go to home directory")) \
+  _fmt(OP_GOTO_HOME,                              N_("Change the directory to the home directory")) \
   /* L10N: Help for Browser Function: <goto-parent> */ \
-  _fmt(OP_GOTO_PARENT,                            N_("Go to parent directory")) \
+  _fmt(OP_GOTO_PARENT,                            N_("Change the directory to the parent directory")) \
   /* L10N: Help for Browser Function: <goto-root> */ \
-  _fmt(OP_GOTO_ROOT,                              N_("Go to root directory")) \
-  /* L10N: Help for Browser Function: <descend-directory> */ \
-  _fmt(OP_DESCEND_DIRECTORY,                      N_("Descend into a directory")) \
+  _fmt(OP_GOTO_ROOT,                              N_("Change the directory to the root directory")) \
+  /* L10N: Help for Browser Function: <goto-selected-directory> */ \
+  _fmt(OP_DESCEND_DIRECTORY,                      N_("Change the directory to the selected one")) \
   /* L10N: Help for Browser Function: <limit> */ \
   _fmt(OP_BROWSER_LIMIT,                          N_("Limit the browser to matching files")) \
   /* L10N: Help for Browser Function: <nntp-mark-newsgroup-read> */ \
@@ -140,10 +142,10 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_RENAME_MAILBOX,                         N_("Rename the current mailbox (IMAP only)")) \
   /* L10N: Help for Browser Function: <select-new> */ \
   _fmt(OP_BROWSER_NEW_FILE,                       N_("Select a new file in this directory")) \
-  /* L10N: Help for Browser Function: <display-filename> */ \
-  _fmt(OP_BROWSER_TELL,                           N_("Display the currently selected file's name")) \
+  /* L10N: Help for Browser Function: <show-full-path> */ \
+  _fmt(OP_BROWSER_TELL,                           N_("Show the absolute path of the current entry")) \
   /* L10N: Help for Browser Function: <show-mailboxes> */ \
-  _fmt(OP_BRO_SHOW_MAILBOXES,                     N_("List mailboxes with new mail")) \
+  _fmt(OP_BRO_SHOW_MAILBOXES,                     N_("Show list of mailboxes with new mail")) \
   /* L10N: Help for Browser Function: <subscribe> */ \
   _fmt(OP_BROWSER_SUBSCRIBE,                      N_("Subscribe to current mbox (IMAP/NNTP only)")) \
   /* L10N: Help for Browser Function: <subscribe-pattern> */ \
@@ -182,32 +184,32 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Compose Function: <display-attachment-text> */ \
   _fmt(OP_COM_DISPLAY_ATTACHMENT_TEXT,            N_("View attachment as text")) \
   /* L10N: Help for Compose Function: <display-message-headers> */ \
-  _fmt(OP_COM_DISPLAY_MESSAGE_HEADERS,            N_("Display message and toggle header weeding")) \
+  _fmt(OP_COM_DISPLAY_MESSAGE_HEADERS,            N_("Display the current message and toggle ignored headers")) \
   /* L10N: Help for Compose Function: <edit-attachment-name> */ \
-  _fmt(OP_ATTACH_EDIT_ATTACHMENT_NAME,            N_("Send attachment with a different name")) \
+  _fmt(OP_ATTACH_EDIT_ATTACHMENT_NAME,            N_("Rename the current attachment; does not rename the file on disk")) \
   /* L10N: Help for Compose Function: <edit-content-id> */ \
-  _fmt(OP_ATTACH_EDIT_CONTENT_ID,                 N_("Edit the 'Content-ID' of the attachment")) \
+  _fmt(OP_ATTACH_EDIT_CONTENT_ID,                 N_("Edit the 'Content-ID:' of the current attachment")) \
   /* L10N: Help for Compose Function: <edit-content-type> */ \
-  _fmt(OP_COM_ATTACH_EDIT_CONTENT_TYPE,           N_("Edit attachment content type")) \
-  /* L10N: Help for Compose Function: <edit-description> */ \
-  _fmt(OP_ATTACH_EDIT_DESCRIPTION,                N_("Edit attachment description")) \
-  /* L10N: Help for Compose Function: <edit-encoding> */ \
-  _fmt(OP_ATTACH_EDIT_ENCODING,                   N_("Edit attachment transfer-encoding")) \
+  _fmt(OP_COM_ATTACH_EDIT_CONTENT_TYPE,           N_("Edit the 'Content-Type:' of the current attachment")) \
+  /* L10N: Help for Compose Function: <edit-content-description> */ \
+  _fmt(OP_ATTACH_EDIT_DESCRIPTION,                N_("Edit the 'Content-Description:' of the current attachment")) \
+  /* L10N: Help for Compose Function: <edit-content-transfer-encoding> */ \
+  _fmt(OP_ATTACH_EDIT_ENCODING,                   N_("Edit the 'Content-Transfer-Encoding:' of the current attachment")) \
   /* L10N: Help for Compose Function: <edit-file> */ \
   _fmt(OP_COMPOSE_EDIT_FILE,                      N_("Edit the file to be attached")) \
   /* L10N: Help for Compose Function: <edit-headers> */ \
-  _fmt(OP_ENVELOPE_EDIT_HEADERS,                  N_("Edit the message with headers")) \
-  /* L10N: Help for Compose Function: <edit-language> */ \
-  _fmt(OP_ATTACH_EDIT_LANGUAGE,                   N_("Edit the 'Content-Language' of the attachment")) \
+  _fmt(OP_ENVELOPE_EDIT_HEADERS,                  N_("Edit this message with headers")) \
+  /* L10N: Help for Compose Function: <edit-content-language> */ \
+  _fmt(OP_ATTACH_EDIT_LANGUAGE,                   N_("Edit the 'Content-Language:' of the current attachment")) \
   /* L10N: Help for Compose Function: <edit-message> */ \
-  _fmt(OP_COMPOSE_EDIT_MESSAGE,                   N_("Edit the message")) \
+  _fmt(OP_COMPOSE_EDIT_MESSAGE,                   N_("Edit this message")) \
   /* L10N: Help for Compose Function: <edit-mime> */ \
   _fmt(OP_ATTACH_EDIT_MIME,                       N_("Edit attachment using mailcap entry")) \
   /* L10N: Help for Compose Function: <filter-attachment> */ \
   _fmt(OP_ATTACH_FILTER_ATTACHMENT,               N_("Filter attachment through a shell command")) \
   /* L10N: Help for Compose Function: <get-attachment> */ \
   _fmt(OP_ATTACH_GET_ATTACHMENT,                  N_("Get a temporary copy of an attachment")) \
-  /* L10N: Help for Compose Function: <group-alternatives> */ \
+  /* L10N: Help for Compose Function: <group-alternative> */ \
   _fmt(OP_ATTACH_GROUP_ALTS,                      N_("Group tagged attachments as 'multipart/alternative'")) \
   /* L10N: Help for Compose Function: <group-multilingual> */ \
   _fmt(OP_ATTACH_GROUP_LINGUAL,                   N_("Group tagged attachments as 'multipart/multilingual'")) \
@@ -218,17 +220,17 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Compose Function: <move-attachment-up> */ \
   _fmt(OP_ATTACH_MOVE_ATTACHMENT_UP,              N_("Move an attachment up in the attachment list")) \
   /* L10N: Help for Compose Function: <postpone-message> */ \
-  _fmt(OP_COMPOSE_POSTPONE_MESSAGE,               N_("Save this message to send later")) \
+  _fmt(OP_COMPOSE_POSTPONE_MESSAGE,               N_("Save this message as draft and leave the Compose Dialog")) \
   /* L10N: Help for Compose Function: <rename-file-on-disk> */ \
   _fmt(OP_COMPOSE_RENAME_FILE_ON_DISK,            N_("Rename/move an attached file")) \
   /* L10N: Help for Compose Function: <save-attachment> */ \
   _fmt(OP_COM_ATTACH_SAVE_ATTACHMENT,             N_("Save message/attachment to a mailbox/file")) \
   /* L10N: Help for Compose Function: <save-message-copy> */ \
-  _fmt(OP_COMPOSE_SAVE_MESSAGE_COPY,              N_("Write the message to a folder")) \
+  _fmt(OP_COMPOSE_SAVE_MESSAGE_COPY,              N_("Save a copy of this message to a mailbox")) \
   /* L10N: Help for Compose Function: <send-message> */ \
-  _fmt(OP_COMPOSE_SEND_MESSAGE,                   N_("Send the message")) \
+  _fmt(OP_COMPOSE_SEND_MESSAGE,                   N_("Send this message")) \
   /* L10N: Help for Compose Function: <toggle-disposition> */ \
-  _fmt(OP_ATTACH_TOGGLE_DISPOSITION,              N_("Toggle disposition between inline/attachment")) \
+  _fmt(OP_ATTACH_TOGGLE_DISPOSITION,              N_("Toggle the 'Content-Disposition:' of the current attachment between 'inline' and 'attachment'")) \
   /* L10N: Help for Compose Function: <toggle-recode> */ \
   _fmt(OP_ATTACH_TOGGLE_RECODE,                   N_("Toggle recoding of this attachment")) \
   /* L10N: Help for Compose Function: <toggle-unlink> */ \
@@ -241,25 +243,25 @@ const char *opcodes_get_name       (int op);
 // Compose Envelope Functions - Handled by env_function_dispatcher()
 #define OPS_COMPOSE_ENVELOPE(_fmt) \
   /* L10N: Help for Compose Envelope Function: <edit-bcc> */ \
-  _fmt(OP_ENVELOPE_EDIT_BCC,                      N_("Edit the 'Bcc:' list")) \
+  _fmt(OP_ENVELOPE_EDIT_BCC,                      N_("Edit the 'Bcc:' address list")) \
   /* L10N: Help for Compose Envelope Function: <edit-cc> */ \
-  _fmt(OP_ENVELOPE_EDIT_CC,                       N_("Edit the 'Cc:' list")) \
-  /* L10N: Help for Compose Envelope Function: <edit-fcc> */ \
-  _fmt(OP_ENVELOPE_EDIT_FCC,                      N_("Enter a file to save a copy of this message in")) \
+  _fmt(OP_ENVELOPE_EDIT_CC,                       N_("Edit the 'Cc:' address list")) \
+  /* L10N: Help for Compose Envelope Function: <edit-sent-mailbox> */ \
+  _fmt(OP_ENVELOPE_EDIT_FCC,                      N_("Choose the mailbox where the sent message will be saved")) \
   /* L10N: Help for Compose Envelope Function: <edit-followup-to> */ \
-  _fmt(OP_ENVELOPE_EDIT_FOLLOWUP_TO,              N_("Edit the 'Followup-to:' field")) \
+  _fmt(OP_ENVELOPE_EDIT_FOLLOWUP_TO,              N_("Edit the 'Followup-To:' newsgroups list (NNTP only)")) \
   /* L10N: Help for Compose Envelope Function: <edit-from> */ \
-  _fmt(OP_ENVELOPE_EDIT_FROM,                     N_("Edit the 'From:' field")) \
+  _fmt(OP_ENVELOPE_EDIT_FROM,                     N_("Edit the 'From:' address")) \
   /* L10N: Help for Compose Envelope Function: <edit-newsgroups> */ \
-  _fmt(OP_ENVELOPE_EDIT_NEWSGROUPS,               N_("Edit the newsgroups list")) \
+  _fmt(OP_ENVELOPE_EDIT_NEWSGROUPS,               N_("Edit the newsgroups list (NNTP only)")) \
   /* L10N: Help for Compose Envelope Function: <edit-reply-to> */ \
-  _fmt(OP_ENVELOPE_EDIT_REPLY_TO,                 N_("Edit the 'Reply-to:' field")) \
+  _fmt(OP_ENVELOPE_EDIT_REPLY_TO,                 N_("Edit the 'Reply-to:' address")) \
   /* L10N: Help for Compose Envelope Function: <edit-subject> */ \
   _fmt(OP_ENVELOPE_EDIT_SUBJECT,                  N_("Edit the 'Subject:' of this message")) \
   /* L10N: Help for Compose Envelope Function: <edit-to> */ \
-  _fmt(OP_ENVELOPE_EDIT_TO,                       N_("Edit the 'To:' list")) \
+  _fmt(OP_ENVELOPE_EDIT_TO,                       N_("Edit the 'To:' address list")) \
   /* L10N: Help for Compose Envelope Function: <edit-x-comment-to> */ \
-  _fmt(OP_ENVELOPE_EDIT_X_COMMENT_TO,             N_("Edit the 'X-comment-to:' field")) \
+  _fmt(OP_ENVELOPE_EDIT_X_COMMENT_TO,             N_("Edit the 'X-Comment-To:' field (NNTP only)")) \
   /* L10N: Help for Compose Envelope Function: <view-pgp-options> */ \
   _fmt(OP_COMPOSE_VIEW_PGP_OPTIONS,               N_("Show PGP options")) \
   /* L10N: Help for Compose Envelope Function: <view-smime-options> */ \
@@ -270,21 +272,21 @@ const char *opcodes_get_name       (int op);
 // Compose Preview Functions - Handled by preview_function_dispatcher()
 #define OPS_COMPOSE_PREVIEW(_fmt) \
   /* L10N: Help for Compose Preview Function: <preview-scroll-end> */ \
-  _fmt(OP_PREVIEW_SCROLL_END,                     N_("Scroll to the bottom")) \
+  _fmt(OP_PREVIEW_SCROLL_END,                     N_("Scroll to the bottom in the preview")) \
   /* L10N: Help for Compose Preview Function: <preview-scroll-half-down> */ \
-  _fmt(OP_PREVIEW_SCROLL_HALF_DOWN,               N_("Scroll down half a page")) \
+  _fmt(OP_PREVIEW_SCROLL_HALF_DOWN,               N_("Scroll down half a page in the preview")) \
   /* L10N: Help for Compose Preview Function: <preview-scroll-half-up> */ \
-  _fmt(OP_PREVIEW_SCROLL_HALF_UP,                 N_("Scroll up half a page")) \
+  _fmt(OP_PREVIEW_SCROLL_HALF_UP,                 N_("Scroll up half a page in the preview")) \
   /* L10N: Help for Compose Preview Function: <preview-scroll-home> */ \
-  _fmt(OP_PREVIEW_SCROLL_HOME,                    N_("Scroll to the top")) \
+  _fmt(OP_PREVIEW_SCROLL_HOME,                    N_("Scroll to the top in the preview")) \
   /* L10N: Help for Compose Preview Function: <preview-scroll-line-down> */ \
-  _fmt(OP_PREVIEW_SCROLL_LINE_DOWN,               N_("Scroll down one line")) \
+  _fmt(OP_PREVIEW_SCROLL_LINE_DOWN,               N_("Scroll down one line in the preview")) \
   /* L10N: Help for Compose Preview Function: <preview-scroll-line-up> */ \
-  _fmt(OP_PREVIEW_SCROLL_LINE_UP,                 N_("Scroll up one line")) \
+  _fmt(OP_PREVIEW_SCROLL_LINE_UP,                 N_("Scroll up one line in the preview")) \
   /* L10N: Help for Compose Preview Function: <preview-scroll-page-down> */ \
-  _fmt(OP_PREVIEW_SCROLL_PAGE_DOWN,               N_("Show the next page of the message")) \
+  _fmt(OP_PREVIEW_SCROLL_PAGE_DOWN,               N_("Scroll down one page in the preview")) \
   /* L10N: Help for Compose Preview Function: <preview-scroll-page-up> */ \
-  _fmt(OP_PREVIEW_SCROLL_PAGE_UP,                 N_("Show the previous page of the message")) \
+  _fmt(OP_PREVIEW_SCROLL_PAGE_UP,                 N_("Scroll up one page in the preview")) \
 
 // Editor Functions - Handled by enter_function_dispatcher()
 #define OPS_EDITOR(_fmt) \
@@ -452,11 +454,11 @@ const char *opcodes_get_name       (int op);
 // Generic Tagging Functions - Handled by dialog's function dispatcher
 #define OPS_GENERIC_TAG(_fmt) \
   /* L10N: Help for Generic Tagging Function: <apply-to-tagged> */ \
-  _fmt(OP_APPLY_TO_TAGGED,                        N_("Apply the next function to tagged entries")) \
+  _fmt(OP_APPLY_TO_TAGGED,                        N_("Apply the next function to the tagged entries")) \
   /* L10N: Help for Generic Tagging Function: <apply-to-tagged-begin> */ \
-  _fmt(OP_APPLY_TO_TAGGED_BEGIN,                  N_("Skip to <apply-to-tagged-end> if nothing is tagged")) \
+  _fmt(OP_APPLY_TO_TAGGED_BEGIN,                  N_("Apply the next function to the tagged entries or skip to `<apply-to-tagged-end>` if nothing is tagged")) \
   /* L10N: Help for Generic Tagging Function: <apply-to-tagged-end> */ \
-  _fmt(OP_APPLY_TO_TAGGED_END,                    N_("End marker for <apply-to-tagged-begin>")) \
+  _fmt(OP_APPLY_TO_TAGGED_END,                    N_("End marker for `<apply-to-tagged-begin>`")) \
   /* L10N: Help for Generic Tagging Function: <tag-pattern> */ \
   _fmt(OP_TAG_PATTERN,                            N_("Tag entries matching a pattern")) \
   /* L10N: Help for Generic Tagging Function: <toggle-tag> */ \
@@ -469,7 +471,7 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Generic Tree Function: <fold-all-trees> */ \
   _fmt(OP_FOLD_ALL_TREES,                         N_("Collapse all trees")) \
   /* L10N: Help for Generic Tree Function: <fold-tree> */ \
-  _fmt(OP_FOLD_TREE,                              N_("Collapse current tree")) \
+  _fmt(OP_FOLD_TREE,                              N_("Collapse the current tree")) \
   /* L10N: Help for Generic Tree Function: <select-next-subtree> */ \
   _fmt(OP_SELECT_NEXT_SUBTREE,                    N_("Select the next subtree")) \
   /* L10N: Help for Generic Tree Function: <select-next-tree> */ \
@@ -489,18 +491,18 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Generic Tree Function: <toggle-tag-tree> */ \
   _fmt(OP_TOGGLE_TAG_TREE,                        N_("Tag/untag the current tree")) \
   /* L10N: Help for Generic Tree Function: <toggle-tree> */ \
-  _fmt(OP_TOGGLE_TREE,                            N_("Collapse/expand current tree")) \
+  _fmt(OP_TOGGLE_TREE,                            N_("Collapse/expand the current tree")) \
   /* L10N: Help for Generic Tree Function: <unfold-all-trees> */ \
   _fmt(OP_UNFOLD_ALL_TREES,                       N_("Expand all trees")) \
   /* L10N: Help for Generic Tree Function: <unfold-tree> */ \
-  _fmt(OP_UNFOLD_TREE,                            N_("Expand current tree")) \
+  _fmt(OP_UNFOLD_TREE,                            N_("Expand the current tree")) \
 
 // Generic View Functions - Handled by dialog's function dispatcher
 #define OPS_GENERIC_VIEW(_fmt) \
   /* L10N: Help for Generic View Function: <limit-entries> */ \
   _fmt(OP_LIMIT_ENTRIES,                          N_("Show only entries matching a pattern")) \
   /* L10N: Help for Generic View Function: <show-limit> */ \
-  _fmt(OP_SHOW_LIMIT,                             N_("Show currently active limit pattern")) \
+  _fmt(OP_SHOW_LIMIT,                             N_("Show the currently active limit pattern")) \
   /* L10N: Help for Generic View Function: <sort-entries> */ \
   _fmt(OP_SORT_ENTRIES,                           N_("Sort entries")) \
   /* L10N: Help for Generic View Function: <sort-entries-reverse> */ \
@@ -511,7 +513,7 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Index Function: <bounce-message> */ \
   _fmt(OP_IND_BOUNCE_MESSAGE,                     N_("Remail a message to another user")) \
   /* L10N: Help for Index Function: <break-thread> */ \
-  _fmt(OP_MAIN_BREAK_THREAD,                      N_("Break the thread in two")) \
+  _fmt(OP_MAIN_BREAK_THREAD,                      N_("Break the thread in two, at the current message")) \
   /* L10N: Help for Index Function: <browse-mailboxes> */ \
   _fmt(OP_MAIN_BROWSE_MAILBOXES,                  N_("Browse mailboxes")) \
   /* L10N: Help for Index Function: <browse-mailboxes-readonly> */ \
@@ -531,13 +533,13 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Index Function: <compose-to-sender> */ \
   _fmt(OP_IND_COMPOSE_TO_SENDER,                  N_("Compose new message to the current message sender")) \
   /* L10N: Help for Index Function: <copy-message> */ \
-  _fmt(OP_COPY_MESSAGE,                           N_("Copy a message to a file/mailbox")) \
+  _fmt(OP_COPY_MESSAGE,                           N_("Copy the message to a mailbox/file")) \
   /* L10N: Help for Index Function: <copy-message-decoded> */ \
-  _fmt(OP_COPY_MESSAGE_DECODED,                   N_("Make decoded (text/plain) copy")) \
+  _fmt(OP_COPY_MESSAGE_DECODED,                   N_("Copy the decoded (text/plain) message to a mailbox/filei")) \
   /* L10N: Help for Index Function: <copy-message-decrypted> */ \
-  _fmt(OP_COPY_MESSAGE_DECRYPTED,                 N_("Make decrypted copy")) \
+  _fmt(OP_COPY_MESSAGE_DECRYPTED,                 N_("Copy the decrypted message to a mailbox/file")) \
   /* L10N: Help for Index Function: <create-alias> */ \
-  _fmt(OP_IND_CREATE_ALIAS,                       N_("Create an alias from a message sender")) \
+  _fmt(OP_IND_CREATE_ALIAS,                       N_("Create an alias from the message sender")) \
   /* L10N: Help for Index Function: <create-message-hotkey> */ \
   _fmt(OP_CREATE_MESSAGE_HOTKEY,                  N_("Create a hotkey macro for the current message")) \
   /* L10N: Help for Index Function: <delete-message> */ \
@@ -549,23 +551,23 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Index Function: <delete-thread> */ \
   _fmt(OP_DELETE_THREAD,                          N_("Delete all messages in thread")) \
   /* L10N: Help for Index Function: <display-message> */ \
-  _fmt(OP_DISPLAY_MESSAGE,                        N_("Display a message")) \
+  _fmt(OP_DISPLAY_MESSAGE,                        N_("Display the current message and toggle ignored headers")) \
   /* L10N: Help for Index Function: <display-message-headers> */ \
-  _fmt(OP_IND_DISPLAY_MESSAGE_HEADERS,            N_("Display message and toggle header weeding")) \
+  _fmt(OP_IND_DISPLAY_MESSAGE_HEADERS,            N_("Unset a message flag, e.g. important, new, replied")) \
   /* L10N: Help for Index Function: <edit-content-type> */ \
-  _fmt(OP_IND_ATTACH_EDIT_CONTENT_TYPE,           N_("Edit attachment content type")) \
+  _fmt(OP_IND_ATTACH_EDIT_CONTENT_TYPE,           N_("Edit the 'Content-Type:' of the current message")) \
   /* L10N: Help for Index Function: <edit-raw-message> */ \
-  _fmt(OP_EDIT_RAW_MESSAGE,                       N_("Edit the raw message if the mailbox is not read-only, otherwise view it")) \
+  _fmt(OP_EDIT_RAW_MESSAGE,                       N_("Edit the raw message")) \
   /* L10N: Help for Index Function: <edit-raw-message-readonly> */ \
-  _fmt(OP_EDIT_RAW_MESSAGE_READONLY,              N_("Edit the raw message (edit and edit-raw-message are synonyms)")) \
+  _fmt(OP_EDIT_RAW_MESSAGE_READONLY,              N_("Open the raw message read-only in an editor")) \
   /* L10N: Help for Index Function: <edit-tags> */ \
-  _fmt(OP_EDIT_TAGS,                              N_("Modify (notmuch/imap) tags")) \
+  _fmt(OP_EDIT_TAGS,                              N_("Edit tags (IMAP and Notmuch only)")) \
   /* L10N: Help for Index Function: <edit-tags-then-hide> */ \
-  _fmt(OP_EDIT_TAGS_THEN_HIDE,                    N_("Modify (notmuch/imap) tags and then hide message")) \
+  _fmt(OP_EDIT_TAGS_THEN_HIDE,                    N_("Edit tags and then hide the message (IMAP and Notmuch only)")) \
   /* L10N: Help for Index Function: <edit-x-label> */ \
-  _fmt(OP_EDIT_X_LABEL,                           N_("Add, change, or delete a message's label")) \
+  _fmt(OP_EDIT_X_LABEL,                           N_("Edit labels (the 'X-Label:' header)")) \
   /* L10N: Help for Index Function: <extract-keys> */ \
-  _fmt(OP_IND_EXTRACT_KEYS,                       N_("Extract supported public keys")) \
+  _fmt(OP_IND_EXTRACT_KEYS,                       N_("Extract keys/certificates from the message and add them to the store")) \
   /* L10N: Help for Index Function: <forward-message> */ \
   _fmt(OP_IND_FORWARD_MESSAGE,                    N_("Forward a message with comments")) \
   /* L10N: Help for Index Function: <imap-fetch-mail> */ \
@@ -573,9 +575,9 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Index Function: <imap-logout-all> */ \
   _fmt(OP_MAIN_IMAP_LOGOUT_ALL,                   N_("Logout from all IMAP servers")) \
   /* L10N: Help for Index Function: <limit-thread> */ \
-  _fmt(OP_LIMIT_THREAD,                           N_("Limit view to current thread")) \
+  _fmt(OP_LIMIT_THREAD,                           N_("Show only messages belonging to the current thread")) \
   /* L10N: Help for Index Function: <link-threads> */ \
-  _fmt(OP_MAIN_LINK_THREADS,                      N_("Link tagged message to the current one")) \
+  _fmt(OP_MAIN_LINK_THREADS,                      N_("Make the tagged messages children of the current message")) \
   /* L10N: Help for Index Function: <list-reply> */ \
   _fmt(OP_IND_LIST_REPLY,                         N_("Reply to specified mailing list")) \
   /* L10N: Help for Index Function: <list-subscribe> */ \
@@ -587,11 +589,11 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Index Function: <mark-thread-read> */ \
   _fmt(OP_MARK_THREAD_READ,                       N_("Mark the current thread as read")) \
   /* L10N: Help for Index Function: <move-message> */ \
-  _fmt(OP_MOVE_MESSAGE,                           N_("Save message/attachment to a mailbox/file")) \
+  _fmt(OP_MOVE_MESSAGE,                           N_("Move the message to a mailbox/file")) \
   /* L10N: Help for Index Function: <move-message-decoded> */ \
-  _fmt(OP_MOVE_MESSAGE_DECODED,                   N_("Make decoded copy (text/plain) and delete")) \
+  _fmt(OP_MOVE_MESSAGE_DECODED,                   N_("Move the decoded (text/plain) message to a mailbox/file")) \
   /* L10N: Help for Index Function: <move-message-decrypted> */ \
-  _fmt(OP_MOVE_MESSAGE_DECRYPTED,                 N_("Make decrypted copy and delete")) \
+  _fmt(OP_MOVE_MESSAGE_DECRYPTED,                 N_("Move the decrypted message to a mailbox/file")) \
   /* L10N: Help for Index Function: <nntp-followup-message> */ \
   _fmt(OP_IND_NNTP_FOLLOWUP_MESSAGE,              N_("Followup to newsgroup")) \
   /* L10N: Help for Index Function: <nntp-forward-to-group> */ \
@@ -599,7 +601,7 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Index Function: <nntp-get-children> */ \
   _fmt(OP_NNTP_GET_CHILDREN,                      N_("Get all children of the current message")) \
   /* L10N: Help for Index Function: <nntp-get-message> */ \
-  _fmt(OP_NNTP_GET_MESSAGE,                       N_("Get message with Message-ID")) \
+  _fmt(OP_NNTP_GET_MESSAGE,                       N_("Get message with 'Message-ID:'")) \
   /* L10N: Help for Index Function: <nntp-get-parent> */ \
   _fmt(OP_NNTP_GET_PARENT,                        N_("Get parent of the current message")) \
   /* L10N: Help for Index Function: <nntp-mark-newsgroup-read> */ \
@@ -631,43 +633,43 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Index Function: <resend-message> */ \
   _fmt(OP_IND_RESEND,                             N_("Use the current message as a template for a new one")) \
   /* L10N: Help for Index Function: <select-next-new-entry> */ \
-  _fmt(OP_SELECT_NEXT_NEW_ENTRY,                  N_("Jump to the next new message")) \
+  _fmt(OP_SELECT_NEXT_NEW_ENTRY,                  N_("Select the next new message")) \
   /* L10N: Help for Index Function: <select-next-new-or-unread-entry> */ \
-  _fmt(OP_SELECT_NEXT_NEW_OR_UNREAD_ENTRY,        N_("Jump to the next new or unread message")) \
+  _fmt(OP_SELECT_NEXT_NEW_OR_UNREAD_ENTRY,        N_("Select the next new or unread message")) \
   /* L10N: Help for Index Function: <select-next-undeleted-entry> */ \
-  _fmt(OP_SELECT_NEXT_UNDELETED_ENTRY,            N_("Move to the next undeleted message")) \
+  _fmt(OP_SELECT_NEXT_UNDELETED_ENTRY,            N_("Select the next undeleted message")) \
   /* L10N: Help for Index Function: <select-next-unread-entry> */ \
-  _fmt(OP_SELECT_NEXT_UNREAD_ENTRY,               N_("Jump to the next unread message")) \
+  _fmt(OP_SELECT_NEXT_UNREAD_ENTRY,               N_("Select the next unread message")) \
   /* L10N: Help for Index Function: <select-next-unread-mailbox> */ \
   _fmt(OP_SELECT_NEXT_UNREAD_MAILBOX,             N_("Open next mailbox with new mail")) \
   /* L10N: Help for Index Function: <select-previous-new-entry> */ \
-  _fmt(OP_SELECT_PREVIOUS_NEW_ENTRY,              N_("Jump to the previous new message")) \
+  _fmt(OP_SELECT_PREVIOUS_NEW_ENTRY,              N_("Select the previous new message")) \
   /* L10N: Help for Index Function: <select-previous-new-or-unread-entry> */ \
-  _fmt(OP_SELECT_PREVIOUS_NEW_OR_UNREAD_ENTRY,    N_("Jump to the previous new or unread message")) \
+  _fmt(OP_SELECT_PREVIOUS_NEW_OR_UNREAD_ENTRY,    N_("Select the previous new or unread message")) \
   /* L10N: Help for Index Function: <select-previous-undeleted-entry> */ \
-  _fmt(OP_SELECT_PREVIOUS_UNDELETED_ENTRY,        N_("Move to the previous undeleted message")) \
-  /* L10N: Help for Index Function: <select-previous-unread> */ \
-  _fmt(OP_SELECT_PREVIOUS_UNREAD,                 N_("Jump to the previous unread message")) \
+  _fmt(OP_SELECT_PREVIOUS_UNDELETED_ENTRY,        N_("Select the previous undeleted message")) \
+  /* L10N: Help for Index Function: <select-previous-unread-entry> */ \
+  _fmt(OP_SELECT_PREVIOUS_UNREAD,                 N_("Select the previous unread message")) \
   /* L10N: Help for Index Function: <select-previous-unread-mailbox> */ \
   _fmt(OP_SELECT_PREVIOUS_UNREAD_MAILBOX,         N_("Open previous mailbox with new mail")) \
   /* L10N: Help for Index Function: <send-pgp-key> */ \
   _fmt(OP_SEND_PGP_KEY,                           N_("Mail a PGP public key")) \
   /* L10N: Help for Index Function: <set-flag> */ \
-  _fmt(OP_MAIN_SET_FLAG,                          N_("Set a status flag on a message")) \
+  _fmt(OP_MAIN_SET_FLAG,                          N_("Set a message flag, e.g. important, new, replied")) \
   /* L10N: Help for Index Function: <show-mailboxes> */ \
-  _fmt(OP_IND_SHOW_MAILBOXES,                     N_("List mailboxes with new mail")) \
+  _fmt(OP_IND_SHOW_MAILBOXES,                     N_("Show list of mailboxes with new mail")) \
   /* L10N: Help for Index Function: <show-sender-address> */ \
-  _fmt(OP_SHOW_SENDER_ADDRESS,                    N_("Display full address of sender")) \
+  _fmt(OP_SHOW_SENDER_ADDRESS,                    N_("Show the address of the sender")) \
   /* L10N: Help for Index Function: <sync-mailbox> */ \
   _fmt(OP_MAIN_SYNC_FOLDER,                       N_("Save changes to mailbox")) \
   /* L10N: Help for Index Function: <toggle-important-flag> */ \
-  _fmt(OP_TOGGLE_IMPORTANT_FLAG,                  N_("Toggle a message's 'important' flag")) \
+  _fmt(OP_TOGGLE_IMPORTANT_FLAG,                  N_("Toggle the 'important' flag of the current message")) \
   /* L10N: Help for Index Function: <toggle-mailbox-readonly> */ \
   _fmt(OP_TOGGLE_MAILBOX_READONLY,                N_("Toggle whether the mailbox will be rewritten")) \
   /* L10N: Help for Index Function: <toggle-new-flag> */ \
-  _fmt(OP_TOGGLE_NEW_FLAG,                        N_("Toggle a message's 'new' flag")) \
+  _fmt(OP_TOGGLE_NEW_FLAG,                        N_("Toggle the 'new' flag of the current message")) \
   /* L10N: Help for Index Function: <toggle-read-messages> */ \
-  _fmt(OP_TOGGLE_READ_MESSAGES,                   N_("Toggle view of read messages")) \
+  _fmt(OP_TOGGLE_READ_MESSAGES,                   N_("Show/hide read messages (adjusts the limit pattern)")) \
   /* L10N: Help for Index Function: <undelete-message> */ \
   _fmt(OP_IND_UNDELETE_MESSAGE,                   N_("Undelete the current message")) \
   /* L10N: Help for Index Function: <undelete-pattern> */ \
@@ -677,15 +679,15 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Index Function: <undelete-thread> */ \
   _fmt(OP_UNDELETE_THREAD,                        N_("Undelete all messages in thread")) \
   /* L10N: Help for Index Function: <unset-flag> */ \
-  _fmt(OP_UNSET_FLAG,                             N_("Clear a status flag from a message")) \
+  _fmt(OP_UNSET_FLAG,                             N_("Unset a message flag, e.g. important, new, replied")) \
   /* L10N: Help for Index Function: <view-address-query> */ \
-  _fmt(OP_IND_VIEW_ADDRESS_QUERY,                 N_("Query external program for addresses")) \
+  _fmt(OP_IND_VIEW_ADDRESS_QUERY,                 N_("Look up contacts in an external address book")) \
   /* L10N: Help for Index Function: <view-aliases> */ \
-  _fmt(OP_VIEW_ALIASES,                           N_("Open the aliases dialog")) \
+  _fmt(OP_VIEW_ALIASES,                           N_("Lookup aliases in the (built-in) address book")) \
   /* L10N: Help for Index Function: <view-attachments> */ \
-  _fmt(OP_VIEW_ATTACHMENTS,                       N_("Show MIME attachments")) \
+  _fmt(OP_VIEW_ATTACHMENTS,                       N_("List the attachments of the current message")) \
   /* L10N: Help for Index Function: <view-autocrypt-accounts> */ \
-  _fmt(OP_VIEW_AUTOCRYPT_ACCOUNTS,                N_("Manage autocrypt accounts")) \
+  _fmt(OP_VIEW_AUTOCRYPT_ACCOUNTS,                N_("Manage Autocrypt accounts")) \
   /* L10N: Help for Index Function: <view-list-actions> */ \
   _fmt(OP_VIEW_LIST_ACTIONS,                      N_("Perform mailing list action")) \
 
@@ -695,15 +697,15 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Index Notmuch Function: <fetch-entire-thread> */ \
   _fmt(OP_FETCH_ENTIRE_THREAD,                    N_("Read entire thread of the current message")) \
   /* L10N: Help for Index Notmuch Function: <vfolder-create-from-query> */ \
-  _fmt(OP_VFOLDER_CREATE_FROM_QUERY,              N_("Generate virtual folder from query")) \
+  _fmt(OP_VFOLDER_CREATE_FROM_QUERY,              N_("Generate a virtual folder from a query")) \
   /* L10N: Help for Index Notmuch Function: <vfolder-create-from-query-readonly> */ \
-  _fmt(OP_VFOLDER_CREATE_FROM_QUERY_READONLY,     N_("Generate a read-only virtual folder from query")) \
+  _fmt(OP_VFOLDER_CREATE_FROM_QUERY_READONLY,     N_("Generate a read-only virtual folder from a query")) \
   /* L10N: Help for Index Notmuch Function: <vfolder-reset-window> */ \
-  _fmt(OP_VFOLDER_RESET_WINDOW,                   N_("Resets virtual folder time window to the present")) \
+  _fmt(OP_VFOLDER_RESET_WINDOW,                   N_("Reset the time window of the virtual folder to the present")) \
   /* L10N: Help for Index Notmuch Function: <vfolder-shift-window-back> */ \
-  _fmt(OP_VFOLDER_SHIFT_WINDOW_BACK,              N_("Shifts virtual folder time window backwards")) \
+  _fmt(OP_VFOLDER_SHIFT_WINDOW_BACK,              N_("Shift the time window of the virtual folder backwards")) \
   /* L10N: Help for Index Notmuch Function: <vfolder-shift-window-forward> */ \
-  _fmt(OP_VFOLDER_SHIFT_WINDOW_FORWARD,           N_("Shifts virtual folder time window forwards"))
+  _fmt(OP_VFOLDER_SHIFT_WINDOW_FORWARD,           N_("Shift the time window of the virtual folder forwards"))
 #else
 #define OPS_INDEX_NOTMUCH(_)
 #endif
@@ -737,9 +739,9 @@ const char *opcodes_get_name       (int op);
 // Pgp Functions - Handled by pgp_function_dispatcher()
 #define OPS_PGP(_fmt) \
   /* L10N: Help for Pgp Function: <display-details> */ \
-  _fmt(OP_PGP_DISPLAY_DETAILS,                    N_("Display full key/certificate info")) \
+  _fmt(OP_PGP_DISPLAY_DETAILS,                    N_("Display key/certificate info")) \
   /* L10N: Help for Pgp Function: <show-identity> */ \
-  _fmt(OP_PGP_SHOW_IDENTITY,                      N_("Show the full identity of the key/certificate")) \
+  _fmt(OP_PGP_SHOW_IDENTITY,                      N_("Show the identity of the key/certificate")) \
 
 // Postpone Functions - Handled by postpone_function_dispatcher()
 #define OPS_POSTPONE(_fmt) \
@@ -751,9 +753,9 @@ const char *opcodes_get_name       (int op);
 // Query Functions - Handled by alias_function_dispatcher()
 #define OPS_QUERY(_fmt) \
   /* L10N: Help for Query Function: <compose-message> */ \
-  _fmt(OP_QUE_COMPOSE_MESSAGE,                    N_("Compose a new mail message")) \
+  _fmt(OP_QUE_COMPOSE_MESSAGE,                    N_("Compose a new mail message to the current contact")) \
   /* L10N: Help for Query Function: <create-alias> */ \
-  _fmt(OP_QUE_CREATE_ALIAS,                       N_("Create an alias from a message sender")) \
+  _fmt(OP_QUE_CREATE_ALIAS,                       N_("Create an alias from the current contact")) \
   /* L10N: Help for Query Function: <query-append> */ \
   _fmt(OP_QUERY_APPEND,                           N_("Append new query results to current results")) \
   /* L10N: Help for Query Function: <view-address-query> */ \
@@ -762,7 +764,7 @@ const char *opcodes_get_name       (int op);
 // Sidebar Functions - Handled by sb_function_dispatcher()
 #define OPS_SIDEBAR(_fmt) \
   /* L10N: Help for Sidebar Function: <sidebar-activate-entry> */ \
-  _fmt(OP_SIDEBAR_ACTIVATE_ENTRY,                 N_("Open highlighted mailbox")) \
+  _fmt(OP_SIDEBAR_ACTIVATE_ENTRY,                 N_("Open the highlighted mailbox")) \
   /* L10N: Help for Sidebar Function: <sidebar-scroll-end> */ \
   _fmt(OP_SIDEBAR_SCROLL_END,                     N_("Scroll to the bottom")) \
   /* L10N: Help for Sidebar Function: <sidebar-scroll-half-down> */ \
@@ -813,9 +815,9 @@ const char *opcodes_get_name       (int op);
 // Smime Functions - Handled by smime_function_dispatcher()
 #define OPS_SMIME(_fmt) \
   /* L10N: Help for Smime Function: <display-details> */ \
-  _fmt(OP_SMI_DISPLAY_DETAILS,                    N_("Display full key/certificate info")) \
+  _fmt(OP_SMI_DISPLAY_DETAILS,                    N_("Display key/certificate info")) \
   /* L10N: Help for Smime Function: <show-identity> */ \
-  _fmt(OP_SMI_SHOW_IDENTITY,                      N_("Show the full identity of the key/certificate")) \
+  _fmt(OP_SMI_SHOW_IDENTITY,                      N_("Show the identity of the key/certificate")) \
 
 #define OPS(_fmt) \
   _fmt(OP_NULL,                                   N_("Null operation")) \

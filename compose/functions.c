@@ -94,14 +94,14 @@ static const struct MenuFuncOp OpCompose[] = { /* map: compose */
   { "edit-cc",                       OP_ENVELOPE_EDIT_CC },
   { "edit-content-id",               OP_ATTACH_EDIT_CONTENT_ID },
   { "edit-content-type",             OP_COM_ATTACH_EDIT_CONTENT_TYPE },
-  { "edit-description",              OP_ATTACH_EDIT_DESCRIPTION },
-  { "edit-encoding",                 OP_ATTACH_EDIT_ENCODING },
-  { "edit-fcc",                      OP_ENVELOPE_EDIT_FCC },
+  { "edit-content-description",              OP_ATTACH_EDIT_DESCRIPTION },
+  { "edit-content-transfer-encoding",                 OP_ATTACH_EDIT_ENCODING },
+  { "edit-sent-mailbox",             OP_ENVELOPE_EDIT_FCC },
   { "edit-file",                     OP_COMPOSE_EDIT_FILE },
   { "edit-followup-to",              OP_ENVELOPE_EDIT_FOLLOWUP_TO },
   { "edit-from",                     OP_ENVELOPE_EDIT_FROM },
   { "edit-headers",                  OP_ENVELOPE_EDIT_HEADERS },
-  { "edit-language",                 OP_ATTACH_EDIT_LANGUAGE },
+  { "edit-content-language",                 OP_ATTACH_EDIT_LANGUAGE },
   { "edit-message",                  OP_COMPOSE_EDIT_MESSAGE },
   { "edit-mime",                     OP_ATTACH_EDIT_MIME },
   { "edit-newsgroups",               OP_ENVELOPE_EDIT_NEWSGROUPS },
@@ -111,7 +111,7 @@ static const struct MenuFuncOp OpCompose[] = { /* map: compose */
   { "edit-x-comment-to",             OP_ENVELOPE_EDIT_X_COMMENT_TO },
   { "filter-attachment",             OP_ATTACH_FILTER_ATTACHMENT },
   { "get-attachment",                OP_ATTACH_GET_ATTACHMENT },
-  { "group-alternatives",            OP_ATTACH_GROUP_ALTS },
+  { "group-alternative",             OP_ATTACH_GROUP_ALTS },
   { "group-multilingual",            OP_ATTACH_GROUP_LINGUAL },
   { "group-related",                 OP_ATTACH_GROUP_RELATED },
   { "move-attachment-down",          OP_ATTACH_MOVE_ATTACHMENT_DOWN },
@@ -140,6 +140,7 @@ static const struct MenuFuncOp OpCompose[] = { /* map: compose */
   { "view-autocrypt-options",        OP_COMPOSE_VIEW_AUTOCRYPT_OPTIONS },
 #endif
 
+
   // Deprecated
   { "attach-key",                    OP_COMPOSE_ATTACH_PGP_KEY,             MFF_DEPRECATED },
 #ifdef USE_AUTOCRYPT
@@ -147,8 +148,13 @@ static const struct MenuFuncOp OpCompose[] = { /* map: compose */
 #endif
   { "copy-file",                     OP_COM_ATTACH_SAVE_ATTACHMENT,             MFF_DEPRECATED },
   { "display-toggle-weed",           OP_COM_DISPLAY_MESSAGE_HEADERS,            MFF_DEPRECATED },
+  { "edit-description",              OP_ATTACH_EDIT_DESCRIPTION, MFF_DEPRECATED },
+  { "edit-encoding",                 OP_ATTACH_EDIT_ENCODING, MFF_DEPRECATED },
+  { "edit-fcc",                      OP_ENVELOPE_EDIT_FCC, MFF_DEPRECATED },
+  { "edit-language",                 OP_ATTACH_EDIT_LANGUAGE, MFF_DEPRECATED },
   { "edit-type",                     OP_COM_ATTACH_EDIT_CONTENT_TYPE,           MFF_DEPRECATED },
   { "filter-entry",                  OP_ATTACH_FILTER_ATTACHMENT,           MFF_DEPRECATED },
+  { "group-alternatives",            OP_ATTACH_GROUP_ALTS, MFF_DEPRECATED },
   { "ispell",                        OP_COMPOSE_CHECK_SPELLING,             MFF_DEPRECATED },
   { "move-down",                     OP_ATTACH_MOVE_ATTACHMENT_DOWN,        MFF_DEPRECATED },
   { "move-up",                       OP_ATTACH_MOVE_ATTACHMENT_UP,          MFF_DEPRECATED },
