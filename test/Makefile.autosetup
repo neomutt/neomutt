@@ -739,6 +739,7 @@ MISC_OBJS	= background.o \
 
 BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/atoi $(PWD)/test/attach $(PWD)/test/base64 \
+		  $(PWD)/test/background \
 		  $(PWD)/test/body $(PWD)/test/buffer $(PWD)/test/charset \
 		  $(PWD)/test/cli $(PWD)/test/color $(PWD)/test/command \
 		  $(PWD)/test/compress $(PWD)/test/config $(PWD)/test/convert \
