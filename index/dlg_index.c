@@ -1223,7 +1223,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
         {
           for (size_t i = 0; i < shared->mailbox->msg_count; i++)
           {
-            const struct Email *e = shared->mailbox->emails[i];
+            const struct Email *e = mview_email_at(shared->mailbox_view, i);
             if (e && !e->read && !e->old)
             {
               mutt_message(_("New mail in this mailbox"));

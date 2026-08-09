@@ -2886,7 +2886,7 @@ static int op_resend(struct IndexFunctionData *fdata, const struct KeyEvent *eve
     struct Mailbox *m = shared->mailbox;
     for (size_t i = 0; i < m->msg_count; i++)
     {
-      struct Email *e = m->emails[i];
+      struct Email *e = mview_email_at(shared->mailbox_view, i);
       if (!e)
         break;
       if (message_is_tagged(e))
@@ -3036,7 +3036,7 @@ static int op_tag(struct IndexFunctionData *fdata, const struct KeyEvent *event)
     struct Mailbox *m = shared->mailbox;
     for (size_t i = 0; i < m->msg_count; i++)
     {
-      struct Email *e = m->emails[i];
+      struct Email *e = mview_email_at(shared->mailbox_view, i);
       if (!e)
         continue;
       if (e->visible)

@@ -292,7 +292,7 @@ static int index_color_observer(struct NotifyCallback *nc)
   // Force re-caching of index colours
   for (int i = 0; i < m->msg_count; i++)
   {
-    struct Email *e = m->emails[i];
+    struct Email *e = mview_email_at(shared->mailbox_view, i);
     if (!e)
       break;
     e->attr_color = NULL;
@@ -516,7 +516,7 @@ static int index_score_observer(struct NotifyCallback *nc)
 
   for (int i = 0; i < m->msg_count; i++)
   {
-    struct Email *e = m->emails[i];
+    struct Email *e = mview_email_at(shared->mailbox_view, i);
     if (!e)
       break;
 
