@@ -597,7 +597,7 @@ static int ea_add_selection_threads(struct EmailArray *ea,
   struct Mailbox *m = mv->mailbox;
   for (int i = 0; i < m->msg_count; i++)
   {
-    struct Email *et = m->emails[i];
+    struct Email *et = mview_email_at(mv, i);
     if (!et)
       break;
     if (!message_is_tagged(et))
@@ -3427,7 +3427,7 @@ static int op_get_children(struct IndexFunctionData *fdata, const struct KeyEven
       /* try to restore old position */
       for (int i = 0; i < m->msg_count; i++)
       {
-        e2 = m->emails[i];
+        e2 = mview_email_at(mv, i);
         if (!e2)
           break;
         if (e2->index == oldindex)
@@ -3514,8 +3514,8 @@ static int op_get_message(struct IndexFunctionData *fdata, const struct KeyEvent
     int rc2 = nntp_check_msgid(m, buf_string(buf));
     if (rc2 == 0)
     {
-      e = m->emails[m->msg_count - 1];
       struct MailboxView *mv = shared->mailbox_view;
+      e = mview_email_at(mv, m->msg_count - 1);
       mutt_sort_headers(mv, false);
       menu_set_index(priv->menu, e->vnum);
       menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);

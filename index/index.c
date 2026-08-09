@@ -202,7 +202,7 @@ static int config_reply_regex(struct MailboxView *mv)
 
   for (int i = 0; i < m->msg_count; i++)
   {
-    struct Email *e = m->emails[i];
+    struct Email *e = mview_email_at(mv, i);
     if (!e)
       break;
     struct Envelope *env = e->env;
