@@ -46,9 +46,18 @@ jobs:
           jq -r '.[] | .file' compile_commands.json \
             | xargs clang-tidy -p . 2>&1 | tee clang-tidy-report.txt || true
 
-      - name: Upload clang-tidy Report
+      - name: Generate clang-tidy summaries
+        run: python3 .github/clang-tidy-summary.py clang-tidy-report.txt
+
+      - name: Display Summary
+        run: cat summary.md
+
+      - name: Upload clang-tidy artifacts
         uses: actions/upload-artifact@v7
         if: always()
         with:
-          name: clang-tidy-report
-          path: clang-tidy-report.txt
+          name: clang-tidy-reports
+          path: |
+            clang-tidy-report.txt
+            quickfix.txt
+            summary.md
