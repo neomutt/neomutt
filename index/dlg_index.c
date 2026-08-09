@@ -441,7 +441,7 @@ static void update_index_threaded(struct MailboxView *mv, enum MxStatus check, i
   {
     save_new = MUTT_MEM_MALLOC(num_new, struct Email *);
     for (int i = oldcount; i < m->msg_count; i++)
-      save_new[i - oldcount] = m->emails[i];
+      save_new[i - oldcount] = mview_email_at(mv, i);
   }
 
   /* Sort first to thread the new messages, because some patterns
@@ -454,7 +454,7 @@ static void update_index_threaded(struct MailboxView *mv, enum MxStatus check, i
   {
     for (int i = 0; i < m->msg_count; i++)
     {
-      struct Email *e = m->emails[i];
+      struct Email *e = mview_email_at(mv, i);
       if (!e)
         continue;
 
@@ -521,7 +521,7 @@ static void update_index_unthreaded(struct MailboxView *mv, enum MxStatus check)
     mv->mailbox->vcount = mv->vsize = 0;
     for (int i = 0; i < mv->mailbox->msg_count; i++)
     {
-      struct Email *e = mv->mailbox->emails[i];
+      struct Email *e = mview_email_at(mv, i);
       if (!e)
         break;
 
