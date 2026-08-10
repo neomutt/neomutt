@@ -146,6 +146,7 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Generic function: <background-output> */ \
   _fmt(OP_BACKGROUND_OUTPUT,                  N_("View the output of a background command")) \
   /* L10N: Help for Generic function: <background-wait> */ \
+  _fmt(OP_BACKGROUND_CLEAR,                   N_("Clear the list of finished jobs")) \
   _fmt(OP_BACKGROUND_WAIT,                    N_("Wait for background commands to finish")) \
   /* L10N: Help for Pager: <bottom-page> */ \
   _fmt(OP_BOTTOM_PAGE,                        N_("Move to the bottom of the page")) \

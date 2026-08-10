@@ -47,8 +47,8 @@ void test_bg_job_start(void)
   }
 
   {
-    // Fill the table, then the next job should fail
-    for (int i = 0; i < 10; i++)
+    // Finished jobs stay in the table: 9 more fit, the 10th fails
+    for (int i = 0; i < 9; i++)
       TEST_CHECK(bg_job_start("exec sleep 30") >= 0);
     TEST_CHECK_NUM_EQ(bg_job_start("exit 0"), -1);
   }

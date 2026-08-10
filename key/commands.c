@@ -369,7 +369,10 @@ void set_default_bindings(const struct MenuDefinition *md)
     km_bind(md_generic, "<return>", OP_GENERIC_SELECT_ENTRY, NULL, NULL, NULL);
     km_bind(md_generic, ":", OP_ENTER_COMMAND, NULL, NULL, NULL);
     km_bind(md_generic, "?", OP_HELP, NULL, NULL, NULL);
+    km_bind(md_generic, "d", OP_DELETE, NULL, NULL, NULL);
     km_bind(md_generic, "q", OP_EXIT, NULL, NULL, NULL);
+    km_bind(md_generic, "s", OP_SAVE, NULL, NULL, NULL);
+    km_bind(md_generic, "x", OP_BACKGROUND_CLEAR, NULL, NULL, NULL);
     success = true;
   }
 

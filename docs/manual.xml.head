@@ -2315,7 +2315,9 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
                 Opens a dialog listing the background commands with their
                 status and exit code. Press <emphasis>enter</emphasis> to view
                 a command's captured output in the pager, even while it is
-                still running.
+                still running. Finished commands stay listed until deleted;
+                their output is kept in memory and can be viewed again or
+                saved to a file.
               </para>
             </listitem>
           </varlistentry>

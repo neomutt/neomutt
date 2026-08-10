@@ -32,6 +32,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -44,10 +45,14 @@
 #include "history/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
+#include "muttlib.h"
 #include "pager/lib.h"
 
-/// Maximum number of jobs kept at once; oldest finished slot is recycled
+/// Maximum number of jobs kept at once; Clear frees the finished ones
 #define MAX_JOBS 10
+
+/// Maximum number of job outputs kept in memory
+#define BG_OUTPUT_RING 10
 
 /**
  * struct BackgroundJob - A command running in the background
@@ -58,17 +63,76 @@ struct BackgroundJob
   bool running;        ///< true if the process is still running
   int exit_code;       ///< Exit code, -1 if still running or killed by a signal
   struct Buffer *cmd;  ///< Command line
-  struct Buffer *file; ///< Temp file with captured output
+  struct Buffer *file; ///< Temp file with captured output while running
+  struct Buffer *out;  ///< Output kept in memory after completion
 };
 
 static struct BackgroundJob Jobs[MAX_JOBS] = { 0 };
 static struct Buffer *LastCommand = NULL;
+
+/// Finished jobs with output in memory, oldest first; evicted when full
+ARRAY_HEAD(OutputRing, struct BackgroundJob *);
+static struct OutputRing OutputRing = ARRAY_HEAD_INITIALIZER;
 
 /// Events of a macro paused by bg_wait(), resumed when the jobs finish
 static struct KeyEventArray Parked = ARRAY_HEAD_INITIALIZER;
 static bool ParkedActive = false;
 
 // -----------------------------------------------------------------------------
+
+/**
+ * output_ring_remove - Drop one output, shifting the rest
+ * @param pos Position in the ring
+ */
+static void output_ring_remove(int pos)
+{
+  struct BackgroundJob **job = ARRAY_GET(&OutputRing, pos);
+  buf_free(&(*job)->out);
+  const int n = ARRAY_SIZE(&OutputRing) - pos - 1;
+  if (n > 0)
+    memmove(job, job + 1, n * sizeof(struct BackgroundJob *));
+  ARRAY_SHRINK(&OutputRing, 1);
+}
+
+/**
+ * output_ring_remove_job - Drop a job's output from the ring
+ * @param job Job to remove
+ */
+static void output_ring_remove_job(struct BackgroundJob *job)
+{
+  for (size_t i = 0; i < ARRAY_SIZE(&OutputRing); i++)
+  {
+    if (*ARRAY_GET(&OutputRing, i) == job)
+    {
+      output_ring_remove(i);
+      return;
+    }
+  }
+}
+
+/**
+ * output_ring_add - Keep a finished job's output, evicting the oldest if needed
+ * @param job Job whose output was just copied to memory
+ */
+static void output_ring_add(struct BackgroundJob *job)
+{
+  ARRAY_ADD(&OutputRing, job);
+  if (ARRAY_SIZE(&OutputRing) > BG_OUTPUT_RING)
+    output_ring_remove(0);
+}
+
+/**
+ * output_ring_clear - Drop all outputs
+ */
+static void output_ring_clear(void)
+{
+  struct BackgroundJob **job = NULL;
+  ARRAY_FOREACH(job, &OutputRing)
+  {
+    buf_free(&(*job)->out);
+  }
+  ARRAY_FREE(&OutputRing);
+}
 
 /**
  * job_slot_free - Release a job slot
@@ -81,35 +145,166 @@ static void job_slot_free(struct BackgroundJob *job)
 
   if (job->running)
     kill(job->pid, SIGTERM);
+  else
+    output_ring_remove_job(job);
   unlink(buf_string(job->file));
-  buf_free(&job->cmd);
   buf_free(&job->file);
+  buf_free(&job->out);
+  buf_free(&job->cmd);
   *job = (struct BackgroundJob) { 0 };
+}
+
+/**
+ * bg_read_output - Read a job's captured output into memory
+ * @param file Temp file with the output
+ * @retval ptr Output, or NULL on error
+ */
+static struct Buffer *bg_read_output(const char *file)
+{
+  FILE *fp = mutt_file_fopen(file, "r");
+  if (!fp)
+    return NULL;
+
+  struct Buffer *out = buf_new(NULL);
+  char buf[2048] = { 0 };
+  size_t l = 0;
+  while ((l = fread(buf, 1, sizeof(buf), fp)) > 0)
+    buf_addstr_n(out, buf, l);
+  mutt_file_fclose(&fp);
+  return out;
+}
+
+/**
+ * job_has_output - Does a job have any captured output to show?
+ * @param job Job to check
+ */
+static bool job_has_output(const struct BackgroundJob *job)
+{
+  if (job->out)
+    return true;
+
+  struct stat st = { 0 };
+  return job->file && (stat(buf_string(job->file), &st) == 0) && (st.st_size > 0);
 }
 
 /**
  * bg_view_output - Show a job's captured output in the pager
  * @param job Job to display
+ *
+ * The pager unlinks the file it displays, so it always gets a disposable copy.
  */
 static void bg_view_output(const struct BackgroundJob *job)
 {
-  struct stat st = { 0 };
-  if ((stat(buf_string(job->file), &st) != 0) || (st.st_size == 0))
+  if (!job_has_output(job))
   {
     mutt_message(_("No output from background command"));
     return;
   }
 
+  struct Buffer *view = buf_pool_get();
+  buf_mktemp(view);
+
+  FILE *fp_out = mutt_file_fopen(buf_string(view), "w");
+  if (!fp_out)
+  {
+    mutt_perror("fopen");
+    buf_pool_release(&view);
+    return;
+  }
+
+  if (job->out)
+  {
+    fwrite(buf_string(job->out), 1, buf_len(job->out), fp_out);
+  }
+  else
+  {
+    FILE *fp_in = mutt_file_fopen(buf_string(job->file), "r");
+    if (fp_in)
+    {
+      mutt_file_copy_stream(fp_in, fp_out);
+      mutt_file_fclose(&fp_in);
+    }
+  }
+  mutt_file_fclose(&fp_out);
+
   struct PagerData pdata = { 0 };
   struct PagerView pview = { &pdata };
 
-  pdata.fname = buf_string(job->file);
+  pdata.fname = buf_string(view);
 
   pview.banner = buf_string(job->cmd);
   pview.flags = MUTT_PAGER_LOGS | MUTT_PAGER_BOTTOM;
   pview.mode = PAGER_MODE_OTHER;
 
   mutt_do_pager(&pview, NULL);
+  buf_pool_release(&view);
+}
+
+/**
+ * bg_save_output - Save a job's captured output to a file
+ * @param job Job to save
+ */
+static void bg_save_output(const struct BackgroundJob *job)
+{
+  if (!job_has_output(job))
+  {
+    mutt_message(_("No output from background command"));
+    return;
+  }
+
+  struct Buffer *path = buf_pool_get();
+  if ((mw_get_field(_("Save to file: "), path, MUTT_COMP_CLEAR, HC_FILE,
+                    &CompleteFileOps, NULL) != 0) ||
+      buf_is_empty(path))
+  {
+    goto done;
+  }
+
+  expand_path(path, false);
+
+  FILE *fp_out = mutt_file_fopen(buf_string(path), "w");
+  if (!fp_out)
+  {
+    mutt_perror("%s", buf_string(path));
+    goto done;
+  }
+
+  if (job->out)
+  {
+    fwrite(buf_string(job->out), 1, buf_len(job->out), fp_out);
+  }
+  else
+  {
+    FILE *fp_in = mutt_file_fopen(buf_string(job->file), "r");
+    if (fp_in)
+    {
+      mutt_file_copy_stream(fp_in, fp_out);
+      mutt_file_fclose(&fp_in);
+    }
+  }
+  mutt_file_fclose(&fp_out);
+  mutt_message(_("Output saved to %s"), buf_string(path));
+
+done:
+  buf_pool_release(&path);
+}
+
+/**
+ * bg_rows_build - Map the menu rows to job slots
+ * @param[out] n_rows Number of rows
+ * @retval ptr Array of slots, use FREE()
+ */
+static int *bg_rows_build(int *n_rows)
+{
+  int *order = mutt_mem_calloc(MAX_JOBS, sizeof(int));
+  int n = 0;
+  for (int i = 0; i < MAX_JOBS; i++)
+  {
+    if (Jobs[i].cmd)
+      order[n++] = i;
+  }
+  *n_rows = n;
+  return order;
 }
 
 /**
@@ -140,6 +335,9 @@ static int bg_make_entry(struct Menu *menu, int line, int max_cols, struct Buffe
 static const struct Mapping BgHelp[] = {
   // clang-format off
   { N_("Exit"),   OP_EXIT },
+  { N_("Delete"), OP_DELETE },
+  { N_("Save"),   OP_SAVE },
+  { N_("Clear"),  OP_BACKGROUND_CLEAR },
   { N_("Help"),   OP_HELP },
   { N_("Select"), OP_GENERIC_SELECT_ENTRY },
   { NULL, 0 },
@@ -147,9 +345,9 @@ static const struct Mapping BgHelp[] = {
 };
 
 /**
- * bg_order_free - Free the row-to-slot mapping - Implements Menu::mdata_free() - @ingroup menu_mdata_free
+ * bg_rows_free - Free the row-to-slot mapping - Implements Menu::mdata_free() - @ingroup menu_mdata_free
  */
-static void bg_order_free(struct Menu *menu, void **ptr)
+static void bg_rows_free(struct Menu *menu, void **ptr)
 {
   if (!ptr || !*ptr)
     return;
@@ -162,16 +360,9 @@ static void bg_order_free(struct Menu *menu, void **ptr)
  */
 void dlg_output(void)
 {
-  // Map menu rows to job slots (the slots may not be contiguous)
-  int *order = mutt_mem_calloc(MAX_JOBS, sizeof(int));
-  int n_jobs = 0;
-  for (int i = 0; i < MAX_JOBS; i++)
-  {
-    if (Jobs[i].cmd)
-      order[n_jobs++] = i;
-  }
-
-  if (n_jobs == 0)
+  int n_rows = 0;
+  int *order = bg_rows_build(&n_rows);
+  if (n_rows == 0)
   {
     FREE(&order);
     mutt_message(_("No background commands"));
@@ -183,9 +374,9 @@ void dlg_output(void)
 
   struct Menu *menu = sdw.menu;
   menu->mdata = order;
-  menu->mdata_free = bg_order_free;
+  menu->mdata_free = bg_rows_free;
   menu->make_entry = bg_make_entry;
-  menu->max = n_jobs;
+  menu->max = n_rows;
   menu->show_indicator = true;
 
   sbar_set_title(sdw.sbar, _("Background Commands"));
@@ -193,7 +384,6 @@ void dlg_output(void)
   struct MuttWindow *old_focus = window_set_focus(menu->win);
   // ---------------------------------------------------------------------------
   // Event Loop
-  int slot = -1;
   struct KeyEvent event = { 0, OP_NULL };
   int op = OP_NULL;
   do
@@ -210,24 +400,59 @@ void dlg_output(void)
     if (op == OP_TIMEOUT)
       continue;
 
-    if (op == OP_GENERIC_SELECT_ENTRY)
-    {
-      slot = order[menu->current];
-      break;
-    }
-
     if ((op == OP_EXIT) || (op == OP_QUIT) || (op == OP_ABORT))
       break;
 
+    struct BackgroundJob *job = &Jobs[order[menu->current]];
+
+    if (op == OP_GENERIC_SELECT_ENTRY)
+    {
+      bg_view_output(job);
+      continue;
+    }
+
+    if (op == OP_DELETE)
+    {
+      if (job->running)
+        mutt_message(_("Job is still running"));
+      else
+        job_slot_free(job);
+      goto rebuild;
+    }
+
+    if (op == OP_BACKGROUND_CLEAR)
+    {
+      for (int i = 0; i < MAX_JOBS; i++)
+      {
+        if (Jobs[i].cmd && !Jobs[i].running)
+          job_slot_free(&Jobs[i]);
+      }
+      goto rebuild;
+    }
+
+    if (op == OP_SAVE)
+    {
+      bg_save_output(job);
+      continue;
+    }
+
     (void) menu_function_dispatcher(menu->win, &event);
+    continue;
+
+  rebuild:
+    FREE(&menu->mdata);
+    order = bg_rows_build(&n_rows);
+    menu->mdata = order;
+    menu->max = n_rows;
+    if (menu->current >= n_rows)
+      menu->current = n_rows - 1;
+    if (n_rows == 0)
+      break;
   } while (true);
   // ---------------------------------------------------------------------------
 
   window_set_focus(old_focus);
   simple_dialog_free(&sdw.dlg);
-
-  if (slot >= 0)
-    bg_view_output(&Jobs[slot]);
 }
 
 // -----------------------------------------------------------------------------
@@ -251,6 +476,21 @@ int bg_reap(void)
 
     job->exit_code = WIFEXITED(status) ? WEXITSTATUS(status) : -1;
     job->running = false;
+
+    // The temp file is only needed while the job runs; keep the output in memory
+    struct Buffer *out = bg_read_output(buf_string(job->file));
+    unlink(buf_string(job->file));
+    buf_free(&job->file);
+    if (out && !buf_is_empty(out))
+    {
+      job->out = out;
+      output_ring_add(job);
+    }
+    else
+    {
+      buf_free(&out);
+    }
+
     mutt_message(_("Background command \"%s\" finished (exit %d)"),
                  buf_string(job->cmd), job->exit_code);
     reaped++;
@@ -348,25 +588,20 @@ void bg_wait(void)
  */
 int bg_job_start(const char *cmd)
 {
-  // Prefer an unused slot; recycle the first finished one otherwise
   struct BackgroundJob *job = NULL;
   for (int i = 0; i < MAX_JOBS; i++)
   {
-    if (!Jobs[i].cmd) // never used slot
+    if (!Jobs[i].cmd)
     {
       job = &Jobs[i];
       break;
     }
-    if (!job && !Jobs[i].running) // finished slot
-      job = &Jobs[i];
   }
   if (!job)
   {
     mutt_error(_("Too many background commands"));
     return -1;
   }
-  if (job->cmd) // recycling a finished job
-    job_slot_free(job);
 
   struct Buffer *file = buf_pool_get();
   buf_mktemp(file);
@@ -479,6 +714,7 @@ void bg_cleanup(void)
 {
   for (int i = 0; i < MAX_JOBS; i++)
     job_slot_free(&Jobs[i]);
+  output_ring_clear();
   ARRAY_FREE(&Parked);
   buf_free(&LastCommand);
 }
