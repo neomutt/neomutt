@@ -273,7 +273,7 @@ void mutt_attachments_reset(struct MailboxView *mv)
 
   for (int i = 0; i < m->msg_count; i++)
   {
-    struct Email *e = m->emails[i];
+    struct Email *e = mview_email_at(mv, i);
     if (!e)
       break;
     e->attach_valid = false;

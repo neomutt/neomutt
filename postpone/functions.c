@@ -215,8 +215,7 @@ static int op_generic_select_entry(struct PostponeData *pd, const struct KeyEven
 {
   int index = menu_get_index(pd->menu);
   struct MailboxView *mv = pd->mailbox_view;
-  struct Mailbox *m = mv->mailbox;
-  pd->email = m->emails[index];
+  pd->email = mview_email_at(mv, index);
   pd->done = true;
   return FR_SUCCESS;
 }

@@ -427,7 +427,7 @@ int dlg_pager(struct PagerView *pview)
         {
           for (size_t i = oldcount; i < shared->mailbox->msg_count; i++)
           {
-            struct Email *e = shared->mailbox->emails[i];
+            struct Email *e = mview_email_at(shared->mailbox_view, i);
 
             if (e && !e->read)
             {
