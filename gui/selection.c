@@ -135,7 +135,7 @@ int ea_add_tagged(struct EmailArray *ea, struct MailboxView *mv, struct Email *e
     struct Mailbox *m = mv->mailbox;
     for (int i = 0; i < m->msg_count; i++)
     {
-      e = m->emails[i];
+      e = mview_email_at(mv, i);
       if (!e)
         break;
       if (!message_is_tagged(e))

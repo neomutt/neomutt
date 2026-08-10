@@ -361,7 +361,7 @@ void mutt_sort_headers(struct MailboxView *mv, bool init)
     return;
 
   struct Mailbox *m = mv->mailbox;
-  if (!m || !m->emails[0])
+  if (!m || !mview_email_at(mv, 0))
     return;
 
   OptNeedResort = false;
@@ -385,7 +385,7 @@ void mutt_sort_headers(struct MailboxView *mv, bool init)
   {
     for (int i = 0; i < m->msg_count; i++)
     {
-      struct Email *e = m->emails[i];
+      struct Email *e = mview_email_at(mv, i);
       if (!e)
         break;
       mutt_score_message(m, e, true);
@@ -421,7 +421,7 @@ void mutt_sort_headers(struct MailboxView *mv, bool init)
   m->vcount = 0;
   for (int i = 0; i < m->msg_count; i++)
   {
-    struct Email *e_cur = m->emails[i];
+    struct Email *e_cur = mview_email_at(mv, i);
     if (!e_cur)
       break;
 

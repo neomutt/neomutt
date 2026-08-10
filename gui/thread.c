@@ -822,7 +822,7 @@ void mutt_clear_threads(struct ThreadsContext *tctx)
 
   for (int i = 0; i < m->msg_count; i++)
   {
-    struct Email *e = m->emails[i];
+    struct Email *e = mview_email_at(mv, i);
     if (!e)
     {
       // Keep processing, in case there are other holes in the Email array
@@ -1083,7 +1083,7 @@ static void check_subjects(struct MailboxView *mv, bool init)
   struct Mailbox *m = mv->mailbox;
   for (int i = 0; i < m->msg_count; i++)
   {
-    struct Email *e = m->emails[i];
+    struct Email *e = mview_email_at(mv, i);
     if (!e || !e->thread)
       continue;
 
@@ -1172,7 +1172,7 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
   const bool c_duplicate_threads = cs_subset_bool(NeoMutt->sub, "duplicate_threads");
   for (i = 0; i < m->msg_count; i++)
   {
-    e = m->emails[i];
+    e = mview_email_at(mv, i);
     if (!e)
       continue;
 
@@ -1266,7 +1266,7 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
   /* thread by references */
   for (i = 0; i < m->msg_count; i++)
   {
-    e = m->emails[i];
+    e = mview_email_at(mv, i);
     if (!e)
       break;
 

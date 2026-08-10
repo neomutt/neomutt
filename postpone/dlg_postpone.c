@@ -116,7 +116,7 @@ static int post_make_entry(struct Menu *menu, int line, int max_cols, struct Buf
   }
 
   const struct Expando *c_index_format = cs_subset_expando(NeoMutt->sub, "index_format");
-  return mutt_make_string(buf, max_cols, c_index_format, m, -1, m->emails[line],
+  return mutt_make_string(buf, max_cols, c_index_format, m, -1, mview_email_at(mv, line),
                           MUTT_FORMAT_INDEX | MUTT_FORMAT_ARROWCURSOR, NULL);
 }
 
@@ -188,7 +188,7 @@ static int post_tag(struct Menu *menu, int sel, int act)
   {
     for (size_t i = 0; i < m->msg_count; i++)
     {
-      struct Email *e = m->emails[i];
+      struct Email *e = mview_email_at(mv, i);
       if (!e)
         break;
       mutt_set_flag(m, e, MUTT_TAG, false, true);
@@ -198,7 +198,7 @@ static int post_tag(struct Menu *menu, int sel, int act)
   }
 
   int index = menu_get_index(menu);
-  struct Email *e = m->emails[index];
+  struct Email *e = mview_email_at(mv, index);
   if (!e)
     return FR_NO_ACTION;
 
