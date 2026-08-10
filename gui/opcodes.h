@@ -29,11 +29,11 @@
 #include "mutt/lib.h"
 
 const char *opcodes_get_description(int op);
-const char *opcodes_get_name       (int op);
+const char *opcodes_get_name(int op);
 
-#define OP_REPAINT     (-3) ///< Repaint is needed
-#define OP_TIMEOUT     (-2) ///< 1 second with no events
-#define OP_ABORT       (-1) ///< $abort_key pressed (Ctrl-G)
+#define OP_REPAINT (-3) ///< Repaint is needed
+#define OP_TIMEOUT (-2) ///< 1 second with no events
+#define OP_ABORT (-1)   ///< $abort_key pressed (Ctrl-G)
 
 // clang-format off
 #define OPS_ATTACH(_fmt) \
@@ -670,6 +670,24 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Compose function: <smime-menu> */ \
   _fmt(OP_COMPOSE_SMIME_MENU,                 N_("Show S/MIME options")) \
 
+#define OPS_MOUSE(_fmt) \
+  /* L10N: Help for Mouse event: <mouse-click> */ \
+  _fmt(OP_MOUSE_CLICK,                        N_("Mouse click")) \
+  /* L10N: Help for Mouse event: <mouse-double-click> */ \
+  _fmt(OP_MOUSE_DOUBLE_CLICK,                 N_("Mouse double click")) \
+  /* L10N: Help for Mouse event: <mouse-right-click> */ \
+  _fmt(OP_MOUSE_RIGHT_CLICK,                  N_("Mouse right click")) \
+  /* L10N: Help for Mouse event: <mouse-right-double-click> */ \
+  _fmt(OP_MOUSE_RIGHT_DOUBLE_CLICK,           N_("Mouse right double click")) \
+  /* L10N: Help for Mouse event: <mouse-middle-click> */ \
+  _fmt(OP_MOUSE_MIDDLE_CLICK,                 N_("Mouse middle click")) \
+  /* L10N: Help for Mouse event: <mouse-middle-double-click> */ \
+  _fmt(OP_MOUSE_MIDDLE_DOUBLE_CLICK,          N_("Mouse middle double click")) \
+  /* L10N: Help for Mouse event: <mouse-wheel-up> */ \
+  _fmt(OP_MOUSE_WHEEL_UP,                    N_("Mouse wheel up")) \
+  /* L10N: Help for Mouse event: <mouse-wheel-down> */ \
+  _fmt(OP_MOUSE_WHEEL_DOWN,                  N_("Mouse wheel down"))
+
 #define OPS(_fmt) \
   _fmt(OP_NULL,                               N_("Null operation")) \
   OPS_ATTACH(_fmt) \
@@ -677,6 +695,7 @@ const char *opcodes_get_name       (int op);
   OPS_CORE(_fmt) \
   OPS_CRYPT(_fmt) \
   OPS_ENVELOPE(_fmt) \
+  OPS_MOUSE(_fmt) \
   OPS_NOTMUCH(_fmt) \
   OPS_PGP(_fmt) \
   OPS_SIDEBAR(_fmt) \

@@ -35,9 +35,10 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "gui/lib.h"
+#include "gui/curs_lib.h"
+#include "gui/mutt_curses.h"
+#include "gui/opcodes.h"
 #include "get.h"
-#include "menu/lib.h"
 #include "globals.h"
 #include "keymap.h"
 #include "menu.h"
@@ -214,6 +215,43 @@ static int mutt_monitor_getch_timeout(int timeout_ms)
 #endif /* USE_INOTIFY */
 
 /**
+ * handle_mouse_event - Handle a mouse event
+ * @param mevent Mouse event
+ * @param[out] event Key event to dispatch
+ * @retval true  Mouse event generated a key event
+ * @retval false Mouse event should be ignored
+ */
+static bool handle_mouse_event(const MEVENT *mevent, struct KeyEvent *event)
+{
+  if (!mevent || !event)
+    return false;
+
+  event->mouse_row = mevent->y;
+  event->mouse_col = mevent->x;
+
+  // Check double-click before single-click (ncurses can set both bits)
+  if (mevent->bstate & BUTTON1_DOUBLE_CLICKED)
+    event->op = OP_MOUSE_DOUBLE_CLICK;
+  else if (mevent->bstate & BUTTON1_CLICKED)
+    event->op = OP_MOUSE_CLICK;
+  else if (mevent->bstate & BUTTON3_DOUBLE_CLICKED)
+    event->op = OP_MOUSE_RIGHT_DOUBLE_CLICK;
+  else if (mevent->bstate & BUTTON3_CLICKED)
+    event->op = OP_MOUSE_RIGHT_CLICK;
+  else if (mevent->bstate & BUTTON2_DOUBLE_CLICKED)
+    event->op = OP_MOUSE_MIDDLE_DOUBLE_CLICK;
+  else if (mevent->bstate & BUTTON2_CLICKED)
+    event->op = OP_MOUSE_MIDDLE_CLICK;
+  else if (mevent->bstate & BUTTON4_PRESSED)
+    event->op = OP_MOUSE_WHEEL_UP;
+  else if (mevent->bstate & BUTTON5_PRESSED)
+    event->op = OP_MOUSE_WHEEL_DOWN;
+  else
+    return false;
+  return true;
+}
+
+/**
  * mutt_getch_timeout - Read a character from the input buffer with timeout
  * @param flags      Flags, e.g. #GETCH_IGNORE_MACRO
  * @param timeout_ms Timeout in milliseconds
@@ -265,6 +303,14 @@ static struct KeyEvent mutt_getch_timeout(GetChFlags flags, int timeout_ms)
     {
       // do nothing
     }
+  }
+  if (ch == KEY_MOUSE)
+  {
+    MEVENT mevent = { 0 };
+    struct KeyEvent event_mouse = { 0, OP_NULL, 0, -1, -1 };
+
+    if (getmouse(&mevent) == OK && handle_mouse_event(&mevent, &event_mouse))
+      return event_mouse;
   }
 
   if (ch == ERR)
