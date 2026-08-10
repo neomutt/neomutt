@@ -25,7 +25,7 @@ jobs:
 
     - name: Set up Homebrew
       id: set-up-homebrew
-      uses: Homebrew/actions/setup-homebrew@fd832223f9f99ebf0244dd20658680e5d4aca049  # 2026.07.13.1 — one release behind, deliberately, to test Dependabot notices
+      uses: Homebrew/actions/setup-homebrew@fd832223f9f99ebf0244dd20658680e5d4aca049
 
     - name: Install dependencies
       run: brew install notmuch libiconv ncurses lmdb
