@@ -273,7 +273,7 @@ int mutt_regexlist_remove(struct RegexList *rl, const char *str)
 int mutt_replacelist_add(struct ReplaceList *rl, const char *pat,
                          const char *templ, struct Buffer *err)
 {
-  if (!rl || !pat || (*pat == '\0') || !templ)
+  if (!rl || !pat || (*pat == '\0') || !templ || (*templ == '\0'))
     return 0;
 
   struct Regex *rx = mutt_regex_compile(pat, REG_ICASE);
@@ -505,33 +505,36 @@ bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, co
       mutt_debug(LL_DEBUG5, "%d subs\n", (int) np->regex->regex->re_nsub);
 
       /* Copy template into buf, with substitutions. */
-      for (p = np->templ; *p && (tlen < (buflen - 1));)
+      if (np->templ)
       {
-        /* backreference to pattern match substring, eg. %1, %2, etc) */
-        if (*p == '%')
+        for (p = np->templ; *p && (tlen < (buflen - 1));)
         {
-          char *e = NULL; /* used as pointer to end of integer backreference in strtol() call */
-
-          p++; /* skip over % char */
-          long n = strtol(p, &e, 10);
-          /* Ensure that the integer conversion succeeded (e!=p) and bounds check.  The upper bound check
-           * should not strictly be necessary since add_to_spam_list() finds the largest value, and
-           * the static array above is always large enough based on that value. */
-          if ((e != p) && (n >= 0) && (n < np->nmatch) && (pmatch[n].rm_so != -1))
+          /* backreference to pattern match substring, eg. %1, %2, etc) */
+          if (*p == '%')
           {
-            /* copy as much of the substring match as will fit in the output buffer, saving space for
-             * the terminating nul char */
-            for (int idx = pmatch[n].rm_so;
-                 (idx < pmatch[n].rm_eo) && (tlen < (buflen - 1)); idx++)
+            char *e = NULL; /* used as pointer to end of integer backreference in strtol() call */
+
+            p++; /* skip over % char */
+            long n = strtol(p, &e, 10);
+            /* Ensure that the integer conversion succeeded (e!=p) and bounds check.  The upper bound check
+             * should not strictly be necessary since add_to_spam_list() finds the largest value, and
+             * the static array above is always large enough based on that value. */
+            if ((e != p) && (n >= 0) && (n < np->nmatch) && (pmatch[n].rm_so != -1))
             {
-              buf[tlen++] = str[idx];
+              /* copy as much of the substring match as will fit in the output buffer, saving space for
+               * the terminating nul char */
+              for (int idx = pmatch[n].rm_so;
+                   (idx < pmatch[n].rm_eo) && (tlen < (buflen - 1)); idx++)
+              {
+                buf[tlen++] = str[idx];
+              }
             }
+            p = e; /* skip over the parsed integer */
           }
-          p = e; /* skip over the parsed integer */
-        }
-        else
-        {
-          buf[tlen++] = *p++;
+          else
+          {
+            buf[tlen++] = *p++;
+          }
         }
       }
       /* tlen should always be less than buflen except when buflen<=0
