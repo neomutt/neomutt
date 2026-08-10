@@ -273,7 +273,7 @@ int mutt_regexlist_remove(struct RegexList *rl, const char *str)
 int mutt_replacelist_add(struct ReplaceList *rl, const char *pat,
                          const char *templ, struct Buffer *err)
 {
-  if (!rl || !pat || (*pat == '\0') || !templ || (*templ == '\0'))
+  if (!rl || !pat || (*pat == '\0') || !templ)
     return 0;
 
   struct Regex *rx = mutt_regex_compile(pat, REG_ICASE);
