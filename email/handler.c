@@ -1601,7 +1601,11 @@ void mutt_decode_base64(struct State *state, size_t len, bool istext, iconv_t cd
     }
 
     const int c1 = base64val(buf[0]);
+    if (c1 == -1) /* '=' (or any non-base64 char) at slot 0: stop */
+      break;
     const int c2 = base64val(buf[1]);
+    if (c2 == -1) /* '=' at slot 1: invalid padding, stop */
+      break;
 
     /* first char */
     ch = (c1 << 2) | (c2 >> 4);
