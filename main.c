@@ -710,6 +710,7 @@ static void init_keys(struct NeoMutt *n)
 #ifdef USE_AUTOCRYPT
   autocrypt_init_keys(n, sm_generic);
 #endif
+  background_init_keys(n, sm_generic);
   browser_init_keys(n, sm_generic);
   compose_init_keys(n, sm_generic);
   editor_init_keys(n, sm_generic);

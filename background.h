@@ -23,6 +23,9 @@
 #ifndef MUTT_BACKGROUND_H
 #define MUTT_BACKGROUND_H
 
+#include "key/lib.h"
+
+void background_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic);
 void bg_cleanup(void);
 void bg_init(void);
 int bg_job_exit_code(int slot);

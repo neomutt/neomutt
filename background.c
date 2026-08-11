@@ -80,6 +80,43 @@ static bool ParkedActive = false;
 
 // -----------------------------------------------------------------------------
 
+// clang-format off
+/**
+ * OpBackground - Functions for the Background Commands Dialog
+ */
+static const struct MenuFuncOp OpBackground[] = { /* map: background */
+  { "background-clear",              OP_BACKGROUND_CLEAR },
+  { NULL, 0 },
+};
+
+/**
+ * BackgroundDefaultBindings - Key bindings for the Background Commands Dialog
+ */
+static const struct MenuOpSeq BackgroundDefaultBindings[] = { /* map: background */
+  { OP_BACKGROUND_CLEAR,                    "x" },
+  { OP_DELETE,                              "d" },
+  { OP_SAVE,                                "s" },
+  { 0, NULL },
+};
+// clang-format on
+
+/**
+ * background_init_keys - Initialise the Background Keybindings - Implements ::init_keys_api
+ */
+void background_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
+{
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+
+  sm = km_register_submenu(OpBackground);
+  md = km_register_menu(MENU_BACKGROUND, "background");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, BackgroundDefaultBindings);
+}
+
+// -----------------------------------------------------------------------------
+
 /**
  * output_ring_remove - Drop one output, shifting the rest
  * @param pos Position in the ring
@@ -369,8 +406,9 @@ void dlg_output(void)
     return;
   }
 
-  const struct MenuDefinition *md_generic = generic_get_menu_definition();
-  struct SimpleDialogWindows sdw = simple_dialog_new(md_generic, WT_DLG_BACKGROUND, BgHelp);
+  struct MenuDefinition *md_background = menu_find(MENU_BACKGROUND);
+  ASSERT(md_background);
+  struct SimpleDialogWindows sdw = simple_dialog_new(md_background, WT_DLG_BACKGROUND, BgHelp);
 
   struct Menu *menu = sdw.menu;
   menu->mdata = order;
@@ -394,7 +432,7 @@ void dlg_output(void)
 
     window_redraw(NULL);
 
-    event = km_dokey(md_generic, GETCH_NONE);
+    event = km_dokey(md_background, GETCH_NONE);
     op = event.op;
 
     if (op == OP_TIMEOUT)

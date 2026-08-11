@@ -281,6 +281,7 @@ const char *name_menu_type(enum MenuType mt)
 #ifdef USE_AUTOCRYPT
     DEBUG_NAME(MENU_AUTOCRYPT);
 #endif
+    DEBUG_NAME(MENU_BACKGROUND);
     DEBUG_NAME(MENU_BROWSER);
     DEBUG_NAME(MENU_COMPOSE);
     DEBUG_NAME(MENU_EDITOR);

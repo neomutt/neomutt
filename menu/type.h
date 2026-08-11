@@ -36,6 +36,7 @@ enum MenuType
 #ifdef USE_AUTOCRYPT
   MENU_AUTOCRYPT,        ///< Autocrypt Account menu
 #endif
+  MENU_BACKGROUND,       ///< Background commands dialog
   MENU_BROWSER,          ///< General file/mailbox browser
   MENU_COMPOSE,          ///< Compose an email
   MENU_EDITOR,           ///< Text entry area
