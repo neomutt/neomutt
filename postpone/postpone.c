@@ -653,6 +653,34 @@ bail:
 }
 
 /**
+ * postpone_make_id_hash - Create a Hash Table for Message-IDs
+ * @param m Mailbox
+ * @retval ptr Newly allocated Hash Table
+ *
+ * mutt_get_postponed()'s m_cur is the currently-open mailbox, passed in as a
+ * plain Mailbox* with no MailboxView threaded to it -- unlike
+ * mutt_make_id_hash() (gui/thread.c), which needs one. Threading a
+ * MailboxView through mutt_get_postponed() and its own callers is real
+ * follow-up work, not done here.
+ */
+static struct HashTable *postpone_make_id_hash(struct Mailbox *m)
+{
+  struct HashTable *hash = mutt_hash_new(m->msg_count * 2, MUTT_HASH_NONE);
+
+  for (int i = 0; i < m->msg_count; i++)
+  {
+    struct Email *e = m->emails[i];
+    if (!e || !e->env)
+      continue;
+
+    if (e->env->message_id)
+      mutt_hash_insert(hash, e->env->message_id, e);
+  }
+
+  return hash;
+}
+
+/**
  * mutt_get_postponed - Recall a postponed message
  * @param[in]  m_cur   Current mailbox
  * @param[in]  hdr     envelope/attachment info for recalled message
@@ -743,7 +771,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
       {
         p = mutt_str_skip_email_wsp(np->data + plen);
         if (!m_cur->id_hash)
-          m_cur->id_hash = mutt_make_id_hash(m_cur);
+          m_cur->id_hash = postpone_make_id_hash(m_cur);
         *cur = mutt_hash_find(m_cur->id_hash, p);
 
         if (*cur)
