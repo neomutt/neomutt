@@ -958,6 +958,8 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       return pat->pat_not ^ (e->score >= pat->min &&
                              (pat->max == MUTT_MAXRANGE || e->score <= pat->max));
     case MUTT_PAT_SIZE:
+      if (!e->body)
+        return false;
       return pat->pat_not ^ (e->body->length >= pat->min &&
                              (pat->max == MUTT_MAXRANGE || e->body->length <= pat->max));
     case MUTT_PAT_REFERENCE:
