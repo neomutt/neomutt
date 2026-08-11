@@ -86,7 +86,7 @@ void postpone_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
  * postpone_add_selection - Build a working set of Emails for an action
  * @param ea     Empty EmailArray to populate
  * @param menu   Postpone Menu
- * @param m      Mailbox
+ * @param mv     Mailbox View
  * @param tagged Use tagged emails (tag-prefix)
  * @param count  Repeat-count (0 or 1 == just the current selection)
  * @retval num Number of emails added
@@ -98,16 +98,18 @@ void postpone_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
  * @a count - 1 emails.  Overruns are silently capped at the end of the list.
  */
 static int postpone_add_selection(struct EmailArray *ea, struct Menu *menu,
-                                  struct Mailbox *m, bool tagged, int count)
+                                  struct MailboxView *mv, bool tagged, int count)
 {
-  if (!ea || !menu || !m || !m->emails)
+  if (!ea || !menu || !mv || !mv->mailbox || !mv->mailbox->emails)
     return 0;
+
+  int msg_count = mview_email_count(mv);
 
   if (tagged)
   {
-    for (int i = 0; i < m->msg_count; i++)
+    for (int i = 0; i < msg_count; i++)
     {
-      struct Email *e = m->emails[i];
+      struct Email *e = mview_email_at(mv, i);
       if (e && e->tagged)
         ARRAY_ADD(ea, e);
     }
@@ -115,16 +117,16 @@ static int postpone_add_selection(struct EmailArray *ea, struct Menu *menu,
   else
   {
     const int index = menu_get_index(menu);
-    if ((index < 0) || (index >= m->msg_count))
+    if ((index < 0) || (index >= msg_count))
       return 0;
 
     int n = (count > 1) ? count : 1;
-    if ((index + n) > m->msg_count)
-      n = m->msg_count - index;
+    if ((index + n) > msg_count)
+      n = msg_count - index;
 
     for (int i = 0; i < n; i++)
     {
-      struct Email *e = m->emails[index + i];
+      struct Email *e = mview_email_at(mv, index + i);
       if (e)
         ARRAY_ADD(ea, e);
     }
@@ -179,7 +181,7 @@ static int op_delete(struct PostponeData *pd, const struct KeyEvent *event)
 
   /* should deleted draft messages be saved in the trash folder? */
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
-  postpone_add_selection(&ea, menu, m, menu->tag_prefix, event->count);
+  postpone_add_selection(&ea, menu, mv, menu->tag_prefix, event->count);
   const int num = ARRAY_SIZE(&ea);
   postpone_apply_set_deleted(m, &ea, bf);
   ARRAY_FREE(&ea);

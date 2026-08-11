@@ -705,19 +705,20 @@ static struct MuttThread *find_subject(struct Mailbox *m, struct MuttThread *cur
 
 /**
  * make_subj_hash - Create a Hash Table for the email subjects
- * @param m Mailbox
+ * @param mv Mailbox View
  * @retval ptr Newly allocated Hash Table
  */
-static struct HashTable *make_subj_hash(struct Mailbox *m)
+static struct HashTable *make_subj_hash(struct MailboxView *mv)
 {
-  if (!m)
+  if (!mv)
     return NULL;
 
-  struct HashTable *hash = mutt_hash_new(m->msg_count * 2, MUTT_HASH_ALLOW_DUPS);
+  int count = mview_email_count(mv);
+  struct HashTable *hash = mutt_hash_new(count * 2, MUTT_HASH_ALLOW_DUPS);
 
-  for (int i = 0; i < m->msg_count; i++)
+  for (int i = 0; i < count; i++)
   {
-    struct Email *e = m->emails[i];
+    struct Email *e = mview_email_at(mv, i);
     if (!e || !e->env)
       continue;
     if (e->env->real_subj)
@@ -749,7 +750,7 @@ static void pseudo_threads(struct ThreadsContext *tctx)
   struct MuttThread *nextchild = NULL;
 
   if (!m->subj_hash)
-    m->subj_hash = make_subj_hash(m);
+    m->subj_hash = make_subj_hash(tctx->mailbox_view);
 
   while (tree)
   {
@@ -1509,22 +1510,24 @@ int mutt_parent_message(struct Email *e, bool find_root, int count)
 
 /**
  * mutt_set_vnum - Set the virtual index number of all the messages in a mailbox
- * @param m       Mailbox
+ * @param mv      Mailbox View
  * @retval num Size in bytes of all messages shown
  */
-off_t mutt_set_vnum(struct Mailbox *m)
+off_t mutt_set_vnum(struct MailboxView *mv)
 {
-  if (!m)
+  if (!mv || !mv->mailbox)
     return 0;
 
+  struct Mailbox *m = mv->mailbox;
   off_t vsize = 0;
   const int padding = mx_msg_padding_size(m);
 
   m->vcount = 0;
 
-  for (int i = 0; i < m->msg_count; i++)
+  int count = mview_email_count(mv);
+  for (int i = 0; i < count; i++)
   {
-    struct Email *e = m->emails[i];
+    struct Email *e = mview_email_at(mv, i);
     if (!e)
       break;
 
@@ -1819,16 +1822,20 @@ int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, enum MessageInTh
 
 /**
  * mutt_make_id_hash - Create a Hash Table for Message-IDs
- * @param m Mailbox
+ * @param mv Mailbox View
  * @retval ptr Newly allocated Hash Table
  */
-struct HashTable *mutt_make_id_hash(struct Mailbox *m)
+struct HashTable *mutt_make_id_hash(struct MailboxView *mv)
 {
-  struct HashTable *hash = mutt_hash_new(m->msg_count * 2, MUTT_HASH_NONE);
+  if (!mv)
+    return NULL;
 
-  for (int i = 0; i < m->msg_count; i++)
+  int count = mview_email_count(mv);
+  struct HashTable *hash = mutt_hash_new(count * 2, MUTT_HASH_NONE);
+
+  for (int i = 0; i < count; i++)
   {
-    struct Email *e = m->emails[i];
+    struct Email *e = mview_email_at(mv, i);
     if (!e || !e->env)
       continue;
 

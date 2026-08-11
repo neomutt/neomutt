@@ -438,7 +438,7 @@ void mutt_sort_headers(struct MailboxView *mv, bool init)
   if (threaded)
   {
     mutt_thread_collapse_collapsed(mv->threads);
-    mv->vsize = mutt_set_vnum(m);
+    mv->vsize = mutt_set_vnum(mv);
   }
 
   if (m->verbose)

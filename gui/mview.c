@@ -184,7 +184,7 @@ void mview_update(struct MailboxView *mv)
       struct Email *e2 = NULL;
 
       if (!m->id_hash)
-        m->id_hash = mutt_make_id_hash(m);
+        m->id_hash = mutt_make_id_hash(mv);
 
       e2 = mutt_hash_find(m->id_hash, e->env->supersedes);
       if (e2)

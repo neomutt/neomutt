@@ -260,7 +260,7 @@ int mutt_do_pager(struct PagerView *pview, struct Email *e)
   return 0;
 }
 
-struct HashTable *mutt_make_id_hash(struct Mailbox *m)
+struct HashTable *mutt_make_id_hash(struct MailboxView *mv)
 {
   return NULL;
 }
@@ -462,7 +462,7 @@ bool mutt_select_sort(bool reverse)
   return true;
 }
 
-off_t mutt_set_vnum(struct Mailbox *m)
+off_t mutt_set_vnum(struct MailboxView *mv)
 {
   return 0;
 }
