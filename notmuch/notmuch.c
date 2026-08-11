@@ -737,6 +737,33 @@ static void nm_progress_update(struct Mailbox *m)
  * @retval ptr  Email
  * @retval NULL Error
  */
+
+/**
+ * nm_make_id_hash - Create a Hash Table for Message-IDs
+ * @param m Mailbox
+ * @retval ptr Newly allocated Hash Table
+ *
+ * This mailbox is manipulated directly by the notmuch backend, outside of
+ * any MailboxView -- unlike mutt_make_id_hash() (gui/thread.c), which is
+ * only reachable with a MailboxView already in scope.
+ */
+static struct HashTable *nm_make_id_hash(struct Mailbox *m)
+{
+  struct HashTable *hash = mutt_hash_new(m->msg_count * 2, MUTT_HASH_NONE);
+
+  for (int i = 0; i < m->msg_count; i++)
+  {
+    struct Email *e = m->emails[i];
+    if (!e || !e->env)
+      continue;
+
+    if (e->env->message_id)
+      mutt_hash_insert(hash, e->env->message_id, e);
+  }
+
+  return hash;
+}
+
 static struct Email *get_mutt_email(struct Mailbox *m, notmuch_message_t *msg)
 {
   if (!m || !msg)
@@ -751,7 +778,7 @@ static struct Email *get_mutt_email(struct Mailbox *m, notmuch_message_t *msg)
   if (!m->id_hash)
   {
     mutt_debug(LL_DEBUG2, "nm: init hash\n");
-    m->id_hash = mutt_make_id_hash(m);
+    m->id_hash = nm_make_id_hash(m);
     if (!m->id_hash)
       return NULL;
   }
