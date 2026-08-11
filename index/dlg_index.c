@@ -212,7 +212,7 @@ void collapse_all(struct MailboxView *mv, struct Menu *menu, enum CollapseMode m
   mutt_thread_collapse(mv->threads, mv->collapsed);
 
   /* Restore the cursor */
-  mutt_set_vnum(mv->mailbox);
+  mutt_set_vnum(mv);
   menu->max = mv->mailbox->vcount;
   for (int i = 0; i < mv->mailbox->vcount; i++)
   {
@@ -244,7 +244,7 @@ static void uncollapse_thread(struct MailboxView *mv, int index)
   if (e && e->collapsed)
   {
     mutt_uncollapse_thread(e);
-    mutt_set_vnum(m);
+    mutt_set_vnum(mv);
   }
 }
 
@@ -487,7 +487,7 @@ static void update_index_threaded(struct MailboxView *mv, enum MxStatus check, i
     {
       mv->collapsed = false;
       mutt_thread_collapse(mv->threads, mv->collapsed);
-      mutt_set_vnum(m);
+      mutt_set_vnum(mv);
     }
     else if (oldcount > 0)
     {
@@ -498,7 +498,7 @@ static void update_index_threaded(struct MailboxView *mv, enum MxStatus check, i
           mutt_uncollapse_thread(save_new[j]);
         }
       }
-      mutt_set_vnum(m);
+      mutt_set_vnum(mv);
     }
   }
 

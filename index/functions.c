@@ -853,7 +853,7 @@ static int op_main_change_thread(struct IndexFunctionData *fdata,
     return FR_NO_ACTION;
   }
 
-  mutt_set_vnum(shared->mailbox);
+  mutt_set_vnum(shared->mailbox_view);
   update_thread_email(priv, shared->email);
   menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
@@ -978,7 +978,7 @@ static int op_display_message(struct IndexFunctionData *fdata, const struct KeyE
   if (mutt_using_threads() && shared->email->collapsed)
   {
     mutt_uncollapse_thread(shared->email);
-    mutt_set_vnum(shared->mailbox);
+    mutt_set_vnum(shared->mailbox_view);
     const bool c_uncollapse_jump = cs_subset_bool(shared->sub, "uncollapse_jump");
     if (c_uncollapse_jump)
       menu_set_index(priv->menu, mutt_thread_next_unread(shared->email));
@@ -1308,7 +1308,7 @@ static int op_jump(struct IndexFunctionData *fdata, const struct KeyEvent *event
     if (mutt_messages_in_thread(shared->mailbox, e, MIT_POSITION) > 1)
     {
       mutt_uncollapse_thread(e);
-      mutt_set_vnum(shared->mailbox);
+      mutt_set_vnum(shared->mailbox_view);
     }
     menu_set_index(priv->menu, e->vnum);
     rc = FR_SUCCESS;
@@ -3378,7 +3378,7 @@ static int op_get_children(struct IndexFunctionData *fdata, const struct KeyEven
 
   mutt_message(_("Fetching message headers..."));
   if (!m->id_hash)
-    m->id_hash = mutt_make_id_hash(m);
+    m->id_hash = mutt_make_id_hash(shared->mailbox_view);
   mutt_str_copy(buf, e->env->message_id, sizeof(buf));
 
   const int op = event->op;
@@ -3489,7 +3489,7 @@ static int op_get_message(struct IndexFunctionData *fdata, const struct KeyEvent
   }
 
   if (!m->id_hash)
-    m->id_hash = mutt_make_id_hash(m);
+    m->id_hash = mutt_make_id_hash(shared->mailbox_view);
   struct Email *e = mutt_hash_find(m->id_hash, buf_string(buf));
   if (e)
   {
@@ -3500,7 +3500,7 @@ static int op_get_message(struct IndexFunctionData *fdata, const struct KeyEvent
     else if (e->collapsed)
     {
       mutt_uncollapse_thread(e);
-      mutt_set_vnum(m);
+      mutt_set_vnum(shared->mailbox_view);
       menu_set_index(priv->menu, e->vnum);
     }
     else
@@ -3729,7 +3729,7 @@ static int op_main_entire_thread(struct IndexFunctionData *fdata, const struct K
     if (e_oldcur->collapsed || shared->mailbox_view->collapsed)
     {
       index = mutt_uncollapse_thread(e_oldcur);
-      mutt_set_vnum(shared->mailbox);
+      mutt_set_vnum(shared->mailbox_view);
     }
     menu_set_index(priv->menu, index);
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
