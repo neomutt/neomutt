@@ -679,12 +679,8 @@ void bg_start_command(void)
     goto done;
   }
 
-  if (buf_is_empty(cmd)) // re-run the last command
-  {
-    if (!LastCommand)
-      goto done;
-    buf_copy(cmd, LastCommand);
-  }
+  if (buf_is_empty(cmd))
+    goto done;
 
   if (bg_job_start(buf_string(cmd)) < 0)
     goto done;
