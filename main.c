@@ -130,7 +130,7 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "sidebar/lib.h"
-#include "background.h"
+#include "background/lib.h"
 #include "external.h"
 #include "globals.h"
 #include "mutt_logging.h"

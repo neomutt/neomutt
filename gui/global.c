@@ -38,7 +38,7 @@
 #include "key/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
-#include "background.h"
+#include "background/lib.h"
 #include "curs_lib.h"
 #include "external.h"
 #include "mutt_curses.h"
@@ -81,7 +81,7 @@ static int op_background_command(struct MuttWindow *win, const struct KeyEvent *
  */
 static int op_background_output(struct MuttWindow *win, const struct KeyEvent *event)
 {
-  dlg_output();
+  dlg_background();
   return FR_SUCCESS;
 }
 

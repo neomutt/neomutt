@@ -24,7 +24,7 @@
 #include "config.h"
 #include "acutest.h"
 #include <unistd.h>
-#include "background.h"
+#include "background/lib.h"
 #include "test_common.h"
 
 void test_bg_job_start(void)

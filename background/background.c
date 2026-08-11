@@ -21,7 +21,7 @@
  */
 
 /**
- * @page main_background Run external commands in the background
+ * @page background_background Background commands
  *
  * Run external commands in the background
  */
@@ -39,7 +39,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "background.h"
+#include "lib.h"
 #include "browser/lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
@@ -47,27 +47,12 @@
 #include "menu/lib.h"
 #include "muttlib.h"
 #include "pager/lib.h"
-
-/// Maximum number of jobs kept at once; Clear frees the finished ones
-#define MAX_JOBS 10
+#include "private.h"
 
 /// Maximum number of job outputs kept in memory
 #define BG_OUTPUT_RING 10
 
-/**
- * struct BackgroundJob - A command running in the background
- */
-struct BackgroundJob
-{
-  pid_t pid;           ///< Process id
-  bool running;        ///< true if the process is still running
-  int exit_code;       ///< Exit code, -1 if still running or killed by a signal
-  struct Buffer *cmd;  ///< Command line
-  struct Buffer *file; ///< Temp file with captured output while running
-  struct Buffer *out;  ///< Output kept in memory after completion
-};
-
-static struct BackgroundJob Jobs[MAX_JOBS] = { 0 };
+struct BackgroundJob Jobs[MAX_JOBS] = { 0 };
 static struct Buffer *LastCommand = NULL;
 
 /// Finished jobs with output in memory, oldest first; evicted when full
@@ -77,43 +62,6 @@ static struct OutputRing OutputRing = ARRAY_HEAD_INITIALIZER;
 /// Events of a macro paused by bg_wait(), resumed when the jobs finish
 static struct KeyEventArray Parked = ARRAY_HEAD_INITIALIZER;
 static bool ParkedActive = false;
-
-// -----------------------------------------------------------------------------
-
-// clang-format off
-/**
- * OpBackground - Functions for the Background Commands Dialog
- */
-static const struct MenuFuncOp OpBackground[] = { /* map: background */
-  { "background-clear",              OP_BACKGROUND_CLEAR },
-  { NULL, 0 },
-};
-
-/**
- * BackgroundDefaultBindings - Key bindings for the Background Commands Dialog
- */
-static const struct MenuOpSeq BackgroundDefaultBindings[] = { /* map: background */
-  { OP_BACKGROUND_CLEAR,                    "x" },
-  { OP_DELETE,                              "d" },
-  { OP_SAVE,                                "s" },
-  { 0, NULL },
-};
-// clang-format on
-
-/**
- * background_init_keys - Initialise the Background Keybindings - Implements ::init_keys_api
- */
-void background_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
-{
-  struct MenuDefinition *md = NULL;
-  struct SubMenu *sm = NULL;
-
-  sm = km_register_submenu(OpBackground);
-  md = km_register_menu(MENU_BACKGROUND, "background");
-  km_menu_add_submenu(md, sm);
-  km_menu_add_submenu(md, sm_generic);
-  km_menu_add_bindings(md, BackgroundDefaultBindings);
-}
 
 // -----------------------------------------------------------------------------
 
@@ -175,7 +123,7 @@ static void output_ring_clear(void)
  * job_slot_free - Release a job slot
  * @param job Job to release
  */
-static void job_slot_free(struct BackgroundJob *job)
+void job_slot_free(struct BackgroundJob *job)
 {
   if (!job->cmd)
     return;
@@ -230,7 +178,7 @@ static bool job_has_output(const struct BackgroundJob *job)
  *
  * The pager unlinks the file it displays, so it always gets a disposable copy.
  */
-static void bg_view_output(const struct BackgroundJob *job)
+void bg_view_output(const struct BackgroundJob *job)
 {
   if (!job_has_output(job))
   {
@@ -281,7 +229,7 @@ static void bg_view_output(const struct BackgroundJob *job)
  * bg_save_output - Save a job's captured output to a file
  * @param job Job to save
  */
-static void bg_save_output(const struct BackgroundJob *job)
+void bg_save_output(const struct BackgroundJob *job)
 {
   if (!job_has_output(job))
   {
@@ -325,175 +273,6 @@ static void bg_save_output(const struct BackgroundJob *job)
 done:
   buf_pool_release(&path);
 }
-
-/**
- * bg_rows_build - Map the menu rows to job slots
- * @param[out] n_rows Number of rows
- * @retval ptr Array of slots, use FREE()
- */
-static int *bg_rows_build(int *n_rows)
-{
-  int *order = mutt_mem_calloc(MAX_JOBS, sizeof(int));
-  int n = 0;
-  for (int i = 0; i < MAX_JOBS; i++)
-  {
-    if (Jobs[i].cmd)
-      order[n++] = i;
-  }
-  *n_rows = n;
-  return order;
-}
-
-/**
- * bg_make_entry - Format a job for the menu - Implements Menu::make_entry() - @ingroup menu_make_entry
- */
-static int bg_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
-{
-  const int slot = ((const int *) menu->mdata)[line];
-  const struct BackgroundJob *job = &Jobs[slot];
-
-  const char *status = job->running ? _("run") : _("done");
-  char exitbuf[16] = { 0 };
-  if (!job->running)
-  {
-    if (job->exit_code < 0)
-      mutt_str_copy(exitbuf, "sig", sizeof(exitbuf));
-    else
-      snprintf(exitbuf, sizeof(exitbuf), "%d", job->exit_code);
-  }
-
-  const int bytes = buf_printf(buf, "%2d  %-4s  %4s  %s", line + 1, status,
-                               exitbuf, buf_string(job->cmd));
-
-  return mutt_strnwidth(buf_string(buf), bytes);
-}
-
-/// Help Bar for the Background Commands dialog
-static const struct Mapping BgHelp[] = {
-  // clang-format off
-  { N_("Exit"),   OP_EXIT },
-  { N_("Delete"), OP_DELETE },
-  { N_("Save"),   OP_SAVE },
-  { N_("Clear"),  OP_BACKGROUND_CLEAR },
-  { N_("Help"),   OP_HELP },
-  { N_("Select"), OP_GENERIC_SELECT_ENTRY },
-  { NULL, 0 },
-  // clang-format on
-};
-
-/**
- * bg_rows_free - Free the row-to-slot mapping - Implements Menu::mdata_free() - @ingroup menu_mdata_free
- */
-static void bg_rows_free(struct Menu *menu, void **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  FREE(ptr);
-}
-
-/**
- * dlg_output - List the background commands and view their output - @ingroup gui_dlg
- */
-void dlg_output(void)
-{
-  int n_rows = 0;
-  int *order = bg_rows_build(&n_rows);
-  if (n_rows == 0)
-  {
-    FREE(&order);
-    mutt_message(_("No background commands"));
-    return;
-  }
-
-  struct MenuDefinition *md_background = menu_find(MENU_BACKGROUND);
-  ASSERT(md_background);
-  struct SimpleDialogWindows sdw = simple_dialog_new(md_background, WT_DLG_BACKGROUND, BgHelp);
-
-  struct Menu *menu = sdw.menu;
-  menu->mdata = order;
-  menu->mdata_free = bg_rows_free;
-  menu->make_entry = bg_make_entry;
-  menu->max = n_rows;
-  menu->show_indicator = true;
-
-  sbar_set_title(sdw.sbar, _("Background Commands"));
-
-  struct MuttWindow *old_focus = window_set_focus(menu->win);
-  // ---------------------------------------------------------------------------
-  // Event Loop
-  struct KeyEvent event = { 0, OP_NULL };
-  int op = OP_NULL;
-  do
-  {
-    // Update the status of running jobs
-    menu->redraw = MENU_REDRAW_FULL;
-    menu->win->actions |= WA_REPAINT;
-
-    window_redraw(NULL);
-
-    event = km_dokey(md_background, GETCH_NONE);
-    op = event.op;
-
-    if (op == OP_TIMEOUT)
-      continue;
-
-    if ((op == OP_EXIT) || (op == OP_QUIT) || (op == OP_ABORT))
-      break;
-
-    struct BackgroundJob *job = &Jobs[order[menu->current]];
-
-    if (op == OP_GENERIC_SELECT_ENTRY)
-    {
-      bg_view_output(job);
-      continue;
-    }
-
-    if (op == OP_DELETE)
-    {
-      if (job->running)
-        mutt_message(_("Job is still running"));
-      else
-        job_slot_free(job);
-      goto rebuild;
-    }
-
-    if (op == OP_BACKGROUND_CLEAR)
-    {
-      for (int i = 0; i < MAX_JOBS; i++)
-      {
-        if (Jobs[i].cmd && !Jobs[i].running)
-          job_slot_free(&Jobs[i]);
-      }
-      goto rebuild;
-    }
-
-    if (op == OP_SAVE)
-    {
-      bg_save_output(job);
-      continue;
-    }
-
-    (void) menu_function_dispatcher(menu->win, &event);
-    continue;
-
-  rebuild:
-    FREE(&menu->mdata);
-    order = bg_rows_build(&n_rows);
-    menu->mdata = order;
-    menu->max = n_rows;
-    if (menu->current >= n_rows)
-      menu->current = n_rows - 1;
-    if (n_rows == 0)
-      break;
-  } while (true);
-  // ---------------------------------------------------------------------------
-
-  window_set_focus(old_focus);
-  simple_dialog_free(&sdw.dlg);
-}
-
-// -----------------------------------------------------------------------------
 
 /**
  * bg_reap - Poll for finished jobs
@@ -606,14 +385,12 @@ static int bg_timeout_observer(struct NotifyCallback *nc)
  */
 void bg_wait(void)
 {
-  // Nothing to wait for: the macro continues
   if (!bg_jobs_running())
     return;
 
   // The op dispatch clears the message line; re-show the start notification
   mutt_message(_("Background command started: %s"), buf_string(LastCommand));
 
-  // Park the rest of the macro; bg_timeout_observer resumes it
   mutt_take_macro_events(&Parked);
   ParkedActive = true;
 }

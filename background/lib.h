@@ -20,10 +20,23 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_BACKGROUND_H
-#define MUTT_BACKGROUND_H
+/**
+ * @page lib_background Background commands
+ *
+ * Run external commands in the background
+ *
+ * | File                    | Description                        |
+ * | :---------------------- | :--------------------------------- |
+ * | background/background.c | @subpage background_background     |
+ * | background/dlg_background.c | @subpage background_dlg_background |
+ * | background/functions.c  | @subpage background_functions      |
+ */
 
-#include "key/lib.h"
+#ifndef MUTT_BACKGROUND_LIB_H
+#define MUTT_BACKGROUND_LIB_H
+
+struct NeoMutt;
+struct SubMenu;
 
 void background_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic);
 void bg_cleanup(void);
@@ -33,6 +46,6 @@ int bg_job_start(const char *cmd);
 int bg_reap(void);
 void bg_start_command(void);
 void bg_wait(void);
-void dlg_output(void);
+void dlg_background(void);
 
-#endif /* MUTT_BACKGROUND_H */
+#endif /* MUTT_BACKGROUND_LIB_H */

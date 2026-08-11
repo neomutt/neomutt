@@ -731,8 +731,7 @@ URL_OBJS	= test/url/url_check_scheme.o \
 		  test/url/url_tostring.o
 
 # Cherry-picked objects
-MISC_OBJS	= background.o \
-		  commands/commands.o \
+MISC_OBJS	= commands/commands.o \
 		  mutt_config.o \
 		  muttlib.o \
 		  pattern/pattern.o

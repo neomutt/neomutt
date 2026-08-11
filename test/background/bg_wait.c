@@ -23,7 +23,7 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include "background.h"
+#include "background/lib.h"
 #include "test_common.h"
 
 void test_bg_wait(void)

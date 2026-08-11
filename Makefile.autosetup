@@ -61,7 +61,7 @@ default:	all
 ###############################################################################
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
-NEOMUTTOBJS=	background.o conststrings.o editmsg.o external.o flags.o git_ver.o \
+NEOMUTTOBJS=	conststrings.o editmsg.o external.o flags.o git_ver.o \
 		globals.o help.o module.o mutt_config.o mutt_logging.o \
 		mutt_mailbox.o mutt_signal.o mutt_socket.o muttlib.o mx.o \
 		system.o usage.o version.o
@@ -720,6 +720,20 @@ $(PWD)/mlist:
 	$(MKDIR_P) $(PWD)/mlist
 
 ###############################################################################
+# libbackground
+LIBBACKGROUND=	libbackground.a
+LIBBACKGROUNDOBJS=	background/background.o background/dlg_background.o \
+		background/functions.o
+CLEANFILES+=	$(LIBBACKGROUND) $(LIBBACKGROUNDOBJS)
+ALLOBJS+=	$(LIBBACKGROUNDOBJS)
+
+$(LIBBACKGROUND): $(PWD)/background $(LIBBACKGROUNDOBJS)
+	$(AR) cr $@ $(LIBBACKGROUNDOBJS)
+	$(RANLIB) $@
+$(PWD)/background:
+	$(MKDIR_P) $(PWD)/background
+
+###############################################################################
 # libmutt
 LIBMUTT=	libmutt.a
 LIBMUTTOBJS=	mutt/atoi.o mutt/base64.o mutt/buffer.o mutt/charset.o \
@@ -997,7 +1011,7 @@ MUTTLIBS+=	$(LIBCORE) $(LIBINDEX) $(LIBPAGER) $(LIBINDEX) $(LIBPAGER) \
 		$(LIBBROWSER) $(LIBCOMPMBOX) $(LIBSTORE) $(LIBPROGRESS) \
 		$(LIBQUESTION) $(LIBPOSTPONE) $(LIBALIAS) $(LIBSEND) \
 		$(LIBCONVERT) $(LIBCOMPOSE) $(LIBATTACH) $(LIBKEY) $(LIBGUI) \
-		$(LIBNNTP) $(LIBPATTERN) $(LIBMENU) $(LIBCOLOR) \
+		$(LIBNNTP) $(LIBPATTERN) $(LIBMENU) $(LIBCOLOR) $(LIBBACKGROUND) \
 		$(LIBCOMMANDS) $(LIBHOOKS) $(LIBENVELOPE) $(LIBHELPBAR) \
 		$(LIBMBOX) $(LIBMH) $(LIBNOTMUCH) $(LIBMAILDIR) $(LIBEDITOR) \
 		$(LIBCOMPLETE) $(LIBNNTP) $(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) \
