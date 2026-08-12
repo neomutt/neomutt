@@ -731,14 +731,6 @@ static void nm_progress_update(struct Mailbox *m)
 }
 
 /**
- * get_mutt_email - Get the Email of a Notmuch message
- * @param m Mailbox
- * @param msg Notmuch message
- * @retval ptr  Email
- * @retval NULL Error
- */
-
-/**
  * nm_make_id_hash - Create a Hash Table for Message-IDs
  * @param m Mailbox
  * @retval ptr Newly allocated Hash Table
@@ -764,6 +756,13 @@ static struct HashTable *nm_make_id_hash(struct Mailbox *m)
   return hash;
 }
 
+/**
+ * get_mutt_email - Get the Email of a Notmuch message
+ * @param m Mailbox
+ * @param msg Notmuch message
+ * @retval ptr  Email
+ * @retval NULL Error
+ */
 static struct Email *get_mutt_email(struct Mailbox *m, notmuch_message_t *msg)
 {
   if (!m || !msg)
