@@ -51,42 +51,41 @@ void buf_justify(struct Buffer *buf, enum FormatJustify justify, size_t max_cols
   if (!buf || (pad_char == '\0'))
     return;
 
-  size_t len = buf_len(buf);
+  const size_t len = buf_len(buf);
   if (len >= max_cols)
     return;
 
-  buf_alloc(buf, len + max_cols);
-
-  max_cols -= len;
+  const size_t pad = max_cols - len;
+  buf_alloc(buf, max_cols + 1);
 
   switch (justify)
   {
     case JUSTIFY_LEFT:
     {
-      memset(buf->dptr, pad_char, max_cols);
+      memset(buf->dptr, pad_char, pad);
       break;
     }
 
     case JUSTIFY_CENTER:
     {
-      if (max_cols > 1)
+      if (pad > 1)
       {
-        memmove(buf->data + (max_cols / 2), buf->data, len);
-        memset(buf->data, pad_char, max_cols / 2);
+        memmove(buf->data + (pad / 2), buf->data, len + 1);
+        memset(buf->data, pad_char, pad / 2);
       }
-      memset(buf->data + len + (max_cols / 2), pad_char, (max_cols + 1) / 2);
+      memset(buf->data + len + (pad / 2), pad_char, (pad + 1) / 2);
       break;
     }
 
     case JUSTIFY_RIGHT:
     {
-      memmove(buf->data + max_cols, buf->data, len);
-      memset(buf->data, pad_char, max_cols);
+      memmove(buf->data + pad, buf->data, len + 1);
+      memset(buf->data, pad_char, pad);
       break;
     }
   }
 
-  buf->dptr += max_cols;
+  buf->dptr += pad;
   buf->dptr[0] = '\0';
 }
 

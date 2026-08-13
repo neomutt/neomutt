@@ -67,6 +67,9 @@ void test_expando_justify(void)
     { "apple", JUSTIFY_CENTER,  6, "apple." },
     { "apple", JUSTIFY_CENTER,  7, ".apple." },
     { "apple", JUSTIFY_CENTER, 10, "..apple..." },
+    { "",      JUSTIFY_RIGHT,   1, "." },
+    { "",      JUSTIFY_RIGHT,   5, "....." },
+    { "",      JUSTIFY_CENTER,  4, "...." },
     // clang-format off
   };
 
