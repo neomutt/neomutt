@@ -35,9 +35,10 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "gui/lib.h"
+#include "gui/curs_lib.h"
+#include "gui/mutt_curses.h"
+#include "gui/opcodes.h"
 #include "get.h"
-#include "menu/lib.h"
 #include "globals.h"
 #include "keymap.h"
 #include "menu.h"
@@ -119,7 +120,7 @@ struct KeyEvent *array_pop(struct KeyEventArray *a)
  */
 void array_add(struct KeyEventArray *a, int ch, int op)
 {
-  struct KeyEvent event = { ch, op, 0 };
+  struct KeyEvent event = { ch, op, 0, -1, -1 };
   ARRAY_ADD(a, event);
 }
 
@@ -214,6 +215,43 @@ static int mutt_monitor_getch_timeout(int timeout_ms)
 #endif /* USE_INOTIFY */
 
 /**
+ * handle_mouse_event - Handle a mouse event
+ * @param mevent Mouse event
+ * @param[out] event Key event to dispatch
+ * @retval true  Mouse event generated a key event
+ * @retval false Mouse event should be ignored
+ */
+static bool handle_mouse_event(const MEVENT *mevent, struct KeyEvent *event)
+{
+  if (!mevent || !event)
+    return false;
+
+  event->mouse_row = mevent->y;
+  event->mouse_col = mevent->x;
+
+  // Check double-click before single-click (ncurses can set both bits)
+  if (mevent->bstate & BUTTON1_DOUBLE_CLICKED)
+    event->op = OP_MOUSE_DOUBLE_CLICK;
+  else if (mevent->bstate & BUTTON1_CLICKED)
+    event->op = OP_MOUSE_CLICK;
+  else if (mevent->bstate & BUTTON3_DOUBLE_CLICKED)
+    event->op = OP_MOUSE_RIGHT_DOUBLE_CLICK;
+  else if (mevent->bstate & BUTTON3_CLICKED)
+    event->op = OP_MOUSE_RIGHT_CLICK;
+  else if (mevent->bstate & BUTTON2_DOUBLE_CLICKED)
+    event->op = OP_MOUSE_MIDDLE_DOUBLE_CLICK;
+  else if (mevent->bstate & BUTTON2_CLICKED)
+    event->op = OP_MOUSE_MIDDLE_CLICK;
+  else if (mevent->bstate & BUTTON4_PRESSED)
+    event->op = OP_MOUSE_WHEEL_UP;
+  else if (mevent->bstate & BUTTON5_PRESSED)
+    event->op = OP_MOUSE_WHEEL_DOWN;
+  else
+    return false;
+  return true;
+}
+
+/**
  * mutt_getch_timeout - Read a character from the input buffer with timeout
  * @param flags      Flags, e.g. #GETCH_IGNORE_MACRO
  * @param timeout_ms Timeout in milliseconds
@@ -221,9 +259,9 @@ static int mutt_monitor_getch_timeout(int timeout_ms)
  */
 static struct KeyEvent mutt_getch_timeout(GetChFlags flags, int timeout_ms)
 {
-  static const struct KeyEvent event_abort = { 0, OP_ABORT, 0 };
-  static const struct KeyEvent event_repaint = { 0, OP_REPAINT, 0 };
-  static const struct KeyEvent event_timeout = { 0, OP_TIMEOUT, 0 };
+  static const struct KeyEvent event_abort = { 0, OP_ABORT, 0, -1, -1 };
+  static const struct KeyEvent event_repaint = { 0, OP_REPAINT, 0, -1, -1 };
+  static const struct KeyEvent event_timeout = { 0, OP_TIMEOUT, 0, -1, -1 };
 
   if (!OptGui)
     return event_abort;
@@ -266,6 +304,14 @@ static struct KeyEvent mutt_getch_timeout(GetChFlags flags, int timeout_ms)
       // do nothing
     }
   }
+  if (ch == KEY_MOUSE)
+  {
+    MEVENT mevent = { 0 };
+    struct KeyEvent event_mouse = { 0, OP_NULL, 0, -1, -1 };
+
+    if (getmouse(&mevent) == OK && handle_mouse_event(&mevent, &event_mouse))
+      return event_mouse;
+  }
 
   if (ch == ERR)
   {
@@ -294,11 +340,11 @@ static struct KeyEvent mutt_getch_timeout(GetChFlags flags, int timeout_ms)
       /* send ALT-x as ESC-x */
       ch &= ~0x80;
       mutt_unget_ch(ch);
-      return (struct KeyEvent) { '\033', OP_NULL, 0 }; // Escape
+      return (struct KeyEvent) { '\033', OP_NULL, 0, -1, -1 }; // Escape
     }
   }
 
-  return (struct KeyEvent) { ch, OP_NULL, 0 };
+  return (struct KeyEvent) { ch, OP_NULL, 0, -1, -1 };
 }
 
 /**
@@ -518,7 +564,7 @@ static void key_progress_notify(const struct MenuDefinition *md, int count,
  */
 struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
 {
-  struct KeyEvent event = { 0, OP_NULL, 0 };
+  struct KeyEvent event = { 0, OP_NULL, 0, -1, -1 };
   enum DokeyState state = DKS_START;
   int count = 0;
   int count_digits = 0;
@@ -549,13 +595,13 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
           {
             key_progress_notify(md, count, keys, key_len, flags);
             key_progress_notify(md, 0, NULL, 0, flags);
-            return (struct KeyEvent) { 0, pending_exact->op, count };
+            return (struct KeyEvent) { 0, pending_exact->op, count, -1, -1 };
           }
 
           if (flags & GETCH_IGNORE_MACRO)
           {
             key_progress_notify(md, 0, NULL, 0, flags);
-            return (struct KeyEvent) { 0, OP_NULL, 0 };
+            return (struct KeyEvent) { 0, OP_NULL, 0, -1, -1 };
           }
 
           mutt_push_macro_repeated(pending_exact->macro, count_digits > 0 ? count : 0);
@@ -612,7 +658,7 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
         {
           key_progress_notify(md, count, keys, key_len, flags);
           key_progress_notify(md, 0, NULL, 0, flags);
-          return (struct KeyEvent) { event.ch, OP_NULL, 0 };
+          return (struct KeyEvent) { event.ch, OP_NULL, 0, -1, -1 };
         }
 
         const int digit = event.ch - '0';
@@ -621,7 +667,7 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
         {
           key_progress_notify(md, count, keys, key_len, flags);
           key_progress_notify(md, 0, NULL, 0, flags);
-          return (struct KeyEvent) { event.ch, OP_NULL, 0 };
+          return (struct KeyEvent) { event.ch, OP_NULL, 0, -1, -1 };
         }
 
         count = (count * 10) + digit;
@@ -637,7 +683,7 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
     {
       key_progress_notify(md, count, keys, key_len, flags);
       key_progress_notify(md, 0, NULL, 0, flags);
-      return (struct KeyEvent) { event.ch, OP_NULL, 0 };
+      return (struct KeyEvent) { event.ch, OP_NULL, 0, -1, -1 };
     }
 
     keys[key_len] = event.ch;
@@ -706,7 +752,8 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
         mutt_debug(LL_DEBUG3, "KEY: SUCCESS: ('%c', %s)\n",
                    isprint(event.ch) ? event.ch : '?', opcodes_get_name(map->op));
         ARRAY_FREE(&kma);
-        return (struct KeyEvent) { event.ch, map->op, count_digits > 0 ? count : 0 };
+        return (struct KeyEvent) { event.ch, map->op,
+                                   count_digits > 0 ? count : 0, -1, -1 };
       }
 
       /* #GETCH_IGNORE_MACRO turns off processing the MacroEvents buffer
@@ -723,7 +770,7 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
       {
         key_progress_notify(md, 0, NULL, 0, flags);
         ARRAY_FREE(&kma);
-        return (struct KeyEvent) { event.ch, OP_NULL, 0 };
+        return (struct KeyEvent) { event.ch, OP_NULL, 0, -1, -1 };
       }
 
       mutt_push_macro_repeated(map->macro, count_digits > 0 ? count : 0);
@@ -745,5 +792,5 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
   key_progress_notify(md, 0, NULL, 0, flags);
   mutt_flushinp();
   mutt_error(_("Macro loop detected"));
-  return (struct KeyEvent) { '\0', OP_ABORT, 0 };
+  return (struct KeyEvent) { '\0', OP_ABORT, 0, -1, -1 };
 }
