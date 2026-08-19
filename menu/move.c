@@ -44,6 +44,8 @@
  *   - menu_next_line()
  *   - menu_prev_page()
  *   - menu_next_page()
+ *   - menu_view_home()
+ *   - menu_view_end()
  *
  * Changing the selection may cause the view to move and vice versa.
  */
@@ -590,4 +592,63 @@ MenuRedrawFlags menu_prev_page(struct Menu *menu, int count)
 MenuRedrawFlags menu_next_page(struct Menu *menu, int count)
 {
   return menu_move_view_relative(menu, MAX(count, 1) * menu->page_len);
+}
+
+/**
+ * menu_view_home - Move the view to the top of the menu
+ * @param menu Current Menu
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ *
+ * If the selection scrolls off the view, it is dragged into the view.
+ */
+MenuRedrawFlags menu_view_home(struct Menu *menu)
+{
+  if (menu->max == 0)
+    return MENU_REDRAW_NONE;
+
+  const int new_top = 0;
+  const int page_len = MAX(menu->page_len, 1);
+
+  int index = menu->current;
+  if (index < new_top)
+    index = new_top;
+  else if (index >= (new_top + page_len))
+    index = MIN(new_top + page_len - 1, menu->max - 1);
+
+  return menu_set_and_notify(menu, new_top, index);
+}
+
+/**
+ * menu_view_end - Move the view to the bottom of the menu
+ * @param menu Current Menu
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ *
+ * If the selection scrolls off the view, it is dragged into the view.
+ */
+MenuRedrawFlags menu_view_end(struct Menu *menu)
+{
+  if (menu->max == 0)
+    return MENU_REDRAW_NONE;
+
+  const int page_len = MAX(menu->page_len, 1);
+  int new_top = 0;
+
+  if (menu->max > page_len)
+  {
+    const bool c_menu_move_off = cs_subset_bool(menu->sub, "menu_move_off");
+    short c_menu_context = cs_subset_number(menu->sub, "menu_context");
+    c_menu_context = MIN(c_menu_context, (page_len / 2));
+
+    new_top = c_menu_move_off ? (menu->max - c_menu_context - 1) : (menu->max - page_len);
+    if (new_top < 0)
+      new_top = 0;
+  }
+
+  int index = menu->current;
+  if (index < new_top)
+    index = new_top;
+  else if (index >= (new_top + page_len))
+    index = MIN(new_top + page_len - 1, menu->max - 1);
+
+  return menu_set_and_notify(menu, new_top, index);
 }

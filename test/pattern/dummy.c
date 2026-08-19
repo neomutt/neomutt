@@ -61,22 +61,22 @@ const struct MenuFuncOp OpBrowser[] = {
 };
 
 const struct MenuFuncOp OpIndex[] = {
-  { "help", OP_HELP },
-  { "next-line", OP_NEXT_LINE },
-  { "next-page", OP_NEXT_PAGE },
-  { "next-undeleted", OP_MAIN_NEXT_UNDELETED },
-  { "previous-line", OP_PREV_LINE },
-  { "previous-unread", OP_MAIN_PREV_UNREAD },
+  { "help", OP_DISPLAY_HELP },
+  { "next-line", OP_SCROLL_LINE_DOWN },
+  { "next-page", OP_SCROLL_PAGE_DOWN },
+  { "next-undeleted", OP_SELECT_NEXT_UNDELETED_ENTRY },
+  { "previous-line", OP_SCROLL_LINE_UP },
+  { "previous-unread", OP_SELECT_PREVIOUS_UNREAD },
   { "sidebar-toggle-visible", OP_SIDEBAR_TOGGLE_VISIBLE },
   { NULL, OP_NULL },
 };
 
 const struct MenuFuncOp OpPager[] = {
-  { "help", OP_HELP },
-  { "next-line", OP_NEXT_LINE },
-  { "next-page", OP_NEXT_PAGE },
-  { "next-undeleted", OP_MAIN_NEXT_UNDELETED },
-  { "previous-line", OP_PREV_LINE },
+  { "help", OP_DISPLAY_HELP },
+  { "next-line", OP_SCROLL_LINE_DOWN },
+  { "next-page", OP_SCROLL_PAGE_DOWN },
+  { "next-undeleted", OP_SELECT_NEXT_UNDELETED_ENTRY },
+  { "previous-line", OP_SCROLL_LINE_UP },
   { "sidebar-toggle-visible", OP_SIDEBAR_TOGGLE_VISIBLE },
   { NULL, OP_NULL },
 };
