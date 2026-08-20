@@ -570,11 +570,11 @@ msgid "I don't know how to print %s attachments"
 msgstr "Kann %s Anhänge nicht drucken"
 
 #: attach/recvattach.c:858
-#, fuzzy, c-format
+#, c-format
 msgid "Print attachment?"
 msgid_plural "Print %d attachments?"
 msgstr[0] "Anhang drucken?"
-msgstr[1] "Anhang drucken?"
+msgstr[1] "%d Anhänge drucken?"
 
 #: attach/recvattach.c:899
 msgid "Structural changes to decrypted attachments are not supported"
@@ -597,9 +597,8 @@ msgid "Bounce message to: "
 msgstr "Nachricht neu versenden an: "
 
 #: attach/recvcmd.c:188
-#, fuzzy
 msgid "Bounce messages to: "
-msgstr "Nachricht neu versenden an: "
+msgstr "Nachrichten neu versenden an: "
 
 #: attach/recvcmd.c:200 external.c:124
 msgid "Error parsing address"
@@ -640,7 +639,6 @@ msgid "Forward as attachments?"
 msgstr "Als Anhänge weiterleiten?"
 
 #: attach/recvcmd.c:523
-#, fuzzy
 msgid "Can't decode all selected attachments.  MIME-forward the others?"
 msgstr "Nicht alle markierten Anhänge sind dekodierbar. MIME-forward für den Rest verwenden?"
 
@@ -654,18 +652,16 @@ msgid "Can't create %s"
 msgstr "Kann %s nicht anlegen"
 
 #: attach/recvcmd.c:793
-#, fuzzy
 msgid "Can't find any selected messages"
-msgstr "Es sind keine markierten Nachrichten vorhanden"
+msgstr "Keine markierten Nachrichten gefunden"
 
 #: attach/recvcmd.c:826 send/send.c:1130
 msgid "No mailing lists found"
 msgstr "Keine mailing listen gefunden"
 
 #: attach/recvcmd.c:933
-#, fuzzy
 msgid "Can't decode all selected attachments.  MIME-encapsulate the others?"
-msgstr "Nicht alle markierten Anhänge sind dekodierbar. MIME-encapsulate für den Rest verwenden?"
+msgstr "Nicht alle markierten Anhänge sind dekodierbar. MIME-Verkapselung für den Rest verwenden?"
 
 #. L10N: You will see this error message if you invoke <compose-to-sender>
 #. when you are on a normal attachment.
@@ -936,9 +932,8 @@ msgid "Goto"
 msgstr "Gehe zu"
 
 #: browser/dlg_browser.c:115 browser/dlg_browser.c:129
-#, fuzzy
 msgid "Limit"
-msgstr "Begrenze: %s"
+msgstr "Limit"
 
 #: browser/dlg_browser.c:125
 msgid "List"
@@ -977,14 +972,14 @@ msgid "Mailboxes [%d]"
 msgstr "Mailbox-Dateien [%d]"
 
 #: browser/dlg_browser.c:605
-#, fuzzy, c-format
+#, c-format
 msgid "Subscribed [%s], Limit: %s"
-msgstr "Abonniert [%s], Dateimaske: %s"
+msgstr "Abonniert [%s], Limit: %s"
 
 #: browser/dlg_browser.c:610
-#, fuzzy, c-format
+#, c-format
 msgid "Directory [%s], Limit: %s"
-msgstr "Verzeichnis [%s], Dateimaske: %s"
+msgstr "Verzeichnis [%s], Limit: %s"
 
 #: browser/dlg_browser.c:691
 msgid "Can't attach a directory"
@@ -995,9 +990,8 @@ msgid "New file name: "
 msgstr "Neuer Dateiname: "
 
 #: browser/functions.c:312
-#, fuzzy
 msgid "No newsgroups match the browser limit"
-msgstr "Es gibt keine zur Maske passenden Newsgroups"
+msgstr "Es gibt keine zum Browserlimit passenden Newsgroups"
 
 #: browser/functions.c:313 sidebar/functions_fuzzy.c:190
 #: sidebar/functions_sidebar.c:447
@@ -1005,9 +999,8 @@ msgid "There are no mailboxes"
 msgstr "Es sind keine Postfächer vorhanden"
 
 #: browser/functions.c:424 browser/functions.c:888 browser/functions.c:974
-#, fuzzy
 msgid "No files match the browser limit"
-msgstr "Es gibt keine zur Maske passenden Dateien"
+msgstr "Keine Dateien passen zum Browserlimit"
 
 #: browser/functions.c:439
 msgid "Can't view a directory"
@@ -1065,9 +1058,8 @@ msgid "Mailbox deleted"
 msgstr "Mailbox gelöscht"
 
 #: browser/functions.c:838
-#, fuzzy
 msgid "Limit: "
-msgstr "Begrenze: %s"
+msgstr "Beschränkung: "
 
 #: browser/functions.c:1193
 msgid "Rename is only supported for IMAP mailboxes"
@@ -1597,9 +1589,8 @@ msgid "Can't leave group with only one attachment"
 msgstr "Kann mit nur einem Anhang nicht gruppieren"
 
 #: compose/functions.c:734
-#, fuzzy
 msgid "Selected attachments must be siblings"
-msgstr "Markierte Anhänge müssen Geschwister sein"
+msgstr "Ausgewählte Anhänge müssen Geschwister sein"
 
 #: compose/functions.c:775 compose/functions.c:1883 compose/functions.c:1902
 msgid "Attachment is already at bottom"
@@ -1670,12 +1661,10 @@ msgid "Can't get multipart attachments"
 msgstr "Kann mehrteilige Anhänge nicht bekommen"
 
 #: compose/functions.c:1780
-#, fuzzy
 msgid "Grouping 'alternatives' requires at least 2 selected attachments"
 msgstr "Gruppierung von 'multipart/alternative' erfordert wenigstens zwei markierte Nachrichten"
 
 #: compose/functions.c:1802
-#, fuzzy
 msgid "Grouping 'multilingual' requires at least 2 selected attachments"
 msgstr "Gruppierung von 'multipart/multilingual' erfordert wenigstens zwei markierte Nachrichten"
 
@@ -1688,7 +1677,6 @@ msgid "Not sending this message"
 msgstr "Diese Nachricht wurde nicht versandt"
 
 #: compose/functions.c:1843
-#, fuzzy
 msgid "Grouping 'related' requires at least 2 selected attachments"
 msgstr "Gruppierung von 'related' erfordert wenigstens 2 markierte Nachrichten"
 
@@ -2620,7 +2608,7 @@ msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
 "[-- on %4$s --]\n"
 msgstr ""
-"[-- Dieser %s/%s-Anhang wurde gelöscht --]\n"
+"[-- Dieser %s/%s Anhang wurde gelöscht --]\n"
 "[-- am %4$s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
@@ -3396,15 +3384,13 @@ msgstr "Zeige Anhang als Text an"
 
 #. L10N: Help for Compose function: <preview-scroll-half-down>
 #: gui/opcodes.h:107
-#, fuzzy
 msgid "Scroll down half a page"
-msgstr "Gehe eine halbe Seite nach unten"
+msgstr "Gehe halbe Seite nach unten"
 
 #. L10N: Help for Compose function: <preview-scroll-half-up>
 #: gui/opcodes.h:109
-#, fuzzy
 msgid "Scroll up half a page"
-msgstr "Gehe eine halbe Seite nach oben"
+msgstr "Gehe halbe Seite nach oben"
 
 #. L10N: Help for Compose function: <preview-scroll-line-down>
 #. L10N: Help for Generic function: <next-line>
@@ -3554,9 +3540,8 @@ msgstr "Bearbeite Nachricht"
 
 #. L10N: Help for Compose function: <ispell>
 #: gui/opcodes.h:175
-#, fuzzy
 msgid "Check the spelling of the message"
-msgstr "Zeige die vorherige Seite der Nachricht"
+msgstr "Rechtschreibprüfung der Nachricht"
 
 #. L10N: Help for Compose function: <postpone-message>
 #: gui/opcodes.h:177
@@ -3808,9 +3793,8 @@ msgstr "Gib ein neomuttrc-Kommando ein"
 
 #. L10N: Help for Browser function: <limit>
 #: gui/opcodes.h:277
-#, fuzzy
 msgid "Limit the browser to matching files"
-msgstr "Beschränke auf Adressen nach Muster: "
+msgstr "Beschränke Ansicht auf passende Dateien"
 
 #. L10N: Help for Generic function: <exit>
 #: gui/opcodes.h:279
@@ -3859,9 +3843,8 @@ msgstr "Lade Bezugsnachricht der aktuellen"
 
 #. L10N: Help for Browser function: <goto-home>
 #: gui/opcodes.h:299
-#, fuzzy
 msgid "Go to home directory"
-msgstr "Gehe zum übergeordneten Verzeichnis"
+msgstr "Gehe zum Heimatverzeichnis"
 
 #. L10N: Help for Browser function: <goto-parent>
 #: gui/opcodes.h:301
@@ -3870,9 +3853,8 @@ msgstr "Gehe zum übergeordneten Verzeichnis"
 
 #. L10N: Help for Browser function: <goto-root>
 #: gui/opcodes.h:303
-#, fuzzy
 msgid "Go to root directory"
-msgstr "Gehe zum übergeordneten Verzeichnis"
+msgstr "Gehe zum Wurzelverzeichnis"
 
 #. L10N: Help for Attach, Index function: <group-chat-reply>
 #: gui/opcodes.h:305
@@ -3898,9 +3880,8 @@ msgstr "Gehe eine halbe Seite nach oben"
 
 #. L10N: Help for Editor, Generic function: <help>
 #: gui/opcodes.h:313
-#, fuzzy
 msgid "Help screen"
-msgstr "Dieser Bildschirm"
+msgstr "Hilfebildschirm"
 
 #. L10N: Help for Generic function: <jump>
 #: gui/opcodes.h:315
@@ -3914,45 +3895,43 @@ msgstr "Beschränke Ansicht auf aktuellen Diskussionsfaden"
 
 #. L10N: Help for Index function: <list-action>
 #: gui/opcodes.h:321
-#, fuzzy
 msgid "Perform mailing list action"
-msgstr "Keine mailing listen gefunden"
+msgstr "Keine Mailinglistenaktion gefunden"
 
 #. L10N: Help for List function: <list-archive>
 #: gui/opcodes.h:323
 msgid "Retrieve list archive information"
-msgstr ""
+msgstr "Hole Listenarchivinfo"
 
 #. L10N: Help for List function: <list-help>
 #: gui/opcodes.h:325
 msgid "Retrieve list help"
-msgstr ""
+msgstr "Hole Listenhilfe"
 
 #. L10N: Help for List function: <list-owner>
 #: gui/opcodes.h:327
 msgid "Contact list owner"
-msgstr ""
+msgstr "Kontaktiere Listeneigentümer"
 
 #. L10N: Help for List function: <list-post>
 #: gui/opcodes.h:329
-#, fuzzy
 msgid "Post to mailing list"
-msgstr "Abonniere eine mailing liste"
+msgstr "Schreibe an eine Mailingliste"
 
 #. L10N: Help for Attach, Index function: <list-reply>
 #: gui/opcodes.h:331
 msgid "Reply to specified mailing list"
-msgstr "Antworte an mailing liste"
+msgstr "Antworte an Mailingliste"
 
 #. L10N: Help for Attach, Index, List function: <list-subscribe>
 #: gui/opcodes.h:333
 msgid "Subscribe to a mailing list"
-msgstr "Abonniere eine mailing liste"
+msgstr "Abonniere eine Mailingliste"
 
 #. L10N: Help for Attach, Index, List function: <list-unsubscribe>
 #: gui/opcodes.h:335
 msgid "Unsubscribe from a mailing list"
-msgstr "Abonnement einer mailing liste beenden"
+msgstr "Abonnement einer Mailingliste beenden"
 
 #. L10N: Help for Browser function: <reload-active>
 #: gui/opcodes.h:337
@@ -3981,25 +3960,23 @@ msgstr "Zerlege Diskussionsfaden in zwei"
 
 #. L10N: Help for Index function: <browse-mailboxes>
 #: gui/opcodes.h:347
-#, fuzzy
 msgid "Browse mailboxes"
-msgstr "(keine Mailbox)"
+msgstr "Durchstöbere Postfächer"
 
 #. L10N: Help for Index function: <browse-mailboxes-readonly>
 #: gui/opcodes.h:349
-#, fuzzy
 msgid "Browse mailboxes in read only mode"
-msgstr "Öffne Mailbox schreibgeschützt"
+msgstr "Durchstöbere Postfächer schreibgeschützt"
 
 #. L10N: Help for Index function: <change-folder>
 #: gui/opcodes.h:351
 msgid "Open a different folder"
-msgstr "Öffne eine andere Mailbox"
+msgstr "Öffne einen anderen Ordner"
 
 #. L10N: Help for Index function: <change-folder-readonly>
 #: gui/opcodes.h:353
 msgid "Open a different folder in read only mode"
-msgstr "Öffne eine andere Mailbox im Nur-Lesen-Modus"
+msgstr "Öffne einen anderen Ordner schreibgeschützt"
 
 #. L10N: Help for Index function: <change-newsgroup>
 #: gui/opcodes.h:355
@@ -4009,7 +3986,7 @@ msgstr "Öffne eine andere Newsgroup"
 #. L10N: Help for Index function: <change-newsgroup-readonly>
 #: gui/opcodes.h:357
 msgid "Open a different newsgroup in read only mode"
-msgstr "Öffne eine andere Newsgroup im Nur-Lesen-Modus"
+msgstr "Öffne eine andere Newsgroup schreibgeschützt"
 
 #. L10N: Help for Index function: <clear-flag>
 #: gui/opcodes.h:359
@@ -4621,7 +4598,7 @@ msgstr "Bewege Auswahl in die erste Mailbox"
 #. L10N: Help for Sidebar function: <sidebar-select-entry-by-number>
 #: gui/opcodes.h:639
 msgid "Jump to a specific mailbox"
-msgstr ""
+msgstr "Springe zu einem bestimmten Postfach"
 
 #. L10N: Help for Sidebar function: <sidebar-last>
 #: gui/opcodes.h:641
@@ -4640,26 +4617,23 @@ msgstr "Bewege Auswahl in die nächste Mailbox mit neuen Nachrichten"
 
 #. L10N: Help for Sidebar function: <sidebar-select-page-bottom>
 #: gui/opcodes.h:647
-#, fuzzy
 msgid "Move the highlight to the bottom of the page"
-msgstr "Gehe zum Ende der Seite"
+msgstr "Bewege Auswahl ans Ende der Seite"
 
 #. L10N: Help for Sidebar function: <sidebar-select-page-middle>
 #: gui/opcodes.h:649
-#, fuzzy
 msgid "Move the highlight to the middle of the page"
-msgstr "Gehe zur Seitenmitte"
+msgstr "Bewege Auswahl zur Mitte der Seite"
 
 #. L10N: Help for Sidebar function: <sidebar-select-page-top>
 #: gui/opcodes.h:651
-#, fuzzy
 msgid "Move the highlight to the top of the page"
-msgstr "Springe zum Anfang der Seite"
+msgstr "Bewege Auswahl an den Anfang der Seite"
 
 #. L10N: Help for Sidebar function: <sidebar-open>
 #: gui/opcodes.h:653
 msgid "Open highlighted mailbox"
-msgstr "Öffne ausgewählte Mailbox"
+msgstr "Öffne ausgewähltes Postfach"
 
 #. L10N: Help for Sidebar function: <sidebar-prev>
 #: gui/opcodes.h:659
@@ -5141,9 +5115,9 @@ msgid "Reconnected to %s but failed to reopen mailbox"
 msgstr "Wiederverbunden mit %s, aber konnte Mailbox nicht wieder öffnen"
 
 #: imap/command.c:248
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to reconnect to %s after %d attempts"
-msgstr "%d Verbindungsversuche zu %s fehlgeschlagen"
+msgstr "Fehlschlag der Verbindung zu %s nach %d Versuchen"
 
 #: imap/command.c:254
 #, c-format
@@ -5826,9 +5800,9 @@ msgid "%s: null key sequence"
 msgstr "%s: Leere Tastenfolge"
 
 #: key/commands.c:331
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no such function: %s"
-msgstr "%s: Funktion unbekannt"
+msgstr "%s: Funktion unbekannt: %s"
 
 #: key/commands.c:736
 msgid "macro: empty key sequence"
@@ -6145,40 +6119,35 @@ msgstr "Keine markierten Einträge"
 
 #: mlist/dlg_mlist.c:46
 msgid "Archive"
-msgstr ""
+msgstr "Archiv"
 
 #: mlist/dlg_mlist.c:48 mlist/functions.c:52
 msgid "Owner"
-msgstr ""
+msgstr "Eigentümer"
 
 #: mlist/dlg_mlist.c:138
-#, fuzzy
 msgid "Unable to read mailing list headers"
-msgstr "Abonniere eine mailing liste"
+msgstr "Kann Kopfzeilen der Mailingliste nicht lesen"
 
 #: mlist/dlg_mlist.c:152
-#, fuzzy
 msgid "No mailing list actions available"
-msgstr "Kein Entschlüsselungsmechanismus für Nachricht vorhanden"
+msgstr "Keine Mailinglistenaktionen verfügbar"
 
 #: mlist/dlg_mlist.c:169
-#, fuzzy
 msgid "Available mailing list actions"
-msgstr "Keine mailing listen gefunden"
+msgstr "Verfügbare Mailinglistenaktionen"
 
 #: mlist/functions.c:51
 msgid "Archives"
-msgstr ""
+msgstr "Archive"
 
 #: mlist/functions.c:130
-#, fuzzy
 msgid "No list action available"
-msgstr "Kein Entschlüsselungsmechanismus für Nachricht vorhanden"
+msgstr "Keine Listenaktion verfügbar"
 
 #: mlist/functions.c:144
-#, fuzzy
 msgid "Could not parse mailto: URI"
-msgstr "Konnte Mailbox nicht erneut öffnen"
+msgstr "Konnte mailto: URI nicht verarbeiten"
 
 #: mutt/buffer.c:359
 msgid "Out of memory"
