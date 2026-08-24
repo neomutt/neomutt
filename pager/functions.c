@@ -69,6 +69,21 @@ static const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "skip-quoted",                   OP_PAGER_SKIP_QUOTED },
   { "toggle-quoted",                 OP_PAGER_HIDE_QUOTED },
 
+  { "tab-switch-1",                  OP_TAB_SWITCH_1 },
+  { "tab-switch-2",                  OP_TAB_SWITCH_2 },
+  { "tab-switch-3",                  OP_TAB_SWITCH_3 },
+  { "tab-switch-4",                  OP_TAB_SWITCH_4 },
+  { "tab-switch-5",                  OP_TAB_SWITCH_5 },
+  { "tab-switch-6",                  OP_TAB_SWITCH_6 },
+  { "tab-switch-7",                  OP_TAB_SWITCH_7 },
+  { "tab-switch-8",                  OP_TAB_SWITCH_8 },
+  { "tab-switch-9",                  OP_TAB_SWITCH_9 },
+  { "tab-switch-0",                  OP_TAB_SWITCH_0 },
+  { "tab-switch-next",               OP_TAB_SWITCH_NEXT },
+  { "tab-switch-prev",               OP_TAB_SWITCH_PREV },
+  { "tab-switch-first",              OP_TAB_SWITCH_FIRST },
+  { "tab-switch-last",               OP_TAB_SWITCH_LAST },
+
   // Deprecated
   { "bottom",                        OP_LAST_ENTRY,        MFF_DEPRECATED },
   { "buffy-list",                    OP_MAILBOX_LIST,      MFF_DEPRECATED },
