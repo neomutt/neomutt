@@ -25,6 +25,7 @@
 #define MUTT_INDEX_PRIVATE_H
 
 #include <stdbool.h>
+#include "menu/format_data.h"
 
 struct IndexPrivateData;
 struct IndexSharedData;
@@ -35,10 +36,23 @@ struct ConfigSubset;
  */
 struct EmailFormatInfo
 {
-  struct Mailbox *mailbox;    ///< Current Mailbox
-  int msg_in_pager;           ///< Index of Email displayed in the Pager
-  struct Email *email;        ///< Current Email
-  const char *pager_progress; ///< String representing Pager position through Email
+  struct Mailbox *mailbox;                 ///< Current Mailbox
+  int msg_in_pager;                        ///< Index of Email displayed in the Pager
+  struct Email *email;                     ///< Current Email
+  const char *pager_progress;              ///< String representing Pager position through Email
+  const struct MenuFormatData *menu_data;  ///< Optional menu context for menu expandos
+};
+
+/**
+ * struct IndexFormatData - Wrapped data for $index_format
+ *
+ * EmailFormatInfo must remain the first field so the existing index expando
+ * callbacks can keep treating this wrapper as EmailFormatInfo.
+ */
+struct IndexFormatData
+{
+  struct EmailFormatInfo email;  ///< Email data used by existing callbacks
+  struct MenuFormatData menu;    ///< Menu context for menu expandos
 };
 
 struct MuttWindow *index_window_new(struct IndexPrivateData *priv);

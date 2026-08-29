@@ -939,7 +939,19 @@ int index_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *b
       max_cols -= (mutt_strwidth(c_arrow_string) + 1);
   }
 
-  return mutt_make_string(buf, max_cols, c_index_format, m, msg_in_pager, e, flags, NULL);
+  struct IndexFormatData ifd = { 0 };
+
+  ifd.email.email = e;
+  ifd.email.mailbox = m;
+  ifd.email.msg_in_pager = msg_in_pager;
+  ifd.email.menu_data = &ifd.menu;
+
+  ifd.menu.menu = menu;
+  ifd.menu.line = line;
+  ifd.menu.data = &ifd.email;
+
+  return expando_filter(c_index_format, IndexRenderCallbacks, &ifd, flags,
+                        max_cols, NeoMutt->env, buf);
 }
 
 /**
