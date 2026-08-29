@@ -35,12 +35,16 @@
  */
 
 #include "config.h"
+#include <limits.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "dump.h"
+#include "expando/lib.h"
 #include "pager/lib.h"
+#include "extract.h"
+#include "perror.h"
 
 /**
  * set_dump - Dump list of config variables into a file/pager
@@ -84,5 +88,84 @@ enum CommandResult set_dump(enum GetElemListFlags flags, struct Buffer *err)
   mutt_do_pager(&pview, NULL);
   buf_pool_release(&tempfile);
 
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_formats - Parse the 'formats' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Dump all non-empty Expando config options, in short and named forms.
+ */
+enum CommandResult parse_formats(const struct Command *cmd, struct Buffer *line,
+                                 const struct ParseContext *pc, struct ParseError *pe)
+{
+  if (!StartupComplete)
+    return MUTT_CMD_SUCCESS;
+
+  if (MoreArgs(line))
+  {
+    buf_printf(pe->message, _("%s: too many arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
+  struct Buffer *tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
+
+  FILE *fp_out = mutt_file_fopen(buf_string(tempfile), "w");
+  if (!fp_out)
+  {
+    // L10N: '%s' is the file name of the temporary file
+    buf_printf(pe->message, _("Could not create temporary file %s"), buf_string(tempfile));
+    buf_pool_release(&tempfile);
+    return MUTT_CMD_ERROR;
+  }
+
+  struct ConfigSet *cs = NeoMutt->sub->cs;
+  struct HashElemArray hea = get_elem_list(cs, GEL_ALL_CONFIG);
+  struct Buffer *value = buf_pool_get();
+  struct Buffer *pretty = buf_pool_get();
+
+  struct HashElem **hep = NULL;
+  ARRAY_FOREACH(hep, &hea)
+  {
+    struct HashElem *he = *hep;
+    if (CONFIG_TYPE(he->type) != DT_EXPANDO)
+      continue;
+
+    const struct Expando *exp = (const struct Expando *)
+        cs_subset_he_native_get(NeoMutt->sub, he, pe->message);
+    if (!exp || ((intptr_t) exp == INT_MIN))
+      continue;
+
+    struct HashElem *he_base = cs_get_base(he);
+    const struct ConfigDef *cdef = he_base->data;
+    const struct ExpandoDefinition *defs = (const struct ExpandoDefinition *)
+                                               cdef->data;
+
+    for (int named = 0; named < 2; named++)
+    {
+      buf_reset(value);
+      buf_reset(pretty);
+      expando_stringify(exp, defs, named, value);
+      pretty_var(buf_string(value), pretty);
+      fprintf(fp_out, "set %s = %s\n", he->key.strkey, buf_string(pretty));
+    }
+    fputc('\n', fp_out);
+  }
+
+  buf_pool_release(&pretty);
+  buf_pool_release(&value);
+  ARRAY_FREE(&hea);
+  mutt_file_fclose(&fp_out);
+
+  struct PagerData pdata = { 0 };
+  struct PagerView pview = { &pdata };
+  pdata.fname = buf_string(tempfile);
+  pview.banner = cmd->name;
+  pview.flags = MUTT_PAGER_NONE;
+  pview.mode = PAGER_MODE_OTHER;
+  mutt_do_pager(&pview, NULL);
+
+  buf_pool_release(&tempfile);
   return MUTT_CMD_SUCCESS;
 }

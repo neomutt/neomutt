@@ -23,9 +23,13 @@
 #ifndef MUTT_EXPANDO_SERIAL_H
 #define MUTT_EXPANDO_SERIAL_H
 
+#include <stdbool.h>
+
 struct Expando;
+struct ExpandoDefinition;
 struct Buffer;
 
 void expando_serialise(const struct Expando *exp, struct Buffer *buf);
+void expando_stringify(const struct Expando *exp, const struct ExpandoDefinition *defs, bool named, struct Buffer *buf);
 
 #endif /* MUTT_EXPANDO_SERIAL_H */
