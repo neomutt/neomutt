@@ -1181,7 +1181,19 @@ retry:
   {
     // Temporary failure, e.g. signal received
     if (BIO_should_retry(SSL_get_rbio(ssldata->ssl)))
-      goto retry;
+    {
+      if (!BIO_should_read(SSL_get_rbio(ssldata->ssl)))
+        goto retry;
+
+      const int poll_rc = raw_socket_poll(conn, 0);
+      if (poll_rc > 0)
+        goto retry;
+      if (poll_rc == 0)
+      {
+        mutt_error(_("Connection to %s timed out"), conn->account.host);
+        return -1;
+      }
+    }
 
     switch (SSL_get_error(ssldata->ssl, err))
     {

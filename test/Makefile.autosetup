@@ -239,7 +239,9 @@ CONFIG_OBJS	= test/config/account.o \
 		  test/config/variable.o
 
 @if USE_SSL_OPENSSL
-CONN_OBJS	+= test/conn/ssl_socket_read_timeout.o
+CONN_OBJS	+= test/conn/ssl_timeout_common.o \
+		  test/conn/ssl_negotiate_timeout.o \
+		  test/conn/ssl_socket_read_timeout.o
 @endif
 
 CONVERT_OBJS	= test/convert/mutt_convert_file_from_to.o \
