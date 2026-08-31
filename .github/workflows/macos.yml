@@ -25,7 +25,7 @@ jobs:
 
     - name: Set up Homebrew
       id: set-up-homebrew
-      uses: Homebrew/actions/setup-homebrew@fd832223f9f99ebf0244dd20658680e5d4aca049
+      uses: Homebrew/actions/setup-homebrew@a657b8b0cd35d0f65cce41fce9b24cf054b49869
 
     - name: Install dependencies
       run: brew install notmuch libiconv ncurses lmdb
