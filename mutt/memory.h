@@ -63,6 +63,8 @@
 # define typeas(T)  __typeof__(*(__typeof__(T) *){_Generic(0, T: NULL, default: NULL)})
 #endif
 
+#define RVALUE(lv)  ((void)0, (lv))
+
 #define MUTT_MEM_CALLOC(n, T)  ((typeas(T) *) mutt_mem_calloc(n, sizeof(T)))
 #define MUTT_MEM_MALLOC(n, T)  ((typeas(T) *) mutt_mem_mallocarray(n, sizeof(T)))
 
