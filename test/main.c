@@ -38,6 +38,7 @@ void test_fini(void);
 
 #ifdef USE_SSL_OPENSSL
 #define NEOMUTT_OPENSSL_TESTS                                                  \
+  NEOMUTT_TEST_ITEM(test_ssl_negotiate_retry)                                  \
   NEOMUTT_TEST_ITEM(test_ssl_negotiate_timeout)                                \
   NEOMUTT_TEST_ITEM(test_ssl_socket_read_timeout)
 #else
