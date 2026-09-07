@@ -65,6 +65,7 @@ enum MenuFuncFlag
 {
   MFF_NONE       =       0,  ///< No flags are set
   MFF_DEPRECATED = 1U << 1,  ///< Function is deprecated
+  MFF_LUA        = 1U << 2,  ///< Lua is permitted to use this function
 };
 typedef uint8_t MenuFuncFlags;
 
