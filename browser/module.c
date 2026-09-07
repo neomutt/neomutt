@@ -42,7 +42,7 @@ extern struct ConfigDef BrowserVars[];
  */
 static bool browser_init(struct NeoMutt *n)
 {
-  struct BrowserModuleData *mod_data = MUTT_MEM_CALLOC(1, struct BrowserModuleData);
+  struct BrowserModuleData *mod_data = mutt_mem_calloc_T(1, struct BrowserModuleData);
   neomutt_set_module_data(n, MODULE_ID_BROWSER, mod_data);
 
   mod_data->notify = notify_new();

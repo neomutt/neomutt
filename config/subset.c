@@ -158,7 +158,7 @@ void cs_subset_free(struct ConfigSubset **ptr)
 struct ConfigSubset *cs_subset_new(const char *name, struct ConfigSubset *sub_parent,
                                    struct Notify *not_parent)
 {
-  struct ConfigSubset *sub = MUTT_MEM_CALLOC(1, struct ConfigSubset);
+  struct ConfigSubset *sub = mutt_mem_calloc_T(1, struct ConfigSubset);
 
   if (sub_parent)
   {

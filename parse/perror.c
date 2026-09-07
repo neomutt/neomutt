@@ -36,7 +36,7 @@
  */
 struct ParseError *parse_error_new(void)
 {
-  struct ParseError *pc = MUTT_MEM_CALLOC(1, struct ParseError);
+  struct ParseError *pc = mutt_mem_calloc_T(1, struct ParseError);
 
   pc->message = buf_pool_get();
 

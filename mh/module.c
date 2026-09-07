@@ -41,7 +41,7 @@ extern struct ConfigDef MhVars[];
  */
 static bool mh_init(struct NeoMutt *n)
 {
-  struct MhModuleData *mod_data = MUTT_MEM_CALLOC(1, struct MhModuleData);
+  struct MhModuleData *mod_data = mutt_mem_calloc_T(1, struct MhModuleData);
   neomutt_set_module_data(n, MODULE_ID_MH, mod_data);
 
   mod_data->notify = notify_new();

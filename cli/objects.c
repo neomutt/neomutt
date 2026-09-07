@@ -104,7 +104,7 @@ static void cli_tui_clear(struct CliTui *tui)
  */
 struct CommandLine *command_line_new(void)
 {
-  return MUTT_MEM_CALLOC(1, struct CommandLine);
+  return mutt_mem_calloc_T(1, struct CommandLine);
 }
 
 /**

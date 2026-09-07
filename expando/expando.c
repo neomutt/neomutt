@@ -48,7 +48,7 @@ struct ExpandoDefinition;
  */
 struct Expando *expando_new(const char *format)
 {
-  struct Expando *exp = MUTT_MEM_CALLOC(1, struct Expando);
+  struct Expando *exp = mutt_mem_calloc_T(1, struct Expando);
   exp->string = mutt_str_dup(format);
   exp->node = node_container_new();
   return exp;

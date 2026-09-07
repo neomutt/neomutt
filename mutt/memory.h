@@ -65,17 +65,20 @@
 
 #define RVALUE(lv)  ((void)0, (lv))
 
-#define MUTT_MEM_CALLOC(n, T)                                         \
+// mutt_mem_calloc_T - clear allocate type-safe
+#define mutt_mem_calloc_T(n, T)                                       \
 (                                                                     \
   RVALUE((typeas(T) *){mutt_mem_calloc(n, sizeof(T))})                \
 )
 
-#define MUTT_MEM_MALLOC(n, T)                                         \
+// mutt_mem_malloc_T - memory allocate type-safe
+#define mutt_mem_malloc_T(n, T)                                       \
 (                                                                     \
   RVALUE((typeas(T) *){mutt_mem_mallocarray(n, sizeof(T))})           \
 )
 
-#define MUTT_MEM_REALLOC(pptr, n, T)                                  \
+// mutt_mem_realloc_T - resize allocation type-safe
+#define mutt_mem_realloc_T(pptr, n, T)                                \
 (                                                                     \
   _Generic(*(pptr), typeas(T) *: (void)0),                            \
   mutt_mem_reallocarray(pptr, n, sizeof(T))                           \
