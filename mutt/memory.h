@@ -49,12 +49,36 @@
 # define countof(x)  (sizeof(x) / sizeof((x)[0]))
 #endif
 
-#define MUTT_MEM_CALLOC(n, type)  ((type *) mutt_mem_calloc(n, sizeof(type)))
-#define MUTT_MEM_MALLOC(n, type)  ((type *) mutt_mem_mallocarray(n, sizeof(type)))
+#if !defined(typeas)
+/**
+ * typeas - type as
+ * @param T Type name
+ * @retval T Type name
+ *
+ * typeas(T) is equivalent to typeof(T), except it requires that the
+ * parameter T is a type name (typeof() accepts expressions).  For
+ * example, typeof(6) is equivalent to typeof(int), but typeas(6)
+ * results in a compile-time error.
+ */
+# define typeas(T)  __typeof__(*(__typeof__(T) *){_Generic(0, T: NULL, default: NULL)})
+#endif
 
-#define MUTT_MEM_REALLOC(pptr, n, type)                                       \
-(                                                                             \
-  _Generic(*(pptr), type *: mutt_mem_reallocarray(pptr, n, sizeof(type)))     \
+#define RVALUE(lv)  ((void)0, (lv))
+
+#define MUTT_MEM_CALLOC(n, T)                                         \
+(                                                                     \
+  RVALUE((typeas(T) *){mutt_mem_calloc(n, sizeof(T))})                \
+)
+
+#define MUTT_MEM_MALLOC(n, T)                                         \
+(                                                                     \
+  RVALUE((typeas(T) *){mutt_mem_mallocarray(n, sizeof(T))})           \
+)
+
+#define MUTT_MEM_REALLOC(pptr, n, T)                                  \
+(                                                                     \
+  _Generic(*(pptr), typeas(T) *: (void)0),                            \
+  mutt_mem_reallocarray(pptr, n, sizeof(T))                           \
 )
 
 void *mutt_mem_calloc(size_t nmemb, size_t size);
