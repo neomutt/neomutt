@@ -20,59 +20,21 @@
 #   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #   02110-1301, USA.
 
-#
-# DESCRIPTION OF USE
-#
-#   This script interacts with OAuth2 endpoints (URLs) to obtain authorization
-#   and access tokens.  When first run, the user should pass `--authorize`
-#   triggering the script to obtain a new authorization, access, and refresh
-#   tokens.  Subsequent runs do not need this flag as they will use the
-#   tokens and info already provided to update the access token (if necessary)
-#   and write it to stdout for neomutt/mbsync to use.
-#
-#   When running the program for the first time, the user will need to specify
-#   several parameters.  If the user does not specify them as arguments, the
-#   program will prompt the user to input that information interactively.
-#
-#   This program takes a path to the *tokenfile*.  Once an authorization token
-#   is obtained, a table of parameters will be converted to JSON, passed through an
-#   encryption program (`gpg` by default) and written to the path specified for
-#   the tokenfile.
-#
-#   WARN: If the tokenfile exists, the data in it will override any user
-#         provided arguments.
-#
-#   In OAuth2, a user logs in and authorizes an application (this script or
-#   whatever application it's posing as via --client-id) and the permissions
-#   (a.k.a. scope) they request.  Once the provider authenticates the user and
-#   the user authorizes any permissions requested by the app (this script), the
-#   provider will generate an *authorization code* that the script will then
-#   trade in for an authorization token, refresh token, and some other data.
-#
-#   The way this script interacts with the provider changes depending on
-#   --authflow.  In all cases, the script will open the provider's authorization
-#   endpoint in a browser.  However, the way the provider passes the
-#   authorization code back to this script varies based on `--authflow`.  When
-#   using `localhostauthcode` or `devicecode` the script will start a web server
-#   to receive the authorization code.  The URL of our web server is passed as
-#   `redirect_uri` to the authorization endpoint.  With these two workflows, the
-#   script will complete the process of obtaining the access token and generate
-#   the tokenfile.
-#
-#   If you specify `authcode`, the script will prompt you for the address from
-#   your browser or the authorization code, which you must input.  Most of
-#   the time, you'll copy the contents of the address bar (of the failed request
-#   to the `redirect_uri`) and paste it into this script.
-#
-#   FYI, authorization codes look like:
-#
-#           M.C517_SN1.2.U.An7Ux3hV...
-#
-#   More detail is available at
-#
-#     https://github.com/neomutt/neomutt/blob/main/contrib/oauth2/README.md
 
+# USAGE
 #
+#   For (neo)mutt/mbsync to utilize IMAP/SMTP via OAuth2, you'll need to:
+#   1. Get a token stored in a token file:
+#     a. Put this script somewhere like ~/bin/mutt_oauth2.py and give it 755 permissions
+#     b. Run this script in a terminal, which will open a browser window for you
+#        to login and authorize the "app" (We pretent we are Thunderbird by default).
+#        See EXAMPLES.
+#     c. It will redirect to localhost, which should fail, WHICH IS EXPECTED.
+#     d. Copy the text from the address bar (which includes an *authorization code*)
+#        and paste it back into this program, which will be waiting for this text.
+#   2. Configure .config/neomutt/muttrc or ~/.mbsyncrc.  See CONFIGURATION
+
+
 # EXAMPLES
 #
 #   Obtain authorization, refresh, and access tokens:
@@ -129,7 +91,7 @@
 #
 #     gpg --decrypt ~/.mutt_oauth2-outlook.gpg
 
-#
+
 # CONFIGURATION
 #
 #   Once this works, you'll configure neomutt with:
@@ -138,7 +100,87 @@
 #
 #   ... or mbsync with:
 #
-#     PassCmd "python3 /path/to/mutt_oauth2.py /path/to/.mutt_oauth2-outlook.gpg"
+#     IMAPAccount outlook-personal
+#         Host outlook.office365.com
+#         Port 993
+#         User bill@outlook.com
+#         TLSType IMAPS
+#         AuthMechs XOAUTH2
+#         PassCmd "python3 /full/path/to/mutt_oauth2.py ~/.mutt_oauth2-outlook.gpg"
+#         PipelineDepth 15
+
+
+# DESCRIPTION OF OPERATION
+#
+#   This script interacts with OAuth2 endpoints (URLs) to obtain authorization
+#   and access tokens.  When first run, the user should pass `--authorize`
+#   triggering the script to obtain a new authorization, access, and refresh
+#   tokens.  Subsequent runs do not need this flag as they will use the
+#   tokens and info already provided to update the access token (if necessary)
+#   and write it to stdout for neomutt/mbsync to use.
+#
+#   When running the program for the first time, the user will need to specify
+#   several parameters.  If the user does not specify them as arguments, the
+#   program will prompt the user to input that information interactively.
+#
+#   This program takes a path to the *tokenfile*.  Once an authorization token
+#   is obtained, a table of parameters will be converted to JSON, passed through an
+#   encryption program (`gpg` by default) and written to the path specified for
+#   the tokenfile.
+#
+#   WARN: If the tokenfile exists, the data in it will override any user
+#         provided arguments.  This is why, in the example, the file is removed
+#         before token reaquisition.
+#
+#   In OAuth2, a user logs in and authorizes an application (this script or
+#   whatever application it's posing as via --client-id) and the permissions
+#   (a.k.a. scope) they request.  Once the provider authenticates the user and
+#   the user authorizes any permissions requested by the app (this script), the
+#   provider will generate an *authorization code* that the script will then
+#   trade in for an authorization token, refresh token, and some other data.
+#
+#   The way this script interacts with the provider changes depending on
+#   --authflow.  In all cases, the script will open the provider's authorization
+#   endpoint in a browser.  However, the way the provider passes the
+#   authorization code back to this script varies based on `--authflow`.  When
+#   using `localhostauthcode` or `devicecode` the script will start a web server
+#   to receive the authorization code.  The URL of our web server is passed as
+#   `redirect_uri` to the authorization endpoint.  With these two workflows, the
+#   script will complete the process of obtaining the access token and generate
+#   the tokenfile.
+#
+#   If you specify `authcode`, the script will prompt you for the address from
+#   your browser or the authorization code, which you must input.  Most of
+#   the time, you'll copy the contents of the address bar (of the failed request
+#   to the `redirect_uri`) and paste it into this script.
+#
+#   FYI, authorization codes look like:
+#
+#           M.C517_SN1.2.U.An7Ux3hV...
+#
+#   More detail is available at
+#
+#     https://github.com/neomutt/neomutt/blob/main/contrib/oauth2/README.md
+
+
+# TOKENFILE
+#
+# The token file is JSON (text).  You should NOT need to view/decrypt this file,
+# but if you need to, you can with:
+#
+#     gpg --decrypt ~/.mutt_oauth2-outlook.gpg
+#
+#     gpg: encrypted with ....... key, ID ................, created 202.-..-..
+#     "............. (Created ........) <.......................>"
+#
+#     {"registration": "microsoft", "authflow": "localhostauthcode",
+#      "email": "bill@outlook.com", "access_token": "....",
+#      "access_token_expiration": "20..-01-01T00:00:00.000000",
+#      "refresh_token": "M.C517_SN1.2.U.An7Ux3hV...",
+#      "client_id": "........-....-....-....-............",
+#      "client_secret": "...",
+#      "tenant": "consumers"}
+
 
 '''Mutt OAuth2 token management'''
 
