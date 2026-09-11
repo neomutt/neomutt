@@ -83,7 +83,7 @@
 #       --email 'bill@microsoft.com' \
 #       --client-id '9e5f94bc-e8a4-4e73-b8be-63364c29d753' \
 #       --client-secret '' \
-#       --redirect_uri 'https://localhost'
+#       --redirect-uri 'https://localhost' \
 #       ~/.mutt_oauth2-outlook.gpg
 #
 #   WARN: You'll likely run this program repeatedly to try and find the right
