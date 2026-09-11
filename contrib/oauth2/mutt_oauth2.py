@@ -100,10 +100,6 @@
 #
 #            user={user}\x01auth=Bearer {token}\x01\x01
 #
-#   NOTE: `--client-secret` being empty is not detectable by this script's
-#         argument parser.  It will prompt you, and you hit enter to leave
-#         blank (which works for Thunderbird, btw).
-#
 #   NOTE: `--redirect-uri` may not be necessary.  The Thunderbird client id
 #         that Mozilla maintains at Microsoft (used in the example) requires a
 #         redirect-uri of 'https://localhost'.  This forces authflow `authcode`
@@ -234,7 +230,7 @@ ap.add_argument('--encryption-pipe', type=shlex.split, default=ENCRYPTION_PIPE,
                     " ".join(ENCRYPTION_PIPE)))
 ap.add_argument('--client-id', type=str, default='',
                 help='Provider id from registration')
-ap.add_argument('--client-secret', type=str, default='',
+ap.add_argument('--client-secret', type=str, default=None,
                 help='(optional) Provider secret from registration')
 ap.add_argument('--redirect-uri', type=str, default='',
                 help='Specify redirect-uri (May need to match match app registration with provider).')
@@ -294,7 +290,11 @@ if not token:
     token['access_token_expiration'] = ''
     token['refresh_token'] = ''
     token['client_id'] = args.client_id or input('Client ID: ')
-    token['client_secret'] = args.client_secret or input('Client secret: ')
+    print("client_secret: ", args.client_secret)
+    if args.client_secret == None:
+        token['client_secret'] = input('Client secret: ')
+    else:
+        token['client_secret'] = args.client_secret
     if token['registration'] == "microsoft":
         token['tenant'] = args.tenant
     if args.redirect_uri:
