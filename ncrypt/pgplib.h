@@ -86,9 +86,6 @@ const char *pgp_pkalgbytype(unsigned char type);
 
 struct PgpUid *pgp_copy_uids(struct PgpUid *up, struct PgpKeyInfo *parent);
 
-bool pgp_canencrypt(unsigned char type);
-bool pgp_cansign(unsigned char type);
-
 void pgp_key_free(struct PgpKeyInfo **kpp);
 
 struct PgpKeyInfo *pgp_remove_key(struct PgpKeyInfo **klist, struct PgpKeyInfo *key);
