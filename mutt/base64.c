@@ -104,7 +104,7 @@ static size_t b64_encode_common(const char *in, size_t inlen, char *out,
   if (!out)
     return 0;
 
-  if (!in || !*in)
+  if (!in || inlen == 0)
   {
     *out = '\0';
     return 0;
