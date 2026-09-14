@@ -101,8 +101,14 @@ const int Index64[128] = {
 static size_t b64_encode_common(const char *in, size_t inlen, char *out,
                                 size_t outlen, const char *alpha)
 {
-  if (!in || !out)
+  if (!out)
     return 0;
+
+  if (!in || !*in)
+  {
+    *out = '\0';
+    return 0;
+  }
 
   unsigned char *begin = (unsigned char *) out;
   const unsigned char *inu = (const unsigned char *) in;

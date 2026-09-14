@@ -36,8 +36,9 @@ void test_mutt_b64_encode(void)
   // size_t mutt_b64_encode(const char *in, size_t inlen, char *out, size_t outlen);
 
   {
-    char buf[32] = { 0 };
+    char buf[32] = { "whatever" };
     TEST_CHECK(mutt_b64_encode(NULL, 5, buf, sizeof(buf)) == 0);
+    TEST_CHECK(buf[0] == '\0'); // we always \0-terminate
   }
 
   {
