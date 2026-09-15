@@ -40,7 +40,7 @@ extern const struct Command CompCommands[];
  */
 static bool compmbox_init(struct NeoMutt *n)
 {
-  struct CompmboxModuleData *mod_data = MUTT_MEM_CALLOC(1, struct CompmboxModuleData);
+  struct CompmboxModuleData *mod_data = mutt_mem_calloc_T(1, struct CompmboxModuleData);
   neomutt_set_module_data(n, MODULE_ID_COMPMBOX, mod_data);
 
   mod_data->notify = notify_new();

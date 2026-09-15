@@ -45,7 +45,7 @@ extern struct ConfigDef NcryptVarsSmime[];
  */
 static bool ncrypt_init(struct NeoMutt *n)
 {
-  struct NcryptModuleData *mod_data = MUTT_MEM_CALLOC(1, struct NcryptModuleData);
+  struct NcryptModuleData *mod_data = mutt_mem_calloc_T(1, struct NcryptModuleData);
   STAILQ_INIT(&mod_data->crypt_modules);
   neomutt_set_module_data(n, MODULE_ID_NCRYPT, mod_data);
 

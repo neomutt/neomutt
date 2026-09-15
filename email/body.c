@@ -43,7 +43,7 @@
  */
 struct Body *mutt_body_new(void)
 {
-  struct Body *p = MUTT_MEM_CALLOC(1, struct Body);
+  struct Body *p = mutt_mem_calloc_T(1, struct Body);
 
   p->disposition = DISP_ATTACH;
   p->use_disp = true;

@@ -39,7 +39,7 @@
  */
 struct Parameter *mutt_param_new(void)
 {
-  return MUTT_MEM_CALLOC(1, struct Parameter);
+  return mutt_mem_calloc_T(1, struct Parameter);
 }
 
 /**

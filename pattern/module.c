@@ -42,7 +42,7 @@ extern struct ConfigDef PatternVars[];
  */
 static bool pattern_init(struct NeoMutt *n)
 {
-  struct PatternModuleData *mod_data = MUTT_MEM_CALLOC(1, struct PatternModuleData);
+  struct PatternModuleData *mod_data = mutt_mem_calloc_T(1, struct PatternModuleData);
 
   // clang-format off
   mod_data->range_regexes[RANGE_K_REL]  = (struct RangeRegex){ RANGE_REL_RX,  1, 3, 0, { 0 } };

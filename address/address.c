@@ -400,7 +400,7 @@ static bool add_addrspec(struct AddressList *al, const char *phrase,
  */
 struct Address *mutt_addr_new(void)
 {
-  return MUTT_MEM_CALLOC(1, struct Address);
+  return mutt_mem_calloc_T(1, struct Address);
 }
 
 /**

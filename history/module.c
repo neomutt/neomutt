@@ -42,7 +42,7 @@ extern struct ConfigDef HistoryVars[];
  */
 static bool history_init(struct NeoMutt *n)
 {
-  struct HistoryModuleData *mod_data = MUTT_MEM_CALLOC(1, struct HistoryModuleData);
+  struct HistoryModuleData *mod_data = mutt_mem_calloc_T(1, struct HistoryModuleData);
   neomutt_set_module_data(n, MODULE_ID_HISTORY, mod_data);
 
   mod_data->notify = notify_new();

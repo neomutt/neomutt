@@ -44,7 +44,7 @@ extern const struct Command HooksCommands[];
  */
 static bool hooks_init(struct NeoMutt *n)
 {
-  struct HooksModuleData *mod_data = MUTT_MEM_CALLOC(1, struct HooksModuleData);
+  struct HooksModuleData *mod_data = mutt_mem_calloc_T(1, struct HooksModuleData);
   TAILQ_INIT(&mod_data->hooks);
   neomutt_set_module_data(n, MODULE_ID_HOOKS, mod_data);
 

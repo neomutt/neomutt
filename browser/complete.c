@@ -94,7 +94,7 @@ enum FunctionRetval complete_file_mbox(struct EnterWindowData *wdata, int op)
   if (mutt_complete(wdata->cd, wdata->buffer) == 0)
   {
     wdata->templen = wdata->state->lastchar;
-    MUTT_MEM_REALLOC(&wdata->tempbuf, wdata->templen, wchar_t);
+    mutt_mem_realloc_T(&wdata->tempbuf, wdata->templen, wchar_t);
     if (wdata->tempbuf)
       wmemcpy(wdata->tempbuf, wdata->state->wbuf, wdata->templen);
   }
@@ -133,7 +133,7 @@ enum FunctionRetval complete_file_simple(struct EnterWindowData *wdata, int op)
   if (mutt_complete(wdata->cd, wdata->buffer) == 0)
   {
     wdata->templen = wdata->state->lastchar - i;
-    MUTT_MEM_REALLOC(&wdata->tempbuf, wdata->templen, wchar_t);
+    mutt_mem_realloc_T(&wdata->tempbuf, wdata->templen, wchar_t);
     if (wdata->tempbuf)
       wmemcpy(wdata->tempbuf, wdata->state->wbuf + i, wdata->templen);
   }

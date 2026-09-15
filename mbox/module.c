@@ -41,7 +41,7 @@ extern struct ConfigDef MboxVars[];
  */
 static bool mbox_init(struct NeoMutt *n)
 {
-  struct MboxModuleData *mod_data = MUTT_MEM_CALLOC(1, struct MboxModuleData);
+  struct MboxModuleData *mod_data = mutt_mem_calloc_T(1, struct MboxModuleData);
   neomutt_set_module_data(n, MODULE_ID_MBOX, mod_data);
 
   mod_data->notify = notify_new();

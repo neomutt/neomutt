@@ -38,7 +38,7 @@
  */
 static bool parse_init(struct NeoMutt *n)
 {
-  struct ParseModuleData *mod_data = MUTT_MEM_CALLOC(1, struct ParseModuleData);
+  struct ParseModuleData *mod_data = mutt_mem_calloc_T(1, struct ParseModuleData);
   neomutt_set_module_data(n, MODULE_ID_PARSE, mod_data);
 
   mod_data->notify = notify_new();

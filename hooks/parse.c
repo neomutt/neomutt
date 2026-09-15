@@ -487,7 +487,7 @@ enum CommandResult parse_regex_hook(const struct Command *cmd, struct Buffer *li
   }
 
   /* Hooks not allowing full patterns: Check syntax of regex */
-  rx = MUTT_MEM_CALLOC(1, regex_t);
+  rx = mutt_mem_calloc_T(1, regex_t);
   int rc2 = REG_COMP(rx, buf_string(regex), 0);
   if (rc2 != 0)
   {
@@ -627,7 +627,7 @@ enum CommandResult parse_folder_hook(const struct Command *cmd, struct Buffer *l
   }
 
   /* Hooks not allowing full patterns: Check syntax of regex */
-  rx = MUTT_MEM_CALLOC(1, regex_t);
+  rx = mutt_mem_calloc_T(1, regex_t);
   int rc2 = REG_COMP(rx, buf_string(regex), 0);
   if (rc2 != 0)
   {
@@ -725,7 +725,7 @@ enum CommandResult parse_crypt_hook(const struct Command *cmd, struct Buffer *li
   }
 
   /* Hooks not allowing full patterns: Check syntax of regex */
-  rx = MUTT_MEM_CALLOC(1, regex_t);
+  rx = mutt_mem_calloc_T(1, regex_t);
   int rc2 = REG_COMP(rx, buf_string(regex), REG_ICASE);
   if (rc2 != 0)
   {
@@ -872,7 +872,7 @@ enum CommandResult parse_mbox_hook(const struct Command *cmd, struct Buffer *lin
   }
 
   /* Hooks not allowing full patterns: Check syntax of regex */
-  rx = MUTT_MEM_CALLOC(1, regex_t);
+  rx = mutt_mem_calloc_T(1, regex_t);
   int rc2 = REG_COMP(rx, buf_string(regex), 0);
   if (rc2 != 0)
   {
@@ -991,7 +991,7 @@ enum CommandResult parse_compress_hook(const struct Command *cmd, struct Buffer 
   }
 
   /* Hooks not allowing full patterns: Check syntax of regex */
-  rx = MUTT_MEM_CALLOC(1, regex_t);
+  rx = mutt_mem_calloc_T(1, regex_t);
   int rc2 = REG_COMP(rx, buf_string(regex), 0);
   if (rc2 != 0)
   {
@@ -1178,7 +1178,7 @@ enum CommandResult parse_index_hook(const struct Command *cmd, struct Buffer *li
 
   if (!hl)
   {
-    hl = MUTT_MEM_CALLOC(1, struct HookList);
+    hl = mutt_mem_calloc_T(1, struct HookList);
     TAILQ_INIT(hl);
     mutt_hash_insert(mod_data->idx_fmt_hooks, buf_string(name), hl);
   }
