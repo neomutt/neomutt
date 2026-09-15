@@ -42,6 +42,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "menu/lib.h"
 #include "attach/lib.h"
 #include "expando/lib.h"
 #include "mutt_logging.h"
@@ -365,6 +366,7 @@ const struct ExpandoDefinition IndexFormatDef[] = {
   { "zt", "message-flags",       ED_EMAIL,    ED_EMA_MESSAGE_FLAGS,       NULL },
   { "[",  NULL,                  ED_EMAIL,    ED_EMA_DATE_STRF_LOCAL,     parse_index_date_local },
   { "{",  NULL,                  ED_EMAIL,    ED_EMA_DATE_STRF,           parse_index_date },
+  { NULL, "relative-number",     ED_MENU,     ED_MEN_RELATIVE_NUMBER,     NULL },
   { NULL, NULL, 0, -1, NULL }
   // clang-format on
 };
