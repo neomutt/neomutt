@@ -31,14 +31,18 @@
 #include <stddef.h>
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "mutt.h"
 #include "functions.h"
 #include "lib.h"
+#include "expando/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "send/lib.h"
+#include "expando.h"
 #include "module_data.h"
 
 /// Mailing-list actions shown in the dialog
@@ -117,6 +121,55 @@ struct ListHead *mlist_action_value(struct Rfc2369ListHeaders *headers,
 }
 
 /**
+ * mlist_open_url - Open a URL with the configured command
+ * @param url URL to open
+ * @retval true  Command ran successfully
+ * @retval false Command couldn't be run
+ */
+bool mlist_open_url(const char *url)
+{
+  if (!url)
+    return false;
+
+  const struct Expando *c_url_open_command = cs_subset_expando(NeoMutt->sub, "url_open_command");
+  if (!c_url_open_command)
+  {
+    mutt_warning(_("Set the 'url_open_command' option to open URLs"));
+    return false;
+  }
+
+  struct Buffer *cmd = buf_pool_get();
+  struct Buffer *quoted = buf_pool_get();
+
+  buf_quote_filename(quoted, url, true);
+  struct MlistExpandoData med = { buf_string(quoted) };
+
+  expando_filter(c_url_open_command, MlistRenderCallbacks, &med,
+                 MUTT_FORMAT_NONE, -1, NeoMutt->env, cmd);
+
+  if (!expando_contains(c_url_open_command, ED_MLIST, ED_MLS_URL))
+  {
+    buf_addch(cmd, ' ');
+    buf_addstr(cmd, buf_string(quoted));
+  }
+
+  msgwin_clear_text(NULL);
+  mutt_endwin();
+  fflush(stdout);
+
+  const int rc = mutt_system(buf_string(cmd));
+  if (rc == -1)
+    mutt_error(_("Error running \"%s\""), buf_string(cmd));
+
+  const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
+  if ((rc != 0) || c_wait_key)
+    mutt_any_key_to_continue(NULL);
+
+  buf_pool_release(&cmd);
+  return rc == 0;
+}
+
+/**
  * compose_list_action - Compose a message for a mailing-list action
  * @param ld      Dialog state
  * @param entry   Mailing-list entry
@@ -133,7 +186,7 @@ static bool compose_list_action(struct ListData *ld, const struct ListEntry *ent
 
   const char *uri = entry->value;
   if (!mutt_istr_startswith(uri, "mailto:"))
-    return false;
+    return mlist_open_url(uri);
 
   struct Email *e = email_new();
   e->env = mutt_env_new();

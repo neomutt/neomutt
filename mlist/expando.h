@@ -1,10 +1,9 @@
 /**
  * @file
- * Shared code
+ * Mlist Expando definitions
  *
  * @authors
- * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
- * Copyright (C) 2023-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -21,19 +20,29 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_EXPANDO_HELPERS_H
-#define MUTT_EXPANDO_HELPERS_H
+#ifndef MUTT_MLIST_EXPANDO_H
+#define MUTT_MLIST_EXPANDO_H
 
-#include <stdbool.h>
+#include "expando/lib.h" // IWYU pragma: keep
 
-struct Buffer;
-struct Expando;
-struct ExpandoRenderCallback;
+/**
+ * struct MlistExpandoData - Data for the Mailing list expando
+ */
+struct MlistExpandoData
+{
+  const char *url;    ///< Mailing list URL
+};
 
-const struct ExpandoRenderCallback *find_get_number(const struct ExpandoRenderCallback *erc, int did, int uid);
-const struct ExpandoRenderCallback *find_get_string(const struct ExpandoRenderCallback *erc, int did, int uid);
+/**
+ * ExpandoDataMlist - Expando UIDs for Mailing Lists
+ *
+ * @sa ED_MLIST, ExpandoDomain
+ */
+enum ExpandoDataMlist
+{
+  ED_MLS_URL = 1,    ///< Mailing List URL
+};
 
-void buf_lower_special(struct Buffer *buf);
-bool expando_contains(const struct Expando *exp, int did, int uid);
+extern const struct ExpandoRenderCallback MlistRenderCallbacks[];
 
-#endif /* MUTT_EXPANDO_HELPERS_H */
+#endif /* MUTT_MLIST_EXPANDO_H */
