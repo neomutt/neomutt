@@ -61,7 +61,7 @@ typedef int (*gpgme_function_t)(struct GpgmeData *gd, const struct KeyEvent *eve
  */
 struct GpgmeFunction
 {
-  int op;                      ///< Op code, e.g. OP_GENERIC_SELECT_ENTRY
+  int op;                      ///< Op code, e.g. OP_ACTIVATE_ENTRY
   gpgme_function_t function; ///< Function to call
 };
 

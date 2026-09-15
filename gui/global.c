@@ -57,9 +57,9 @@ static int op_check_stats(struct MuttWindow *win, const struct KeyEvent *event)
 }
 
 /**
- * op_enter_command - Enter a neomuttrc command - Implements ::global_function_t - @ingroup global_function_api
+ * op_run_command - Enter a neomuttrc command - Implements ::global_function_t - @ingroup global_function_api
  */
-static int op_enter_command(struct MuttWindow *win, const struct KeyEvent *event)
+static int op_run_command(struct MuttWindow *win, const struct KeyEvent *event)
 {
   mutt_enter_command(win);
   window_redraw(NULL);
@@ -76,9 +76,9 @@ static int op_forget_passphrase(struct MuttWindow *win, const struct KeyEvent *e
 }
 
 /**
- * op_redraw - Clear and redraw the screen - Implements ::global_function_t - @ingroup global_function_api
+ * op_redraw_screen - Clear and redraw the screen - Implements ::global_function_t - @ingroup global_function_api
  */
-static int op_redraw(struct MuttWindow *win, const struct KeyEvent *event)
+static int op_redraw_screen(struct MuttWindow *win, const struct KeyEvent *event)
 {
   clearok(stdscr, true);
   mutt_resize_screen();
@@ -88,9 +88,9 @@ static int op_redraw(struct MuttWindow *win, const struct KeyEvent *event)
 }
 
 /**
- * op_shell_escape - Invoke a command in a subshell - Implements ::global_function_t - @ingroup global_function_api
+ * op_run_shell_command - Invoke a command in a subshell - Implements ::global_function_t - @ingroup global_function_api
  */
-static int op_shell_escape(struct MuttWindow *win, const struct KeyEvent *event)
+static int op_run_shell_command(struct MuttWindow *win, const struct KeyEvent *event)
 {
   if (mutt_shell_escape())
   {
@@ -105,9 +105,9 @@ static int op_shell_escape(struct MuttWindow *win, const struct KeyEvent *event)
 }
 
 /**
- * op_show_log_messages - Show log (and debug) messages - Implements ::global_function_t - @ingroup global_function_api
+ * op_display_log - Show log (and debug) messages - Implements ::global_function_t - @ingroup global_function_api
  */
-static int op_show_log_messages(struct MuttWindow *win, const struct KeyEvent *event)
+static int op_display_log(struct MuttWindow *win, const struct KeyEvent *event)
 {
   struct Buffer *tempfile = buf_pool_get();
   buf_mktemp(tempfile);
@@ -149,18 +149,18 @@ static int op_show_log_messages(struct MuttWindow *win, const struct KeyEvent *e
 }
 
 /**
- * op_version - Show the NeoMutt version number - Implements ::global_function_t - @ingroup global_function_api
+ * op_show_version - Show the NeoMutt version number - Implements ::global_function_t - @ingroup global_function_api
  */
-static int op_version(struct MuttWindow *win, const struct KeyEvent *event)
+static int op_show_version(struct MuttWindow *win, const struct KeyEvent *event)
 {
   mutt_message("NeoMutt %s", mutt_make_version());
   return FR_SUCCESS;
 }
 
 /**
- * op_what_key - display the keycode for a key press - Implements ::global_function_t - @ingroup global_function_api
+ * op_view_keycodes - display the keycode for a key press - Implements ::global_function_t - @ingroup global_function_api
  */
-static int op_what_key(struct MuttWindow *win, const struct KeyEvent *event)
+static int op_view_keycodes(struct MuttWindow *win, const struct KeyEvent *event)
 {
   mw_what_key();
   return FR_SUCCESS;
@@ -174,13 +174,13 @@ static int op_what_key(struct MuttWindow *win, const struct KeyEvent *event)
 static const struct GlobalFunction GlobalFunctions[] = {
   // clang-format off
   { OP_CHECK_STATS,           op_check_stats },
-  { OP_ENTER_COMMAND,         op_enter_command },
+  { OP_DISPLAY_LOG,           op_display_log },
   { OP_FORGET_PASSPHRASE,     op_forget_passphrase },
-  { OP_REDRAW,                op_redraw },
-  { OP_SHELL_ESCAPE,          op_shell_escape },
-  { OP_SHOW_LOG_MESSAGES,     op_show_log_messages },
-  { OP_VERSION,               op_version },
-  { OP_WHAT_KEY,              op_what_key },
+  { OP_REDRAW_SCREEN,         op_redraw_screen },
+  { OP_RUN_COMMAND,           op_run_command },
+  { OP_RUN_SHELL_COMMAND,     op_run_shell_command },
+  { OP_SHOW_VERSION,          op_show_version },
+  { OP_VIEW_KEYCODES,         op_view_keycodes },
   { 0, NULL },
   // clang-format on
 };

@@ -55,7 +55,7 @@ typedef int (*pattern_function_t)(struct PatternFunctionData *fdata, const struc
  */
 struct PatternFunction
 {
-  int op;                      ///< Op code, e.g. OP_GENERIC_SELECT_ENTRY
+  int op;                      ///< Op code, e.g. OP_ACTIVATE_ENTRY
   pattern_function_t function; ///< Function to call
 };
 

@@ -59,7 +59,7 @@ typedef int (*pgp_function_t)(struct PgpData *pd, const struct KeyEvent *event);
  */
 struct PgpFunction
 {
-  int op;                  ///< Op code, e.g. OP_GENERIC_SELECT_ENTRY
+  int op;                  ///< Op code, e.g. OP_ACTIVATE_ENTRY
   pgp_function_t function; ///< Function to call
 };
 

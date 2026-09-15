@@ -1,0 +1,8 @@
+bind $my_menu I_0001 list-archive
+bind $my_menu I_0002 list-help
+bind $my_menu I_0003 list-owner
+bind $my_menu I_0004 list-post
+bind $my_menu I_0005 list-subscribe
+bind $my_menu I_0006 list-unsubscribe
+
+# vim: ft=neomuttrc

@@ -1,0 +1,26 @@
+bind $my_menu D_0001 catchup
+bind $my_menu D_0002 change-dir
+bind $my_menu D_0003 check-new
+bind $my_menu D_0004 create-mailbox
+bind $my_menu D_0005 delete-mailbox
+bind $my_menu D_0006 descend-directory
+bind $my_menu D_0007 display-filename
+bind $my_menu D_0008 enter-mask
+bind $my_menu D_0009 goto-folder
+bind $my_menu D_0010 goto-parent
+bind $my_menu D_0011 mailbox-list
+bind $my_menu D_0012 reload-active
+bind $my_menu D_0013 rename-mailbox
+bind $my_menu D_0014 select-new
+bind $my_menu D_0015 sort
+bind $my_menu D_0016 sort-reverse
+bind $my_menu D_0017 subscribe
+bind $my_menu D_0018 subscribe-pattern
+bind $my_menu D_0019 toggle-mailboxes
+bind $my_menu D_0020 toggle-subscribed
+bind $my_menu D_0021 uncatchup
+bind $my_menu D_0022 unsubscribe
+bind $my_menu D_0023 unsubscribe-pattern
+bind $my_menu D_0024 view-file
+
+# vim: ft=neomuttrc

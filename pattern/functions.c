@@ -38,10 +38,9 @@
 #include "pattern_data.h"
 
 /**
- * op_generic_select_entry - Select the current entry - Implements ::pattern_function_t - @ingroup pattern_function_api
+ * op_activate_entry - Select the current entry - Implements ::pattern_function_t - @ingroup pattern_function_api
  */
-static int op_generic_select_entry(struct PatternFunctionData *fdata,
-                                   const struct KeyEvent *event)
+static int op_activate_entry(struct PatternFunctionData *fdata, const struct KeyEvent *event)
 {
   struct PatternData *pd = fdata->pd;
   const int index = menu_get_index(pd->menu);
@@ -77,9 +76,9 @@ static int op_quit(struct PatternFunctionData *fdata, const struct KeyEvent *eve
  */
 static const struct PatternFunction PatternFunctions[] = {
   // clang-format off
-  { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },
-  { OP_QUIT,                   op_quit },
+  { OP_ACTIVATE_ENTRY,         op_activate_entry },
   { OP_EXIT,                   op_quit },
+  { OP_QUIT,                   op_quit },
   { 0, NULL },
   // clang-format on
 };

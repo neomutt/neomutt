@@ -1,0 +1,4 @@
+bind $my_menu K_0001 verify-key
+bind $my_menu K_0002 view-name
+
+# vim: ft=neomuttrc

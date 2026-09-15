@@ -1,0 +1,15 @@
+alias     MENU_ALIAS     alias_init_keys     AliasDefaultBindings     OpAlias     OpGeneric
+attach    MENU_ATTACH    attach_init_keys    AttachDefaultBindings    OpAttach    OpGeneric
+autocrypt MENU_AUTOCRYPT autocrypt_init_keys AutocryptDefaultBindings OpAutocrypt OpGeneric
+browser   MENU_BROWSER   browser_init_keys   BrowserDefaultBindings   OpBrowser   OpGeneric
+compose   MENU_COMPOSE   compose_init_keys   ComposeDefaultBindings   OpCompose   OpGeneric
+editor    MENU_EDITOR    editor_init_keys    EditorDefaultBindings    OpEditor
+generic   MENU_GENERIC   generic_init_keys   GenericDefaultBindings   OpGeneric
+index     MENU_INDEX     index_init_keys     IndexDefaultBindings     OpIndex     OpSidebar OpGeneric
+list      MENU_LIST      mlist_init_keys     ListDefaultBindings      OpList      OpGeneric
+pager     MENU_PAGER     pager_init_keys     PagerDefaultBindings     OpPager     OpIndex   OpSidebar OpGeneric
+pgp       MENU_PGP       pgp_init_keys       PgpDefaultBindings       OpPgp       OpGeneric
+postpone  MENU_POSTPONE  postpone_init_keys  PostponeDefaultBindings  OpPostpone  OpGeneric
+query     MENU_QUERY     alias_init_keys     QueryDefaultBindings     OpQuery     OpGeneric
+sidebar   MENU_SIDEBAR   sidebar_init_keys   SidebarDefaultBindings   OpSidebar   OpEditor
+smime     MENU_SMIME     pgp_init_keys       SmimeDefaultBindings     OpSmime     OpGeneric

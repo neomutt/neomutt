@@ -1,0 +1,10 @@
+bind $my_menu A_0001 delete-entry
+bind $my_menu A_0002 limit
+bind $my_menu A_0003 mail
+bind $my_menu A_0004 sort-alias
+bind $my_menu A_0005 sort-alias-reverse
+bind $my_menu A_0006 tag-pattern
+bind $my_menu A_0007 undelete-entry
+bind $my_menu A_0008 untag-pattern
+
+# vim: ft=neomuttrc
