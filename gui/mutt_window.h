@@ -100,6 +100,7 @@ enum WindowType
   WT_PAGER,           ///< A panel containing the Pager Window
   WT_SIDEBAR,         ///< Side panel containing Accounts or groups of data
   WT_STATUS_BAR,      ///< Status Bar containing extra info about the Index/Pager/etc
+  WT_TABBED,          ///< Tabbed Container Window
 };
 
 ARRAY_HEAD(MuttWindowArray, struct MuttWindow *);
