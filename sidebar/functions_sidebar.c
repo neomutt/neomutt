@@ -905,11 +905,18 @@ static const struct SidebarFunction SidebarFunctions[] = {
 /**
  * sb_function_dispatcher - Perform a Sidebar function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int sb_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
+int sb_function_dispatcher(struct MuttWindow *win, struct KeyEvent *event)
 {
   if (!event || !win || !win->wdata)
     return FR_UNKNOWN;
 
+  /* Translate a mouse event into a Sidebar opcode before dispatching.
+   * A single click that only moved the highlight is consumed without opening. */
+  if (sb_mouse_translate(win, event))
+  {
+    window_redraw(NULL);
+    return FR_SUCCESS;
+  }
   const int op = event->op;
 
   struct SidebarModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_SIDEBAR);

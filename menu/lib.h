@@ -57,11 +57,11 @@ struct MuttWindow;
  */
 enum MenuRedrawFlag
 {
-  MENU_REDRAW_NONE    =       0,  ///< No flags are set
-  MENU_REDRAW_INDEX   = 1U << 0,  ///< Redraw the index
-  MENU_REDRAW_MOTION  = 1U << 1,  ///< Redraw after moving the menu list
-  MENU_REDRAW_CURRENT = 1U << 2,  ///< Redraw the current line of the menu
-  MENU_REDRAW_FULL    = 1U << 3,  ///< Redraw everything
+  MENU_REDRAW_NONE = 0,          ///< No flags are set
+  MENU_REDRAW_INDEX = 1U << 0,   ///< Redraw the index
+  MENU_REDRAW_MOTION = 1U << 1,  ///< Redraw after moving the menu list
+  MENU_REDRAW_CURRENT = 1U << 2, ///< Redraw the current line of the menu
+  MENU_REDRAW_FULL = 1U << 3,    ///< Redraw everything
 };
 typedef uint8_t MenuRedrawFlags;
 
@@ -72,7 +72,7 @@ typedef uint8_t MenuRedrawFlags;
  */
 enum ExpandoDataMenu
 {
-  ED_MEN_PERCENTAGE,           ///< Menu.top, ...
+  ED_MEN_PERCENTAGE, ///< Menu.top, ...
 };
 
 /**
@@ -84,21 +84,21 @@ enum ExpandoDataMenu
  */
 struct Menu
 {
-  int current;                       ///< Current entry
-  int max;                           ///< Number of entries in the menu
-  MenuRedrawFlags redraw;            ///< When to redraw the screen
-  const struct MenuDefinition *md;   ///< Menu definition for keymap entries
-  int page_len;                      ///< Number of entries per screen
-  bool tag_prefix     : 1;           ///< User has pressed <tag-prefix>
-  bool show_indicator : 1;           ///< Show the Indicator colour
-  struct MuttWindow *win;            ///< Window holding the Menu
-  struct ConfigSubset *sub;          ///< Inherited config items
+  int current;                     ///< Current entry
+  int max;                         ///< Number of entries in the menu
+  MenuRedrawFlags redraw;          ///< When to redraw the screen
+  const struct MenuDefinition *md; ///< Menu definition for keymap entries
+  int page_len;                    ///< Number of entries per screen
+  bool tag_prefix : 1;             ///< User has pressed <tag-prefix>
+  bool show_indicator : 1;         ///< Show the Indicator colour
+  struct MuttWindow *win;          ///< Window holding the Menu
+  struct ConfigSubset *sub;        ///< Inherited config items
 
   /* the following are used only by menu_loop() */
-  int top;                           ///< Entry that is the top of the current page
-  int old_current;                   ///< For driver use only
-  int search_dir;                    ///< Direction of search
-  int num_tagged;                    ///< Number of tagged entries
+  int top;         ///< Entry that is the top of the current page
+  int old_current; ///< For driver use only
+  int search_dir;  ///< Direction of search
+  int num_tagged;  ///< Number of tagged entries
 
   /**
    * @defgroup menu_make_entry make_entry()
@@ -150,9 +150,9 @@ struct Menu
    */
   const struct AttrColor *(*color)(struct Menu *menu, int line);
 
-  struct Notify *notify;  ///< Notifications
+  struct Notify *notify; ///< Notifications
 
-  void *mdata;            ///< Private data
+  void *mdata; ///< Private data
 
   /**
    * @defgroup menu_mdata_free mdata_free()
@@ -170,43 +170,45 @@ struct Menu
 };
 
 // Simple movement
-MenuRedrawFlags menu_bottom_page   (struct Menu *menu);
+MenuRedrawFlags menu_bottom_page(struct Menu *menu);
 MenuRedrawFlags menu_current_bottom(struct Menu *menu);
 MenuRedrawFlags menu_current_middle(struct Menu *menu);
-MenuRedrawFlags menu_current_top   (struct Menu *menu);
-MenuRedrawFlags menu_first_entry   (struct Menu *menu, int count);
-MenuRedrawFlags menu_half_down     (struct Menu *menu, int count);
-MenuRedrawFlags menu_half_up       (struct Menu *menu, int count);
-MenuRedrawFlags menu_last_entry    (struct Menu *menu, int count);
-MenuRedrawFlags menu_middle_page   (struct Menu *menu);
-MenuRedrawFlags menu_next_entry    (struct Menu *menu, int count);
-MenuRedrawFlags menu_next_line     (struct Menu *menu, int count);
-MenuRedrawFlags menu_next_page     (struct Menu *menu, int count);
-MenuRedrawFlags menu_prev_entry    (struct Menu *menu, int count);
-MenuRedrawFlags menu_prev_line     (struct Menu *menu, int count);
-MenuRedrawFlags menu_prev_page     (struct Menu *menu, int count);
-MenuRedrawFlags menu_top_page      (struct Menu *menu);
+MenuRedrawFlags menu_current_top(struct Menu *menu);
+MenuRedrawFlags menu_first_entry(struct Menu *menu, int count);
+MenuRedrawFlags menu_half_down(struct Menu *menu, int count);
+MenuRedrawFlags menu_half_up(struct Menu *menu, int count);
+MenuRedrawFlags menu_last_entry(struct Menu *menu, int count);
+MenuRedrawFlags menu_middle_page(struct Menu *menu);
+MenuRedrawFlags menu_next_entry(struct Menu *menu, int count);
+MenuRedrawFlags menu_next_line(struct Menu *menu, int count);
+MenuRedrawFlags menu_next_page(struct Menu *menu, int count);
+MenuRedrawFlags menu_prev_entry(struct Menu *menu, int count);
+MenuRedrawFlags menu_prev_line(struct Menu *menu, int count);
+MenuRedrawFlags menu_prev_page(struct Menu *menu, int count);
+MenuRedrawFlags menu_top_page(struct Menu *menu);
 
-void         menu_redraw_current(struct Menu *menu);
-void         menu_redraw_full   (struct Menu *menu);
-void         menu_redraw_index  (struct Menu *menu);
-void         menu_redraw_motion (struct Menu *menu);
-int          menu_redraw        (struct Menu *menu);
+void menu_redraw_current(struct Menu *menu);
+void menu_redraw_full(struct Menu *menu);
+void menu_redraw_index(struct Menu *menu);
+void menu_redraw_motion(struct Menu *menu);
+int menu_redraw(struct Menu *menu);
 
 enum MenuType menu_get_current_type(void);
-void         menu_init2(char **search_buffers);
+void menu_init2(char **search_buffers);
 
 struct MuttWindow *menu_window_new(const struct MenuDefinition *md, struct ConfigSubset *sub);
 
-int  menu_get_index(struct Menu *menu);
+int menu_get_index(struct Menu *menu);
+int menu_get_index_by_coords(const struct Menu *menu, int row, int col);
 MenuRedrawFlags menu_set_index(struct Menu *menu, int index);
+bool menu_mouse_translate(struct MuttWindow *win, struct KeyEvent *event);
 MenuRedrawFlags menu_move_selection(struct Menu *menu, int index);
 void menu_queue_redraw(struct Menu *menu, MenuRedrawFlags redraw);
 MenuRedrawFlags menu_move_view_relative(struct Menu *menu, int relative);
 MenuRedrawFlags menu_set_and_notify(struct Menu *menu, int top, int index);
 void menu_adjust(struct Menu *menu);
 
-int menu_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
+int menu_function_dispatcher(struct MuttWindow *win, struct KeyEvent *event);
 int menu_tagging_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_MENU_LIB_H */

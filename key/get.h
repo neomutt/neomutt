@@ -35,10 +35,10 @@ struct MenuDefinition;
  */
 enum GetChFlag
 {
-  GETCH_NONE         =       0,  ///< No flags are set
-  GETCH_IGNORE_MACRO = 1U << 0,  ///< Don't use MacroEvents
-  GETCH_NO_COUNTER   = 1U << 1,  ///< km_dokey(): disable numeric count prefix parsing
-  GETCH_NO_FEEDBACK  = 1U << 2,  ///< km_dokey(): suppress key progress notifications
+  GETCH_NONE = 0,               ///< No flags are set
+  GETCH_IGNORE_MACRO = 1U << 0, ///< Don't use MacroEvents
+  GETCH_NO_COUNTER = 1U << 1, ///< km_dokey(): disable numeric count prefix parsing
+  GETCH_NO_FEEDBACK = 1U << 2, ///< km_dokey(): suppress key progress notifications
 };
 typedef uint8_t GetChFlags;
 
@@ -52,9 +52,9 @@ typedef uint8_t GetChFlags;
  */
 enum KeyGatherFlag
 {
-  KEY_GATHER_NO_MATCH =       0,  ///< No bindings match the search string
-  KEY_GATHER_MATCH    = 1U << 0,  ///< Binding matches the search string
-  KEY_GATHER_LONGER   = 1U << 1,  ///< No bindings match, but longer strings might
+  KEY_GATHER_NO_MATCH = 0,     ///< No bindings match the search string
+  KEY_GATHER_MATCH = 1U << 0,  ///< Binding matches the search string
+  KEY_GATHER_LONGER = 1U << 1, ///< No bindings match, but longer strings might
 };
 typedef uint8_t KeyGatherFlags;
 
@@ -63,8 +63,8 @@ typedef uint8_t KeyGatherFlags;
  */
 enum MenuFuncFlag
 {
-  MFF_NONE       =       0,  ///< No flags are set
-  MFF_DEPRECATED = 1U << 1,  ///< Function is deprecated
+  MFF_NONE = 0,             ///< No flags are set
+  MFF_DEPRECATED = 1U << 1, ///< Function is deprecated
 };
 typedef uint8_t MenuFuncFlags;
 
@@ -73,9 +73,11 @@ typedef uint8_t MenuFuncFlags;
  */
 struct KeyEvent
 {
-  int ch;    ///< Raw key pressed
-  int op;    ///< Function opcode, e.g. OP_HELP
-  int count; ///< Optional count prefix, e.g. 3 for `3j`
+  int ch;        ///< Raw key pressed
+  int op;        ///< Function opcode, e.g. OP_HELP
+  int count;     ///< Optional count prefix, e.g. 3 for `3j`
+  int mouse_row; ///< Mouse row (screen coordinates), -1 if not a mouse event
+  int mouse_col; ///< Mouse column (screen coordinates), -1 if not a mouse event
 };
 ARRAY_HEAD(KeyEventArray, struct KeyEvent);
 
@@ -86,26 +88,27 @@ ARRAY_HEAD(KeyEventArray, struct KeyEvent);
  */
 struct KeymapMatch
 {
-  enum MenuType  mtype;       ///< Menu Type, e.g. #MENU_INDEX
-  KeyGatherFlags flags;       ///< Flags, e.g. #KEY_GATHER_MATCH
-  struct Keymap *keymap;      ///< Keymap defining `bind` or `macro
+  enum MenuType mtype;   ///< Menu Type, e.g. #MENU_INDEX
+  KeyGatherFlags flags;  ///< Flags, e.g. #KEY_GATHER_MATCH
+  struct Keymap *keymap; ///< Keymap defining `bind` or `macro
 };
 ARRAY_HEAD(KeymapMatchArray, struct KeymapMatch);
 
-void             array_add                   (struct KeyEventArray *a, int ch, int op);
-struct KeyEvent *array_pop                   (struct KeyEventArray *a);
-void             array_to_endcond            (struct KeyEventArray *a);
-KeyGatherFlags   gather_functions            (const struct MenuDefinition *md, const keycode_t *keys, int key_len, struct KeymapMatchArray *kma);
-void             generic_tokenize_push_string(char *s);
-struct KeyEvent  km_dokey                    (const struct MenuDefinition *md, GetChFlags flags);
-void             km_error_key                (const struct MenuDefinition *md);
-void             mutt_flushinp               (void);
-void             mutt_flush_macro_to_endcond (void);
-struct KeyEvent  mutt_getch                  (GetChFlags flags);
-int              mutt_monitor_getch          (void);
-void             mutt_push_macro_event       (int ch, int op);
-void             mutt_push_macro_repeated    (char *macro, int count);
-void             mutt_unget_ch               (int ch);
-void             mutt_unget_op               (int op);
+void array_add(struct KeyEventArray *a, int ch, int op);
+struct KeyEvent *array_pop(struct KeyEventArray *a);
+void array_to_endcond(struct KeyEventArray *a);
+KeyGatherFlags gather_functions(const struct MenuDefinition *md, const keycode_t *keys,
+                                int key_len, struct KeymapMatchArray *kma);
+void generic_tokenize_push_string(char *s);
+struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags);
+void km_error_key(const struct MenuDefinition *md);
+void mutt_flushinp(void);
+void mutt_flush_macro_to_endcond(void);
+struct KeyEvent mutt_getch(GetChFlags flags);
+int mutt_monitor_getch(void);
+void mutt_push_macro_event(int ch, int op);
+void mutt_push_macro_repeated(char *macro, int count);
+void mutt_unget_ch(int ch);
+void mutt_unget_op(int op);
 
 #endif /* MUTT_KEY_GET_H */
