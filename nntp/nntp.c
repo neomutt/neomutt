@@ -72,14 +72,14 @@
 struct stat;
 
 /// Fields to get from server, if it supports the LIST OVERVIEW.FMT feature
-static const char *OverviewFmt = "Subject:\0"
-                                 "From:\0"
-                                 "Date:\0"
-                                 "Message-ID:\0"
-                                 "References:\0"
-                                 "Content-Length:\0"
-                                 "Lines:\0"
-                                 "\0";
+static const char OverviewFmt[] = "Subject:\0"
+                                  "From:\0"
+                                  "Date:\0"
+                                  "Message-ID:\0"
+                                  "References:\0"
+                                  "Content-Length:\0"
+                                  "Lines:\0"
+                                  "\0";
 
 /**
  * struct FetchCtx - Keep track when getting data from a server
@@ -328,7 +328,11 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     }
     if (!mutt_str_startswith(buf, "215"))
     {
-      adata->overview_fmt = mutt_str_dup(OverviewFmt);
+      /* OverviewFmt is a sequence of NUL-separated fields, so copy the whole
+       * block; mutt_str_dup() would stop at the first NUL and parse_overview_line()
+       * would then read past the end walking the remaining fields. */
+      adata->overview_fmt = MUTT_MEM_MALLOC(sizeof(OverviewFmt), char);
+      memcpy(adata->overview_fmt, OverviewFmt, sizeof(OverviewFmt));
     }
     else
     {
