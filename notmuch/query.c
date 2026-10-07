@@ -245,7 +245,7 @@ nm_windowed_query_from_query(char *buf, size_t buflen, const bool force_enable,
     return NM_WINDOW_QUERY_INVALID_TIMEBASE;
   }
 
-  size_t length = 0;
+  int length = 0;
   if (end == 0)
   {
     // Open-ended date allows mail from the future.
@@ -263,6 +263,13 @@ nm_windowed_query_from_query(char *buf, size_t buflen, const bool force_enable,
     length = snprintf(buf, buflen, "(%s or (%s))", date_part, or_terms);
     FREE(&date_part);
   }
+
+  // snprintf() reports the length it would have written, so a long `or_terms`
+  // leaves `length` past the end of the buffer
+  if (length < 0)
+    length = 0;
+  else if ((size_t) length >= buflen)
+    length = buflen - 1;
 
   // Add current search to window query.
   snprintf(buf + length, buflen - length, " and %s", cur_search);

@@ -117,6 +117,13 @@ int log_disp_debug(time_t stamp, const char *file, int line, const char *functio
   bytes += vsnprintf(buf + bytes, buflen - bytes, format, ap);
   va_end(ap);
 
+  // vsnprintf() reports the length it would have written, so a long message
+  // leaves `bytes` past the end of the buffer
+  if (bytes < 0)
+    bytes = 0;
+  else if (bytes >= (int) buflen)
+    bytes = buflen - 1;
+
   if (level == LL_PERROR)
     bytes += snprintf(buf + bytes, buflen - bytes, ": %s", strerror(err));
 
