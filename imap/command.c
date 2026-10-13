@@ -928,9 +928,12 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
 
     mailbox = adata->buf;
     s = mailbox + litlen;
-    s[0] = '\0';
-    s++;
-    SKIPWS(s);
+    if (s[0] != '\0')
+    {
+      s[0] = '\0';
+      s++;
+      SKIPWS(s);
+    }
   }
   else
   {
