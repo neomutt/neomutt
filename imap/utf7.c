@@ -319,6 +319,11 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
     }
     if ((n > 1) && !(ch >> (n * 5 + 1)))
       goto bail;
+    if (ch > 0x10ffff)
+    {
+      /* Outside Unicode, so it has no UTF-16 representation */
+      goto bail;
+    }
     u8 += n;
     u8len -= n;
 
