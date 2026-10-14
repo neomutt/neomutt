@@ -74,11 +74,9 @@ static int log_level(char *buf, size_t buflen, enum LogLevel level)
 int log_disp_debug(time_t stamp, const char *file, int line, const char *function,
                    enum LogLevel level, const char *format, ...)
 {
-  char buf[LOG_LINE_MAX_LEN] = { 0 };
-  size_t buflen = sizeof(buf);
+  struct Buffer *buf = buf_pool_get();
   int err = errno;
   int colour = 0;
-  int bytes = 0;
 
   if (DebugLogColor)
   {
@@ -98,43 +96,45 @@ int log_disp_debug(time_t stamp, const char *file, int line, const char *functio
 
     if (colour > 0)
     {
-      bytes += snprintf(buf + bytes, buflen - bytes, "\033[1;%dm", colour); // Escape
+      buf_add_printf(buf, "\033[1;%dm", colour); // Escape
     }
   }
 
   if (DebugLogTimestamp)
   {
-    bytes += log_timestamp(buf + bytes, buflen - bytes, stamp);
+    char ts[32] = { 0 };
+    log_timestamp(ts, sizeof(ts), stamp);
+    buf_addstr(buf, ts);
   }
 
   if (DebugLogLevel)
   {
-    bytes += log_level(buf + bytes, buflen - bytes, level);
+    char lvl[8] = { 0 };
+    log_level(lvl, sizeof(lvl), level);
+    buf_addstr(buf, lvl);
   }
 
+  char msg[LOG_LINE_MAX_LEN] = { 0 };
   va_list ap;
   va_start(ap, format);
-  bytes += vsnprintf(buf + bytes, buflen - bytes, format, ap);
+  vsnprintf(msg, sizeof(msg), format, ap);
   va_end(ap);
-
-  // vsnprintf() reports the length it would have written, so a long message
-  // leaves `bytes` past the end of the buffer
-  if (bytes < 0)
-    bytes = 0;
-  else if (bytes >= (int) buflen)
-    bytes = buflen - 1;
+  buf_addstr(buf, msg);
 
   if (level == LL_PERROR)
-    bytes += snprintf(buf + bytes, buflen - bytes, ": %s", strerror(err));
+    buf_add_printf(buf, ": %s", strerror(err));
 
   if (colour > 0)
   {
-    bytes += snprintf(buf + bytes, buflen - bytes, "\033[0m"); // Escape
+    buf_addstr(buf, "\033[0m"); // Escape
   }
 
   if (level < LL_DEBUG1)
-    bytes += snprintf(buf + bytes, buflen - bytes, "\n");
+    buf_addch(buf, '\n');
 
-  fputs(buf, stdout);
+  fputs(buf_string(buf), stdout);
+
+  int bytes = buf_len(buf);
+  buf_pool_release(&buf);
   return bytes;
 }

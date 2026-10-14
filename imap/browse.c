@@ -187,22 +187,16 @@ static int browse_add_list_result(struct ImapAccountData *adata, const char *cmd
 /**
  * browse_build_list_cmd - Build a LIST command for a mailbox
  * @param buf      Buffer for the command
- * @param buflen   Length of buffer
  * @param list_cmd LIST command to use, e.g. "LSUB"
  * @param mbox     Munged mailbox name
  * @param extended true if the server supports LIST-EXTENDED
  */
-static void browse_build_list_cmd(char *buf, size_t buflen, const char *list_cmd,
+static void browse_build_list_cmd(struct Buffer *buf, const char *list_cmd,
                                   const char *mbox, bool extended)
 {
-  int len = snprintf(buf, buflen, "%s \"\" %s", list_cmd, mbox);
-  if (len < 0)
-    len = 0;
-  else if (len >= (int) buflen)
-    len = buflen - 1;
-
+  buf_printf(buf, "%s \"\" %s", list_cmd, mbox);
   if (extended)
-    snprintf(buf + len, buflen - len, " RETURN (CHILDREN)");
+    buf_addstr(buf, " RETURN (CHILDREN)");
 }
 
 /**
@@ -223,6 +217,7 @@ int imap_browse(const char *path, struct BrowserState *state)
   char mbox[PATH_MAX] = { 0 };
   char munged_mbox[PATH_MAX] = { 0 };
   const char *list_cmd = NULL;
+  struct Buffer *cmd = NULL;
   int n;
   bool showparents = false;
   int rc = -1;
@@ -269,6 +264,8 @@ int imap_browse(const char *path, struct BrowserState *state)
 
   mutt_message(_("Getting folder list..."));
 
+  cmd = buf_pool_get();
+
   /* skip check for parents when at the root */
   if (buf[0] == '\0')
   {
@@ -289,9 +286,9 @@ int imap_browse(const char *path, struct BrowserState *state)
     /* if our target exists and has inferiors, enter it if we
      * aren't already going to */
     imap_munge_mbox_name(adata->unicode, munged_mbox, sizeof(munged_mbox), mbox);
-    browse_build_list_cmd(buf, sizeof(buf), list_cmd, munged_mbox,
+    browse_build_list_cmd(cmd, list_cmd, munged_mbox,
                           adata->capabilities & IMAP_CAP_LIST_EXTENDED);
-    imap_cmd_start(adata, buf);
+    imap_cmd_start(adata, buf_string(cmd));
     adata->cmdresult = &list;
     do
     {
@@ -379,9 +376,9 @@ int imap_browse(const char *path, struct BrowserState *state)
   snprintf(buf, sizeof(buf), "%s%%", mbox);
   imap_munge_mbox_name(adata->unicode, munged_mbox, sizeof(munged_mbox), buf);
   mutt_debug(LL_DEBUG3, "%s\n", munged_mbox);
-  browse_build_list_cmd(buf, sizeof(buf), list_cmd, munged_mbox,
+  browse_build_list_cmd(cmd, list_cmd, munged_mbox,
                         adata->capabilities & IMAP_CAP_LIST_EXTENDED);
-  if (browse_add_list_result(adata, buf, state, false))
+  if (browse_add_list_result(adata, buf_string(cmd), state, false))
     goto fail;
 
   if (ARRAY_EMPTY(&state->entry))
@@ -395,6 +392,7 @@ int imap_browse(const char *path, struct BrowserState *state)
   rc = 0;
 
 fail:
+  buf_pool_release(&cmd);
   cs_subset_str_native_set(NeoMutt->sub, "imap_check_subscribed",
                            c_imap_check_subscribed, NULL);
   return rc;
