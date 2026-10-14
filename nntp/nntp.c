@@ -328,11 +328,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     }
     if (!mutt_str_startswith(buf, "215"))
     {
-      /* OverviewFmt is a sequence of NUL-separated fields, so copy the whole
-       * block; mutt_str_dup() would stop at the first NUL and parse_overview_line()
-       * would then read past the end walking the remaining fields. */
-      adata->overview_fmt = MUTT_MEM_MALLOC(sizeof(OverviewFmt), char);
-      memcpy(adata->overview_fmt, OverviewFmt, sizeof(OverviewFmt));
+      adata->overview_fmt = mutt_strn_dup(OverviewFmt, sizeof(OverviewFmt));
     }
     else
     {
