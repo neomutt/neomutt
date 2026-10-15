@@ -114,12 +114,10 @@ int log_disp_debug(time_t stamp, const char *file, int line, const char *functio
     buf_addstr(buf, lvl);
   }
 
-  char msg[LOG_LINE_MAX_LEN] = { 0 };
   va_list ap;
   va_start(ap, format);
-  vsnprintf(msg, sizeof(msg), format, ap);
+  buf_add_vprintf(buf, format, ap);
   va_end(ap);
-  buf_addstr(buf, msg);
 
   if (level == LL_PERROR)
     buf_add_printf(buf, ": %s", strerror(err));

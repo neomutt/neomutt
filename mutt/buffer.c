@@ -223,6 +223,22 @@ int buf_add_printf(struct Buffer *buf, const char *fmt, ...)
 }
 
 /**
+ * buf_add_vprintf - Format a string appending a Buffer
+ * @param buf Buffer
+ * @param fmt printf-style format string
+ * @param ap  Arguments to be formatted
+ * @retval num Characters written
+ * @retval -1  Error
+ */
+int buf_add_vprintf(struct Buffer *buf, const char *fmt, va_list ap)
+{
+  if (!buf || !fmt)
+    return -1;
+
+  return buf_vaprintf(buf, fmt, ap);
+}
+
+/**
  * buf_addstr - Add a string to a Buffer
  * @param buf Buffer to add to
  * @param s   String to add

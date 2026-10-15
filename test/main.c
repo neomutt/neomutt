@@ -109,6 +109,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_buf_addstr)                                           \
   NEOMUTT_TEST_ITEM(test_buf_addstr_n)                                         \
   NEOMUTT_TEST_ITEM(test_buf_add_printf)                                       \
+  NEOMUTT_TEST_ITEM(test_buf_add_vprintf)                                      \
   NEOMUTT_TEST_ITEM(test_buf_alloc)                                            \
   NEOMUTT_TEST_ITEM(test_buf_at)                                               \
   NEOMUTT_TEST_ITEM(test_buf_coll)                                             \
