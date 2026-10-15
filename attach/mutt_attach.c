@@ -1002,6 +1002,17 @@ int mutt_save_attachment(FILE *fp, struct Body *b, const char *path,
       return -1;
     }
 
+    /* Don't truncate (or endlessly append to) the attachment's own file */
+    struct stat st_old = { 0 };
+    struct stat st_new = { 0 };
+    if ((fstat(fileno(fp_old), &st_old) == 0) && (stat(path, &st_new) == 0) &&
+        (st_old.st_dev == st_new.st_dev) && (st_old.st_ino == st_new.st_ino))
+    {
+      mutt_error(_("Can't save an attachment onto itself"));
+      mutt_file_fclose(&fp_old);
+      return -1;
+    }
+
     FILE *fp_new = save_attachment_open(path, opt);
     if (!fp_new)
     {
