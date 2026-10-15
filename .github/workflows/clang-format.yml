@@ -34,15 +34,19 @@ jobs:
 
       - name: Check formatting
         run: |
-          FAIL=0
+          # Print each diff and a plain file list to the log: ::error lines
+          # only show as annotations on the run summary, not in the raw log.
+          FAILED=()
           while IFS= read -r file; do
-            if ! clang-format -style=file "$file" | cmp -s "$file" -; then
+            if ! clang-format -style=file "$file" | diff -u "$file" -; then
               echo "::error file=$file::needs clang-format"
-              FAIL=1
+              FAILED+=("$file")
             fi
           done < <(git ls-files -- ':!autosetup/' ':!docs/' '*.c')
 
-          if [ "$FAIL" -ne 0 ]; then
-            echo "One or more files need clang-format. Run: clang-format -style=file -i <file>"
+          if [ ${#FAILED[@]} -ne 0 ]; then
+            echo "These files need clang-format:"
+            printf '  %s\n' "${FAILED[@]}"
+            echo "Run: clang-format -style=file -i <file>"
             exit 1
           fi
