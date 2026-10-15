@@ -725,7 +725,7 @@ if {[get-define want-gnutls] && [get-define want-ssl]} {
 
 if {[get-define want-ssl]} {
   # OpenSSL
-  if {[pkgconf false openssl]} {
+  if {[pkgconf false openssl >= 1.1]} {
     # cool - we do not make pkg-config mandatory for OpenSSL because BSDs still
     # ship OpenSSL in the base system. Those aren't available through
     # pkg-config.
@@ -737,7 +737,8 @@ if {[get-define want-ssl]} {
       if {![cc-check-includes openssl/bio.h openssl/err.h openssl/ssl.h] ||
           ![cc-check-function-in-lib X509_STORE_CTX_new crypto] ||
           ![cc-check-function-in-lib SSL_new ssl] ||
-          ![cc-with {-includes openssl/ssl.h} {cc-check-decls SSL_set_mode}]} {
+          ![cc-with {-includes openssl/ssl.h} {cc-check-decls SSL_set_mode}] ||
+          ![cc-check-function-in-lib ASN1_STRING_get0_data crypto]} {
         user-error "Unable to find OpenSSL"
       }
       define-append CFLAGS $ssl_cflags
