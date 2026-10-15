@@ -756,8 +756,8 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
         if ((ASN1_STRING_length(subj_alt_name->d.ia5) >= 0) &&
             (mutt_str_len((char *) ASN1_STRING_get0_data(subj_alt_name->d.ia5)) ==
              (size_t) ASN1_STRING_length(subj_alt_name->d.ia5)) &&
-            (match_found = hostname_match(hostname_ascii,
-                                          (char *) (ASN1_STRING_get0_data(subj_alt_name->d.ia5)))))
+            (match_found = hostname_match(hostname_ascii, (char *) (ASN1_STRING_get0_data(
+                                                              subj_alt_name->d.ia5)))))
         {
           break;
         }
