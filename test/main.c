@@ -36,6 +36,15 @@ void test_fini(void);
 #define TEST_FINI test_fini()
 #include "acutest.h"
 
+#ifdef USE_SSL_OPENSSL
+#define NEOMUTT_OPENSSL_TESTS                                                  \
+  NEOMUTT_TEST_ITEM(test_ssl_negotiate_retry)                                  \
+  NEOMUTT_TEST_ITEM(test_ssl_negotiate_timeout)                                \
+  NEOMUTT_TEST_ITEM(test_ssl_socket_read_timeout)
+#else
+#define NEOMUTT_OPENSSL_TESTS
+#endif
+
 /******************************************************************************
  * Add your test cases to this list.
  *****************************************************************************/
@@ -271,6 +280,9 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_config_subset)                                        \
   NEOMUTT_TEST_ITEM(test_config_synonym)                                       \
   NEOMUTT_TEST_ITEM(test_config_variable)                                      \
+                                                                               \
+  /* conn */                                                                   \
+  NEOMUTT_OPENSSL_TESTS                                                        \
                                                                                \
   /* convert */                                                                \
   NEOMUTT_TEST_ITEM(test_mutt_convert_file_to)                                 \

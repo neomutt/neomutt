@@ -1176,12 +1176,36 @@ static int ssl_negotiate(struct Connection *conn, struct SslSockData *ssldata)
   ERR_clear_error();
 
 retry:
+  errno = 0;
   err = SSL_connect(ssldata->ssl);
+  const int saved_errno = errno;
   if (err != 1)
   {
-    // Temporary failure, e.g. signal received
     if (BIO_should_retry(SSL_get_rbio(ssldata->ssl)))
-      goto retry;
+    {
+      // An interrupted read need not have any data ready yet.
+      if (saved_errno == EINTR)
+      {
+        if (SigInt)
+        {
+          mutt_error(_("Connection to %s has been aborted"), conn->account.host);
+          return -1;
+        }
+        goto retry;
+      }
+
+      if (!BIO_should_read(SSL_get_rbio(ssldata->ssl)))
+        goto retry;
+
+      const int poll_rc = raw_socket_poll(conn, 0);
+      if (poll_rc > 0)
+        goto retry;
+      if (poll_rc == 0)
+      {
+        mutt_error(_("Connection to %s timed out"), conn->account.host);
+        return -1;
+      }
+    }
 
     switch (SSL_get_error(ssldata->ssl, err))
     {
