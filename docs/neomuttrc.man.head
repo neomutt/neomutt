@@ -271,8 +271,8 @@ useful when your system's
 implementation does not understand MIME character set names (such as
 \fBiso\-8859\-1\fP), but instead insists on being fed with
 implementation\-specific character set names (such as \fB8859\-1\fP). In this
-specific case, you'd put \(lq\fBiconv\-hook\fP\~iso\-8859\-1\~8859\-1\(rq into your
-configuration file.
+specific case, you'd put
+\(lq\fBiconv\-hook\fP\~iso\-8859\-1\~8859\-1\(rq into your configuration file.
 .
 .PP
 .nf
