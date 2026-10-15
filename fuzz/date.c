@@ -15,7 +15,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
   struct Tz tz = { 0 };
   char *str = mutt_strn_dup((const char *) data, size);
   time_t t = mutt_date_parse_date(str, &tz);
-  (void)t;
+  (void) t;
   FREE(&str);
   return 0;
 }
