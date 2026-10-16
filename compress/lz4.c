@@ -70,7 +70,7 @@ void lz4_cdata_free(struct Lz4ComprData **ptr)
  */
 static struct Lz4ComprData *lz4_cdata_new(void)
 {
-  return MUTT_MEM_CALLOC(1, struct Lz4ComprData);
+  return mutt_mem_calloc_T(1, struct Lz4ComprData);
 }
 
 /**

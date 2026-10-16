@@ -43,7 +43,7 @@ extern struct ConfigDef ColorVars[];
  */
 static bool color_init(struct NeoMutt *n)
 {
-  struct ColorModuleData *mod_data = MUTT_MEM_CALLOC(1, struct ColorModuleData);
+  struct ColorModuleData *mod_data = mutt_mem_calloc_T(1, struct ColorModuleData);
   neomutt_set_module_data(n, MODULE_ID_COLOR, mod_data);
 
   mod_data->notify = notify_new();

@@ -38,7 +38,7 @@
  */
 static bool complete_init(struct NeoMutt *n)
 {
-  struct CompleteModuleData *mod_data = MUTT_MEM_CALLOC(1, struct CompleteModuleData);
+  struct CompleteModuleData *mod_data = mutt_mem_calloc_T(1, struct CompleteModuleData);
   neomutt_set_module_data(n, MODULE_ID_COMPLETE, mod_data);
 
   mod_data->notify = notify_new();

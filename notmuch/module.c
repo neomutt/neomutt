@@ -43,7 +43,7 @@ extern const struct Command NmCommands[];
  */
 static bool notmuch_init(struct NeoMutt *n)
 {
-  struct NotmuchModuleData *mod_data = MUTT_MEM_CALLOC(1, struct NotmuchModuleData);
+  struct NotmuchModuleData *mod_data = mutt_mem_calloc_T(1, struct NotmuchModuleData);
   neomutt_set_module_data(n, MODULE_ID_NOTMUCH, mod_data);
 
   mod_data->notify = notify_new();

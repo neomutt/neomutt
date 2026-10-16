@@ -38,7 +38,7 @@
  */
 static bool postpone_init(struct NeoMutt *n)
 {
-  struct PostponeModuleData *mod_data = MUTT_MEM_CALLOC(1, struct PostponeModuleData);
+  struct PostponeModuleData *mod_data = mutt_mem_calloc_T(1, struct PostponeModuleData);
   neomutt_set_module_data(n, MODULE_ID_POSTPONE, mod_data);
 
   mod_data->notify = notify_new();

@@ -337,7 +337,7 @@ static bool init_gui_modules(struct NeoMutt *n)
  */
 struct NeoMutt *neomutt_new(void)
 {
-  return MUTT_MEM_CALLOC(1, struct NeoMutt);
+  return mutt_mem_calloc_T(1, struct NeoMutt);
 }
 
 /**

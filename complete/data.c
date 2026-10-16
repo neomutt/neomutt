@@ -70,10 +70,10 @@ void completion_data_free(struct CompletionData **ptr)
  */
 struct CompletionData *completion_data_new(void)
 {
-  struct CompletionData *cd = MUTT_MEM_CALLOC(1, struct CompletionData);
+  struct CompletionData *cd = mutt_mem_calloc_T(1, struct CompletionData);
 
   cd->match_list_len = 512;
-  cd->match_list = MUTT_MEM_CALLOC(cd->match_list_len, const char *);
+  cd->match_list = mutt_mem_calloc_T(cd->match_list_len, const char *);
 
   return cd;
 }

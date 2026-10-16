@@ -52,7 +52,7 @@ extern struct ConfigDef ConnVarsSsl[];
  */
 static bool conn_init(struct NeoMutt *n)
 {
-  struct ConnModuleData *mod_data = MUTT_MEM_CALLOC(1, struct ConnModuleData);
+  struct ConnModuleData *mod_data = mutt_mem_calloc_T(1, struct ConnModuleData);
   neomutt_set_module_data(n, MODULE_ID_CONN, mod_data);
 
 #ifdef USE_SSL_OPENSSL

@@ -41,7 +41,7 @@ extern struct ConfigDef MlistVars[];
  */
 static bool mlist_init(struct NeoMutt *n)
 {
-  struct MlistModuleData *mod_data = MUTT_MEM_CALLOC(1, struct MlistModuleData);
+  struct MlistModuleData *mod_data = mutt_mem_calloc_T(1, struct MlistModuleData);
   neomutt_set_module_data(n, MODULE_ID_MLIST, mod_data);
 
   return true;

@@ -54,7 +54,7 @@ static int read_material(size_t material, size_t *used, FILE *fp)
   {
     mod_data->packet_buf_len = *used + material + CHUNK_SIZE;
 
-    MUTT_MEM_REALLOC(&mod_data->packet_buf, mod_data->packet_buf_len, unsigned char);
+    mutt_mem_realloc_T(&mod_data->packet_buf, mod_data->packet_buf_len, unsigned char);
   }
 
   if (fread(mod_data->packet_buf + *used, 1, material, fp) < material)
@@ -91,7 +91,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
   if (mod_data->packet_buf_len == 0)
   {
     mod_data->packet_buf_len = CHUNK_SIZE;
-    mod_data->packet_buf = MUTT_MEM_MALLOC(mod_data->packet_buf_len, unsigned char);
+    mod_data->packet_buf = mutt_mem_malloc_T(mod_data->packet_buf_len, unsigned char);
   }
 
   if (fread(&ctb, 1, 1, fp) < 1)

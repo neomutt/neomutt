@@ -46,7 +46,7 @@ extern const struct Command AliasCommands[];
  */
 static bool alias_init(struct NeoMutt *n)
 {
-  struct AliasModuleData *mod_data = MUTT_MEM_CALLOC(1, struct AliasModuleData);
+  struct AliasModuleData *mod_data = mutt_mem_calloc_T(1, struct AliasModuleData);
   neomutt_set_module_data(n, MODULE_ID_ALIAS, mod_data);
 
   mod_data->notify = notify_new();

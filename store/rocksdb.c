@@ -68,7 +68,7 @@ static void rocksdb_sdata_free(struct RocksDbStoreData **ptr)
  */
 static struct RocksDbStoreData *rocksdb_sdata_new(void)
 {
-  return MUTT_MEM_CALLOC(1, struct RocksDbStoreData);
+  return mutt_mem_calloc_T(1, struct RocksDbStoreData);
 }
 
 /**

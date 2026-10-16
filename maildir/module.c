@@ -42,7 +42,7 @@ extern struct ConfigDef MaildirVarsHcache[];
  */
 static bool maildir_init(struct NeoMutt *n)
 {
-  struct MaildirModuleData *mod_data = MUTT_MEM_CALLOC(1, struct MaildirModuleData);
+  struct MaildirModuleData *mod_data = mutt_mem_calloc_T(1, struct MaildirModuleData);
   neomutt_set_module_data(n, MODULE_ID_MAILDIR, mod_data);
 
   mod_data->notify = notify_new();

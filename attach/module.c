@@ -45,7 +45,7 @@ extern const struct Command AttachCommands[];
  */
 static bool attach_init(struct NeoMutt *n)
 {
-  struct AttachModuleData *mod_data = MUTT_MEM_CALLOC(1, struct AttachModuleData);
+  struct AttachModuleData *mod_data = mutt_mem_calloc_T(1, struct AttachModuleData);
   neomutt_set_module_data(n, MODULE_ID_ATTACH, mod_data);
 
   mod_data->notify = notify_new();

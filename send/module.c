@@ -43,7 +43,7 @@ extern const struct Command SendCommands[];
  */
 static bool send_init(struct NeoMutt *n)
 {
-  struct SendModuleData *mod_data = MUTT_MEM_CALLOC(1, struct SendModuleData);
+  struct SendModuleData *mod_data = mutt_mem_calloc_T(1, struct SendModuleData);
   neomutt_set_module_data(n, MODULE_ID_SEND, mod_data);
 
   mod_data->notify = notify_new();
