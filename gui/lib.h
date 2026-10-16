@@ -47,6 +47,7 @@
  * | gui/sbar.c          | @subpage gui_sbar          |
  * | gui/selection.c     | @subpage gui_selection     |
  * | gui/simple.c        | @subpage gui_simple        |
+ * | gui/tabbed.c        | @subpage gui_tabbed        |
  * | gui/terminal.c      | @subpage gui_terminal      |
  * | gui/thread.c        | @subpage gui_thread        |
  * | gui/utilwin.c       | @subpage gui_utilwin       |
@@ -72,6 +73,7 @@
 #include "rootwin.h"
 #include "sbar.h"
 #include "simple.h"
+#include "tabbed.h"
 #include "terminal.h"
 #include "thread.h"
 #include "utilwin.h"
