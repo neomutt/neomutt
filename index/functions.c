@@ -4060,6 +4060,60 @@ static const struct IndexFunction IndexFunctions[] = {
 };
 
 /**
+ * index_mouse_translate - Translate a mouse event for the Index window
+ * @param win           Index Window (the WT_MENU window of the dialog)
+ * @param event         KeyEvent (may be a mouse event)
+ * @param[out] consumed_only Set true if the event was a click that only moved
+ *                           the highlight (caller should consume it)
+ * @retval op Translated opcode (e.g. #OP_GENERIC_SELECT_ENTRY) or #OP_NULL
+ *
+ * A single click on a different entry moves the highlight and returns #OP_NULL
+ * with @a consumed_only set.  A double-click, or a click on the already-selected
+ * entry, returns #OP_GENERIC_SELECT_ENTRY (the "open" action, handled by the
+ * Index function table).  Wheel events and clicks outside the index return
+ * #OP_NULL with @a consumed_only clear so the downstream dispatchers can handle
+ * them.  Returns #OP_NULL when the event is not a mouse event.
+ */
+static int index_mouse_translate(struct MuttWindow *win,
+                                 const struct KeyEvent *event, bool *consumed_only)
+{
+  if (consumed_only)
+    *consumed_only = false;
+
+  if (!win || !event || !win->parent || !win->parent->wdata)
+    return OP_NULL;
+
+  /* Only mouse events are handled here. */
+  if ((event->op < OP_MOUSE_CLICK) || (event->op > OP_MOUSE_WHEEL_DOWN))
+    return OP_NULL;
+
+  /* Wheel scrolling is handled by the generic Menu dispatcher. */
+  if ((event->op == OP_MOUSE_WHEEL_UP) || (event->op == OP_MOUSE_WHEEL_DOWN))
+    return OP_NULL;
+
+  struct IndexPrivateData *priv = win->parent->wdata;
+  struct Menu *menu = priv->menu;
+  if (!menu || !menu->win)
+    return OP_NULL;
+
+  /* Click / double-click: hit-test against the visible entries. */
+  const int new_index = menu_get_index_by_coords(menu, event->mouse_row, event->mouse_col);
+  if (new_index < 0)
+    return OP_NULL; /* click outside the index */
+
+  const int old_index = menu_get_index(menu);
+  menu_set_index(menu, new_index);
+
+  if ((new_index == old_index) || (event->op == OP_MOUSE_DOUBLE_CLICK))
+    return OP_GENERIC_SELECT_ENTRY; /* open the entry */
+
+  /* Single click on a different entry: the highlight has been moved, consume. */
+  if (consumed_only)
+    *consumed_only = true;
+  return OP_NULL;
+}
+
+/**
  * index_function_dispatcher - Perform an Index function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
 int index_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
@@ -4072,9 +4126,29 @@ int index_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
     return FR_ERROR;
   }
 
-  const int op = event->op;
   struct IndexPrivateData *priv = win->parent->wdata;
   struct IndexSharedData *shared = dlg->wdata;
+
+  /* Translate a mouse event for the Index before dispatching.  A single click
+   * that only moved the highlight is consumed without opening.  A click on the
+   * current entry or a double-click translates to OP_GENERIC_SELECT_ENTRY. */
+  bool consumed_only = false;
+  int translated_op = index_mouse_translate(win, event, &consumed_only);
+  if (consumed_only)
+  {
+    window_redraw(NULL);
+    return FR_SUCCESS;
+  }
+
+  /* If the event was translated, run the dispatcher against a local copy with
+   * the new opcode so the function table sees OP_GENERIC_SELECT_ENTRY, not
+   * OP_MOUSE_*. */
+  struct KeyEvent translated_event = *event;
+  if (translated_op != OP_NULL)
+    translated_event.op = translated_op;
+  const struct KeyEvent *ev = (translated_op != OP_NULL) ? &translated_event : event;
+
+  const int op = ev->op;
 
   struct IndexModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
 
@@ -4096,7 +4170,7 @@ int index_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
         rc = FR_ERROR;
         break;
       }
-      rc = fn->function(&fdata, event);
+      rc = fn->function(&fdata, ev);
       break;
     }
   }

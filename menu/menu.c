@@ -37,6 +37,7 @@
 #include "color/lib.h"
 #include "expando/lib.h" // IWYU pragma: keep
 #include "key/lib.h"
+#include "key/get.h"
 #include "type.h"
 
 struct ConfigSubset;
@@ -159,6 +160,33 @@ int menu_get_index(struct Menu *menu)
 }
 
 /**
+ * menu_get_index_by_coords - Find a visible entry from screen coordinates
+ * @param menu Menu
+ * @param row  Screen row
+ * @param col  Screen column
+ * @retval num Index of entry
+ * @retval  -1 Click is outside the visible Menu entries
+ */
+int menu_get_index_by_coords(const struct Menu *menu, int row, int col)
+{
+  if (!menu || !menu->win || !mutt_window_is_visible(menu->win))
+    return -1;
+
+  const struct WindowState *wstate = &menu->win->state;
+  if ((row < wstate->row_offset) || (row >= (wstate->row_offset + wstate->rows)) ||
+      (col < wstate->col_offset) || (col >= (wstate->col_offset + wstate->cols)))
+  {
+    return -1;
+  }
+
+  const int index = menu->top + row - wstate->row_offset;
+  if ((index < 0) || (index >= menu->max))
+    return -1;
+
+  return index;
+}
+
+/**
  * menu_set_index - Set the current selection in the Menu
  * @param menu  Menu
  * @param index Item to select
@@ -167,6 +195,63 @@ int menu_get_index(struct Menu *menu)
 MenuRedrawFlags menu_set_index(struct Menu *menu, int index)
 {
   return menu_move_selection(menu, index);
+}
+
+/**
+ * menu_mouse_translate - Translate a mouse event for a Menu window
+ * @param win           Menu Window
+ * @param event         KeyEvent (may be a mouse event)
+ * @retval out consumed_only Set true if the event was a menu click that only
+ *                           moved the highlight (caller should consume it)
+ *
+ * A single click that only moves the highlight returns #OP_NULL with
+ * @a consumed_only set, so the caller can consume the event without performing
+ * any further movement.  Wheel events are translated into page scrolls.  A
+ * double-click or a click on the already-selected entry (the "open" action) is
+ * left to the upstream dialog dispatcher and returns #OP_NULL with
+ * @a consumed_only clear.  Returns #OP_NULL (and leaves @a consumed_only clear)
+ * when the event is not a Menu mouse event or the click fell outside the menu.
+ */
+bool menu_mouse_translate(struct MuttWindow *win, struct KeyEvent *event)
+{
+  if (!win || !event)
+    return false;
+
+  /* Only mouse events are handled here. */
+  if ((event->op < OP_MOUSE_CLICK) || (event->op > OP_MOUSE_WHEEL_DOWN))
+    return false;
+
+  struct Menu *menu = win->wdata;
+  if (!menu || !menu->win)
+    return false;
+
+  /* Wheel scrolling is handled directly by the Menu. */
+  if (event->op == OP_MOUSE_WHEEL_UP)
+  {
+    event->op = OP_PREV_PAGE;
+    return false;
+  }
+  if (event->op == OP_MOUSE_WHEEL_DOWN)
+  {
+    event->op = OP_NEXT_PAGE;
+    return false;
+  }
+
+  /* Click / double-click: hit-test against the visible entries. */
+  const int new_index = menu_get_index_by_coords(menu, event->mouse_row, event->mouse_col);
+  if (new_index < 0)
+    return false; /* click outside this Menu */
+
+  const int old_index = menu_get_index(menu);
+  menu_set_index(menu, new_index);
+
+  if (new_index == old_index)
+    /* Clicked the already-selected entry: the "open" action belongs to the
+     * upstream dialog dispatcher, not the generic Menu. */
+    return false;
+
+  /* Single click on a different entry: the highlight has been moved, consume. */
+  return true;
 }
 
 /**

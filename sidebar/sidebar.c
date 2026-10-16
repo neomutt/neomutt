@@ -40,6 +40,7 @@
 #include "lib.h"
 #include "color/lib.h"
 #include "index/lib.h"
+#include "key/get.h"
 
 /**
  * SbCommands - Sidebar Commands
@@ -85,6 +86,92 @@ struct Mailbox *sb_get_highlight(struct MuttWindow *win)
     return NULL;
 
   return (*sbep)->mailbox;
+}
+
+/**
+ * sb_select_by_coords - Select the Sidebar entry at screen coordinates
+ * @param win Sidebar Window
+ * @param row Screen row
+ * @param col Screen column
+ * @retval 1  Highlight changed
+ * @retval 0  Highlight already on the clicked entry
+ * @retval -1 Click is outside the visible Sidebar entries
+ */
+int sb_select_by_coords(struct MuttWindow *win, int row, int col)
+{
+  if (!win || !mutt_window_is_visible(win))
+    return -1;
+
+  struct SidebarWindowData *wdata = sb_wdata_get(win);
+  if (!wdata || wdata->top_index < 0)
+    return -1;
+
+  const struct WindowState *wstate = &win->state;
+  if ((row < wstate->row_offset) || (row >= (wstate->row_offset + wstate->rows)) ||
+      (col < wstate->col_offset) || (col >= (wstate->col_offset + wstate->cols)))
+    return -1;
+
+  const int wanted_row = row - wstate->row_offset;
+  int visible_row = 0;
+
+  struct SbEntry **sbep = NULL;
+  ARRAY_FOREACH_FROM(sbep, &wdata->entries, wdata->top_index)
+  {
+    if (visible_row >= wstate->rows)
+      break;
+    if ((*sbep)->is_hidden)
+      continue;
+
+    if (visible_row == wanted_row)
+    {
+      if (wdata->hil_index == ARRAY_FOREACH_IDX_sbep)
+        return 0;
+
+      wdata->hil_index = ARRAY_FOREACH_IDX_sbep;
+      win->actions |= WA_RECALC;
+      return 1;
+    }
+
+    visible_row++;
+  }
+
+  return -1;
+}
+
+/**
+ * sb_mouse_translate - Translate a mouse event for the Sidebar window
+ * @param win           Sidebar Window
+ * @param event         KeyEvent (may be a mouse event)
+ * @retval out  consumed_only Set true if the event was a sidebar click that only
+ *                           moved the highlight (caller should consume it)
+ *
+ * Returns a real opcode to dispatch, or #OP_NULL when the event is not a Sidebar
+ * mouse event.  When the click fell inside the Sidebar but should only move the
+ * highlight (a single click on a different entry), @a consumed_only is set and
+ * #OP_NULL is returned so the caller can consume the event without "opening".
+ */
+bool sb_mouse_translate(struct MuttWindow *win, struct KeyEvent *event)
+{
+  if (!win || !event)
+    return false;
+
+  /* Only mouse events are handled here. */
+  if ((event->op < OP_MOUSE_CLICK) || (event->op > OP_MOUSE_WHEEL_DOWN))
+    return false;
+
+  const int sb_rc = sb_select_by_coords(win, event->mouse_row, event->mouse_col);
+  if (sb_rc < 0)
+    return false; /* click outside the Sidebar */
+
+  /* sb_select_by_coords() has already moved the highlight (sb_rc == 1) or
+   * confirmed it was already on the clicked entry (sb_rc == 0). */
+  if ((sb_rc == 0) || (event->op == OP_MOUSE_DOUBLE_CLICK))
+  {
+    event->op = OP_SIDEBAR_OPEN;
+    return false;
+  }
+
+  return true;
 }
 
 /**
