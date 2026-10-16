@@ -376,8 +376,7 @@ int imap_browse(const char *path, struct BrowserState *state)
   snprintf(buf, sizeof(buf), "%s%%", mbox);
   imap_munge_mbox_name(adata->unicode, munged_mbox, sizeof(munged_mbox), buf);
   mutt_debug(LL_DEBUG3, "%s\n", munged_mbox);
-  browse_build_list_cmd(cmd, list_cmd, munged_mbox,
-                        adata->capabilities & IMAP_CAP_LIST_EXTENDED);
+  browse_build_list_cmd(cmd, list_cmd, munged_mbox, adata->capabilities & IMAP_CAP_LIST_EXTENDED);
   if (browse_add_list_result(adata, buf_string(cmd), state, false))
     goto fail;
 
