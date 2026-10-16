@@ -48,6 +48,14 @@ static bool mlist_init(struct NeoMutt *n)
 }
 
 /**
+ * mlist_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
+ */
+static bool mlist_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  return cs_register_variables(cs, MlistVars);
+}
+
+/**
  * mlist_cleanup - Clean up a Module - Implements Module::cleanup()
  */
 static bool mlist_cleanup(struct NeoMutt *n, void *data)
@@ -66,7 +74,7 @@ const struct Module ModuleMlist = {
   "mlist",
   mlist_init,
   NULL, // config_define_types
-  NULL, // config_define_variables
+  mlist_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup

@@ -24,12 +24,16 @@
 #ifndef MUTT_EXPANDO_HELPERS_H
 #define MUTT_EXPANDO_HELPERS_H
 
+#include <stdbool.h>
+
 struct Buffer;
+struct Expando;
 struct ExpandoRenderCallback;
 
 const struct ExpandoRenderCallback *find_get_number(const struct ExpandoRenderCallback *erc, int did, int uid);
 const struct ExpandoRenderCallback *find_get_string(const struct ExpandoRenderCallback *erc, int did, int uid);
 
 void buf_lower_special(struct Buffer *buf);
+bool expando_contains(const struct Expando *exp, int did, int uid);
 
 #endif /* MUTT_EXPANDO_HELPERS_H */

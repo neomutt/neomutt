@@ -46,6 +46,7 @@ enum ExpandoDomain
   ED_INDEX,        ///< Index         ED_IND_ #ExpandoDataIndex     @sa StatusFormatDef
   ED_MAILBOX,      ///< Mailbox       ED_MBX_ #ExpandoDataMailbox   @sa IndexFormatDef
   ED_MENU,         ///< Menu          ED_MEN_ #ExpandoDataMenu      @sa StatusFormatDef
+  ED_MLIST,        ///< Mailing List  ED_MLS_ #ExpandoDataMlist     @sa MlistFormatDef
   ED_MSG_ID,       ///< Message Id    ED_MSG_ #ExpandoDataMsgId     @sa MsgIdFormatDef
   ED_NNTP,         ///< Nntp          ED_NTP_ #ExpandoDataNntp      @sa NntpFormatDef
   ED_PATTERN,      ///< Pattern       ED_PAT_ #ExpandoDataPattern   @sa PatternFormatDef

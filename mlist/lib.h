@@ -31,12 +31,18 @@
  *
  * | File                | Description                |
  * | :------------------ | :------------------------- |
+ * | mlist/config.c      | @subpage mlist_config      |
  * | mlist/dlg_mlist.c   | @subpage mlist_dlg_mlist   |
+ * | mlist/expando.c     | @subpage mlist_expando     |
+ * | mlist/functions.c   | @subpage mlist_functions   |
  * | mlist/module.c      | @subpage mlist_module      |
  */
 
 #ifndef MUTT_MLIST_LIB_H
 #define MUTT_MLIST_LIB_H
+
+#include "expando.h"
+#include "functions.h" // IWYU pragma: keep
 
 struct Email;
 struct Mailbox;
