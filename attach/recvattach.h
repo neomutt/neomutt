@@ -30,6 +30,7 @@ struct AttachCtx;
 struct AttachPtrArray;
 struct Body;
 struct BodyArray;
+struct Buffer;
 struct ConfigSubset;
 struct Email;
 struct MailboxView;
@@ -40,6 +41,7 @@ void mutt_update_tree(struct AttachCtx *actx);
 
 void dlg_attach(struct ConfigSubset *sub, struct MailboxView *mv, struct Email *e, FILE *fp, bool attach_msg);
 
+void mutt_attach_save_path(struct Buffer *buf, struct Body *b, const char *dir);
 void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e, struct Body *parts, FILE *fp, int parent_type, int level, bool decrypted);
 struct AttachPtr *current_attachment(struct AttachCtx *actx, struct Menu *menu);
 void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, bool init);
