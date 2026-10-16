@@ -27,7 +27,11 @@
 #include "core/lib.h"
 
 struct Buffer;
+struct Command;
+struct ParseContext;
+struct ParseError;
 
 enum CommandResult set_dump(enum GetElemListFlags flags, struct Buffer *err);
+enum CommandResult parse_formats(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 
 #endif /* MUTT_PARSE_DUMP_H */
