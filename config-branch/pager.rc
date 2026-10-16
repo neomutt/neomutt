@@ -1,0 +1,6 @@
+bind $my_menu J_0001 skip-headers
+bind $my_menu J_0002 skip-quoted-text
+bind $my_menu J_0003 toggle-quoted-text
+bind $my_menu J_0004 toggle-search-highlighting
+
+# vim: ft=neomuttrc

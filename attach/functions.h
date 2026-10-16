@@ -55,7 +55,7 @@ typedef int (*attach_function_t)(struct AttachFunctionData *fdata, const struct 
  */
 struct AttachFunction
 {
-  int op;                     ///< Op code, e.g. OP_ATTACH_COLLAPSE
+  int op;                     ///< Op code, e.g. OP_ATTACH_DELETE
   attach_function_t function; ///< Function to call
 };
 

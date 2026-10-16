@@ -48,8 +48,8 @@ static const struct CommandTest Tests[] = {
 
 static const struct MenuFuncOp OpIndex[] = {
   // clang-format off
-  { "next-new",        OP_MAIN_NEXT_NEW },
-  { "previous-unread", OP_MAIN_PREV_UNREAD },
+  { "next-new",        OP_SELECT_NEXT_NEW_ENTRY },
+  { "previous-unread", OP_SELECT_PREVIOUS_UNREAD },
   { NULL, 0 },
   // clang-format on
 };

@@ -47,7 +47,7 @@ struct IndexFunctionData
  *
  * @param fdata   Index Function context data
  * @param event Event to process
- * @retval num #FunctionRetval or opcode, e.g. OP_NEXT_ENTRY
+ * @retval num #FunctionRetval or opcode, e.g. OP_SELECT_NEXT_ENTRY
  *
  * @pre fdata   is not NULL
  * @pre event is not NULL
@@ -60,7 +60,7 @@ typedef int (*index_function_t)(struct IndexFunctionData *fdata,
  */
 struct IndexFunction
 {
-  int op;                    ///< Op code, e.g. OP_MAIN_LIMIT
+  int op;                    ///< Op code, e.g. OP_LIMIT_ENTRIES
   index_function_t function; ///< Function to call
   int flags; ///< Prerequisites for the function, e.g. #CHECK_IN_MAILBOX
 };

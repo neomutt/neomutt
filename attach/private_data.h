@@ -37,7 +37,7 @@ struct AttachPrivateData
   struct AttachCtx    *actx;        ///< List of all Attachments
   struct ConfigSubset *sub;         ///< Config subset
   struct Mailbox      *mailbox;     ///< Current Mailbox
-  int                  op;          ///< Op returned from the Pager, e.g. OP_NEXT_ENTRY
+  int                  op;          ///< Op returned from the Pager, e.g. OP_SELECT_NEXT_ENTRY
   bool                 attach_msg;  ///< Are we in "attach message" mode?
 };
 

@@ -1,0 +1,6 @@
+bind $my_menu C_0001 create-account
+bind $my_menu C_0002 delete-account
+bind $my_menu C_0003 toggle-active
+bind $my_menu C_0004 toggle-prefer-encrypt
+
+# vim: ft=neomuttrc

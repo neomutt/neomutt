@@ -10,7 +10,11 @@ my $xml = shift @ARGV;
 open F, "cat @ARGV |" or die "OPS*: $!";
 while (<F>) {
   if ( /^\s+_fmt\((\w+),\s+N_\("(.+)"\)\)/ ) {
-    $OPS{$1} = $2;
+    my ($op, $desc) = ($1, $2);
+    $desc =~ s/&/&amp;/g;
+    $desc =~ s/</&lt;/g;
+    $desc =~ s/>/&gt;/g;
+    $OPS{$op} = $desc;
   }
 }
 close F;
