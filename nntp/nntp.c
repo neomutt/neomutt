@@ -1525,10 +1525,7 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
   /* articles have been renumbered, remove all emails */
   if (mdata->last_message < mdata->last_loaded)
   {
-    for (int i = 0; i < m->msg_count; i++)
-      email_free(&m->emails[i]);
-    m->msg_count = 0;
-    m->msg_tagged = 0;
+    mailbox_clear_emails(m);
 
     mdata->last_loaded = mdata->first_message - 1;
     const long c_nntp_context = cs_subset_long(NeoMutt->sub, "nntp_context");

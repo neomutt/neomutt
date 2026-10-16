@@ -505,6 +505,7 @@ LOGGING_OBJS	= test/logging/log_disp_file.o \
 		  test/logging/log_queue_set_max_size.o
 
 MAILBOX_OBJS	= test/mailbox/mailbox_changed.o \
+		  test/mailbox/mailbox_clear_emails.o \
 		  test/mailbox/mailbox_find.o \
 		  test/mailbox/mailbox_find_name.o \
 		  test/mailbox/mailbox_free.o \

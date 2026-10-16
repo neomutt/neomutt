@@ -1073,18 +1073,8 @@ static int imap_verify_qresync(struct Mailbox *m)
 fail:
   imap_msn_free(&mdata->msn);
   mutt_hash_free(&mdata->uid_hash);
-  mutt_hash_free(&m->subj_hash);
-  mutt_hash_free(&m->id_hash);
   mutt_hash_free(&m->label_hash);
-
-  for (int i = 0; i < m->msg_count; i++)
-  {
-    if (m->emails[i] && m->emails[i]->edata)
-      imap_edata_free(&m->emails[i]->edata);
-    email_free(&m->emails[i]);
-  }
-  m->msg_count = 0;
-  m->size = 0;
+  mailbox_clear_emails(m);
   hcache_delete_raw(mdata->hcache, "MODSEQ", 6);
   imap_hcache_clear_uid_seqset(mdata);
   imap_hcache_close(mdata);

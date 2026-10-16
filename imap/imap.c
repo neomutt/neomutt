@@ -2272,21 +2272,9 @@ int imap_reopen_mailbox(struct ImapAccountData *adata)
 
   mutt_debug(LL_DEBUG1, "Re-selecting mailbox %s after reconnect\n", mdata->name);
 
-  for (int i = 0; i < m->msg_count; i++)
-  {
-    struct Email *e = m->emails[i];
-    if (!e)
-      continue;
-    imap_edata_free((void **) &e->edata);
-    email_free(&m->emails[i]);
-  }
-  m->msg_count = 0;
-  m->msg_unread = 0;
-  m->msg_flagged = 0;
-  m->msg_new = 0;
-  m->msg_deleted = 0;
-  m->size = 0;
-  m->vcount = 0;
+  mailbox_clear_emails(m);
+  /* Drop the view's threads, which point at the freed emails */
+  mailbox_changed(m, NT_MAILBOX_INVALID);
 
   imap_mdata_cache_reset(mdata);
 

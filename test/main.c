@@ -576,6 +576,7 @@ void test_fini(void);
                                                                                \
   /* mailbox */                                                                \
   NEOMUTT_TEST_ITEM(test_mailbox_changed)                                      \
+  NEOMUTT_TEST_ITEM(test_mailbox_clear_emails)                                 \
   NEOMUTT_TEST_ITEM(test_mailbox_find)                                         \
   NEOMUTT_TEST_ITEM(test_mailbox_find_name)                                    \
   NEOMUTT_TEST_ITEM(test_mailbox_free)                                         \

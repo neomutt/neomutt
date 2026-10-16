@@ -114,16 +114,9 @@ void mailbox_free(struct Mailbox **ptr)
   struct EventEmail ev_e = { 0, NULL };
   notify_send(m->notify, NT_EMAIL, NT_EMAIL_DELETE_ALL, &ev_e);
 
-  for (size_t i = 0; i < m->email_max; i++)
-    email_free(&m->emails[i]);
-
+  mailbox_clear_emails(m);
+  mutt_hash_free(&m->label_hash);
   m->email_max = 0;
-  m->msg_count = 0;
-  m->msg_deleted = 0;
-  m->msg_flagged = 0;
-  m->msg_new = 0;
-  m->msg_tagged = 0;
-  m->msg_unread = 0;
 
   if (m->mdata_free && m->mdata)
     m->mdata_free(&m->mdata);
@@ -141,6 +134,37 @@ void mailbox_free(struct Mailbox **ptr)
    * so call free() on the m pointer */
   *ptr = NULL;
   FREE(&m);
+}
+
+/**
+ * mailbox_clear_emails - Free all the Emails in a Mailbox
+ * @param m Mailbox
+ *
+ * Free every Email in the array, including any left beyond `msg_count`, and
+ * the Message-ID and Subject Hash Tables that point to them.  The tables are
+ * rebuilt when they are next needed.  The message counts and size are reset.
+ *
+ * The `emails` array itself is kept for reuse.
+ */
+void mailbox_clear_emails(struct Mailbox *m)
+{
+  if (!m)
+    return;
+
+  mutt_hash_free(&m->subj_hash);
+  mutt_hash_free(&m->id_hash);
+
+  for (int i = 0; i < m->email_max; i++)
+    email_free(&m->emails[i]);
+
+  m->msg_count = 0;
+  m->msg_deleted = 0;
+  m->msg_flagged = 0;
+  m->msg_new = 0;
+  m->msg_tagged = 0;
+  m->msg_unread = 0;
+  m->size = 0;
+  m->vcount = 0;
 }
 
 /**

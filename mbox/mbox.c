@@ -611,8 +611,7 @@ static int reopen_mailbox(struct Mailbox *m)
   FREE(&m->v2r);
   if (m->readonly)
   {
-    for (int i = 0; i < m->msg_count; i++)
-      email_free(&(m->emails[i])); /* nothing to do! */
+    mailbox_clear_emails(m); /* nothing to do! */
     FREE(&m->emails);
   }
   else
