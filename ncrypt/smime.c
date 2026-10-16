@@ -1961,7 +1961,8 @@ cleanup:
   mutt_file_fclose(&fp_smime_out);
   mutt_file_fclose(&fp_smime_err);
   mutt_file_fclose(&fp_tmp);
-  mutt_file_fclose(&fp_out);
+  if (!fp_out_file)
+    mutt_file_fclose(&fp_out);
   buf_pool_release(&tmpfname);
   return p;
 }
@@ -2024,7 +2025,11 @@ bail:
   b->length = tmplength;
   b->offset = tmpoffset;
   mutt_file_fclose(&fp_tmp);
-  if (*fp_out)
+  if (rc != 0)
+  {
+    mutt_file_fclose(fp_out);
+  }
+  else
   {
     fseek(*fp_out, 0, SEEK_SET);
     clearerr(*fp_out);

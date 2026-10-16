@@ -96,6 +96,9 @@ struct CryptModuleSpecs
    * @param[out] b_dec  Body containing the decrypted part
    * @retval  0 Success
    * @retval -1 Failure
+   *
+   * On success, fp_out is open and rewound.  On failure, any file opened
+   * for fp_out has been closed and fp_out set to NULL.
    */
   int (*decrypt_mime)(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **b_dec);
 
