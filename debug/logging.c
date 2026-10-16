@@ -116,7 +116,7 @@ int log_disp_debug(time_t stamp, const char *file, int line, const char *functio
 
   va_list ap;
   va_start(ap, format);
-  buf_add_vprintf(buf, format, ap);
+  buf_vaprintf(buf, format, ap);
   va_end(ap);
 
   if (level == LL_PERROR)

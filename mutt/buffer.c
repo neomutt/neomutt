@@ -130,10 +130,10 @@ size_t buf_addstr_n(struct Buffer *buf, const char *s, size_t len)
  * @retval num Characters written
  * @retval 0   Error
  */
-static int buf_vaprintf(struct Buffer *buf, const char *fmt, va_list ap)
+int buf_vaprintf(struct Buffer *buf, const char *fmt, va_list ap)
 {
   if (!buf || !fmt)
-    return 0; /* LCOV_EXCL_LINE */
+    return 0;
 
   buf_alloc(buf, 128);
 
@@ -220,22 +220,6 @@ int buf_add_printf(struct Buffer *buf, const char *fmt, ...)
   va_end(ap);
 
   return len;
-}
-
-/**
- * buf_add_vprintf - Format a string appending a Buffer
- * @param buf Buffer
- * @param fmt printf-style format string
- * @param ap  Arguments to be formatted
- * @retval num Characters written
- * @retval -1  Error
- */
-int buf_add_vprintf(struct Buffer *buf, const char *fmt, va_list ap)
-{
-  if (!buf || !fmt)
-    return -1;
-
-  return buf_vaprintf(buf, fmt, ap);
 }
 
 /**

@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for buf_add_vprintf()
+ * Test code for buf_vaprintf()
  *
  * @authors
  * Copyright (C) 2026 Syed Mohammed Nayyar <jmestwa@gmail.com>
@@ -32,22 +32,22 @@ static int add_vprintf(struct Buffer *buf, const char *fmt, ...)
 {
   va_list ap;
   va_start(ap, fmt);
-  int len = buf_add_vprintf(buf, fmt, ap);
+  int len = buf_vaprintf(buf, fmt, ap);
   va_end(ap);
   return len;
 }
 
-void test_buf_add_vprintf(void)
+void test_buf_vaprintf(void)
 {
-  // int buf_add_vprintf(struct Buffer *buf, const char *fmt, va_list ap);
+  // int buf_vaprintf(struct Buffer *buf, const char *fmt, va_list ap);
 
   {
-    TEST_CHECK(add_vprintf(NULL, "apple") == -1);
+    TEST_CHECK(add_vprintf(NULL, "apple") == 0);
   }
 
   {
     struct Buffer *buf = buf_pool_get();
-    TEST_CHECK(add_vprintf(buf, NULL) == -1);
+    TEST_CHECK(add_vprintf(buf, NULL) == 0);
     buf_pool_release(&buf);
   }
 

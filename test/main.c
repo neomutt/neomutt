@@ -109,7 +109,6 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_buf_addstr)                                           \
   NEOMUTT_TEST_ITEM(test_buf_addstr_n)                                         \
   NEOMUTT_TEST_ITEM(test_buf_add_printf)                                       \
-  NEOMUTT_TEST_ITEM(test_buf_add_vprintf)                                      \
   NEOMUTT_TEST_ITEM(test_buf_alloc)                                            \
   NEOMUTT_TEST_ITEM(test_buf_at)                                               \
   NEOMUTT_TEST_ITEM(test_buf_coll)                                             \
@@ -144,6 +143,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_buf_strdup)                                           \
   NEOMUTT_TEST_ITEM(test_buf_str_equal)                                        \
   NEOMUTT_TEST_ITEM(test_buf_substrcpy)                                        \
+  NEOMUTT_TEST_ITEM(test_buf_vaprintf)                                         \
                                                                                \
   /* charset */                                                                \
   NEOMUTT_TEST_ITEM(test_mutt_ch_canonical_charset)                            \

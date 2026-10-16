@@ -64,7 +64,6 @@ BODY_OBJS	= test/body/mutt_body_cmp_strict.o \
 		  test/body/mutt_body_new.o
 
 BUFFER_OBJS	= test/buffer/buf_add_printf.o \
-		  test/buffer/buf_add_vprintf.o \
 		  test/buffer/buf_addch.o \
 		  test/buffer/buf_addstr.o \
 		  test/buffer/buf_addstr_n.o \
@@ -99,7 +98,8 @@ BUFFER_OBJS	= test/buffer/buf_add_printf.o \
 		  test/buffer/buf_strcpy.o \
 		  test/buffer/buf_strcpy_n.o \
 		  test/buffer/buf_strdup.o \
-		  test/buffer/buf_substrcpy.o
+		  test/buffer/buf_substrcpy.o \
+		  test/buffer/buf_vaprintf.o
 
 CHARSET_OBJS	= test/charset/mutt_ch_canonical_charset.o \
 		  test/charset/mutt_ch_charset_lookup.o \
