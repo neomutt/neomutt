@@ -1119,12 +1119,8 @@ static int parse_overview_line(char *line, void *data)
   fseek(fp, 0, SEEK_SET);
   clearerr(fp);
 
-  /* allocate memory for headers */
-  mx_alloc_memory(m, m->msg_count);
-
   /* parse header */
-  m->emails[m->msg_count] = email_new();
-  e = m->emails[m->msg_count];
+  e = email_new();
   e->env = mutt_rfc822_read_header(fp, e, false, false);
   e->env->newsgroups = mutt_str_dup(mdata->group);
   e->received = e->date_sent;
@@ -1143,7 +1139,6 @@ static int parse_overview_line(char *line, void *data)
       mutt_debug(LL_DEBUG2, "hcache_fetch_email %s\n", buf);
       email_free(&e);
       e = hce.email;
-      m->emails[m->msg_count] = e;
       e->edata = NULL;
       e->read = false;
       e->old = false;
@@ -1170,6 +1165,9 @@ static int parse_overview_line(char *line, void *data)
 
   if (save)
   {
+    /* allocate memory for headers */
+    mx_alloc_memory(m, m->msg_count);
+    m->emails[m->msg_count] = e;
     e->index = m->msg_count++;
     e->read = false;
     e->old = false;
@@ -1304,9 +1302,6 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
     if (!fc.messages[current - first])
       continue;
 
-    /* allocate memory for headers */
-    mx_alloc_memory(m, m->msg_count);
-
 #ifdef USE_HCACHE
     /* try to fetch header from cache */
     struct HCacheEntry hce = hcache_fetch_email(fc.hc, buf, strlen(buf), 0);
@@ -1314,7 +1309,6 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
     {
       mutt_debug(LL_DEBUG2, "hcache_fetch_email %s\n", buf);
       e = hce.email;
-      m->emails[m->msg_count] = e;
       e->edata = NULL;
 
       /* skip header marked as deleted in cache */
@@ -1385,14 +1379,15 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
       }
 
       /* parse header */
-      m->emails[m->msg_count] = email_new();
-      e = m->emails[m->msg_count];
+      e = email_new();
       e->env = mutt_rfc822_read_header(fp, e, false, false);
       e->received = e->date_sent;
       mutt_file_fclose(&fp);
     }
 
     /* save header in context */
+    mx_alloc_memory(m, m->msg_count);
+    m->emails[m->msg_count] = e;
     e->index = m->msg_count++;
     e->read = false;
     e->old = false;
@@ -1609,7 +1604,12 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
         if (!m->emails[i]->read)
           nntp_parse_xref(m, m->emails[i]);
       }
-      m->emails[j++] = m->emails[i];
+      if (i != j)
+      {
+        m->emails[j] = m->emails[i];
+        m->emails[i] = NULL;
+      }
+      j++;
     }
 
 #ifdef USE_HCACHE
@@ -1626,10 +1626,7 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
       if (hce.email)
       {
         mutt_debug(LL_DEBUG2, "#2 hcache_fetch_email %s\n", buf);
-        mx_alloc_memory(m, m->msg_count);
-
         e = hce.email;
-        m->emails[m->msg_count] = e;
         e->edata = NULL;
         if (e->deleted)
         {
@@ -1642,7 +1639,8 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
           continue;
         }
 
-        m->msg_count++;
+        mx_alloc_memory(m, m->msg_count);
+        m->emails[m->msg_count++] = e;
         e->read = false;
         e->old = false;
         e->edata = nntp_edata_new();
@@ -2253,9 +2251,7 @@ int nntp_check_msgid(struct Mailbox *m, const char *msgid)
   }
 
   /* parse header */
-  mx_alloc_memory(m, m->msg_count);
-  m->emails[m->msg_count] = email_new();
-  struct Email *e = m->emails[m->msg_count];
+  struct Email *e = email_new();
   e->edata = nntp_edata_new();
   e->edata_free = nntp_edata_free;
   e->env = mutt_rfc822_read_header(fp, e, false, false);
@@ -2283,6 +2279,8 @@ int nntp_check_msgid(struct Mailbox *m, const char *msgid)
   e->deleted = false;
   e->changed = true;
   e->received = e->date_sent;
+  mx_alloc_memory(m, m->msg_count);
+  m->emails[m->msg_count] = e;
   e->index = m->msg_count++;
   mailbox_changed(m, NT_MAILBOX_INVALID);
   return 0;
