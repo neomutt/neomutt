@@ -245,27 +245,30 @@ nm_windowed_query_from_query(char *buf, size_t buflen, const bool force_enable,
     return NM_WINDOW_QUERY_INVALID_TIMEBASE;
   }
 
-  size_t length = 0;
+  struct Buffer *query = buf_pool_get();
   if (end == 0)
   {
     // Open-ended date allows mail from the future.
     // This may occur is the sender's time settings are off.
-    length = snprintf(buf, buflen, "date:%d%s..", beg, timebase_str);
+    buf_printf(query, "date:%d%s..", beg, timebase_str);
   }
   else
   {
-    length = snprintf(buf, buflen, "date:%d%s..%d%s", beg, timebase_str, end, timebase_str);
+    buf_printf(query, "date:%d%s..%d%s", beg, timebase_str, end, timebase_str);
   }
 
   if (!mutt_str_equal(or_terms, ""))
   {
-    char *date_part = mutt_str_dup(buf);
-    length = snprintf(buf, buflen, "(%s or (%s))", date_part, or_terms);
+    char *date_part = buf_strdup(query);
+    buf_printf(query, "(%s or (%s))", date_part, or_terms);
     FREE(&date_part);
   }
 
   // Add current search to window query.
-  snprintf(buf + length, buflen - length, " and %s", cur_search);
+  buf_add_printf(query, " and %s", cur_search);
+
+  mutt_str_copy(buf, buf_string(query), buflen);
+  buf_pool_release(&query);
 
   return NM_WINDOW_QUERY_SUCCESS;
 }

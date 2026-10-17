@@ -25,6 +25,7 @@
 #include "config.h"
 #include "acutest.h"
 #include <stdbool.h>
+#include <string.h>
 #include "notmuch/lib.h"
 #include "notmuch/query.h" // IWYU pragma: keep
 #include "test_common.h"
@@ -88,5 +89,27 @@ void test_nm_windowed_query_from_query(void)
 
     TEST_CHECK_NUM_EQ(rc, NM_WINDOW_QUERY_SUCCESS);
     TEST_CHECK_STR_EQ(buf, t->expected);
+  }
+
+  // An `or_terms` that overflows the buffer must not push the search term
+  // past the end of it
+  {
+    const size_t buflen = 1024;
+    char guard[32] = { 0 };
+    memset(guard, '\a', sizeof(guard));
+
+    char *buf = MUTT_MEM_CALLOC(buflen + sizeof(guard), char);
+    memcpy(buf + buflen, guard, sizeof(guard));
+
+    char or_terms[1024] = { 0 };
+    memset(or_terms, 'x', 1000);
+
+    enum NmWindowQueryRc rc = nm_windowed_query_from_query(buf, buflen, false, 3, 3, "tag:inbox",
+                                                           NMTB_MONTH, or_terms);
+    TEST_CHECK_NUM_EQ(rc, NM_WINDOW_QUERY_SUCCESS);
+    TEST_CHECK(strlen(buf) < buflen);
+    TEST_CHECK(memcmp(buf + buflen, guard, sizeof(guard)) == 0);
+
+    FREE(&buf);
   }
 }
