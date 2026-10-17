@@ -1243,7 +1243,11 @@ int pgp_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
 
   *b_dec = pgp_decrypt_part(b, &state, *fp_out, p);
   if (!*b_dec)
+  {
     rc = -1;
+    mutt_file_fclose(fp_out);
+    goto bail;
+  }
   fseek(*fp_out, 0, SEEK_SET);
   clearerr(*fp_out);
 
