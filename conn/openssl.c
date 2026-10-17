@@ -424,7 +424,11 @@ static char *asn1time_to_string(ASN1_UTCTIME *tm)
   if (bio)
   {
     if (ASN1_TIME_print(bio, tm))
-      (void) BIO_read(bio, buf, sizeof(buf));
+    {
+      const int len = BIO_read(bio, buf, sizeof(buf) - 1);
+      if (len > 0)
+        buf[len] = '\0';
+    }
     BIO_free(bio);
   }
 
