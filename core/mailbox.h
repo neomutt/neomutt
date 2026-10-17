@@ -194,6 +194,7 @@ struct EventMailbox
 };
 
 void            mailbox_changed   (struct Mailbox *m, enum NotifyMailbox action);
+void            mailbox_clear_emails(struct Mailbox *m);
 struct Mailbox *mailbox_find      (const char *path);
 struct Mailbox *mailbox_find_name (const char *name);
 void            mailbox_free      (struct Mailbox **ptr);
