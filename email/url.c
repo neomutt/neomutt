@@ -148,6 +148,10 @@ void url_free(struct Url **ptr)
  * @param src String to encode
  *
  * e.g. turn "hello world" into "hello%20world"
+ *
+ * Control characters, the URL delimiters and the characters that RFC3986
+ * doesn't allow anywhere in a URL are encoded, so that url_parse() can read
+ * the result back, e.g. an Exchange user name "domain\user".
  */
 void url_pct_encode(char *buf, size_t buflen, const char *src)
 {
@@ -160,14 +164,15 @@ void url_pct_encode(char *buf, size_t buflen, const char *src)
   buflen--;
   while (src && *src && (buflen != 0))
   {
-    if (strchr(" /:&%=", *src))
+    const unsigned char c = *src;
+    if ((c < 0x20) || (c == 0x7f) || strchr(" \"#%&/:<=>?\\^`{|}", c))
     {
       if (buflen < 3)
         break;
 
       *buf++ = '%';
-      *buf++ = hex[(*src >> 4) & 0xf];
-      *buf++ = hex[*src & 0xf];
+      *buf++ = hex[(c >> 4) & 0xf];
+      *buf++ = hex[c & 0xf];
       src++;
       buflen -= 3;
       continue;
