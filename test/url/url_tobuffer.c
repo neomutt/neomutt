@@ -27,6 +27,7 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
+#include "test_common.h"
 
 void test_url_tobuffer(void)
 {
@@ -41,5 +42,38 @@ void test_url_tobuffer(void)
   {
     struct Url url = { 0 };
     TEST_CHECK(url_tobuffer(&url, NULL, U_NONE) != 0);
+  }
+
+  {
+    // A user name with characters a URL can't carry literally survives a
+    // round trip through url_tobuffer() and url_parse()
+    static const char *users[] = { "domain\\user", "user#mailbox", "who?", "a\"b" };
+    for (size_t i = 0; i < countof(users); i++)
+    {
+      TEST_CASE(users[i]);
+      struct Url url = { 0 };
+      url.scheme = U_IMAPS;
+      url.user = (char *) users[i];
+      url.host = "example.com";
+      url.path = "INBOX";
+
+      struct Buffer *buf = buf_pool_get();
+      TEST_CHECK(url_tobuffer(&url, buf, U_NONE) == 0);
+
+      struct Url *parsed = url_parse(buf_string(buf));
+      if (TEST_CHECK(parsed != NULL))
+      {
+        TEST_CHECK_STR_EQ(parsed->user, users[i]);
+        TEST_CHECK_STR_EQ(parsed->host, "example.com");
+        TEST_CHECK_STR_EQ(parsed->path, "INBOX");
+      }
+      else
+      {
+        TEST_MSG("Failed to parse: %s", buf_string(buf));
+      }
+
+      url_free(&parsed);
+      buf_pool_release(&buf);
+    }
   }
 }
