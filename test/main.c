@@ -810,6 +810,9 @@ NEOMUTT_TEST_LIST
 #ifdef USE_LZ4
   NEOMUTT_TEST_ITEM(test_compress_lz4)
 #endif
+#ifdef CRYPT_BACKEND_CLASSIC_SMIME
+  NEOMUTT_TEST_ITEM(test_smime_class_decrypt_mime)
+#endif
 #ifdef USE_NOTMUCH
   NEOMUTT_TEST_ITEM(test_nm_parse_type_from_query)
   NEOMUTT_TEST_ITEM(test_nm_query_type_to_string)
@@ -849,6 +852,9 @@ NEOMUTT_TEST_ITEM(test_compress_common)
 #endif
 #ifdef USE_LZ4
   NEOMUTT_TEST_ITEM(test_compress_lz4)
+#endif
+#ifdef CRYPT_BACKEND_CLASSIC_SMIME
+  NEOMUTT_TEST_ITEM(test_smime_class_decrypt_mime)
 #endif
 #ifdef USE_NOTMUCH
   NEOMUTT_TEST_ITEM(test_nm_parse_type_from_query)

@@ -2086,13 +2086,15 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
     state.fp_in = *fp_out;
     if (!mutt_file_seek(state.fp_in, bb->offset, SEEK_SET))
     {
-      return -1;
+      mutt_body_free(b_dec);
+      goto done;
     }
     FILE *fp_tmp2 = mutt_file_mkstemp();
     if (!fp_tmp2)
     {
       mutt_perror(_("Can't create temporary file"));
-      return -1;
+      mutt_body_free(b_dec);
+      goto done;
     }
 
     state.fp_out = fp_tmp2;
@@ -2112,6 +2114,7 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
     {
       mutt_perror(_("Can't create temporary file"));
       mutt_file_fclose(&fp_tmp2);
+      mutt_body_free(b_dec);
       return -1;
     }
 
@@ -2126,7 +2129,14 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
     mutt_body_free(b_dec);
     *b_dec = b_tmp;
   }
-  return *b_dec ? 0 : -1;
+
+done:
+  if (!*b_dec)
+  {
+    mutt_file_fclose(fp_out);
+    return -1;
+  }
+  return 0;
 }
 
 /**

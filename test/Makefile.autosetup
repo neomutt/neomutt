@@ -559,6 +559,10 @@ NOTIFY_OBJS	= test/notify/notify_free.o \
 		  test/notify/notify_send.o \
 		  test/notify/notify_set_parent.o
 
+@if CRYPT_BACKEND_CLASSIC_SMIME
+NCRYPT_OBJS	= test/ncrypt/smime_class_decrypt_mime.o
+@endif
+
 @if USE_NOTMUCH
 NOTMUCH_OBJS	= test/notmuch/query_type.o \
 		  test/notmuch/tag.o \
@@ -746,7 +750,8 @@ BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/key $(PWD)/test/list $(PWD)/test/logging \
 		  $(PWD)/test/mailbox \
 		  $(PWD)/test/mapping $(PWD)/test/mbyte $(PWD)/test/md5 \
-		  $(PWD)/test/memory $(PWD)/test/neo $(PWD)/test/notify \
+		  $(PWD)/test/memory $(PWD)/test/ncrypt $(PWD)/test/neo \
+		  $(PWD)/test/notify \
 		  $(PWD)/test/notmuch $(PWD)/test/parameter $(PWD)/test/parse \
 		  $(PWD)/test/path $(PWD)/test/pattern $(PWD)/test/pool \
 		  $(PWD)/test/prex $(PWD)/test/random $(PWD)/test/regex \
@@ -800,6 +805,7 @@ TEST_OBJS	= test/common.o test/main.o test/module.o \
 		  $(MEMORY_OBJS) \
 		  $(NEOMUTT_OBJS) \
 		  $(NOTIFY_OBJS) \
+		  $(NCRYPT_OBJS) \
 		  $(NOTMUCH_OBJS) \
 		  $(PARAMETER_OBJS) \
 		  $(PARSE_OBJS) \
