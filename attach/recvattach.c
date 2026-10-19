@@ -201,6 +201,43 @@ static bool has_a_message(struct Body *b)
 }
 
 /**
+ * mutt_attach_save_path - Suggest a path to save an attachment to
+ * @param buf Buffer for the result
+ * @param b   Attachment
+ * @param dir Directory to save into (OPTIONAL)
+ *
+ * The attachment's filename is chosen by the sender, so only its last
+ * component is used, and only if it names a file.  The result is placed under
+ * dir, or $attach_save_dir.  If there's no usable name, and the attachment
+ * isn't a message, buf is left empty.
+ */
+void mutt_attach_save_path(struct Buffer *buf, struct Body *b, const char *dir)
+{
+  buf_reset(buf);
+
+  const char *name = mutt_path_basename(b->filename);
+  if (name && ((name[0] == '\0') || strchr(name, '/') ||
+               mutt_str_equal(name, ".") || mutt_str_equal(name, "..")))
+  {
+    name = NULL;
+  }
+
+  if (name)
+  {
+    if (dir && *dir)
+      buf_concat_path(buf, dir, name);
+    else
+      buf_strcpy(buf, name);
+  }
+  else if (has_a_message(b))
+  {
+    mutt_default_save(buf, b->email);
+  }
+
+  prepend_savedir(buf);
+}
+
+/**
  * save_attachment_flowed_helper - Helper for unstuffing attachments
  * @param fp    Attachment to work on
  * @param b     Body of email
@@ -280,23 +317,7 @@ static int query_save_attachment(FILE *fp, struct Body *b, struct Email *e, char
   struct Buffer *buf = buf_pool_get();
   struct Buffer *tfile = buf_pool_get();
 
-  if (b->filename)
-  {
-    if (directory && *directory)
-    {
-      buf_concat_path(buf, *directory, mutt_path_basename(b->filename));
-    }
-    else
-    {
-      buf_strcpy(buf, b->filename);
-    }
-  }
-  else if (has_a_message(b))
-  {
-    mutt_default_save(buf, b->email);
-  }
-
-  prepend_savedir(buf);
+  mutt_attach_save_path(buf, b, directory ? *directory : NULL);
 
   prompt = _("Save to file: ");
   while (prompt)
@@ -382,16 +403,9 @@ static int save_without_prompting(FILE *fp, struct Body *b, struct Email *e)
   struct Buffer *buf = buf_pool_get();
   struct Buffer *tfile = buf_pool_get();
 
-  if (b->filename)
-  {
-    buf_strcpy(buf, b->filename);
-  }
-  else if (has_a_message(b))
-  {
-    mutt_default_save(buf, b->email);
-  }
-
-  prepend_savedir(buf);
+  mutt_attach_save_path(buf, b, NULL);
+  if (buf_is_empty(buf))
+    goto cleanup;
   expand_path(buf, false);
 
   bool is_message = (fp && has_a_message(b));
@@ -474,8 +488,7 @@ void mutt_save_attachment_list(struct AttachPtrArray *aa, struct Email *e, struc
 
       if (buf_is_empty(buf))
       {
-        buf_strcpy(buf, mutt_path_basename(NONULL(b->filename)));
-        prepend_savedir(buf);
+        mutt_attach_save_path(buf, b, NULL);
 
         struct FileCompletionData cdata = { false, NULL, NULL, NULL, NULL };
         if ((mw_get_field(_("Save to file: "), buf, MUTT_COMP_CLEAR, HC_FILE,
