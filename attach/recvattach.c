@@ -417,8 +417,11 @@ static int save_without_prompting(FILE *fp, struct Body *b, struct Email *e)
   else
   {
     rc = mutt_check_overwrite(b->filename, buf_string(buf), tfile, &opt, NULL);
-    if (rc == -1) // abort or cancel
+    if (rc != 0) // abort or cancel
+    {
+      rc = -1;
       goto cleanup;
+    }
   }
 
   rc = save_attachment_flowed_helper(fp, b, buf_string(tfile), opt,

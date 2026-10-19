@@ -52,6 +52,7 @@ ATTACH_OBJS	= test/attach/mutt_actx_add_attach.o \
 		  test/attach/mutt_actx_new.o \
 		  test/attach/mutt_attach_save_path.o \
 		  test/attach/mutt_decode_save_attachment.o \
+		  test/attach/mutt_save_attachment.o \
 		  test/attach/selection.o
 
 BASE64_OBJS	= test/base64/mutt_b64_buffer_decode.o \
