@@ -507,10 +507,6 @@ size_t mutt_strnwidth(const char *s, size_t n)
  */
 void mw_what_key(void)
 {
-  struct MuttWindow *win = msgwin_new(true);
-  if (!win)
-    return;
-
   struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
   struct Buffer *key = buf_pool_get();
   struct Buffer *prompt = buf_pool_get();
@@ -518,15 +514,11 @@ void mw_what_key(void)
 
   keymap_get_name(mod_data->abort_key, key);
 
-  buf_printf(prompt, _("Enter keys (%s to abort): "), buf_string(key));
-  msgwin_set_text(win, buf_string(prompt), MT_COLOR_PROMPT);
+  mutt_endwin();
+  // now: terminal delaymode => hence return-key needed
 
-  msgcont_push_window(win);
-  struct MuttWindow *old_focus = window_set_focus(win);
-  window_redraw(win);
-
-  const struct AttrColor *ac_normal = simple_color_get(MT_COLOR_NORMAL);
-  const struct AttrColor *ac_prompt = simple_color_get(MT_COLOR_PROMPT);
+  buf_printf(prompt, _("Enter keys (%s to abort) and <return>: "), buf_string(key));
+  fprintf(stderr, "%s\n", buf_string(prompt));
 
   // ---------------------------------------------------------------------------
   // Event Loop
@@ -551,42 +543,21 @@ void mw_what_key(void)
       if (!isatty(STDIN_FILENO)) // terminal was lost
         mutt_exit(1);
 
-      if (SigWinch)
-      {
-        SigWinch = false;
-        notify_send(NeoMutt->notify_resize, NT_RESIZE, 0, NULL);
-        window_redraw(NULL);
-      }
-      else
-      {
-        notify_send(NeoMutt->notify_timeout, NT_TIMEOUT, 0, NULL);
-      }
-
       continue;
     }
-
-    // Clear the text without hiding the Window
-    msgwin_set_text(win, NULL, MT_COLOR_NORMAL);
 
     buf_reset(key);
     keymap_get_name(ch, key);
 
     buf_printf(text, _("Char = %s, Octal = %o, Decimal = %d\n"), buf_string(key), ch, ch);
-
-    msgwin_add_text(win, buf_string(text), ac_normal);
-    msgwin_add_text(win, buf_string(prompt), ac_prompt);
-    msgwin_add_text(win, NULL, NULL);
-    window_redraw(NULL);
+    fprintf(stderr, "%s", buf_string(text));
   }
   // ---------------------------------------------------------------------------
 
   buf_pool_release(&key);
   buf_pool_release(&prompt);
   buf_pool_release(&text);
-
-  win = msgcont_pop_window();
-  window_set_focus(old_focus);
-  mutt_window_free(&win);
+  mutt_need_hard_redraw();
 }
 
 /**
