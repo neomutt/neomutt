@@ -353,18 +353,7 @@ bool mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
     mutt_message(_("Reading %s..."), mailbox_path(m));
 
   // Clear out any existing emails
-  for (int i = 0; i < m->email_max; i++)
-  {
-    email_free(&m->emails[i]);
-  }
-
-  m->msg_count = 0;
-  m->msg_unread = 0;
-  m->msg_flagged = 0;
-  m->msg_new = 0;
-  m->msg_deleted = 0;
-  m->msg_tagged = 0;
-  m->vcount = 0;
+  mailbox_clear_emails(m);
 
   enum MxOpenReturns rc = m->mx_ops->mbox_open(m);
   m->opened++;
@@ -425,19 +414,27 @@ void mx_fastclose_mailbox(struct Mailbox *m, bool keep_account)
   if (m->mx_ops)
     m->mx_ops->mbox_close(m);
 
-  mutt_hash_free(&m->subj_hash);
-  mutt_hash_free(&m->id_hash);
+  /* Keep the counts, the sidebar and mailbox checks still use them */
+  const int msg_count = m->msg_count;
+  const int msg_unread = m->msg_unread;
+  const int msg_flagged = m->msg_flagged;
+  const int msg_new = m->msg_new;
+  const int msg_deleted = m->msg_deleted;
+  const int msg_tagged = m->msg_tagged;
+  const int vcount = m->vcount;
+  const off_t size = m->size;
+
+  mailbox_clear_emails(m);
   mutt_hash_free(&m->label_hash);
 
-  if (m->emails)
-  {
-    for (int i = 0; i < m->msg_count; i++)
-    {
-      if (!m->emails[i])
-        break;
-      email_free(&m->emails[i]);
-    }
-  }
+  m->msg_count = msg_count;
+  m->msg_unread = msg_unread;
+  m->msg_flagged = msg_flagged;
+  m->msg_new = msg_new;
+  m->msg_deleted = msg_deleted;
+  m->msg_tagged = msg_tagged;
+  m->vcount = vcount;
+  m->size = size;
 
   if (!m->visible)
   {
