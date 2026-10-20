@@ -511,14 +511,24 @@ void mw_what_key(void)
   struct Buffer *key = buf_pool_get();
   struct Buffer *prompt = buf_pool_get();
   struct Buffer *text = buf_pool_get();
+  struct termios found_term = { 0 };
+  struct termios temp_term = { 0 };
+  int term_fd;
 
   keymap_get_name(mod_data->abort_key, key);
 
-  mutt_endwin();
-  // now: terminal delaymode => hence return-key needed
 
-  buf_printf(prompt, _("Enter keys (%s to abort) and <return>: "), buf_string(key));
-  fprintf(stderr, "%s\n", buf_string(prompt));
+  mutt_endwin();
+  term_fd = open("/dev/tty", O_RDONLY);
+  tcgetattr(term_fd, &found_term);
+  temp_term = found_term;
+  temp_term.c_lflag &= ~(ICANON | ECHO);
+  temp_term.c_cc[VMIN] = 0;
+  temp_term.c_cc[VTIME] = 0;
+  tcsetattr(term_fd, TCSANOW, &temp_term);
+
+  buf_printf(prompt, _("Enter keys (%s to abort): "), buf_string(key));
+  fprintf(stderr, "%s\r\n", buf_string(prompt));
 
   // ---------------------------------------------------------------------------
   // Event Loop
@@ -549,10 +559,13 @@ void mw_what_key(void)
     buf_reset(key);
     keymap_get_name(ch, key);
 
-    buf_printf(text, _("Char = %s, Octal = %o, Decimal = %d\n"), buf_string(key), ch, ch);
+    buf_printf(text, _("Char = %s, Octal = %o, Decimal = %d\r\n"), buf_string(key), ch, ch);
     fprintf(stderr, "%s", buf_string(text));
   }
   // ---------------------------------------------------------------------------
+
+  tcsetattr(term_fd, TCSANOW, &found_term);
+  close(term_fd);
 
   buf_pool_release(&key);
   buf_pool_release(&prompt);
