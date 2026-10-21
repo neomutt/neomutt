@@ -7894,6 +7894,15 @@ mailboxes $my_mx +mailbox3
           <quote>&#160;&#160;&#160;&#160;&#160;test&#160;&#160;&#160;&#160;&#160;</quote>.
         </para>
         <para>
+          Either number may be followed by a percent sign
+          (<literal>%</literal>) to make it a percentage of the width of the
+          line being drawn, from 0 to 100. For example,
+          <literal>%-20%.20%F</literal> gives the author column a fifth of the
+          width of the index, and adjusts it when the terminal is resized. When
+          the width is unlimited, a percentage minimum is ignored and
+          a percentage maximum means no limit.
+        </para>
+        <para>
           There are two very little-known modifiers that affect the way that an
           expando is replaced. If there is an underline (<quote>_</quote>)
           character between any format modifiers (as above) and the expando
