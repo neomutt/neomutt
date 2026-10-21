@@ -784,11 +784,24 @@ static int smtp_auth_oauth_xoauth2(struct SmtpAccountData *adata, const char *me
     return SMTP_AUTH_FAIL;
 
   char *ibuf = NULL;
-  mutt_str_asprintf(&ibuf, "AUTH %s %s\r\n", authtype, oauthbearer);
+  mutt_str_asprintf(&ibuf, "AUTH %s\r\n", authtype);
 
   int rc = mutt_socket_send(adata->conn, ibuf);
-  FREE(&oauthbearer);
   FREE(&ibuf);
+  if (rc != -1)
+  {
+    char buf[1024] = { 0 };
+    rc = mutt_socket_readln(buf, sizeof(buf), adata->conn);
+    if ((rc < 0) || !mutt_strn_equal(buf, "334", 3))
+      rc = -1;
+  }
+  if (rc != -1)
+  {
+    mutt_str_asprintf(&ibuf, "%s\r\n", oauthbearer);
+    rc = mutt_socket_send(adata->conn, ibuf);
+    FREE(&ibuf);
+  }
+  FREE(&oauthbearer);
 
   if (rc == -1)
     return SMTP_AUTH_FAIL;
