@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2026-06-12 13:14+0100\n"
-"PO-Revision-Date: 2026-10-22 16:42-0400\n"
+"PO-Revision-Date: 2026-10-22 16:51-0400\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
 "Language: eo\n"
@@ -928,9 +928,8 @@ msgid "Goto"
 msgstr "Iri"
 
 #: browser/dlg_browser.c:115 browser/dlg_browser.c:129
-#, fuzzy
 msgid "Limit"
-msgstr "Ŝablono: %s"
+msgstr "Limigi"
 
 #: browser/dlg_browser.c:125
 msgid "List"
@@ -969,14 +968,14 @@ msgid "Mailboxes [%d]"
 msgstr "Poŝtfakoj [%d]"
 
 #: browser/dlg_browser.c:605
-#, fuzzy, c-format
+#, c-format
 msgid "Subscribed [%s], Limit: %s"
-msgstr "Abonita [%s], Dosieromasko: %s"
+msgstr "Abonita [%s], Limigo: %s"
 
 #: browser/dlg_browser.c:610
-#, fuzzy, c-format
+#, c-format
 msgid "Directory [%s], Limit: %s"
-msgstr "Dosierujo [%s], Dosieromasko: %s"
+msgstr "Dosierujo [%s], Limigo: %s"
 
 #: browser/dlg_browser.c:691
 msgid "Can't attach a directory"
@@ -987,9 +986,8 @@ msgid "New file name: "
 msgstr "Nova dosieronomo: "
 
 #: browser/functions.c:312
-#, fuzzy
 msgid "No newsgroups match the browser limit"
-msgstr "Neniuj novaĵoj kongruas kun la masko"
+msgstr "Neniuj novaĵgrupoj kongruas kun la foliumila limigo"
 
 #: browser/functions.c:313 sidebar/functions_fuzzy.c:190
 #: sidebar/functions_sidebar.c:447
@@ -997,9 +995,8 @@ msgid "There are no mailboxes"
 msgstr "Ekzistas neniuj leterkestoj"
 
 #: browser/functions.c:424 browser/functions.c:888 browser/functions.c:974
-#, fuzzy
 msgid "No files match the browser limit"
-msgstr "Neniu dosiero kongruas kun la dosieromasko"
+msgstr "Neniuj dosieroj kongruas kun la foliumila limigo"
 
 #: browser/functions.c:439
 msgid "Can't view a directory"
@@ -1057,9 +1054,8 @@ msgid "Mailbox deleted"
 msgstr "Poŝtfako forviŝita"
 
 #: browser/functions.c:838
-#, fuzzy
 msgid "Limit: "
-msgstr "Ŝablono: %s"
+msgstr "Limigo: "
 
 #: browser/functions.c:1193
 msgid "Rename is only supported for IMAP mailboxes"
@@ -3388,13 +3384,11 @@ msgstr "Vidigi parton kiel tekston"
 
 #. L10N: Help for Compose function: <preview-scroll-half-down>
 #: gui/opcodes.h:107
-#, fuzzy
 msgid "Scroll down half a page"
 msgstr "Rulumi malsupren duonon de paĝo"
 
 #. L10N: Help for Compose function: <preview-scroll-half-up>
 #: gui/opcodes.h:109
-#, fuzzy
 msgid "Scroll up half a page"
 msgstr "Rulumi supren duonon de paĝo"
 
@@ -3546,9 +3540,8 @@ msgstr "Redakti la mesaĝon"
 
 #. L10N: Help for Compose function: <ispell>
 #: gui/opcodes.h:175
-#, fuzzy
 msgid "Check the spelling of the message"
-msgstr "Montri la antaŭan paĝon de la mesaĝo"
+msgstr "Kontroli la literumon de la mesaĝo"
 
 #. L10N: Help for Compose function: <postpone-message>
 #: gui/opcodes.h:177
@@ -3801,9 +3794,8 @@ msgstr "Enigi neomuttrc-komandon"
 
 #. L10N: Help for Browser function: <limit>
 #: gui/opcodes.h:277
-#, fuzzy
 msgid "Limit the browser to matching files"
-msgstr "Limigi al la adresoj laŭ la ŝablono: "
+msgstr "Limigi la foliumilon al kongruantaj dosieroj: "
 
 #. L10N: Help for Generic function: <exit>
 #: gui/opcodes.h:279
@@ -3852,9 +3844,8 @@ msgstr "Atingi patron de la nuna mesaĝo"
 
 #. L10N: Help for Browser function: <goto-home>
 #: gui/opcodes.h:299
-#, fuzzy
 msgid "Go to home directory"
-msgstr "Iri al patra dosierujo"
+msgstr "Iri al hejma dosierujo"
 
 #. L10N: Help for Browser function: <goto-parent>
 #: gui/opcodes.h:301
@@ -3863,9 +3854,8 @@ msgstr "Iri al patra dosierujo"
 
 #. L10N: Help for Browser function: <goto-root>
 #: gui/opcodes.h:303
-#, fuzzy
 msgid "Go to root directory"
-msgstr "Iri al patra dosierujo"
+msgstr "Iri al radika dosierujo"
 
 #. L10N: Help for Attach, Index function: <group-chat-reply>
 #: gui/opcodes.h:305
@@ -3891,9 +3881,8 @@ msgstr "Rulumi supren duonon de paĝo"
 
 #. L10N: Help for Editor, Generic function: <help>
 #: gui/opcodes.h:313
-#, fuzzy
 msgid "Help screen"
-msgstr "Ĉi tiu ekrano"
+msgstr "Helpa paĝo"
 
 #. L10N: Help for Generic function: <jump>
 #: gui/opcodes.h:315
@@ -3972,15 +3961,13 @@ msgstr "Duigi la fadenon"
 
 #. L10N: Help for Index function: <browse-mailboxes>
 #: gui/opcodes.h:347
-#, fuzzy
 msgid "Browse mailboxes"
-msgstr "(mankas poŝtfako)"
+msgstr "Foliumi leterkestojn"
 
 #. L10N: Help for Index function: <browse-mailboxes-readonly>
 #: gui/opcodes.h:349
-#, fuzzy
 msgid "Browse mailboxes in read only mode"
-msgstr "Malfermi poŝtfakon nurlege"
+msgstr "Foliumi leterkestojn laŭ nurlega reĝimo"
 
 #. L10N: Help for Index function: <change-folder>
 #: gui/opcodes.h:351
@@ -4612,7 +4599,7 @@ msgstr "Movi markilon al la unua poŝtfako"
 #. L10N: Help for Sidebar function: <sidebar-select-entry-by-number>
 #: gui/opcodes.h:639
 msgid "Jump to a specific mailbox"
-msgstr ""
+msgstr "Malfermi specifan leterkeston"
 
 #. L10N: Help for Sidebar function: <sidebar-last>
 #: gui/opcodes.h:641
@@ -4631,21 +4618,18 @@ msgstr "Movi markilon al sekvan poŝtfakon kun nova poŝto"
 
 #. L10N: Help for Sidebar function: <sidebar-select-page-bottom>
 #: gui/opcodes.h:647
-#, fuzzy
 msgid "Move the highlight to the bottom of the page"
-msgstr "Iri al fino de paĝo"
+msgstr "Movi la prilumon al la malsupro de la paĝo"
 
 #. L10N: Help for Sidebar function: <sidebar-select-page-middle>
 #: gui/opcodes.h:649
-#, fuzzy
 msgid "Move the highlight to the middle of the page"
-msgstr "Iri al la mezo de la paĝo"
+msgstr "Movi la prilumon al la mezo de la paĝo"
 
 #. L10N: Help for Sidebar function: <sidebar-select-page-top>
 #: gui/opcodes.h:651
-#, fuzzy
 msgid "Move the highlight to the top of the page"
-msgstr "Iri al la supro de la paĝo"
+msgstr "Movi la prilumon al la supro de la paĝo"
 
 #. L10N: Help for Sidebar function: <sidebar-open>
 #: gui/opcodes.h:653
