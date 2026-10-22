@@ -450,7 +450,6 @@ static int smtp_helo(struct SmtpAccountData *adata, bool esmtp)
   return smtp_get_resp(adata);
 }
 
-#if defined(USE_SASL_CYRUS) || defined(USE_SASL_GNU)
 /**
  * smtp_code - Extract an SMTP return code from a string
  * @param[in]  buf Buffer containing the string to parse
@@ -513,7 +512,6 @@ static int smtp_get_auth_response(struct Connection *conn, struct Buffer *input_
 
   return 0;
 }
-#endif
 
 #ifdef USE_SASL_GNU
 /**
@@ -783,32 +781,47 @@ static int smtp_auth_oauth_xoauth2(struct SmtpAccountData *adata, const char *me
   if (!oauthbearer)
     return SMTP_AUTH_FAIL;
 
-  char *ibuf = NULL;
-  mutt_str_asprintf(&ibuf, "AUTH %s\r\n", authtype);
+  struct Buffer *input_buf = buf_pool_get();
+  struct Buffer *response_buf = buf_pool_get();
+  int auth_rc = 0;
+  int rc = SMTP_AUTH_FAIL;
 
-  int rc = mutt_socket_send(adata->conn, ibuf);
-  FREE(&ibuf);
-  if (rc != -1)
+  buf_printf(input_buf, "AUTH %s\r\n", authtype);
+  if (mutt_socket_send(adata->conn, buf_string(input_buf)) < 0)
+    goto done;
+  if ((smtp_get_auth_response(adata->conn, input_buf, &auth_rc, response_buf) < 0) ||
+      (auth_rc != SMTP_READY))
   {
-    char buf[1024] = { 0 };
-    rc = mutt_socket_readln(buf, sizeof(buf), adata->conn);
-    if ((rc < 0) || !mutt_strn_equal(buf, "334", 3))
-      rc = -1;
+    goto done;
   }
-  if (rc != -1)
+
+  buf_printf(input_buf, "%s\r\n", oauthbearer);
+  if (mutt_socket_send(adata->conn, buf_string(input_buf)) < 0)
+    goto done;
+  if (smtp_get_auth_response(adata->conn, input_buf, &auth_rc, response_buf) < 0)
+    goto done;
+
+  if (auth_rc == SMTP_READY)
   {
-    mutt_str_asprintf(&ibuf, "%s\r\n", oauthbearer);
-    rc = mutt_socket_send(adata->conn, ibuf);
-    FREE(&ibuf);
+    if (mutt_b64_buffer_decode(input_buf, buf_string(response_buf)) < 0)
+      buf_copy(input_buf, response_buf);
+    // L10N: First %s is the authentication method name: OAUTHBEARER or XOAUTH2. Second is server's
+    // error message.
+    mutt_error(_("%s authentication failed: %s"), authtype, buf_string(input_buf));
+    if (mutt_socket_send(adata->conn, xoauth2 ? "\r\n" : "AQ==\r\n") < 0)
+      goto done;
+    smtp_get_auth_response(adata->conn, input_buf, &auth_rc, response_buf);
+    goto done;
   }
+
+  if (smtp_success(auth_rc))
+    rc = SMTP_AUTH_SUCCESS;
+
+done:
   FREE(&oauthbearer);
-
-  if (rc == -1)
-    return SMTP_AUTH_FAIL;
-  if (smtp_get_resp(adata) != 0)
-    return SMTP_AUTH_FAIL;
-
-  return SMTP_AUTH_SUCCESS;
+  buf_pool_release(&input_buf);
+  buf_pool_release(&response_buf);
+  return rc;
 }
 
 /**
