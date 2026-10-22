@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2026-06-12 13:14+0100\n"
-"PO-Revision-Date: 2026-03-03 19:36-0500\n"
+"PO-Revision-Date: 2026-10-22 16:32-0400\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
 "Language: eo\n"
@@ -437,9 +437,8 @@ msgid "Only deletion of multipart attachments is supported"
 msgstr "Mutt kapablas forviŝi nur multipart-partojn"
 
 #: attach/functions.c:752
-#, fuzzy
 msgid "You may only followup to message/rfc822 parts"
-msgstr "Vi povas redirekti nur message/rfc822-partojn"
+msgstr "Vi povas grupe respondi al nur message/rfc822-partojn"
 
 #: attach/functions.c:757 index/functions.c:3612
 msgid "Reply by mail as poster prefers?"
@@ -567,11 +566,11 @@ msgid "I don't know how to print %s attachments"
 msgstr "Mi ne scias kiel presi %s-partojn"
 
 #: attach/recvattach.c:856
-#, fuzzy, c-format
+#, c-format
 msgid "Print attachment?"
 msgid_plural "Print %d attachments?"
-msgstr[0] "Ĉu presi parton?"
-msgstr[1] "Ĉu presi parton?"
+msgstr[0] "Ĉu printi kunsendaĵon?"
+msgstr[1] "Ĉu printi %d kunsendaĵojn?"
 
 #: attach/recvattach.c:897
 msgid "Structural changes to decrypted attachments are not supported"
@@ -591,12 +590,11 @@ msgstr "Averto: mesaĝo malhavas 'From:'-ĉapaĵon"
 
 #: attach/recvcmd.c:186 external.c:112
 msgid "Bounce message to: "
-msgstr "Redirekti mesaĝon al: "
+msgstr "Alidirekti mesaĝon al: "
 
 #: attach/recvcmd.c:188
-#, fuzzy
 msgid "Bounce messages to: "
-msgstr "Redirekti mesaĝon al: "
+msgstr "Alidirekti mesaĝojn al: "
 
 #: attach/recvcmd.c:200 external.c:124
 msgid "Error parsing address"
@@ -606,26 +604,26 @@ msgstr "Eraro dum analizo de adreso"
 #, c-format
 msgid "Bounce message to %s?"
 msgid_plural "Bounce messages to %s?"
-msgstr[0] "Ĉu revenigi mesaĝon al %s?"
-msgstr[1] "Ĉu revenigi mesaĝojn al %s?"
+msgstr[0] "Ĉu alidirekti mesaĝon al %s?"
+msgstr[1] "Ĉu alidirekti mesaĝojn al %s?"
 
 #: attach/recvcmd.c:224 external.c:146
 msgid "Message not bounced"
 msgid_plural "Messages not bounced"
-msgstr[0] "Mesaĝo ne reveninta"
-msgstr[1] "Mesaĝoj ne revenintaj"
+msgstr[0] "Mesaĝo ne alidirektita"
+msgstr[1] "Mesaĝoj ne alidirektita"
 
 #: attach/recvcmd.c:240 external.c:172
 msgid "Message bounced"
 msgid_plural "Messages bounced"
-msgstr[0] "Mesaĝo reveninta"
-msgstr[1] "Mesaĝoj revenintaj"
+msgstr[0] "Mesaĝo alidirektita"
+msgstr[1] "Mesaĝoj alidirektita"
 
 #: attach/recvcmd.c:242
 msgid "Error bouncing message"
 msgid_plural "Error bouncing messages"
-msgstr[0] "Eraro dum reveno de mesaĝo"
-msgstr[1] "Eraro dum reveno de mesaĝoj"
+msgstr[0] "Eraro dum alidirektado de mesaĝo"
+msgstr[1] "Eraro dum alidirektado de mesaĝoj"
 
 #: attach/recvcmd.c:474
 #, c-format
@@ -637,9 +635,8 @@ msgid "Forward as attachments?"
 msgstr "Ĉu plusendi kiel kunsendaĵojn?"
 
 #: attach/recvcmd.c:523
-#, fuzzy
 msgid "Can't decode all selected attachments.  MIME-forward the others?"
-msgstr "Ne eblas malkodi ĉiujn markitajn partojn.  Ĉu MIME-plusendi la aliajn?"
+msgstr "Ne eblas malkodi ĉiujn elektitajn kunsendaĵojn.  Ĉu MIME-plusendi la aliajn?"
 
 #: attach/recvcmd.c:645
 msgid "Forward MIME encapsulated?"
@@ -651,18 +648,16 @@ msgid "Can't create %s"
 msgstr "Ne eblas krei %s"
 
 #: attach/recvcmd.c:793
-#, fuzzy
 msgid "Can't find any selected messages"
-msgstr "Ne eblas trovi markitajn mesaĝojn"
+msgstr "Ne eblas trovi elektitajn mesaĝojn"
 
 #: attach/recvcmd.c:826 send/send.c:1128
 msgid "No mailing lists found"
 msgstr "Neniu dissendolisto trovita"
 
 #: attach/recvcmd.c:933
-#, fuzzy
 msgid "Can't decode all selected attachments.  MIME-encapsulate the others?"
-msgstr "Ne eblas malkodi ĉiujn markitajn partojn.  Ĉu MIME-paki la aliajn?"
+msgstr "Ne eblas malkodi ĉiujn elektitajn kunsendaĵojn.  Ĉu MIME-paki la aliajn?"
 
 #. L10N: You will see this error message if you invoke <compose-to-sender>
 #. when you are on a normal attachment.
@@ -1031,9 +1026,9 @@ msgid "Can't delete currently selected mailbox"
 msgstr "Ne eblas forigi la nune elektitan leterkeston"
 
 #: browser/functions.c:757
-#, fuzzy, c-format
+#, c-format
 msgid "Really delete %d tagged mailboxes?"
-msgstr "Ĉu vere forviŝi la poŝtfakon \"%s\"?"
+msgstr "Ĉu vere forigi %d markitajn leterkestojn?"
 
 #: browser/functions.c:762
 #, c-format
@@ -1049,9 +1044,9 @@ msgid "Mailbox deletion failed"
 msgstr "Forviŝo de poŝtfako malsukcesis"
 
 #: browser/functions.c:779
-#, fuzzy, c-format
+#, c-format
 msgid "%d mailboxes deleted"
-msgstr "Poŝtfako forviŝita"
+msgstr "%d leterkestoj forviŝitaj"
 
 #: browser/functions.c:781
 msgid "Mailbox deleted"
@@ -1099,27 +1094,27 @@ msgstr "Nevalida opcia sintakso: %s (uzu spaceton anstataŭ '=')"
 
 #. L10N: e.g. `neomutt -X`
 #: cli/parse.c:438
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid option: -%c"
-msgstr "Nevalida opcio: %c"
+msgstr "Nevalida opcio: -%c"
 
 #. L10N: e.g. `neomutt --foobar`
 #: cli/parse.c:443
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid option: %s"
-msgstr "Nevalida opcio: %c"
+msgstr "Nevalida opcio: %s"
 
 #. L10N: e.g. `neomutt -F`
 #: cli/parse.c:451
-#, fuzzy, c-format
+#, c-format
 msgid "Option -%c requires an argument"
-msgstr "Opcio %c postulas argumenton"
+msgstr "Opcio -%c postulas argumenton"
 
 #. L10N: e.g. `neomutt --config`
 #: cli/parse.c:456
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s requires an argument"
-msgstr "Opcio %c postulas argumenton"
+msgstr "Opcio %s postulas argumenton"
 
 #: color/commands.c:180
 #, c-format
@@ -1186,7 +1181,6 @@ msgid "Deprecated: Use `uncolor` instead"
 msgstr "Arkaikiĝinta: Anstataŭe uzi la komandon `uncolor`"
 
 #: color/commands.c:587
-#, fuzzy
 msgid "unmono <object> { * | <pattern> ... }"
 msgstr "unmono <objekto> { * | <ŝablono> ... }"
 
@@ -1595,9 +1589,8 @@ msgid "Can't leave group with only one attachment"
 msgstr "Ne eblas meti nur unu kunsendaĵon en grupon"
 
 #: compose/functions.c:702
-#, fuzzy
 msgid "Selected attachments must be siblings"
-msgstr "Nuna agordo de kunsendaĵoj:"
+msgstr "Elektitaj kunsendaĵoj devas esti frataj:"
 
 #: compose/functions.c:743 compose/functions.c:1827 compose/functions.c:1846
 msgid "Attachment is already at bottom"
@@ -1668,27 +1661,24 @@ msgid "Can't get multipart attachments"
 msgstr "Ne eblas atingi plurpartajn kunsendaĵojn"
 
 #: compose/functions.c:1724
-#, fuzzy
 msgid "Grouping 'alternatives' requires at least 2 selected attachments"
-msgstr "Grupigo de 'alternatives' postulas minimume du markitajn mesaĝojn"
+msgstr "Grupigo de 'alternatives' postulas minimume du elektitajn kunsendaĵojn"
 
 #: compose/functions.c:1746
-#, fuzzy
 msgid "Grouping 'multilingual' requires at least 2 selected attachments"
-msgstr "Grupigo de 'multilingual' postulas minimume du markitajn mesaĝojn"
+msgstr "Grupigo de 'multilingual' postulas minimume du elektitajn kunsendaĵojn"
 
 #: compose/functions.c:1760
 msgid "Not all parts have 'Content-Language' set, continue?"
-msgstr "'Por ne ĉiuj partoj 'Content-Language' estas agordata. Ĉu daŭrigi?"
+msgstr "'Por ne ĉiuj partoj 'Content-Language' estas agorditaj. Ĉu daŭrigi?"
 
 #: compose/functions.c:1764
 msgid "Not sending this message"
 msgstr "Ne sendas tiun mesaĝon"
 
 #: compose/functions.c:1787
-#, fuzzy
 msgid "Grouping 'related' requires at least 2 selected attachments"
-msgstr "Grupigo de 'related' postulas minimume du markitajn mesaĝojn"
+msgstr "Grupigo de 'related' postulas minimume du elektitajn kunsandaĵojn"
 
 #: compose/functions.c:1833 compose/functions.c:1891
 msgid "Attachment can't be moved out of group"
@@ -1818,15 +1808,15 @@ msgstr "Fino de mesaĝo estas montrita"
 
 #: config/bool.c:76 config/enum.c:58 config/quad.c:80 config/sort.c:90
 #: hcache/config.c:73 hcache/config.c:108
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for %s"
-msgstr "Nevalida valoro por opcio %s: \"%s\""
+msgstr "Nevalida valoro por %s"
 
 #: config/bool.c:78 config/enum.c:67 config/quad.c:89 config/sort.c:117
 #: hcache/config.c:86 hcache/config.c:121
-#, fuzzy, c-format
+#, c-format
 msgid "Choose from: %s"
-msgstr "     de %s"
+msgstr "Elekti el: %s"
 
 #: config/bool.c:135
 #, c-format
@@ -2690,9 +2680,8 @@ msgid "failed to re-open 'memory stream'"
 msgstr "malsukcesis remalfermi la memoran fluon"
 
 #: email/handler.c:1455
-#, fuzzy
 msgid "failed to re-open temporary file"
-msgstr "Ne eblas malfermi dumtempan dosieron"
+msgstr "ne eblas malfermi provizoran dosieron"
 
 #: email/handler.c:1748
 msgid "Error: multipart/signed has no protocol"
@@ -2764,9 +2753,9 @@ msgid "mailcap entry for type %s not found"
 msgstr "mailcap-regulo por speco %s ne trovita"
 
 #: email/mailcap.c:539
-#, fuzzy, c-format
+#, c-format
 msgid "mailcap entry with field '%s' for type %s not found"
-msgstr "mailcap-regulo por speco %s ne trovita"
+msgstr "mailcap-ero kun kampo '%s' por tipo %s ne trovebla"
 
 #: email/parse.c:1715
 msgid "multipart message has no boundary parameter"
@@ -2993,15 +2982,15 @@ msgstr "Nevalida tempoperiodo: '%c' devas esti unu el 'ymwdHM'"
 
 #: expando/node_condition.c:181 expando/node_condition.c:199
 #: expando/node_expando.c:410
-#, fuzzy, c-format
+#, c-format
 msgid "Expando is missing closing '}'"
-msgstr "En ekspando finigilo mankas: '%c'"
+msgstr "En ekspando fina '}' mankas"
 
 #. L10N: e.g. "Unknown expando: %{bad}"
 #: expando/node_condition.c:202 expando/node_expando.c:416
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown expando: %%{%.*s}"
-msgstr "Nekonata ekspando: %%{%s}"
+msgstr "Nekonata ekspando: %%{%.*s}"
 
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
@@ -3868,30 +3857,28 @@ msgstr "Montri nur la nunan fadenon"
 
 #. L10N: Help for Index function: <list-action>
 #: gui/opcodes.h:305
-#, fuzzy
 msgid "Perform mailing list action"
-msgstr "Neniu dissendolisto trovita"
+msgstr "Plenumi agon al dissendolisto"
 
 #. L10N: Help for List function: <list-archive>
 #: gui/opcodes.h:307
 msgid "Retrieve list archive information"
-msgstr ""
+msgstr "Ricevi informojn pri lista arĥivo."
 
 #. L10N: Help for List function: <list-help>
 #: gui/opcodes.h:309
 msgid "Retrieve list help"
-msgstr ""
+msgstr "Ricevi listan helpilon"
 
 #. L10N: Help for List function: <list-owner>
 #: gui/opcodes.h:311
 msgid "Contact list owner"
-msgstr ""
+msgstr "Kontakti listan estron"
 
 #. L10N: Help for List function: <list-post>
 #: gui/opcodes.h:313
-#, fuzzy
 msgid "Post to mailing list"
-msgstr "Ekaboni dissendoliston"
+msgstr "Afiŝi al dissendolisto"
 
 #. L10N: Help for Attach, Index function: <list-reply>
 #: gui/opcodes.h:315
@@ -3960,15 +3947,13 @@ msgstr "Malŝalti flagon ĉe mesaĝo"
 
 #. L10N: Help for Index function: <close-all-threads>
 #: gui/opcodes.h:341
-#, fuzzy
 msgid "Collapse all threads"
-msgstr "(mal)kolapsigi ĉiujn fadenojn"
+msgstr "Kolapsigi ĉiujn fadenojn"
 
 #. L10N: Help for Index function: <close-thread>
 #: gui/opcodes.h:343
-#, fuzzy
 msgid "Collapse current thread"
-msgstr "(mal)kolapsigi la aktualan fadenon"
+msgstr "Kolapsigi la nunan fadenon"
 
 #. L10N: Help for Index function: <collapse-all>
 #: gui/opcodes.h:345
@@ -4057,21 +4042,18 @@ msgstr "Malfermi sekvan poŝtfakon kun nova poŝto"
 
 #. L10N: Help for Index function: <previous-unread-mailbox>
 #: gui/opcodes.h:379
-#, fuzzy
 msgid "Open previous mailbox with new mail"
-msgstr "Malfermi sekvan poŝtfakon kun nova poŝto"
+msgstr "Malfermi antaŭan leterkeston kun novaj retpoŝtaĵoj"
 
 #. L10N: Help for Index function: <open-all-threads>
 #: gui/opcodes.h:381
-#, fuzzy
 msgid "Uncollapse all threads"
-msgstr "(mal)kolapsigi ĉiujn fadenojn"
+msgstr "Malkolapsigi ĉiujn fadenojn"
 
 #. L10N: Help for Index function: <open-thread>
 #: gui/opcodes.h:383
-#, fuzzy
 msgid "Uncollapse current thread"
-msgstr "(mal)kolapsigi la aktualan fadenon"
+msgstr "Malkolapsigi la nunan fadenon"
 
 #. L10N: Help for Index function: <parent-message>
 #: gui/opcodes.h:385
@@ -4625,14 +4607,13 @@ msgstr "Kaŝi/malkaŝi la flankan strion"
 
 #. L10N: Help for Sidebar function: <sidebar-abort-search>
 #: gui/opcodes.h:625
-#, fuzzy
 msgid "Close the sidebar search"
-msgstr "Kaŝi/malkaŝi la flankan strion"
+msgstr "Fermi la serĉilon de la flanka strio"
 
 #. L10N: Help for Sidebar function: <sidebar-start-search>
 #: gui/opcodes.h:627
 msgid "Fuzzy search the sidebar"
-msgstr ""
+msgstr "Svage serĉi la flankan strion."
 
 #. L10N: Help for Compose function: <smime-menu>
 #: gui/opcodes.h:631
@@ -5069,34 +5050,34 @@ msgid "Mailbox renamed"
 msgstr "Poŝtfako renomita"
 
 #: imap/command.c:218
-#, fuzzy, c-format
+#, c-format
 msgid "Connection lost. Retrying in %u seconds..."
-msgstr "Konekto al %s fermita. Ĉu rekonektiĝi?"
+msgstr "Konekto perdita. Reprovos post %u sekundoj..."
 
 #: imap/command.c:227
-#, fuzzy, c-format
+#, c-format
 msgid "Reconnected to %s"
-msgstr "Konektiĝis al %s. %s"
+msgstr "Konektiĝis al %s"
 
 #: imap/command.c:232
-#, fuzzy, c-format
+#, c-format
 msgid "Reopened mailbox on %s"
-msgstr "Renomi poŝtfakon %s al: "
+msgstr "Remalfermis leterkeston en %s"
 
 #: imap/command.c:236
-#, fuzzy, c-format
+#, c-format
 msgid "Reconnected to %s but failed to reopen mailbox"
-msgstr "Ne eblis remalfermi poŝtfakon"
+msgstr "Rekonektiĝis al %s sed malsukcesis remalfermi leterkeston"
 
 #: imap/command.c:248
 #, c-format
 msgid "Failed to reconnect to %s after %d attempts"
-msgstr ""
+msgstr "Malsukcesis rekonektiĝi al %s post %d provoj"
 
 #: imap/command.c:254
 #, c-format
 msgid "Reconnection to %s failed. Will retry automatically."
-msgstr ""
+msgstr "Rekonektiĝo al %s malsukcesis. Aŭtomate reprovos."
 
 #: imap/command.c:1340
 #, c-format
@@ -5104,14 +5085,14 @@ msgid "IMAP command failed: %s"
 msgstr "IMAP-komando malsukcesis: %s"
 
 #: imap/command.c:1606
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s timed out waiting for IDLE response"
-msgstr "Konekto al %s fermita pro tempopaso"
+msgstr "Konekto al %s eksvalidiĝis dum atendo de respondo de IDLE"
 
 #: imap/command.c:1630
-#, fuzzy, c-format
+#, c-format
 msgid "IDLE command failed for %s"
-msgstr "IMAP-komando malsukcesis: %s"
+msgstr "Komando IDLE malsukcesis por %s"
 
 #: imap/config.c:60 pop/config.c:60 send/config.c:92
 #, c-format
@@ -5169,14 +5150,13 @@ msgid "Closing connection to %s..."
 msgstr "Fermas la konekton al %s..."
 
 #: imap/imap.c:739
-#, fuzzy
 msgid "Download interrupted"
-msgstr "Serĉo interrompita"
+msgstr "Elŝuto interrompita"
 
 #: imap/imap.c:752
 #, c-format
 msgid "Download stalled - no data received for %d seconds"
-msgstr ""
+msgstr "Elŝuto paŭzigita - neniuj datumoj ricevitaj dum %d sekundoj"
 
 #: imap/imap.c:952 nntp/nntp.c:1852 pop/lib.c:339 send/smtp.c:1077
 msgid "Secure connection with TLS?"
@@ -5341,12 +5321,12 @@ msgstr "unsubject-regex { * | <regulesprimo> }"
 #. L10N: $status_format default format
 #: index/config.c:123
 msgid "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
-msgstr "-%r-NeoMutt: %D [Msĝ-oj:%<M?%M/>%m%<n? Nov:%n>%<o? Maln:%o>%<d? For:%d>%<F? Flag:%F>%<t? Mark:%t>%<p? Afiŝ:%p>%<b? Ink:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
+msgstr "-%r-NeoMutt: %D [Msĝ-oj:%<M?%M/>%m%<n? Nov:%n>%<o? Maln:%o>%<d? For:%d>%<F? Grav:%F>%<t? Mark:%t>%<p? Prokrast:%p>%<b? Ink:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
 
 #. L10N: $ts_icon_format default format
 #: index/config.c:136
 msgid "M%<n?AIL&ail>"
-msgstr "%?n?N&Neniuj n?ovaj mesaĝoj"
+msgstr "%<n?N&Neniuj n>ovaj mesaĝoj"
 
 #. L10N: $ts_status_format default format
 #: index/config.c:140
@@ -5775,9 +5755,9 @@ msgid "%s: null key sequence"
 msgstr "%s: malplena klavoserio"
 
 #: key/commands.c:331
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no such function: %s"
-msgstr "%s: funkcio ne ekzistas"
+msgstr "%s: funkcio ne ekzistas: %s"
 
 #: key/commands.c:745
 msgid "macro: empty key sequence"
@@ -6093,40 +6073,35 @@ msgstr "Mankas markitaj registroj"
 
 #: mlist/dlg_mlist.c:46
 msgid "Archive"
-msgstr ""
+msgstr "Arĥivo"
 
 #: mlist/dlg_mlist.c:48 mlist/functions.c:52
 msgid "Owner"
-msgstr ""
+msgstr "Estro"
 
 #: mlist/dlg_mlist.c:138
-#, fuzzy
 msgid "Unable to read mailing list headers"
-msgstr "Ekaboni dissendoliston"
+msgstr "Ne eblas legi ĉapojn de dissendolisto"
 
 #: mlist/dlg_mlist.c:152
-#, fuzzy
 msgid "No mailing list actions available"
-msgstr "Nenia malĉifroproceduro estas disponata por mesaĝo"
+msgstr "Neniuj disponeblaj agoj por dissendolisto"
 
 #: mlist/dlg_mlist.c:169
-#, fuzzy
 msgid "Available mailing list actions"
-msgstr "Neniu dissendolisto trovita"
+msgstr "Disponeblaj agoj por dissendolisto"
 
 #: mlist/functions.c:51
 msgid "Archives"
-msgstr ""
+msgstr "Arĥivoj"
 
 #: mlist/functions.c:132
-#, fuzzy
 msgid "No list action available"
-msgstr "Nenia malĉifroproceduro estas disponata por mesaĝo"
+msgstr "Neniuj disponebloj agoj por ago"
 
 #: mlist/functions.c:146
-#, fuzzy
 msgid "Could not parse mailto: URI"
-msgstr "Ne eblis remalfermi poŝtfakon"
+msgstr "Ne eblis analizi mailto:-URI"
 
 #: mutt/buffer.c:359
 msgid "Out of memory"
@@ -8045,15 +8020,13 @@ msgstr "mesaĝoj adresitaj al konataj dissendolistoj"
 
 #. L10N: Pattern Completion Menu description for ~L
 #: pattern/flags.c:132
-#, fuzzy
 msgid "messages whose From:, Sender:, To:, Cc: or Bcc: header matches REGEX"
-msgstr "mesaĝoj, kies De/Sendinto/Al/Kopie-Al-kampo konformas al ESPR"
+msgstr "mesaĝoj, kies De/Sendinto/Al/Kopie-Al/Blinde-Kopie-Al-kampo konformas al ESPR"
 
 #. L10N: Pattern Completion Menu description for %L
 #: pattern/flags.c:135
-#, fuzzy
 msgid "messages whose From:, Sender:, To:, Cc: or Bcc: is a member of GROUP"
-msgstr "mesaĝoj kies From:, Sender:, To: aŭ Cc: estas ano de GRUPO"
+msgstr "mesaĝoj kies De/Sendito/Al/Kopie-Al/Blinde-Kopie-Al-kampo estas ano de GRUPO"
 
 #. L10N: Pattern Completion Menu description for ~m
 #: pattern/flags.c:138
@@ -8336,7 +8309,7 @@ msgstr "Ne eblas skribi mesaĝon al dumtempa dosiero"
 
 #: postpone/dlg_postpone.c:93
 msgid "Tag"
-msgstr ""
+msgstr "Etikedo"
 
 #: postpone/dlg_postpone.c:269
 msgid "Postponed Messages"
@@ -8448,7 +8421,7 @@ msgstr "Agordaĵo %s devas enhavi neniujn ŝelajn metasignojn: %c"
 #. L10N: $abort_noattach_regex default format
 #: send/config.c:167
 msgid "\\<(attach|attached|attachments?)\\>"
-msgstr ""
+msgstr "\\<(kunsend[iu]|kunsend[aiou]s|kunsendaĵoj?)\\>"
 
 #. L10N: $attribution_intro default format
 #: send/config.c:195
@@ -8526,9 +8499,9 @@ msgid "Save attachments in Fcc?"
 msgstr "Ĉu konservi kunsendaĵojn en Fcc?"
 
 #: send/send.c:1771
-#, fuzzy, c-format
+#, c-format
 msgid "Warning: Fcc to %s failed"
-msgstr "Preterlasas Fcc al %s"
+msgstr "Averto: Fcc al %s malsukcesis"
 
 #. L10N: Called when saving to $record or Fcc failed after sending.
 #. (r)etry tries the same mailbox again.
@@ -8625,7 +8598,7 @@ msgstr "Sendas mesaĝon..."
 
 #: send/send.c:2780
 msgid "Fcc failed.  Aborting sending."
-msgstr ""
+msgstr "Fcc malsukcesis. Nuligas sendon."
 
 #: send/send.c:2823
 msgid "Could not send the message"
@@ -8688,14 +8661,14 @@ msgid "SMTP session failed: %s"
 msgstr "SMTP-konekto malsukcesis: %s"
 
 #: send/smtp.c:235
-#, fuzzy, c-format
+#, c-format
 msgid "SMTP session failed: cannot add recipient <%s>"
-msgstr "SMTP-konekto malsukcesis: ne povis malfermi %s"
+msgstr "SMTP-seanco malsukcesis: ne eblas aldoni ricevonton <%s>"
 
 #: send/smtp.c:262
 #, c-format
 msgid "SMTP session failed: unable to open %s"
-msgstr "SMTP-konekto malsukcesis: ne povis malfermi %s"
+msgstr "SMTP-seanco malsukcesis: ne povis malfermi %s"
 
 #: send/smtp.c:385
 #, c-format
@@ -8723,9 +8696,8 @@ msgid "Invalid server response"
 msgstr "Nevalida respondo de servilo"
 
 #: sidebar/functions.c:641
-#, fuzzy
 msgid "Sidebar search: "
-msgstr "Inversa serĉo pri: "
+msgstr "Serĉo de flanka strio:: "
 
 #: sidebar/sidebar.c:50
 msgid "Pin a mailbox in the sidebar (keep visible)"
@@ -9311,57 +9283,3 @@ msgstr "Parametroj de la tradukaĵo:"
 #: version.c:677
 msgid "Devel options:"
 msgstr "Disvolvaj parametroj:"
-
-#, c-format
-#~ msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'"
-#~ msgstr "La klavodifino '%s' estos alinomo de '%s'. Antaŭe provu: 'bind %s %s noop'"
-
-#~ msgid ""
-#~ "Copyright (C) 2015-2026 Richard Russon and friends\n"
-#~ "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
-#~ "NeoMutt is free software, and you are welcome to redistribute it\n"
-#~ "under certain conditions; type 'neomutt -vv' for details.\n"
-#~ msgstr ""
-#~ "Kopirajto (C) 2015-2026 Richard Russon kaj aliaj.\n"
-#~ "NeoMutt inkluzivas ABSOLUTE NENIAN GARANTION; por detaloj tajpu 'neomutt -vv'.\n"
-#~ "NeoMutt estas libera programo, kaj vi rajtas pludoni kopiojn\n"
-#~ "laŭ difinitaj kondiĉoj; tajpu 'neomutt -vv' por detaloj.\n"
-
-#, c-format
-#~ msgid "Invalid boolean value: %s"
-#~ msgstr "Nevalida bulea valoro: %s"
-
-#, c-format
-#~ msgid "Invalid enum value: %s"
-#~ msgstr "Nevalida enumeracia valoro: %s"
-
-# KB - 'quad' estas agordaĵo kun kvar eblaj valoroj ('yes', 'no', 'ask-yes',
-# 'ask-no'). Mi ne certas kiel traduki tion, do mi uzas la vorton 'kvarvalora'
-# (havanta kvar valorojn), malgraŭ 'kvarvalora valoro' ŝajnas stranga. Ŝajnas
-# ke aliaj lingvoj tute ne tradukas ĝin.
-#, c-format
-#~ msgid "Invalid quad value: %s"
-#~ msgstr "Nevalida kvarvalora valoro: %s"
-
-#, c-format
-#~ msgid "Invalid sort name: %s"
-#~ msgstr "Nevalida nomo de ordigo: %s"
-
-#, c-format
-#~ msgid "Mailbox %s@%s closed"
-#~ msgstr "Poŝtfako %s@%s fermita"
-
-#~ msgid "No more quoted text"
-#~ msgstr "Ne plu da citita teksto"
-
-#~ msgid "No more unquoted text after quoted text"
-#~ msgstr "Ne plu da necitita teksto post citita teksto"
-
-#, c-format
-#~ msgid "Print tagged attachment?"
-#~ msgid_plural "Print %d tagged attachments?"
-#~ msgstr[0] "Ĉu printi markitajn kunsendaĵojn?"
-#~ msgstr[1] "Ĉu printi %d markitajn kunsendaĵojn?"
-
-#~ msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
-#~ msgstr "Averto: Fcc al IMAP-poŝtfako ne funkcias en stapla reĝimo"
