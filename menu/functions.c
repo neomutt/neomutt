@@ -40,8 +40,13 @@
 #include "lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
+#include "index/lib.h"
 #include "key/lib.h"
+#include "pager/lib.h"
 #include "module_data.h"
+#include "mutt_logging.h"
+#include "pager/module_data.h"
+#include "pager/private_data.h"
 #include "type.h"
 
 #define MUTT_SEARCH_UP 1
@@ -277,12 +282,178 @@ static int menu_search(struct MenuFunctionData *fdata, const struct KeyEvent *ev
 }
 
 /**
+ * struct SampleTab - Sample pager tab state
+ */
+struct SampleTab
+{
+  const char *name;
+  struct IndexSharedData *shared;
+  struct Buffer *tempfile;
+  struct PagerData pdata;
+  struct PagerView pview;
+  struct MuttWindow *panel;
+};
+
+/**
+ * sample_data_file_new - Create sample data for a tab
+ * @param name Name of the tab
+ * @retval ptr Sample file path
+ */
+static struct Buffer *sample_data_file_new(const char *name)
+{
+  struct Buffer *tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
+
+  FILE *fp = mutt_file_fopen(buf_string(tempfile), "w");
+  if (!fp)
+  {
+    mutt_error(_("Could not create temporary file %s"), buf_string(tempfile));
+    buf_pool_release(&tempfile);
+    return NULL;
+  }
+
+  fprintf(fp, "%s\n\n", name);
+  for (int i = 1; i <= 100; i++)
+    fprintf(fp, "%s sample line %d\n", name, i);
+
+  mutt_file_fclose(&fp);
+  return tempfile;
+}
+
+/**
+ * sample_tab_free - Release a sample tab
+ * @param tab Tab state
+ */
+static void sample_tab_free(struct SampleTab *tab)
+{
+  if (!tab)
+    return;
+
+  pager_cleanup(&tab->pview);
+  buf_pool_release(&tab->tempfile);
+}
+
+/**
  * op_help - Show the help screen - Implements ::menu_function_t - @ingroup menu_function_api
  */
 static int op_help(struct MenuFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct PagerModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
+  ASSERT(mod_data);
+
   struct Menu *menu = fdata->menu;
-  mutt_help(menu->md);
+
+  static const char *const names[] = { "Apple",  "Banana", "Cherry",
+                                       "Damson", "Endive", "Fig" };
+  enum
+  {
+    SAMPLE_TAB_COUNT = sizeof(names) / sizeof(names[0]),
+  };
+  struct MuttWindow *tabbed = tabwin_new();
+  dialog_push(tabbed);
+
+  struct SampleTab tabs[SAMPLE_TAB_COUNT] = { 0 };
+  bool setup_ok = true;
+  for (size_t i = 0; i < SAMPLE_TAB_COUNT; i++)
+  {
+    tabs[i].name = names[i];
+    tabs[i].shared = index_shared_data_new();
+    if (!tabs[i].shared)
+    {
+      setup_ok = false;
+      break;
+    }
+
+    tabs[i].tempfile = sample_data_file_new(names[i]);
+    if (!tabs[i].tempfile)
+    {
+      setup_ok = false;
+      break;
+    }
+
+    tabs[i].panel = ppanel_new(false, tabs[i].shared);
+    tabs[i].pdata.fname = buf_string(tabs[i].tempfile);
+    tabs[i].pview.pdata = &tabs[i].pdata;
+    tabs[i].pview.mode = PAGER_MODE_OTHER;
+    tabs[i].pview.flags = MUTT_PAGER_NOWRAP | MUTT_PAGER_STRIPES;
+    tabs[i].pview.banner = tabs[i].name;
+    tabs[i].pview.win_index = NULL;
+    tabs[i].pview.win_pbar = window_find_child(tabs[i].panel, WT_STATUS_BAR);
+    tabs[i].pview.win_pager = window_find_child(tabs[i].panel, WT_CUSTOM);
+
+    tabwin_add_child(tabbed, tabs[i].name, tabs[i].panel);
+    if (pager_setup(&tabs[i].pview) != 0)
+    {
+      setup_ok = false;
+      break;
+    }
+  }
+
+  if (!setup_ok)
+  {
+    for (size_t i = 0; i < SAMPLE_TAB_COUNT; i++)
+      sample_tab_free(&tabs[i]);
+    dialog_pop();
+    mutt_window_free(&tabbed);
+    for (size_t i = 0; i < SAMPLE_TAB_COUNT; i++)
+    {
+      if (tabs[i].shared)
+      {
+        void *ptr = tabs[i].shared;
+        index_shared_data_free(NULL, &ptr);
+      }
+    }
+    return FR_ERROR;
+  }
+
+  struct MuttWindow *focus = tabs[0].pview.win_pager;
+  struct MuttWindow *old_focus = window_set_focus(focus);
+
+  int rc = 0;
+  int op = OP_NULL;
+  do
+  {
+    window_redraw(NULL);
+
+    struct KeyEvent event2 = km_dokey(mod_data->md_pager, GETCH_NONE);
+    op = event2.op;
+
+    mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
+    if (op < 0)
+      continue;
+    if (op == OP_NULL)
+    {
+      km_error_key(mod_data->md_pager);
+      continue;
+    }
+    mutt_clear_error();
+
+    focus = window_get_focus();
+    if (!focus)
+      focus = tabs[0].pview.win_pager;
+    rc = pager_function_dispatcher(focus, &event2);
+    if (rc == FR_UNKNOWN)
+      rc = tabbed_function_dispatcher(tabbed, &event2);
+    if (rc == FR_UNKNOWN)
+      rc = global_function_dispatcher(tabbed, &event2);
+  } while (rc != FR_DONE);
+
+  for (size_t i = 0; i < SAMPLE_TAB_COUNT; i++)
+    sample_tab_free(&tabs[i]);
+
+  window_set_focus(old_focus);
+  dialog_pop();
+  mutt_window_free(&tabbed);
+
+  for (size_t i = 0; i < SAMPLE_TAB_COUNT; i++)
+  {
+    if (tabs[i].shared)
+    {
+      void *ptr = tabs[i].shared;
+      index_shared_data_free(NULL, &ptr);
+    }
+  }
+
   menu->redraw = MENU_REDRAW_FULL;
   return FR_SUCCESS;
 }
