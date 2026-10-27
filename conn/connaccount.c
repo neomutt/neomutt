@@ -236,7 +236,7 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac, bool xoauth2)
     return NULL;
   }
 
-  if ((!xoauth2 && (token_size > 512)) || (xoauth2 && (token_size > 4096)))
+  if (token_size > 4096)
   {
     mutt_error(_("OAUTH token is too big: %ld"), (long) token_size);
     FREE(&token);
