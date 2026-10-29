@@ -410,6 +410,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_expando_parser)                                       \
   NEOMUTT_TEST_ITEM(test_expando_parse_short_name)                             \
   NEOMUTT_TEST_ITEM(test_expando_percent_sign_text)                            \
+  NEOMUTT_TEST_ITEM(test_expando_percent_width_render)                         \
   NEOMUTT_TEST_ITEM(test_expando_simple_expando)                               \
   NEOMUTT_TEST_ITEM(test_expando_simple_expando_render)                        \
   NEOMUTT_TEST_ITEM(test_expando_simple_text)                                  \

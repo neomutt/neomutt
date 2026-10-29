@@ -723,8 +723,9 @@ static void email_index_hook(const struct ExpandoNode *node, void *data,
   if (!exp)
     return;
 
-  expando_filter(exp, IndexRenderCallbacks, data, MUTT_FORMAT_NONE, buf->dsize,
-                 NeoMutt->env, buf);
+  // Use the index line's width, so percentage widths in the hook match it
+  expando_filter(exp, IndexRenderCallbacks, data, MUTT_FORMAT_NONE,
+                 ExpandoRenderCols, NeoMutt->env, buf);
 }
 
 /**

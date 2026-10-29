@@ -144,6 +144,39 @@ void test_expando_node_expando_format(void)
     str = "4.99999x";
     fmt = parse_format(str, &parsed_until, &err);
     TEST_CHECK(fmt == NULL);
+
+    str = "101%x";
+    fmt = parse_format(str, &parsed_until, &err);
+    TEST_CHECK(fmt == NULL);
+
+    str = "4.101%x";
+    fmt = parse_format(str, &parsed_until, &err);
+    TEST_CHECK(fmt == NULL);
+  }
+
+  // percentage widths
+  {
+    struct ExpandoParseError err = { 0 };
+    const char *parsed_until = NULL;
+
+    TEST_CASE("-20%.30%x");
+    struct ExpandoFormat *fmt = parse_format("-20%.30%x", &parsed_until, &err);
+    TEST_CHECK(fmt != NULL);
+    TEST_CHECK(fmt->min_cols == 20);
+    TEST_CHECK(fmt->max_cols == 30);
+    TEST_CHECK(fmt->min_pct);
+    TEST_CHECK(fmt->max_pct);
+    TEST_CHECK(fmt->justification == JUSTIFY_LEFT);
+    TEST_CHECK(parsed_until[0] == 'x');
+    FREE(&fmt);
+
+    TEST_CASE("20.30%x");
+    fmt = parse_format("20.30%x", &parsed_until, &err);
+    TEST_CHECK(fmt != NULL);
+    TEST_CHECK(!fmt->min_pct);
+    TEST_CHECK(fmt->max_pct);
+    TEST_CHECK(parsed_until[0] == 'x');
+    FREE(&fmt);
   }
 
   // struct ExpandoFormat *parse_format(const char *str, const char **parsed_until, struct ExpandoParseError *err);
