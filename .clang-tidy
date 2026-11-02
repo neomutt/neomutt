@@ -8,6 +8,7 @@ Checks: >
   clang-analyzer-*,
   -bugprone-multi-level-implicit-pointer-conversion,
   -bugprone-easily-swappable-parameters,
+  -bugprone-assignment-in-if-condition,
   -clang-analyzer-security.insecureAPI.*
 # bugprone-multi-level-implicit-pointer-conversion: fires on every call to
 # the codebase's own FREE()/ARRAY_FREE() macros, which take a `void *` via an
@@ -18,6 +19,18 @@ Checks: >
 # adjacent same-typed pointer parameters (e.g. any (haystack, needle)-style
 # string function) -- too subjective/noisy to be useful as a default-on
 # check.
+#
+# bugprone-assignment-in-if-condition: sampled all 192 findings on a full
+# build -- every single one is either this codebase's own established
+# `if ((x = foo()))` / `if (!(x = foo()))` idiom (already parenthesized to
+# signal the assignment is intentional, not a typo for `==`), or a
+# macro-expansion artifact (TAILQ_INSERT_HEAD/STAILQ_REMOVE*/MOVE_ADDRESSLIST
+# etc., whose BSD-style queue.h internals perform the flagged assignment, not
+# the call site clang-tidy points at -- MOVE_ADDRESSLIST's own body contains
+# no assignment at all). Zero genuine unintended-assignment bugs found across
+# the full sample -- same false-positive-against-an-established-idiom shape
+# as bugprone-multi-level-implicit-pointer-conversion above, not a real
+# defect class here.
 #
 # clang-analyzer-security.insecureAPI.*: suggests C11 Annex K bounds-checked
 # functions (memcpy_s, snprintf_s, etc.) that glibc doesn't implement and
