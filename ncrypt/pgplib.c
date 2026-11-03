@@ -61,44 +61,6 @@ const char *pgp_pkalgbytype(unsigned char type)
 }
 
 /**
- * pgp_canencrypt - Does this algorithm ID support encryption?
- * @param type Algorithm ID
- * @retval true Algorithm does support encryption
- */
-bool pgp_canencrypt(unsigned char type)
-{
-  switch (type)
-  {
-    case 1:
-    case 2:
-    case 16:
-    case 20:
-      return true;
-    default:
-      return false;
-  }
-}
-
-/**
- * pgp_cansign - Does this algorithm ID support signing?
- * @param type Algorithm ID
- * @retval true Algorithm does support signing
- */
-bool pgp_cansign(unsigned char type)
-{
-  switch (type)
-  {
-    case 1:
-    case 3:
-    case 17:
-    case 20:
-      return true;
-    default:
-      return false;
-  }
-}
-
-/**
  * pgp_uid_free - Free a PGP UID
  * @param[out] upp PGP UID to free
  */
