@@ -572,6 +572,7 @@ void mw_what_key(void)
     keymap_get_name(ch, key);
 
     buf_printf(text, _("Char = %s, Octal = %o, Decimal = %d\n"), buf_string(key), ch, ch);
+    mutt_debug(LL_MESSAGE, "what-key: Char = %s, Hex = %x, Octal = %o, Decimal = %d", buf_string(key), ch, ch, ch);
 
     msgwin_add_text(win, buf_string(text), ac_normal);
     msgwin_add_text(win, buf_string(prompt), ac_prompt);
