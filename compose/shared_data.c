@@ -47,5 +47,5 @@ void compose_shared_data_free(struct MuttWindow *win, void **ptr)
  */
 struct ComposeSharedData *compose_shared_data_new(void)
 {
-  return MUTT_MEM_CALLOC(1, struct ComposeSharedData);
+  return mutt_mem_calloc_T(1, struct ComposeSharedData);
 }

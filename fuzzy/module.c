@@ -38,7 +38,7 @@
  */
 static bool fuzzy_init(struct NeoMutt *n)
 {
-  struct FuzzyModuleData *mod_data = MUTT_MEM_CALLOC(1, struct FuzzyModuleData);
+  struct FuzzyModuleData *mod_data = mutt_mem_calloc_T(1, struct FuzzyModuleData);
   neomutt_set_module_data(n, MODULE_ID_FUZZY, mod_data);
 
   return true;

@@ -41,7 +41,7 @@ extern struct ConfigDef HelpbarVars[];
  */
 static bool helpbar_init(struct NeoMutt *n)
 {
-  struct HelpbarModuleData *mod_data = MUTT_MEM_CALLOC(1, struct HelpbarModuleData);
+  struct HelpbarModuleData *mod_data = mutt_mem_calloc_T(1, struct HelpbarModuleData);
   neomutt_set_module_data(n, MODULE_ID_HELPBAR, mod_data);
 
   mod_data->notify = notify_new();

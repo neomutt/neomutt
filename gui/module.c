@@ -76,7 +76,7 @@ static void log_gui(void)
  */
 static bool gui_init(struct NeoMutt *n)
 {
-  struct GuiModuleData *mod_data = MUTT_MEM_CALLOC(1, struct GuiModuleData);
+  struct GuiModuleData *mod_data = mutt_mem_calloc_T(1, struct GuiModuleData);
   neomutt_set_module_data(n, MODULE_ID_GUI, mod_data);
 
   mod_data->notify = notify_new();

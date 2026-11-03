@@ -41,7 +41,7 @@ extern struct ConfigDef NntpVars[];
  */
 static bool nntp_init(struct NeoMutt *n)
 {
-  struct NntpModuleData *mod_data = MUTT_MEM_CALLOC(1, struct NntpModuleData);
+  struct NntpModuleData *mod_data = mutt_mem_calloc_T(1, struct NntpModuleData);
   neomutt_set_module_data(n, MODULE_ID_NNTP, mod_data);
 
   mod_data->notify = notify_new();

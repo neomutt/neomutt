@@ -50,7 +50,7 @@ static bool parse_args(const uint8_t *data, size_t size, int *argc, char ***argv
     return false;
 
   // Create a null-terminated copy of the input
-  char *input = MUTT_MEM_MALLOC(size + 1, char);
+  char *input = mutt_mem_malloc_T(size + 1, char);
   memcpy(input, data, size);
   input[size] = '\0';
 
@@ -75,7 +75,7 @@ static bool parse_args(const uint8_t *data, size_t size, int *argc, char ***argv
   }
 
   // Allocate argv array
-  char **args = MUTT_MEM_MALLOC(count + 1, char *);
+  char **args = mutt_mem_malloc_T(count + 1, char *);
   args[0] = mutt_str_dup("neomutt");
 
   // Fill in arguments

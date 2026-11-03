@@ -46,7 +46,7 @@ struct Account *account_new(const char *name, struct ConfigSubset *sub)
   if (!sub)
     return NULL;
 
-  struct Account *a = MUTT_MEM_CALLOC(1, struct Account);
+  struct Account *a = mutt_mem_calloc_T(1, struct Account);
 
   ARRAY_INIT(&a->mailboxes);
   a->notify = notify_new();

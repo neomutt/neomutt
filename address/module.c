@@ -44,7 +44,7 @@ extern struct ConfigDef AddressVarsIdn[];
  */
 static bool address_init(struct NeoMutt *n)
 {
-  struct AddressModuleData *mod_data = MUTT_MEM_CALLOC(1, struct AddressModuleData);
+  struct AddressModuleData *mod_data = mutt_mem_calloc_T(1, struct AddressModuleData);
   neomutt_set_module_data(n, MODULE_ID_ADDRESS, mod_data);
 
   mod_data->notify = notify_new();

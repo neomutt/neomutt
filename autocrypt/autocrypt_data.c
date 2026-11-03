@@ -39,7 +39,7 @@
  */
 struct AutocryptData *autocrypt_data_new(void)
 {
-  struct AutocryptData *ad = MUTT_MEM_CALLOC(1, struct AutocryptData);
+  struct AutocryptData *ad = mutt_mem_calloc_T(1, struct AutocryptData);
 
   ARRAY_INIT(&ad->entries);
 

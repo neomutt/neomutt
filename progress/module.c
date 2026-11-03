@@ -41,7 +41,7 @@ extern struct ConfigDef ProgressVars[];
  */
 static bool progress_init(struct NeoMutt *n)
 {
-  struct ProgressModuleData *mod_data = MUTT_MEM_CALLOC(1, struct ProgressModuleData);
+  struct ProgressModuleData *mod_data = mutt_mem_calloc_T(1, struct ProgressModuleData);
   neomutt_set_module_data(n, MODULE_ID_PROGRESS, mod_data);
 
   mod_data->notify = notify_new();

@@ -175,7 +175,7 @@ struct CursesColor *curses_color_new(color_t fg, color_t bg)
     return NULL;
 
   struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
-  struct CursesColor *cc_new = MUTT_MEM_CALLOC(1, struct CursesColor);
+  struct CursesColor *cc_new = mutt_mem_calloc_T(1, struct CursesColor);
   mod_data->num_curses_colors++;
   color_debug(LL_DEBUG5, "CursesColor %p\n", (void *) cc_new);
   cc_new->fg = fg;

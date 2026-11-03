@@ -52,5 +52,5 @@ void message_free(struct Message **ptr)
  */
 struct Message *message_new(void)
 {
-  return MUTT_MEM_CALLOC(1, struct Message);
+  return mutt_mem_calloc_T(1, struct Message);
 }

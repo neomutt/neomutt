@@ -123,7 +123,7 @@ void dlg_mlist(struct Mailbox *m, struct Email *e)
   struct MenuDefinition *md_list = menu_find(MENU_LIST);
   ASSERT(md_list);
 
-  struct ListData *ld = MUTT_MEM_CALLOC(1, struct ListData);
+  struct ListData *ld = mutt_mem_calloc_T(1, struct ListData);
   ld->mailbox = m;
 
   struct Message *msg = mx_msg_open(m, e);

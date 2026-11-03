@@ -44,7 +44,7 @@ extern struct ConfigDef AutocryptVars[];
  */
 static bool autocrypt_init(struct NeoMutt *n)
 {
-  struct AutocryptModuleData *mod_data = MUTT_MEM_CALLOC(1, struct AutocryptModuleData);
+  struct AutocryptModuleData *mod_data = mutt_mem_calloc_T(1, struct AutocryptModuleData);
   neomutt_set_module_data(n, MODULE_ID_AUTOCRYPT, mod_data);
 
   mod_data->notify = notify_new();

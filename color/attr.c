@@ -88,7 +88,7 @@ void attr_color_free(struct AttrColor **ptr)
  */
 struct AttrColor *attr_color_new(void)
 {
-  struct AttrColor *ac = MUTT_MEM_CALLOC(1, struct AttrColor);
+  struct AttrColor *ac = mutt_mem_calloc_T(1, struct AttrColor);
 
   ac->fg.color = COLOR_DEFAULT;
   ac->fg.type = CT_SIMPLE;

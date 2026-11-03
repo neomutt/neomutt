@@ -40,7 +40,7 @@ extern const struct Command CommandsCommands[];
  */
 static bool commands_init(struct NeoMutt *n)
 {
-  struct CommandsModuleData *mod_data = MUTT_MEM_CALLOC(1, struct CommandsModuleData);
+  struct CommandsModuleData *mod_data = mutt_mem_calloc_T(1, struct CommandsModuleData);
   STAILQ_INIT(&mod_data->muttrc_stack);
   neomutt_set_module_data(n, MODULE_ID_COMMANDS, mod_data);
 
