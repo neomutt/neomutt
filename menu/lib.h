@@ -186,6 +186,8 @@ MenuRedrawFlags menu_prev_entry    (struct Menu *menu, int count);
 MenuRedrawFlags menu_prev_line     (struct Menu *menu, int count);
 MenuRedrawFlags menu_prev_page     (struct Menu *menu, int count);
 MenuRedrawFlags menu_top_page      (struct Menu *menu);
+MenuRedrawFlags menu_view_end      (struct Menu *menu);
+MenuRedrawFlags menu_view_home     (struct Menu *menu);
 
 void         menu_redraw_current(struct Menu *menu);
 void         menu_redraw_full   (struct Menu *menu);

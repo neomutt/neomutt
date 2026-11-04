@@ -55,16 +55,16 @@ typedef int (*sidebar_function_t)(struct SidebarFunctionData *fdata, const struc
  */
 struct SidebarFunction
 {
-  int op;                      ///< Op code, e.g. OP_SIDEBAR_NEXT
+  int op;                      ///< Op code, e.g. OP_SIDEBAR_SELECT_NEXT_ENTRY
   sidebar_function_t function; ///< Function to call
 };
 
-int op_sidebar_first           (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
-int op_sidebar_last            (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
-int op_sidebar_next            (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
-int op_sidebar_open            (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
-int op_sidebar_scroll_page_down(struct SidebarFunctionData *fdata, const struct KeyEvent *event);
-int op_sidebar_scroll_page_up  (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
-int op_sidebar_prev            (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
+int op_sidebar_activate_entry       (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
+int op_sidebar_scroll_page_down     (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
+int op_sidebar_scroll_page_up       (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
+int op_sidebar_select_first_entry   (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
+int op_sidebar_select_last_entry    (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
+int op_sidebar_select_next_entry    (struct SidebarFunctionData *fdata, const struct KeyEvent *event);
+int op_sidebar_select_previous_entry(struct SidebarFunctionData *fdata, const struct KeyEvent *event);
 
 #endif /* MUTT_SIDEBAR_FUNCTIONS_SIDEBAR_H */

@@ -1,0 +1,4 @@
+bind $my_menu L_0001 delete-entry
+bind $my_menu L_0002 undelete-entry
+
+# vim: ft=neomuttrc

@@ -47,7 +47,7 @@ typedef int (*browser_function_t)(struct BrowserPrivateData *priv, const struct 
  */
 struct BrowserFunction
 {
-  int op;                      ///< Op code, e.g. OP_MAIN_LIMIT
+  int op;                      ///< Op code, e.g. OP_LIMIT_ENTRIES
   browser_function_t function; ///< Function to call
 };
 

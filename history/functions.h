@@ -60,7 +60,7 @@ typedef int (*history_function_t)(struct HistoryData *pd, const struct KeyEvent 
  */
 struct HistoryFunction
 {
-  int op;                      ///< Op code, e.g. OP_GENERIC_SELECT_ENTRY
+  int op;                      ///< Op code, e.g. OP_ACTIVATE_ENTRY
   history_function_t function; ///< Function to call
 };
 

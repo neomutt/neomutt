@@ -33,7 +33,7 @@
 #define DEFINE_HELP_MESSAGE(opcode, op_string) { #opcode, op_string },
 
 /// Lookup table mapping an opcode to its name and description
-/// e.g. `OpStrings[OP_EDIT_LABEL] = { "OP_EDIT_LABEL", "edit an email's label" }`
+/// e.g. `OpStrings[OP_EDIT_X_LABEL] = { "OP_EDIT_X_LABEL", "edit an email's label" }`
 static const char *OpStrings[][2] = {
   OPS(DEFINE_HELP_MESSAGE){ NULL, NULL },
 };
@@ -42,7 +42,7 @@ static const char *OpStrings[][2] = {
 
 /**
  * opcodes_get_name - Get the name of an opcode
- * @param op Opcode, e.g. OP_HELP
+ * @param op Opcode, e.g. OP_DISPLAY_HELP
  * @retval str Name of the opcode
  */
 const char *opcodes_get_name(int op)
@@ -62,7 +62,7 @@ const char *opcodes_get_name(int op)
 
 /**
  * opcodes_get_description - Get the description of an opcode
- * @param op Opcode, e.g. OP_HELP
+ * @param op Opcode, e.g. OP_DISPLAY_HELP
  * @retval str Description of the opcode
  */
 const char *opcodes_get_description(int op)

@@ -1,0 +1,6 @@
+bind $my_menu M_0001 compose-message
+bind $my_menu M_0002 create-alias
+bind $my_menu M_0003 query-append
+bind $my_menu M_0004 view-address-query
+
+# vim: ft=neomuttrc

@@ -1,0 +1,62 @@
+set my_menu = "alias"
+source "alias.rc"
+source "generic.rc"
+
+set my_menu = "attach"
+source "attach.rc"
+source "generic.rc"
+
+set my_menu = "autocrypt"
+source "autocrypt.rc"
+source "generic.rc"
+
+set my_menu = "browser"
+source "browser.rc"
+source "generic.rc"
+
+set my_menu = "compose"
+source "compose.rc"
+source "generic.rc"
+
+set my_menu = "editor"
+source "editor.rc"
+
+set my_menu = "generic"
+source "generic.rc"
+
+set my_menu = "index"
+source "index.rc"
+source "sidebar.rc"
+source "generic.rc"
+
+set my_menu = "list"
+source "list.rc"
+source "generic.rc"
+
+set my_menu = "pager"
+source "pager.rc"
+source "index.rc"
+source "sidebar.rc"
+source "generic.rc"
+
+set my_menu = "pgp"
+source "pgp.rc"
+source "generic.rc"
+
+set my_menu = "postpone"
+source "postpone.rc"
+source "generic.rc"
+
+set my_menu = "query"
+source "query.rc"
+source "generic.rc"
+
+set my_menu = "sidebar"
+source "sidebar.rc"
+source "editor.rc"
+
+set my_menu = "smime"
+source "smime.rc"
+source "generic.rc"
+
+# vim: ft=neomuttrc
