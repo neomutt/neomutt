@@ -78,9 +78,6 @@ static void mlist_data_add_entries(struct ListData *ld, const struct ListAction 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, values, entries)
   {
-    if (!mutt_istr_startswith(np->data, "mailto:"))
-      continue;
-
     const struct ListEntry entry = { action, np->data };
     ARRAY_ADD(&ld->entries, entry);
   }
