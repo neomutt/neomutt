@@ -226,6 +226,94 @@ void mview_update(struct MailboxView *mv)
 }
 
 /**
+ * remove_email - Detach an Email from a Mailbox's hash tables and queue it for freeing
+ * @param m Mailbox
+ * @param e Email
+ */
+static void remove_email(struct Mailbox *m, struct Email *e)
+{
+  if ((m->type == MUTT_NOTMUCH) || (m->type == MUTT_MH) ||
+      (m->type == MUTT_MAILDIR) || (m->type == MUTT_IMAP))
+  {
+    mailbox_size_sub(m, e);
+  }
+  /* remove message from the hash tables */
+  if (m->subj_hash && e->env->real_subj)
+    mutt_hash_delete(m->subj_hash, e->env->real_subj, e);
+  if (m->id_hash && e->env->message_id)
+    mutt_hash_delete(m->id_hash, e->env->message_id, e);
+  mutt_label_hash_remove(m, e);
+
+  if (m->type == MUTT_IMAP)
+    imap_notify_delete_email(m, e);
+
+  mailbox_gc_add(e);
+}
+
+/**
+ * prune_emails - Remove quasi-deleted Emails from a Mailbox
+ * @param mv Mailbox View
+ *
+ * Used when messages have vanished from the mailbox behind our back.
+ * Unlike update_tables(), this leaves deleted messages and pending changes alone.
+ */
+static void prune_emails(struct MailboxView *mv)
+{
+  if (!mv || !mv->mailbox)
+    return;
+
+  struct Mailbox *m = mv->mailbox;
+  const int padding = mx_msg_padding_size(m);
+
+  m->vcount = 0;
+  mv->vsize = 0;
+  int j = 0;
+  for (int i = 0; i < m->msg_count; i++)
+  {
+    struct Email *e = m->emails[i];
+    if (!e)
+      break;
+
+    if (e->quasi_deleted)
+    {
+      if (e->deleted)
+        m->msg_deleted--;
+      if (e->tagged)
+        m->msg_tagged--;
+      if (e->flagged)
+        m->msg_flagged--;
+      if (!e->read)
+      {
+        m->msg_unread--;
+        if (!e->old)
+          m->msg_new--;
+      }
+      e->vnum = -1;
+      e->visible = false;
+      remove_email(m, e);
+      m->emails[i] = NULL;
+      continue;
+    }
+
+    if (i != j)
+    {
+      m->emails[j] = e;
+      m->emails[i] = NULL;
+    }
+    e->msgno = j;
+    if (e->vnum != -1)
+    {
+      m->v2r[m->vcount] = j;
+      e->vnum = m->vcount++;
+      struct Body *b = e->body;
+      mv->vsize += b->length + b->offset - b->hdr_offset + padding;
+    }
+    j++;
+  }
+  m->msg_count = j;
+}
+
+/**
  * update_tables - Update a MailboxView's internal tables
  * @param mv Mailbox
  */
@@ -296,22 +384,7 @@ static void update_tables(struct MailboxView *mv)
     }
     else
     {
-      if ((m->type == MUTT_NOTMUCH) || (m->type == MUTT_MH) ||
-          (m->type == MUTT_MAILDIR) || (m->type == MUTT_IMAP))
-      {
-        mailbox_size_sub(m, m->emails[i]);
-      }
-      /* remove message from the hash tables */
-      if (m->subj_hash && m->emails[i]->env->real_subj)
-        mutt_hash_delete(m->subj_hash, m->emails[i]->env->real_subj, m->emails[i]);
-      if (m->id_hash && m->emails[i]->env->message_id)
-        mutt_hash_delete(m->id_hash, m->emails[i]->env->message_id, m->emails[i]);
-      mutt_label_hash_remove(m, m->emails[i]);
-
-      if (m->type == MUTT_IMAP)
-        imap_notify_delete_email(m, m->emails[i]);
-
-      mailbox_gc_add(m->emails[i]);
+      remove_email(m, m->emails[i]);
       m->emails[i] = NULL;
     }
   }
@@ -341,6 +414,9 @@ int mview_mailbox_observer(struct NotifyCallback *nc)
       break;
     case NT_MAILBOX_UPDATE:
       update_tables(mv);
+      break;
+    case NT_MAILBOX_PRUNE:
+      prune_emails(mv);
       break;
     case NT_MAILBOX_RESORT:
       mutt_sort_headers(mv, true);

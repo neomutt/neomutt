@@ -107,6 +107,10 @@ static int index_shared_mailbox_observer(struct NotifyCallback *nc)
   if (nc->event_subtype == NT_MAILBOX_DELETE)
     shared->mailbox = NULL;
 
+  // The current Email is about to be removed from the Mailbox
+  if ((nc->event_subtype == NT_MAILBOX_PRUNE) && shared->email && shared->email->quasi_deleted)
+    index_shared_data_set_email(shared, NULL);
+
   mutt_debug(LL_NOTIFY, "relay NT_MAILBOX to shared data observers\n");
   notify_send(shared->notify, nc->event_type, nc->event_subtype, nc->event_data);
   return 0;
