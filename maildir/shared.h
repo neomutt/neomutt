@@ -37,6 +37,7 @@ struct Message;
 void          maildir_canon_filename      (struct Buffer *dest, const char *src);
 mode_t        maildir_umask               (struct Mailbox *m);
 bool          maildir_update_flags        (struct Mailbox *m, struct Email *e_old, struct Email *e_new);
+bool          maildir_merge_flags         (struct Mailbox *m, struct Email *e_old, struct Email *e_new);
 
 // These are needed by Notmuch
 struct Email *maildir_email_new           (void);
