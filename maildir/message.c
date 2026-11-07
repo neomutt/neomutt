@@ -331,6 +331,11 @@ bool maildir_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct Hea
   {
     if (maildir_sync_message(m, e) == -1)
       return false;
+    maildir_edata_set_disk_flags(e, e);
+    // A scan reports any file in cur/ as old, whatever e->old says
+    struct MaildirEmailData *edata = maildir_edata_get(e);
+    if (edata)
+      edata->disk_old = mutt_strn_equal(e->path, "cur/", 4);
   }
 
   if (e->changed)

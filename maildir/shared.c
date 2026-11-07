@@ -36,6 +36,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
+#include "edata.h"
 #include "mdata.h"
 
 /**
@@ -138,4 +139,52 @@ bool maildir_update_flags(struct Mailbox *m, struct Email *e_old, struct Email *
     m->changed = false;
 
   return header_changed;
+}
+
+/**
+ * maildir_merge_flags - Merge external flag changes into a locally modified Email
+ * @param m     Mailbox
+ * @param e_old Email with unsynced local changes
+ * @param e_new Email parsed from the file currently on disk
+ * @retval true  Flags were changed
+ * @retval false No change
+ *
+ * Another program changed the file's flags while we had our own unsynced
+ * changes.  Each flag that we did not change since we last saw the file takes
+ * the on-disk value; a flag we did change keeps our value, so the next sync
+ * writes our changes as a delta over theirs rather than replacing them.
+ */
+bool maildir_merge_flags(struct Mailbox *m, struct Email *e_old, struct Email *e_new)
+{
+  if (!m || !e_old || !e_new)
+    return false;
+
+  struct MaildirEmailData *edata = maildir_edata_get(e_old);
+  if (!edata)
+    return false;
+
+  bool changed = false;
+
+  if ((e_new->flagged != edata->disk_flagged) && (e_old->flagged == edata->disk_flagged))
+  {
+    mutt_set_flag(m, e_old, MUTT_FLAG, e_new->flagged, true);
+    changed = true;
+  }
+  if ((e_new->replied != edata->disk_replied) && (e_old->replied == edata->disk_replied))
+  {
+    mutt_set_flag(m, e_old, MUTT_REPLIED, e_new->replied, true);
+    changed = true;
+  }
+  if ((e_new->read != edata->disk_read) && (e_old->read == edata->disk_read))
+  {
+    mutt_set_flag(m, e_old, MUTT_READ, e_new->read, true);
+    changed = true;
+  }
+  if ((e_new->old != edata->disk_old) && (e_old->old == edata->disk_old))
+  {
+    mutt_set_flag(m, e_old, MUTT_OLD, e_new->old, true);
+    changed = true;
+  }
+
+  return changed;
 }

@@ -66,3 +66,20 @@ struct MaildirEmailData *maildir_edata_get(struct Email *e)
     return NULL;
   return e->edata;
 }
+
+/**
+ * maildir_edata_set_disk_flags - Record the flags currently in the file's name
+ * @param e      Email to update
+ * @param e_disk Email whose flags match the file on disk (may be e itself)
+ */
+void maildir_edata_set_disk_flags(struct Email *e, const struct Email *e_disk)
+{
+  struct MaildirEmailData *edata = maildir_edata_get(e);
+  if (!edata || !e_disk)
+    return;
+
+  edata->disk_flagged = e_disk->flagged;
+  edata->disk_replied = e_disk->replied;
+  edata->disk_read = e_disk->read;
+  edata->disk_old = e_disk->old;
+}

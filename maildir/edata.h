@@ -31,10 +31,17 @@ struct Email;
 struct MaildirEmailData
 {
   char        *custom_flags;   ///< Custom Maildir flags (e.g Dovecot labels)
+
+  // Flags as last seen in the filename on disk, see maildir_merge_flags()
+  bool disk_flagged : 1;       ///< 'F' flag was set on disk
+  bool disk_replied : 1;       ///< 'R' flag was set on disk
+  bool disk_read    : 1;       ///< 'S' flag was set on disk
+  bool disk_old     : 1;       ///< File was in the 'cur' directory
 };
 
 void                     maildir_edata_free(void **ptr);
 struct MaildirEmailData *maildir_edata_get(struct Email *e);
 struct MaildirEmailData *maildir_edata_new(void);
+void                     maildir_edata_set_disk_flags(struct Email *e, const struct Email *e_disk);
 
 #endif /* MUTT_MAILDIR_EDATA_H */

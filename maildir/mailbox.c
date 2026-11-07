@@ -143,6 +143,8 @@ void maildir_parse_flags(struct Email *e, const char *path)
     FREE(&edata->custom_flags);
   else if (q)
     *q = '\0';
+
+  maildir_edata_set_disk_flags(e, e);
 }
 
 /**
@@ -647,10 +649,24 @@ static enum MxStatus maildir_check(struct Mailbox *m)
         mutt_str_replace(&e->path, md->email->path);
 
       /* if the user hasn't modified the flags on this message, update
-       * the flags we just detected.  */
+       * the flags we just detected.  Otherwise take only the flags that
+       * changed on disk since we last saw the file.  */
       if (!e->changed)
+      {
         if (maildir_update_flags(m, e, md->email))
           flags_changed = true;
+      }
+      else if (maildir_merge_flags(m, e, md->email))
+      {
+        flags_changed = true;
+      }
+      maildir_edata_set_disk_flags(e, md->email);
+
+      /* custom flags can only be changed by other programs */
+      struct MaildirEmailData *edata = maildir_edata_get(e);
+      struct MaildirEmailData *edata_new = maildir_edata_get(md->email);
+      if (edata && edata_new)
+        mutt_str_replace(&edata->custom_flags, edata_new->custom_flags);
 
       if (e->deleted == e->trash)
       {
