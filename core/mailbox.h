@@ -183,6 +183,7 @@ enum NotifyMailbox
   NT_MAILBOX_RESORT,     ///< Email list needs resorting
   NT_MAILBOX_UPDATE,     ///< Update internal tables
   NT_MAILBOX_UNTAG,      ///< Clear the 'last-tagged' pointer
+  NT_MAILBOX_PRUNE,      ///< Remove quasi-deleted Emails from the list
 };
 
 /**

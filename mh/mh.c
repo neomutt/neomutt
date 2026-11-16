@@ -1018,6 +1018,7 @@ static enum MxStatus mh_check(struct Mailbox *m)
     else /* message has disappeared */
     {
       occult = true;
+      e->quasi_deleted = true;
     }
   }
 
@@ -1025,9 +1026,12 @@ static enum MxStatus mh_check(struct Mailbox *m)
 
   mutt_hash_free(&fnames);
 
-  /* If we didn't just get new mail, update the tables. */
+  /* Remove the vanished messages and rebuild the tables. */
   if (occult)
+  {
+    mailbox_changed(m, NT_MAILBOX_PRUNE);
     mailbox_changed(m, NT_MAILBOX_RESORT);
+  }
 
   /* Incorporate new messages */
   num_new = mh_move_to_mailbox(m, &mha);
