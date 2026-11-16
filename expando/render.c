@@ -32,6 +32,39 @@
 #include "render.h"
 #include "node.h"
 
+/// Width of the line being rendered by expando_render(), -1 if unlimited
+int ExpandoRenderCols = -1;
+
+/**
+ * format_resolve - Turn percentage widths into screen columns
+ * @param fmt Format, may be NULL
+ * @param tmp Storage for the resolved copy
+ * @retval ptr fmt itself, or tmp holding absolute widths
+ *
+ * With an unlimited width, a percentage minimum is dropped and a percentage
+ * maximum means no limit.
+ */
+const struct ExpandoFormat *format_resolve(const struct ExpandoFormat *fmt,
+                                           struct ExpandoFormat *tmp)
+{
+  if (!fmt || (!fmt->min_pct && !fmt->max_pct))
+    return fmt;
+
+  *tmp = *fmt;
+  tmp->min_pct = false;
+  tmp->max_pct = false;
+  if (fmt->min_pct)
+    tmp->min_cols = (ExpandoRenderCols < 0) ? 0 : ExpandoRenderCols * fmt->min_cols / 100;
+  if (fmt->max_pct)
+  {
+    tmp->max_cols = (ExpandoRenderCols < 0) ? -1 : ExpandoRenderCols * fmt->max_cols / 100;
+    // Don't round down to 0, which an Expando node reads as unlimited
+    if ((tmp->max_cols == 0) && (fmt->max_cols > 0))
+      tmp->max_cols = 1;
+  }
+  return tmp;
+}
+
 /**
  * node_render - Render a tree of ExpandoNodes into a string
  * @param node     Root of tree

@@ -164,11 +164,17 @@ int expando_render(const struct Expando *exp, const struct ExpandoRenderCallback
   if (!exp || !exp->node || !erc)
     return 0;
 
+  // Save/restore so a nested render doesn't change the outer width
+  const int old_cols = ExpandoRenderCols;
+  ExpandoRenderCols = max_cols;
+
   // Give enough space for a long command line
   if (max_cols == -1)
     max_cols = 8192;
 
-  return node_render(exp->node, erc, buf, max_cols, data, flags);
+  int rc = node_render(exp->node, erc, buf, max_cols, data, flags);
+  ExpandoRenderCols = old_cols;
+  return rc;
 }
 
 /**

@@ -46,7 +46,8 @@ int node_container_render(const struct ExpandoNode *node,
 {
   ASSERT(node->type == ENT_CONTAINER);
 
-  const struct ExpandoFormat *fmt = node->format;
+  struct ExpandoFormat fmt_abs = { 0 };
+  const struct ExpandoFormat *fmt = format_resolve(node->format, &fmt_abs);
   if (fmt && (fmt->max_cols != -1))
     max_cols = MIN(max_cols, fmt->max_cols);
 

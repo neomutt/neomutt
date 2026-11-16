@@ -74,7 +74,8 @@ static int node_condition_render(const struct ExpandoNode *node,
     rc = node_render(node_false, erc, buf_cond, max_cols, data, flags);
   }
 
-  const struct ExpandoFormat *fmt = node->format;
+  struct ExpandoFormat fmt_abs = { 0 };
+  const struct ExpandoFormat *fmt = format_resolve(node->format, &fmt_abs);
   if (!fmt)
   {
     buf_addstr(buf, buf_string(buf_cond));

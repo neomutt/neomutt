@@ -56,6 +56,8 @@ struct ExpandoFormat
   enum FormatJustify justification;   ///< Justification: left, centre, right
   char               leader;          ///< Leader character, 0 or space
   bool               lower;           ///< Display in lower case
+  bool               min_pct;         ///< min_cols is a % of the line width
+  bool               max_pct;         ///< max_cols is a % of the line width
 };
 
 /**
