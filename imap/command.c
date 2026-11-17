@@ -222,7 +222,7 @@ static void cmd_handle_fatal(struct ImapAccountData *adata)
     mutt_debug(LL_DEBUG1, "Attempting to reconnect to %s (attempt %d)\n",
                adata->conn ? adata->conn->account.host : "NULL", adata->retry_count + 1);
 
-    if (imap_login(adata))
+    if (imap_login(adata) == 0)
     {
       mutt_message(_("Reconnected to %s"), adata->conn->account.host);
       adata->retry_count = 0; // Reset on success
