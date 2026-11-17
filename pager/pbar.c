@@ -239,6 +239,8 @@ static int pbar_pager_observer(struct NotifyCallback *nc)
     return 0;
   if (!nc->global_data)
     return -1;
+  if (nc->event_subtype == NT_PAGER_DELETE)
+    return 0;
 
   struct MuttWindow *win_pbar = nc->global_data;
 
