@@ -73,7 +73,7 @@ sorted through them, fixed them up, and documented them.
 ## How to Install NeoMutt
 
 NeoMutt may be packaged for your distribution. If not, it can be
-[built from source](https://neomutt.org/dev/build/build). Please refer to the
+[built from source](https://dev.neomutt.org/build/build.html). Please refer to the
 installation instructions on the [distro page](https://neomutt.org/distro.html).
 
 ## Where is NeoMutt?
