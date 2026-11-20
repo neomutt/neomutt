@@ -1,4 +1,4 @@
-FUZZ_OBJS   = fuzz/address.o fuzz/body.o fuzz/cli.o fuzz/date.o
+FUZZ_OBJS   = fuzz/address.o fuzz/body.o fuzz/cli.o fuzz/date.o fuzz/rfc2047.o
 
 CFLAGS	+= -I$(SRCDIR)/fuzz
 
@@ -6,9 +6,10 @@ FUZZ_ADDRESS = fuzz/address-fuzz$(EXEEXT)
 FUZZ_BODY = fuzz/body-fuzz$(EXEEXT)
 FUZZ_CLI = fuzz/cli-fuzz$(EXEEXT)
 FUZZ_DATE = fuzz/date-fuzz$(EXEEXT)
+FUZZ_RFC2047 = fuzz/rfc2047-fuzz$(EXEEXT)
 
 .PHONY: fuzz
-fuzz: $(FUZZ_ADDRESS) $(FUZZ_BODY) $(FUZZ_CLI) $(FUZZ_DATE)
+fuzz: $(FUZZ_ADDRESS) $(FUZZ_BODY) $(FUZZ_CLI) $(FUZZ_DATE) $(FUZZ_RFC2047)
 
 $(FUZZ_ADDRESS): fuzz/address.o $(NEOMUTTOBJS) $(LIBCOMMANDS) \
 		$(LIBHOOKS) $(MUTTLIBS) $(NEOMUTTLIBS)
@@ -38,10 +39,18 @@ $(FUZZ_DATE): fuzz/date.o $(NEOMUTTOBJS) $(LIBCOMMANDS) $(LIBHOOKS) \
 		$(LIBPARSE) $(LIBCONFIG) $(NEOMUTTLIBS) $(LDFLAGS) $(LIBS) \
 		$(LIB_FUZZING_ENGINE)
 
-all-fuzz: $(FUZZ_ADDRESS) $(FUZZ_BODY) $(FUZZ_CLI) $(FUZZ_DATE)
+$(FUZZ_RFC2047): fuzz/rfc2047.o $(NEOMUTTOBJS) $(LIBCOMMANDS) $(LIBHOOKS) \
+		$(MUTTLIBS) $(NEOMUTTLIBS)
+	$(CXX) $(CXXFLAGS) -o $@ fuzz/rfc2047.o $(NEOMUTTOBJS) \
+		$(LIBCOMMANDS) $(LIBHOOKS) $(MUTTLIBS) $(LIBCOMMANDS) \
+		$(LIBPARSE) $(LIBCONFIG) $(NEOMUTTLIBS) $(LDFLAGS) $(LIBS) \
+		$(LIB_FUZZING_ENGINE)
+
+all-fuzz: $(FUZZ_ADDRESS) $(FUZZ_BODY) $(FUZZ_CLI) $(FUZZ_DATE) $(FUZZ_RFC2047)
 
 clean-fuzz:
 	$(RM) $(FUZZ_ADDRESS) $(FUZZ_BODY) $(FUZZ_CLI) $(FUZZ_DATE) \
+		$(FUZZ_RFC2047) \
 		$(FUZZ_OBJS) $(FUZZ_OBJS:.o=.Po)
 
 install-fuzz:
