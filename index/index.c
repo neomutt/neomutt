@@ -298,9 +298,7 @@ static int index_color_observer(struct NotifyCallback *nc)
     e->attr_color = NULL;
   }
 
-  struct MuttWindow *panel_index = window_find_child(dlg, WT_INDEX);
-  struct IndexPrivateData *priv = panel_index->wdata;
-  struct Menu *menu = priv->menu;
+  struct Menu *menu = shared->menu;
   menu->redraw = MENU_REDRAW_FULL;
   win->actions |= WA_REPAINT;
   mutt_debug(LL_DEBUG5, "color done, request MENU_REDRAW_FULL\n");
@@ -666,7 +664,7 @@ struct MuttWindow *index_window_new(struct IndexPrivateData *priv)
   struct Menu *menu = win->wdata;
   menu->mdata = priv;
   menu->mdata_free = NULL; // Menu doesn't own the data
-  priv->menu = menu;
+  priv->shared->menu = menu;
 
   mutt_color_observer_add(index_color_observer, win);
   notify_observer_add(NeoMutt->notify, NT_ALTERN, index_altern_observer, win);

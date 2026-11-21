@@ -34,11 +34,9 @@ struct MuttWindow;
 struct IndexPrivateData
 {
   bool tag_prefix;               ///< tag-prefix has been pressed
-  int  oldcount;                 ///< Old count of mails in the mailbox
   bool do_mailbox_notify;        ///< Do we need to notify the user of new mail?
 
   struct IndexSharedData *shared; ///< Shared Index data
-  struct Menu *menu;              ///< Menu controlling the index
   struct MuttWindow *win_index;   ///< Window for the Index
 };
 

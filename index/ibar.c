@@ -94,11 +94,10 @@ static int ibar_recalc(struct MuttWindow *win)
 
   struct IBarPrivateData *ibar_data = win->wdata;
   struct IndexSharedData *shared = ibar_data->shared;
-  struct IndexPrivateData *priv = ibar_data->priv;
   struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
 
   const struct Expando *c_status_format = cs_subset_expando(shared->sub, "status_format");
-  menu_status_line(buf, shared, priv->menu, win->state.cols, c_status_format);
+  menu_status_line(buf, shared, shared->menu, win->state.cols, c_status_format);
 
   if (!mutt_str_equal(buf_string(buf), ibar_data->status_format))
   {
@@ -112,7 +111,7 @@ static int ibar_recalc(struct MuttWindow *win)
   {
     buf_reset(buf);
     const struct Expando *c_ts_status_format = cs_subset_expando(shared->sub, "ts_status_format");
-    menu_status_line(buf, shared, priv->menu, -1, c_ts_status_format);
+    menu_status_line(buf, shared, shared->menu, -1, c_ts_status_format);
     if (!mutt_str_equal(buf_string(buf), ibar_data->ts_status_format))
     {
       mutt_str_replace(&ibar_data->ts_status_format, buf_string(buf));
@@ -122,7 +121,7 @@ static int ibar_recalc(struct MuttWindow *win)
 
     buf_reset(buf);
     const struct Expando *c_ts_icon_format = cs_subset_expando(shared->sub, "ts_icon_format");
-    menu_status_line(buf, shared, priv->menu, -1, c_ts_icon_format);
+    menu_status_line(buf, shared, shared->menu, -1, c_ts_icon_format);
     if (!mutt_str_equal(buf_string(buf), ibar_data->ts_icon_format))
     {
       mutt_str_replace(&ibar_data->ts_icon_format, buf_string(buf));
