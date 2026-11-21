@@ -1017,7 +1017,7 @@ static int op_display_message(struct IndexFunctionData *fdata, const struct KeyE
 
   if (shared->mailbox)
   {
-    update_index(shared->menu, shared->mailbox_view, MX_STATUS_NEW_MAIL,
+    update_index(shared->mailbox_view, MX_STATUS_NEW_MAIL,
                  shared->mailbox->msg_count, shared);
   }
 
@@ -1536,11 +1536,11 @@ static int op_main_change_folder(struct IndexFunctionData *fdata, const struct K
   struct Mailbox *m = mx_mbox_find2(buf_string(folderbuf));
   if (m)
   {
-    change_folder_mailbox(shared->menu, m, &shared->oldcount, shared, read_only);
+    change_folder_mailbox(m, &shared->oldcount, shared, read_only);
   }
   else
   {
-    change_folder_string(shared->menu, folderbuf, &shared->oldcount, shared, read_only);
+    change_folder_string(folderbuf, &shared->oldcount, shared, read_only);
   }
 
 changefoldercleanup:
@@ -2231,7 +2231,7 @@ static int op_main_next_unread_mailbox(struct IndexFunctionData *fdata,
     return FR_ERROR;
   }
 
-  change_folder_mailbox(shared->menu, m, &shared->oldcount, shared, false);
+  change_folder_mailbox(m, &shared->oldcount, shared, false);
   return FR_SUCCESS;
 }
 
@@ -2255,7 +2255,7 @@ static int op_main_prev_unread_mailbox(struct IndexFunctionData *fdata,
     return FR_ERROR;
   }
 
-  change_folder_mailbox(shared->menu, m, &shared->oldcount, shared, false);
+  change_folder_mailbox(m, &shared->oldcount, shared, false);
   return FR_SUCCESS;
 }
 
@@ -2531,7 +2531,7 @@ static int op_main_sync_folder(struct IndexFunctionData *fdata, const struct Key
   }
   else if ((check == MX_STATUS_NEW_MAIL) || (check == MX_STATUS_REOPENED))
   {
-    update_index(shared->menu, shared->mailbox_view, check, oc, shared);
+    update_index(shared->mailbox_view, check, oc, shared);
   }
 
   /* do a sanity check even if mx_mbox_sync failed.  */
@@ -2808,7 +2808,7 @@ static int op_quit(struct IndexFunctionData *fdata, const struct KeyEvent *event
 
     if ((check == MX_STATUS_NEW_MAIL) || (check == MX_STATUS_REOPENED))
     {
-      update_index(shared->menu, shared->mailbox_view, check, shared->oldcount, shared);
+      update_index(shared->mailbox_view, check, shared->oldcount, shared);
     }
 
     menu_queue_redraw(shared->menu, MENU_REDRAW_FULL); /* new mail arrived? */
@@ -3292,7 +3292,7 @@ static int op_main_imap_logout_all(struct IndexFunctionData *fdata, const struct
     {
       if ((check == MX_STATUS_NEW_MAIL) || (check == MX_STATUS_REOPENED))
       {
-        update_index(shared->menu, shared->mailbox_view, check, shared->oldcount, shared);
+        update_index(shared->mailbox_view, check, shared->oldcount, shared);
       }
       mutt_pattern_free(&shared->search_state->pattern);
       menu_queue_redraw(shared->menu, MENU_REDRAW_FULL);
@@ -3573,11 +3573,11 @@ static int op_main_change_group(struct IndexFunctionData *fdata, const struct Ke
   struct Mailbox *m = mx_mbox_find2(buf_string(folderbuf));
   if (m)
   {
-    change_folder_mailbox(shared->menu, m, &shared->oldcount, shared, read_only);
+    change_folder_mailbox(m, &shared->oldcount, shared, read_only);
   }
   else
   {
-    change_folder_string(shared->menu, folderbuf, &shared->oldcount, shared, read_only);
+    change_folder_string(folderbuf, &shared->oldcount, shared, read_only);
   }
   struct MuttWindow *dlg = dialog_find(priv->win_index);
   dlg->help_data = IndexNewsHelp;
@@ -3666,7 +3666,7 @@ static int op_main_entire_thread(struct IndexFunctionData *fdata, const struct K
     if (buf->data[len - 1] == '>')
       buf->data[len - 1] = '\0';
 
-    change_folder_notmuch(shared->menu, buf->data, buf->dsize, &shared->oldcount, shared, false);
+    change_folder_notmuch(buf->data, buf->dsize, &shared->oldcount, shared, false);
     buf_pool_release(&buf);
 
     // If notmuch doesn't contain the message, we're left in an empty
@@ -3725,7 +3725,6 @@ static int op_main_vfolder_from_query(struct IndexFunctionData *fdata,
                                       const struct KeyEvent *event)
 {
   struct IndexSharedData *shared = fdata->shared;
-  struct IndexPrivateData *priv = fdata->priv;
   int rc = FR_SUCCESS;
   struct Buffer *buf = buf_pool_get();
 
@@ -3742,7 +3741,7 @@ static int op_main_vfolder_from_query(struct IndexFunctionData *fdata,
 
   buf_alloc(buf, PATH_MAX);
   const int op = event->op;
-  struct Mailbox *m_query = change_folder_notmuch(shared->menu, buf->data, buf->dsize,
+  struct Mailbox *m_query = change_folder_notmuch(buf->data, buf->dsize,
                                                   &shared->oldcount, shared,
                                                   (op == OP_MAIN_VFOLDER_FROM_QUERY_READONLY));
   if (m_query)
@@ -3774,7 +3773,6 @@ static int op_main_windowed_vfolder(struct IndexFunctionData *fdata,
                                     const struct KeyEvent *event)
 {
   struct IndexSharedData *shared = fdata->shared;
-  struct IndexPrivateData *priv = fdata->priv;
   // Common guard clauses.
   if (!nm_query_window_available())
   {
@@ -3808,7 +3806,7 @@ static int op_main_windowed_vfolder(struct IndexFunctionData *fdata,
   // Common query window folder change.
   char buf[PATH_MAX] = { 0 };
   mutt_str_copy(buf, c_nm_query_window_current_search, sizeof(buf));
-  change_folder_notmuch(shared->menu, buf, sizeof(buf), &shared->oldcount, shared, false);
+  change_folder_notmuch(buf, sizeof(buf), &shared->oldcount, shared, false);
 
   return FR_SUCCESS;
 }

@@ -553,16 +553,15 @@ static void update_index_unthreaded(struct MailboxView *mv, enum MxStatus check)
 
 /**
  * update_index - Update the index
- * @param menu     Current Menu
  * @param mv      Mailbox
  * @param check    Flags, e.g. #MX_STATUS_REOPENED
  * @param oldcount How many items are currently in the index
  * @param shared   Shared Index data
  */
-void update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check,
-                  int oldcount, const struct IndexSharedData *shared)
+void update_index(struct MailboxView *mv, enum MxStatus check, int oldcount,
+                  const struct IndexSharedData *shared)
 {
-  if (!menu || !mv)
+  if (!shared->menu || !mv)
     return;
 
   struct Mailbox *m = mv->mailbox;
@@ -571,8 +570,8 @@ void update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check
   else
     update_index_unthreaded(mv, check);
 
-  menu->max = m->vcount;
-  const int old_index = menu_get_index(menu);
+  shared->menu->max = m->vcount;
+  const int old_index = menu_get_index(shared->menu);
   int index = -1;
   if (oldcount)
   {
@@ -594,7 +593,7 @@ void update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check
   {
     index = (old_index < m->vcount) ? old_index : find_first_message(mv);
   }
-  menu_set_index(menu, index);
+  menu_set_index(shared->menu, index);
 }
 
 /**
@@ -622,13 +621,12 @@ static int index_mailbox_observer(struct NotifyCallback *nc)
 
 /**
  * change_folder_mailbox - Change to a different Mailbox by pointer
- * @param menu      Current Menu
  * @param m         Mailbox
  * @param oldcount  How many items are currently in the index
  * @param shared    Shared Index data
  * @param read_only Open Mailbox in read-only mode
  */
-void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
+void change_folder_mailbox(struct Mailbox *m, int *oldcount,
                            struct IndexSharedData *shared, bool read_only)
 {
   if (!m)
@@ -669,11 +667,11 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
         mutt_monitor_add(NULL);
 #endif
       if ((check == MX_STATUS_NEW_MAIL) || (check == MX_STATUS_REOPENED))
-        update_index(menu, shared->mailbox_view, check, *oldcount, shared);
+        update_index(shared->mailbox_view, check, *oldcount, shared);
 
       FREE(&new_last_folder);
       mutt_pattern_free(&shared->search_state->pattern);
-      menu_queue_redraw(menu, MENU_REDRAW_INDEX);
+      menu_queue_redraw(shared->menu, MENU_REDRAW_INDEX);
       return;
     }
     FREE(&LastFolder);
@@ -714,8 +712,8 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
     struct MailboxView *mv = mview_new(m, NeoMutt->notify);
     index_shared_data_set_mview(shared, mv);
 
-    menu->max = m->msg_count;
-    menu_set_index(menu, find_first_message(shared->mailbox_view));
+    shared->menu->max = m->msg_count;
+    menu_set_index(shared->menu, find_first_message(shared->mailbox_view));
 #ifdef USE_INOTIFY
     mutt_monitor_add(NULL);
 #endif
@@ -723,25 +721,24 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
   else
   {
     index_shared_data_set_mview(shared, NULL);
-    menu_set_index(menu, 0);
+    menu_set_index(shared->menu, 0);
   }
 
   const bool c_collapse_all = cs_subset_bool(shared->sub, "collapse_all");
   if (mutt_using_threads() && c_collapse_all)
-    collapse_all(shared->mailbox_view, menu, COLLAPSE_MODE_CLOSE);
+    collapse_all(shared->mailbox_view, shared->menu, COLLAPSE_MODE_CLOSE);
 
   mutt_clear_error();
   /* force the mailbox check after we have changed the folder */
   struct EventMailbox ev_m = { shared->mailbox };
   mutt_mailbox_check(ev_m.mailbox, MUTT_MAILBOX_CHECK_POSTPONED);
-  menu_queue_redraw(menu, MENU_REDRAW_FULL);
+  menu_queue_redraw(shared->menu, MENU_REDRAW_FULL);
   mutt_pattern_free(&shared->search_state->pattern);
 }
 
 #ifdef USE_NOTMUCH
 /**
  * change_folder_notmuch - Change to a different Notmuch Mailbox by string
- * @param menu      Current Menu
  * @param buf       Folder to change to
  * @param buflen    Length of buffer
  * @param oldcount  How many items are currently in the index
@@ -749,7 +746,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
  * @param read_only Open Mailbox in read-only mode
  * @retval ptr Mailbox
  */
-struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, int *oldcount,
+struct Mailbox *change_folder_notmuch(char *buf, int buflen, int *oldcount,
                                       struct IndexSharedData *shared, bool read_only)
 {
   if (!nm_url_from_query(NULL, buf, buflen))
@@ -759,7 +756,7 @@ struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, 
   }
 
   struct Mailbox *m_query = mx_path_resolve(buf);
-  change_folder_mailbox(menu, m_query, oldcount, shared, read_only);
+  change_folder_mailbox(m_query, oldcount, shared, read_only);
   if (!shared->mailbox_view)
     mailbox_free(&m_query);
   return m_query;
@@ -768,13 +765,12 @@ struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, 
 
 /**
  * change_folder_string - Change to a different Mailbox by string
- * @param menu         Current Menu
  * @param buf          Folder to change to
  * @param oldcount     How many items are currently in the index
  * @param shared       Shared Index data
  * @param read_only    Open Mailbox in read-only mode
  */
-void change_folder_string(struct Menu *menu, struct Buffer *buf, int *oldcount,
+void change_folder_string(struct Buffer *buf, int *oldcount,
                           struct IndexSharedData *shared, bool read_only)
 {
   struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
@@ -796,7 +792,7 @@ void change_folder_string(struct Menu *menu, struct Buffer *buf, int *oldcount,
     struct Mailbox *m = mailbox_find_name(buf_string(buf));
     if (m)
     {
-      change_folder_mailbox(menu, m, oldcount, shared, read_only);
+      change_folder_mailbox(m, oldcount, shared, read_only);
     }
     else
     {
@@ -806,7 +802,7 @@ void change_folder_string(struct Menu *menu, struct Buffer *buf, int *oldcount,
   }
 
   struct Mailbox *m = mx_path_resolve(buf_string(buf));
-  change_folder_mailbox(menu, m, oldcount, shared, read_only);
+  change_folder_mailbox(m, oldcount, shared, read_only);
 }
 
 /**
@@ -1254,7 +1250,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 
         bool verbose = shared->mailbox->verbose;
         shared->mailbox->verbose = false;
-        update_index(shared->menu, shared->mailbox_view, check, shared->oldcount, shared);
+        update_index(shared->mailbox_view, check, shared->oldcount, shared);
         shared->mailbox->verbose = verbose;
         shared->menu->max = shared->mailbox->vcount;
         menu_queue_redraw(shared->menu, MENU_REDRAW_FULL);
@@ -1505,5 +1501,5 @@ void index_change_folder(struct MuttWindow *dlg, struct Mailbox *m)
   if (!priv)
     return;
 
-  change_folder_mailbox(shared->menu, m, &shared->oldcount, shared, false);
+  change_folder_mailbox(m, &shared->oldcount, shared, false);
 }
