@@ -111,9 +111,9 @@ extern const struct ExpandoDefinition StatusFormatDef[];
 
 void index_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic);
 
-void                    change_folder_mailbox   (struct Menu *menu, struct Mailbox *m, int *oldcount, struct IndexSharedData *shared, bool read_only);
-struct Mailbox *        change_folder_notmuch   (struct Menu *menu, char *buf, int buflen, int *oldcount, struct IndexSharedData *shared, bool read_only);
-void                    change_folder_string    (struct Menu *menu, struct Buffer *buf, int *oldcount, struct IndexSharedData *shared, bool read_only);
+void                    change_folder_mailbox   (struct Mailbox *m, int *oldcount, struct IndexSharedData *shared, bool read_only);
+struct Mailbox *        change_folder_notmuch   (char *buf, int buflen, int *oldcount, struct IndexSharedData *shared, bool read_only);
+void                    change_folder_string    (struct Buffer *buf, int *oldcount, struct IndexSharedData *shared, bool read_only);
 bool                    check_acl               (struct Mailbox *m, AclFlags acl, const char *msg);
 void                    collapse_all            (struct MailboxView *mv, struct Menu *menu, enum CollapseMode mode);
 struct Mailbox *        dlg_index               (struct MuttWindow *dlg, struct Mailbox *m);
@@ -130,7 +130,7 @@ int                     mutt_dlgindex_observer  (struct NotifyCallback *nc);
 void                    mutt_draw_statusline    (struct MuttWindow *win, int max_cols, const char *buf, size_t buflen);
 void                    email_set_color         (struct Mailbox *m, struct Email *e);
 void                    resort_index            (struct MailboxView *mv, struct Menu *menu);
-void                    update_index            (struct Menu *menu, struct MailboxView *mv, enum MxStatus check, int oldcount, const struct IndexSharedData *shared);
+void                    update_index            (struct MailboxView *mv, enum MxStatus check, int oldcount, const struct IndexSharedData *shared);
 
 int mutt_make_string(struct Buffer *buf, size_t max_cols, const struct Expando *exp,
                      struct Mailbox *m, int inpgr, struct Email *e,

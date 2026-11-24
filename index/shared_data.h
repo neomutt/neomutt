@@ -44,6 +44,8 @@ struct IndexSharedData
   struct Notify       *notify;         ///< Notifications: #NotifyIndex, #IndexSharedData
   struct SearchState  *search_state;   ///< State of the current search
   bool                 attach_msg;     ///< Are we in "attach message" mode?
+  struct Menu         *menu;           ///< Menu controlling the index
+  int                  oldcount;       ///< Old count of mails in the mailbox
 };
 
 /**

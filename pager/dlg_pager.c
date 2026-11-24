@@ -400,7 +400,7 @@ int dlg_pager(struct PagerView *pview)
     mutt_refresh();
 
     //-------------------------------------------------------------------------
-    // Check if information in the status bar needs an update
+    // Check if index or information in the status bar need an update
     // This is done because pager is a single-threaded application, which
     // tries to emulate concurrency.
     //-------------------------------------------------------------------------
@@ -442,6 +442,7 @@ int dlg_pager(struct PagerView *pview)
         {
           pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
           mutt_pattern_free(&shared->search_state->pattern);
+          update_index(shared->mailbox_view, check, shared->oldcount, shared);
         }
       }
 

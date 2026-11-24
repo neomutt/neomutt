@@ -553,16 +553,15 @@ static void update_index_unthreaded(struct MailboxView *mv, enum MxStatus check)
 
 /**
  * update_index - Update the index
- * @param menu     Current Menu
  * @param mv      Mailbox
  * @param check    Flags, e.g. #MX_STATUS_REOPENED
  * @param oldcount How many items are currently in the index
  * @param shared   Shared Index data
  */
-void update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check,
-                  int oldcount, const struct IndexSharedData *shared)
+void update_index(struct MailboxView *mv, enum MxStatus check, int oldcount,
+                  const struct IndexSharedData *shared)
 {
-  if (!menu || !mv)
+  if (!shared->menu || !mv)
     return;
 
   struct Mailbox *m = mv->mailbox;
@@ -571,8 +570,8 @@ void update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check
   else
     update_index_unthreaded(mv, check);
 
-  menu->max = m->vcount;
-  const int old_index = menu_get_index(menu);
+  shared->menu->max = m->vcount;
+  const int old_index = menu_get_index(shared->menu);
   int index = -1;
   if (oldcount)
   {
@@ -594,7 +593,7 @@ void update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check
   {
     index = (old_index < m->vcount) ? old_index : find_first_message(mv);
   }
-  menu_set_index(menu, index);
+  menu_set_index(shared->menu, index);
 }
 
 /**
@@ -622,13 +621,12 @@ static int index_mailbox_observer(struct NotifyCallback *nc)
 
 /**
  * change_folder_mailbox - Change to a different Mailbox by pointer
- * @param menu      Current Menu
  * @param m         Mailbox
  * @param oldcount  How many items are currently in the index
  * @param shared    Shared Index data
  * @param read_only Open Mailbox in read-only mode
  */
-void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
+void change_folder_mailbox(struct Mailbox *m, int *oldcount,
                            struct IndexSharedData *shared, bool read_only)
 {
   if (!m)
@@ -669,11 +667,11 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
         mutt_monitor_add(NULL);
 #endif
       if ((check == MX_STATUS_NEW_MAIL) || (check == MX_STATUS_REOPENED))
-        update_index(menu, shared->mailbox_view, check, *oldcount, shared);
+        update_index(shared->mailbox_view, check, *oldcount, shared);
 
       FREE(&new_last_folder);
       mutt_pattern_free(&shared->search_state->pattern);
-      menu_queue_redraw(menu, MENU_REDRAW_INDEX);
+      menu_queue_redraw(shared->menu, MENU_REDRAW_INDEX);
       return;
     }
     FREE(&LastFolder);
@@ -714,8 +712,8 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
     struct MailboxView *mv = mview_new(m, NeoMutt->notify);
     index_shared_data_set_mview(shared, mv);
 
-    menu->max = m->msg_count;
-    menu_set_index(menu, find_first_message(shared->mailbox_view));
+    shared->menu->max = m->msg_count;
+    menu_set_index(shared->menu, find_first_message(shared->mailbox_view));
 #ifdef USE_INOTIFY
     mutt_monitor_add(NULL);
 #endif
@@ -723,25 +721,24 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
   else
   {
     index_shared_data_set_mview(shared, NULL);
-    menu_set_index(menu, 0);
+    menu_set_index(shared->menu, 0);
   }
 
   const bool c_collapse_all = cs_subset_bool(shared->sub, "collapse_all");
   if (mutt_using_threads() && c_collapse_all)
-    collapse_all(shared->mailbox_view, menu, COLLAPSE_MODE_CLOSE);
+    collapse_all(shared->mailbox_view, shared->menu, COLLAPSE_MODE_CLOSE);
 
   mutt_clear_error();
   /* force the mailbox check after we have changed the folder */
   struct EventMailbox ev_m = { shared->mailbox };
   mutt_mailbox_check(ev_m.mailbox, MUTT_MAILBOX_CHECK_POSTPONED);
-  menu_queue_redraw(menu, MENU_REDRAW_FULL);
+  menu_queue_redraw(shared->menu, MENU_REDRAW_FULL);
   mutt_pattern_free(&shared->search_state->pattern);
 }
 
 #ifdef USE_NOTMUCH
 /**
  * change_folder_notmuch - Change to a different Notmuch Mailbox by string
- * @param menu      Current Menu
  * @param buf       Folder to change to
  * @param buflen    Length of buffer
  * @param oldcount  How many items are currently in the index
@@ -749,7 +746,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
  * @param read_only Open Mailbox in read-only mode
  * @retval ptr Mailbox
  */
-struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, int *oldcount,
+struct Mailbox *change_folder_notmuch(char *buf, int buflen, int *oldcount,
                                       struct IndexSharedData *shared, bool read_only)
 {
   if (!nm_url_from_query(NULL, buf, buflen))
@@ -759,7 +756,7 @@ struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, 
   }
 
   struct Mailbox *m_query = mx_path_resolve(buf);
-  change_folder_mailbox(menu, m_query, oldcount, shared, read_only);
+  change_folder_mailbox(m_query, oldcount, shared, read_only);
   if (!shared->mailbox_view)
     mailbox_free(&m_query);
   return m_query;
@@ -768,13 +765,12 @@ struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, 
 
 /**
  * change_folder_string - Change to a different Mailbox by string
- * @param menu         Current Menu
  * @param buf          Folder to change to
  * @param oldcount     How many items are currently in the index
  * @param shared       Shared Index data
  * @param read_only    Open Mailbox in read-only mode
  */
-void change_folder_string(struct Menu *menu, struct Buffer *buf, int *oldcount,
+void change_folder_string(struct Buffer *buf, int *oldcount,
                           struct IndexSharedData *shared, bool read_only)
 {
   struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
@@ -796,7 +792,7 @@ void change_folder_string(struct Menu *menu, struct Buffer *buf, int *oldcount,
     struct Mailbox *m = mailbox_find_name(buf_string(buf));
     if (m)
     {
-      change_folder_mailbox(menu, m, oldcount, shared, read_only);
+      change_folder_mailbox(m, oldcount, shared, read_only);
     }
     else
     {
@@ -806,7 +802,7 @@ void change_folder_string(struct Menu *menu, struct Buffer *buf, int *oldcount,
   }
 
   struct Mailbox *m = mx_path_resolve(buf_string(buf));
-  change_folder_mailbox(menu, m, oldcount, shared, read_only);
+  change_folder_mailbox(m, oldcount, shared, read_only);
 }
 
 /**
@@ -1142,13 +1138,13 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     dlg->help_data = IndexHelp;
   dlg->help_md = mod_data->md_index;
 
-  priv->menu = priv->win_index->wdata;
-  priv->menu->make_entry = index_make_entry;
-  priv->menu->color = index_color;
-  priv->menu->max = shared->mailbox ? shared->mailbox->vcount : 0;
-  menu_set_index(priv->menu, find_first_message(shared->mailbox_view));
+  shared->menu = priv->win_index->wdata;
+  shared->menu->make_entry = index_make_entry;
+  shared->menu->color = index_color;
+  shared->menu->max = shared->mailbox ? shared->mailbox->vcount : 0;
+  menu_set_index(shared->menu, find_first_message(shared->mailbox_view));
 
-  struct MuttWindow *old_focus = window_set_focus(priv->menu->win);
+  struct MuttWindow *old_focus = window_set_focus(shared->menu->win);
   mutt_window_reflow(NULL);
 
   if (!shared->attach_msg)
@@ -1163,8 +1159,8 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
   const bool c_collapse_all = cs_subset_bool(shared->sub, "collapse_all");
   if (mutt_using_threads() && c_collapse_all)
   {
-    collapse_all(shared->mailbox_view, priv->menu, COLLAPSE_MODE_CLOSE);
-    menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+    collapse_all(shared->mailbox_view, shared->menu, COLLAPSE_MODE_CLOSE);
+    menu_queue_redraw(shared->menu, MENU_REDRAW_FULL);
   }
 
   int rc = 0;
@@ -1180,21 +1176,21 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 
     /* check if we need to resort the index because just about
      * any 'op' below could do mutt_enter_command(), either here or
-     * from any new priv->menu launched, and change $sort/$sort_aux */
+     * from any new shared->menu launched, and change $sort/$sort_aux */
     if (OptNeedResort && shared->mailbox && (shared->mailbox->msg_count != 0) &&
-        (menu_get_index(priv->menu) >= 0))
+        (menu_get_index(shared->menu) >= 0))
     {
-      resort_index(shared->mailbox_view, priv->menu);
+      resort_index(shared->mailbox_view, shared->menu);
     }
 
-    priv->menu->max = shared->mailbox ? shared->mailbox->vcount : 0;
-    priv->oldcount = shared->mailbox ? shared->mailbox->msg_count : 0;
+    shared->menu->max = shared->mailbox ? shared->mailbox->vcount : 0;
+    shared->oldcount = shared->mailbox ? shared->mailbox->msg_count : 0;
 
     if (shared->mailbox && shared->mailbox_view)
     {
       mailbox_gc_run();
 
-      shared->mailbox_view->menu = priv->menu;
+      shared->mailbox_view->menu = shared->menu;
       /* check for new mail in the mailbox.  If nonzero, then something has
        * changed about the file (either we got new mail or the file was
        * modified underneath us.) */
@@ -1206,7 +1202,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
         {
           /* fatal error occurred */
           mview_free(&shared->mailbox_view);
-          menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+          menu_queue_redraw(shared->menu, MENU_REDRAW_FULL);
         }
 
         mutt_pattern_free(&shared->search_state->pattern);
@@ -1254,15 +1250,16 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 
         bool verbose = shared->mailbox->verbose;
         shared->mailbox->verbose = false;
-        update_index(priv->menu, shared->mailbox_view, check, priv->oldcount, shared);
+        update_index(shared->mailbox_view, check, shared->oldcount, shared);
         shared->mailbox->verbose = verbose;
-        priv->menu->max = shared->mailbox->vcount;
-        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+        shared->menu->max = shared->mailbox->vcount;
+        menu_queue_redraw(shared->menu, MENU_REDRAW_FULL);
         mutt_pattern_free(&shared->search_state->pattern);
       }
 
-      index_shared_data_set_email(shared, mutt_get_virt_email(shared->mailbox,
-                                                              menu_get_index(priv->menu)));
+      index_shared_data_set_email(shared,
+                                  mutt_get_virt_email(shared->mailbox,
+                                                      menu_get_index(shared->menu)));
     }
 
     if (!shared->attach_msg)
@@ -1280,7 +1277,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
           if (c_new_mail_command)
           {
             struct Buffer *cmd = buf_pool_get();
-            menu_status_line(cmd, shared, priv->menu, -1, c_new_mail_command);
+            menu_status_line(cmd, shared, shared->menu, -1, c_new_mail_command);
             if (mutt_system(buf_string(cmd)) != 0)
               mutt_error(_("Error running \"%s\""), buf_string(cmd));
             buf_pool_release(&cmd);
@@ -1303,21 +1300,21 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 
     const bool c_arrow_cursor = cs_subset_bool(shared->sub, "arrow_cursor");
     const bool c_braille_friendly = cs_subset_bool(shared->sub, "braille_friendly");
-    const int index = menu_get_index(priv->menu);
+    const int index = menu_get_index(shared->menu);
     if (c_arrow_cursor)
     {
       const char *const c_arrow_string = cs_subset_string(shared->sub, "arrow_string");
       const int arrow_width = mutt_strwidth(c_arrow_string);
-      mutt_window_move(priv->menu->win, index - priv->menu->top, arrow_width);
+      mutt_window_move(shared->menu->win, index - shared->menu->top, arrow_width);
     }
     else if (c_braille_friendly)
     {
-      mutt_window_move(priv->menu->win, index - priv->menu->top, 0);
+      mutt_window_move(shared->menu->win, index - shared->menu->top, 0);
     }
     else
     {
-      mutt_window_move(priv->menu->win, index - priv->menu->top,
-                       priv->menu->win->state.cols - 1);
+      mutt_window_move(shared->menu->win, index - shared->menu->top,
+                       shared->menu->win->state.cols - 1);
     }
     mutt_refresh();
 
@@ -1404,7 +1401,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
       rc = sb_function_dispatcher(win_sidebar, &event);
     }
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(priv->menu->win, &event);
+      rc = global_function_dispatcher(shared->menu->win, &event);
 
     if (rc == FR_UNKNOWN)
       km_error_key(mod_data->md_index);
@@ -1504,5 +1501,5 @@ void index_change_folder(struct MuttWindow *dlg, struct Mailbox *m)
   if (!priv)
     return;
 
-  change_folder_mailbox(priv->menu, m, &priv->oldcount, shared, false);
+  change_folder_mailbox(m, &shared->oldcount, shared, false);
 }
