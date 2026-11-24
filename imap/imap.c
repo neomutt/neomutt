@@ -655,8 +655,7 @@ static void imap_logout(struct ImapAccountData *adata)
         ; // do nothing
     }
   }
-  mutt_socket_close(adata->conn);
-  adata->state = IMAP_DISCONNECTED;
+  imap_close_connection(adata);
 }
 
 /**
@@ -2318,6 +2317,15 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
   struct ImapMboxData *mdata = imap_mdata_get(m);
   if (!adata || !mdata)
     return MX_OPEN_ERROR;
+
+  /* the connection may have been closed, e.g. by <imap-logout-all>.  No mailbox
+   * is selected on it any more, so don't let a failed login reselect one. */
+  if (adata->state == IMAP_DISCONNECTED)
+  {
+    adata->mailbox = NULL;
+    if (imap_login(adata) < 0)
+      return MX_OPEN_ERROR;
+  }
 
   mutt_debug(LL_DEBUG3, "opening %s, stranding %p\n", m->pathbuf.data,
              (void *) adata->mailbox);

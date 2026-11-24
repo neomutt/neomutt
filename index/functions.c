@@ -3318,6 +3318,8 @@ static int op_main_imap_logout_all(struct IndexFunctionData *fdata, const struct
     if (check == MX_STATUS_OK)
     {
       mview_free(&shared->mailbox_view);
+      /* the mailbox is closed, don't let <change-folder> close it again */
+      index_shared_data_set_mview(shared, NULL);
     }
     else
     {
