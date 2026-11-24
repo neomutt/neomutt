@@ -673,10 +673,13 @@ static enum MxStatus maildir_check(struct Mailbox *m)
     {
       /* This message disappeared, so we need to simulate a "reopen"
        * event.  We know it disappeared because we just scanned the
-       * subdirectory it used to reside in.  */
+       * subdirectory it used to reside in.
+       *
+       * Drop it from the index rather than marking it deleted: the file may
+       * be back under a new name (e.g. a flag change by another program) by
+       * the next check, and a deleted flag would make the sync unlink it.  */
       occult = true;
-      e->deleted = true;
-      e->purge = true;
+      e->quasi_deleted = true;
     }
     else
     {
@@ -689,9 +692,12 @@ static enum MxStatus maildir_check(struct Mailbox *m)
   /* destroy the file name hash */
   mutt_hash_free(&hash_names);
 
-  /* If we didn't just get new mail, update the tables. */
+  /* Remove the vanished messages and rebuild the tables. */
   if (occult)
+  {
+    mailbox_changed(m, NT_MAILBOX_PRUNE);
     mailbox_changed(m, NT_MAILBOX_RESORT);
+  }
 
   /* do any delayed parsing we need to do. */
   maildir_delayed_parsing(m, &mda, NULL);
