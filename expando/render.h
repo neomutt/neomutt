@@ -90,4 +90,9 @@ struct ExpandoRenderCallback
 int node_render(const struct ExpandoNode *node, const struct ExpandoRenderCallback *erc,
                 struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
 
+struct ExpandoFormat;
+extern int ExpandoRenderCols;
+const struct ExpandoFormat *format_resolve(const struct ExpandoFormat *fmt,
+                                           struct ExpandoFormat *tmp);
+
 #endif /* MUTT_EXPANDO_RENDER_H */

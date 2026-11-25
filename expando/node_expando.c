@@ -184,6 +184,19 @@ struct ExpandoFormat *parse_format(const char *str, const char **parsed_until,
 
     fmt->min_cols = number;
     str = end_ptr;
+
+    if (*str == '%')
+    {
+      if (number > 100)
+      {
+        err->position = str;
+        snprintf(err->message, sizeof(err->message), _("Invalid percentage: %d"), number);
+        FREE(&fmt);
+        return NULL;
+      }
+      fmt->min_pct = true;
+      str++;
+    }
   }
 
   // Parse the precision (max_cols)
@@ -206,6 +219,19 @@ struct ExpandoFormat *parse_format(const char *str, const char **parsed_until,
       }
 
       str = end_ptr;
+
+      if (*str == '%')
+      {
+        if (number > 100)
+        {
+          err->position = str;
+          snprintf(err->message, sizeof(err->message), _("Invalid percentage: %d"), number);
+          FREE(&fmt);
+          return NULL;
+        }
+        fmt->max_pct = true;
+        str++;
+      }
     }
     else
     {
@@ -537,7 +563,8 @@ int node_expando_render(const struct ExpandoNode *node,
   struct Buffer *buf_expando = buf_pool_get();
   struct Buffer *buf_format = buf_pool_get();
 
-  const struct ExpandoFormat *fmt = node->format;
+  struct ExpandoFormat fmt_abs = { 0 };
+  const struct ExpandoFormat *fmt = format_resolve(node->format, &fmt_abs);
   const struct NodeExpandoPrivate *priv = node->ndata;
 
   // ---------------------------------------------------------------------------
