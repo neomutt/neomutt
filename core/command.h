@@ -78,6 +78,7 @@ enum CommandId
   CMD_FCC_HOOK,              ///< `:fcc-hook`
   CMD_FCC_SAVE_HOOK,         ///< `:fcc-save-hook`
   CMD_FINISH,                ///< `:finish`              @sa #CMD_IFDEF, #CMD_IFNDEF
+  CMD_FORMATS,               ///< `:formats`
   CMD_FOLDER_HOOK,           ///< `:folder-hook`
   CMD_GROUP,                 ///< `:group`               @sa #CMD_UNGROUP
   CMD_HEADER_ORDER,          ///< `:header-order`        @sa #CMD_UNHEADER_ORDER, #EmailModuleData.header_order
