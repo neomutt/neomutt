@@ -355,8 +355,10 @@ bool mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   // Clear out any existing emails
   mailbox_clear_emails(m);
 
-  enum MxOpenReturns rc = m->mx_ops->mbox_open(m);
+  /* Count the Mailbox as open while the backend reads it.  The progress
+   * bar redraws the screen, and the redraw can run the mail check. */
   m->opened++;
+  enum MxOpenReturns rc = m->mx_ops->mbox_open(m);
 
   if ((rc == MX_OPEN_OK) || (rc == MX_OPEN_ABORT))
   {
@@ -1774,6 +1776,11 @@ enum MxStatus mx_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
   if (!m)
     return MX_STATUS_ERROR;
+
+  /* An open Mailbox counts its own Emails.  The backends overwrite
+   * msg_count, which indexes the emails array. */
+  if (m->opened > 0)
+    return MX_STATUS_OK;
 
   enum MxStatus rc = m->mx_ops->mbox_check_stats(m, flags);
   if (rc != MX_STATUS_ERROR)
