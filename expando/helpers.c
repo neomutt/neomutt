@@ -33,6 +33,8 @@
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "helpers.h"
+#include "expando.h"
+#include "node.h"
 #include "render.h"
 
 /**
@@ -114,4 +116,46 @@ void buf_lower_special(struct Buffer *buf)
     *p = mutt_tolower(*p);
     p++;
   }
+}
+
+/**
+ * node_contains - Does the ExpandoNode contain a given ID?
+ * @param node ExpandoNode
+ * @param did  Domain ID, e.g. #ED_ALIAS
+ * @param uid  UID, e.g. #ED_ALI_COMMENT
+ *
+ * Recursively search for an ExpandoNode matching (did,uid).
+ */
+static bool node_contains(const struct ExpandoNode *node, int did, int uid)
+{
+  if (!node)
+    return false;
+
+  if ((node->did == did) && (node->uid == uid))
+    return true;
+
+  struct ExpandoNode **enp = NULL;
+  ARRAY_FOREACH(enp, &node->children)
+  {
+    if (node_contains(*enp, did, uid))
+      return true;
+  }
+
+  return false;
+}
+
+/**
+ * expando_contains - Does the Expando contain a given ID?
+ * @param exp Expando
+ * @param did Domain ID, e.g. #ED_ALIAS
+ * @param uid UID, e.g. #ED_ALI_COMMENT
+ *
+ * Recursively search for an ExpandoNode matching (did,uid).
+ */
+bool expando_contains(const struct Expando *exp, int did, int uid)
+{
+  if (!exp)
+    return false;
+
+  return node_contains(exp->node, did, uid);
 }
