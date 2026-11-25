@@ -54,7 +54,7 @@ typedef int (*menu_function_t)(struct MenuFunctionData *fdata, const struct KeyE
  */
 struct MenuFunction
 {
-  int op;                    ///< Op code, e.g. OP_SEARCH
+  int op;                    ///< Op code, e.g. OP_SEARCH_FORWARD
   menu_function_t function; ///< Function to call
 };
 

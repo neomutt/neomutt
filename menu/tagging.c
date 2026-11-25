@@ -67,7 +67,7 @@ static void menu_set_prefix(struct Menu *menu)
 /**
  * op_end_cond - End of conditional execution (noop)
  * @param menu Menu
- * @param op   Operation to perform, e.g. OP_END_COND
+ * @param op   Operation to perform, e.g. OP_APPLY_TO_TAGGED_END
  * @retval enum #FunctionRetval
  */
 static int op_end_cond(struct Menu *menu, int op)
@@ -80,7 +80,7 @@ static int op_end_cond(struct Menu *menu, int op)
 /**
  * op_tag - Tag the current entry
  * @param menu  Menu
- * @param op    Operation to perform, e.g. OP_TAG
+ * @param op    Operation to perform, e.g. OP_TOGGLE_TAG
  * @param count Repeat count for tagging multiple consecutive entries
  * @retval enum #FunctionRetval
  */
@@ -149,7 +149,7 @@ static int op_tag(struct Menu *menu, int op, int count)
 /**
  * op_tag_prefix - Apply next function to tagged messages
  * @param menu Menu
- * @param op   Operation to perform, e.g. OP_TAG_PREFIX
+ * @param op   Operation to perform, e.g. OP_APPLY_TO_TAGGED
  * @retval enum #FunctionRetval
  */
 static int op_tag_prefix(struct Menu *menu, int op)
@@ -175,7 +175,7 @@ static int op_tag_prefix(struct Menu *menu, int op)
 /**
  * op_tag_prefix_cond - Apply next function ONLY to tagged messages
  * @param menu Menu
- * @param op   Operation to perform, e.g. OP_TAG_PREFIX_COND
+ * @param op   Operation to perform, e.g. OP_APPLY_TO_TAGGED_BEGIN
  * @retval enum #FunctionRetval
  */
 static int op_tag_prefix_cond(struct Menu *menu, int op)
@@ -250,17 +250,17 @@ int menu_tagging_dispatcher(struct MuttWindow *win, const struct KeyEvent *event
 
   switch (op)
   {
-    case OP_END_COND:
-      rc = op_end_cond(menu, op);
-      break;
-    case OP_TAG:
+    case OP_TOGGLE_TAG:
       rc = op_tag(menu, op, event->count);
       break;
-    case OP_TAG_PREFIX:
+    case OP_APPLY_TO_TAGGED:
       rc = op_tag_prefix(menu, op);
       break;
-    case OP_TAG_PREFIX_COND:
+    case OP_APPLY_TO_TAGGED_BEGIN:
       rc = op_tag_prefix_cond(menu, op);
+      break;
+    case OP_APPLY_TO_TAGGED_END:
+      rc = op_end_cond(menu, op);
       break;
     case OP_ABORT:
       rc = menu_abort(menu);

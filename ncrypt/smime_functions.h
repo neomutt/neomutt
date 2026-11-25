@@ -59,7 +59,7 @@ typedef int (*smime_function_t)(struct SmimeData *sd, const struct KeyEvent *eve
  */
 struct SmimeFunction
 {
-  int op;                    ///< Op code, e.g. OP_GENERIC_SELECT_ENTRY
+  int op;                    ///< Op code, e.g. OP_ACTIVATE_ENTRY
   smime_function_t function; ///< Function to call
 };
 

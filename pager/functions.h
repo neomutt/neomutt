@@ -62,7 +62,7 @@ typedef int (*pager_function_t)(struct PagerFunctionData *fdata,
  */
 struct PagerFunction
 {
-  int op;                    ///< Op code, e.g. OP_MAIN_LIMIT
+  int op;                    ///< Op code, e.g. OP_LIMIT_ENTRIES
   pager_function_t function; ///< Function to call
 };
 

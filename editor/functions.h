@@ -62,7 +62,7 @@ typedef int (*enter_function_t)(struct EnterFunctionData *fdata, const struct Ke
  */
 struct EnterFunction
 {
-  int op;                    ///< Op code, e.g. OP_SEARCH
+  int op;                    ///< Op code, e.g. OP_SEARCH_FORWARD
   enter_function_t function; ///< Function to call
 };
 

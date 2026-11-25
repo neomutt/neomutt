@@ -105,7 +105,7 @@ typedef int (*preview_function_t)(struct PreviewWindowData *wdata,
  */
 struct PreviewFunction
 {
-  int op;                      ///< Op code, e.g. OP_NEXT_PAGE
+  int op;                      ///< Op code, e.g. OP_SCROLL_PAGE_DOWN
   preview_function_t function; ///< Function to call
 };
 
@@ -508,10 +508,9 @@ static int preview_scroll_line_down(struct PreviewWindowData *wdata,
 }
 
 /**
- * preview_select_first_entry - Move to the first entry - Implements ::preview_function_t - @ingroup preview_function_api
+ * preview_scroll_home - Scroll to the top - Implements ::preview_function_t - @ingroup preview_function_api
  */
-static int preview_select_first_entry(struct PreviewWindowData *wdata,
-                                      const struct KeyEvent *event)
+static int preview_scroll_home(struct PreviewWindowData *wdata, const struct KeyEvent *event)
 {
   if (wdata->scroll_offset <= 0)
   {
@@ -527,10 +526,9 @@ static int preview_select_first_entry(struct PreviewWindowData *wdata,
 }
 
 /**
- * preview_select_last_entry - Move to the last entry - Implements ::preview_function_t - @ingroup preview_function_api
+ * preview_scroll_end - Scroll to the bottom - Implements ::preview_function_t - @ingroup preview_function_api
  */
-static int preview_select_last_entry(struct PreviewWindowData *wdata,
-                                     const struct KeyEvent *event)
+static int preview_scroll_end(struct PreviewWindowData *wdata, const struct KeyEvent *event)
 {
   if (!wdata->more_content)
   {
@@ -551,14 +549,14 @@ static int preview_select_last_entry(struct PreviewWindowData *wdata,
  */
 static const struct PreviewFunction PreviewFunctions[] = {
   // clang-format off
-  { OP_PREVIEW_SCROLL_HALF_DOWN,     preview_scroll_half_down   },
-  { OP_PREVIEW_SCROLL_HALF_UP,       preview_scroll_half_up     },
-  { OP_PREVIEW_SCROLL_LINE_DOWN,     preview_scroll_line_down   },
-  { OP_PREVIEW_SCROLL_LINE_UP,       preview_scroll_line_up     },
-  { OP_PREVIEW_SCROLL_PAGE_DOWN,     preview_scroll_page_down   },
-  { OP_PREVIEW_SCROLL_PAGE_UP,       preview_scroll_page_up     },
-  { OP_PREVIEW_SELECT_FIRST_ENTRY,   preview_select_first_entry },
-  { OP_PREVIEW_SELECT_LAST_ENTRY,    preview_select_last_entry  },
+  { OP_PREVIEW_SCROLL_END,           preview_scroll_end },
+  { OP_PREVIEW_SCROLL_HALF_DOWN,     preview_scroll_half_down },
+  { OP_PREVIEW_SCROLL_HALF_UP,       preview_scroll_half_up },
+  { OP_PREVIEW_SCROLL_HOME,          preview_scroll_home },
+  { OP_PREVIEW_SCROLL_LINE_DOWN,     preview_scroll_line_down },
+  { OP_PREVIEW_SCROLL_LINE_UP,       preview_scroll_line_up },
+  { OP_PREVIEW_SCROLL_PAGE_DOWN,     preview_scroll_page_down },
+  { OP_PREVIEW_SCROLL_PAGE_UP,       preview_scroll_page_up },
   { 0, NULL },
   // clang-format on
 };

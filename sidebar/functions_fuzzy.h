@@ -26,6 +26,6 @@
 struct KeyEvent;
 struct SidebarFunctionData;
 
-int op_sidebar_start_search(struct SidebarFunctionData *fdata, const struct KeyEvent *event);
+int op_sidebar_search(struct SidebarFunctionData *fdata, const struct KeyEvent *event);
 
 #endif /* MUTT_SIDEBAR_FUNCTIONS_FUZZY_H */
