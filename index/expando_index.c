@@ -1682,6 +1682,18 @@ static void mailbox_percentage(const struct ExpandoNode *node, void *data,
 }
 
 /**
+ * menu_relative_number_num - Index: Relative offset from the current selection
+ * - Implements ::get_number_t - @ingroup expando_get_number_api
+ */
+static long menu_relative_number_num(const struct ExpandoNode *node, void *data,
+                                     MuttFormatFlags flags)
+{
+  const struct EmailFormatInfo *efi = data;
+
+  return menu_relative_number(efi->menu_data);
+}
+
+/**
  * IndexRenderCallbacks - Callbacks for Index Expandos
  *
  * @sa IndexFormatDef, ExpandoDataEmail, ExpandoDataEnvelope, ExpandoDataGlobal, ExpandoDataMailbox
@@ -1740,6 +1752,7 @@ const struct ExpandoRenderCallback IndexRenderCallbacks[] = {
   { ED_MAILBOX,  ED_MBX_MAILBOX_NAME,        mailbox_mailbox_name,      NULL },
   { ED_MAILBOX,  ED_MBX_MESSAGE_COUNT,       NULL,                      mailbox_message_count },
   { ED_MAILBOX,  ED_MBX_PERCENTAGE,          mailbox_percentage,        NULL },
+  { ED_MENU,     ED_MEN_RELATIVE_NUMBER,     NULL,                      menu_relative_number_num },
   { -1, -1, NULL, NULL },
   // clang-format on
 };
