@@ -1400,6 +1400,14 @@ static int op_toggle_mailboxes(struct BrowserPrivateData *priv, const struct Key
       {
         if (!mutt_str_equal(buf_string(&mod_data->last_dir), c_folder))
         {
+          struct stat stats = { 0 };
+
+          if (stat(c_folder, &stats) != 0 || !S_ISDIR(stats.st_mode))
+          {
+            mutt_warning(_("$folder directory does not exist: %s"), c_folder);
+            return FR_ERROR;
+          }
+
           /* Stores into goto_swapper LastDir, and swaps to `$folder` */
           mutt_str_copy(priv->goto_swapper, buf_string(&mod_data->last_dir),
                         sizeof(priv->goto_swapper));
