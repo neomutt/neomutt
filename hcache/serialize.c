@@ -260,7 +260,7 @@ bool serial_restore_char(char **c, const unsigned char *d, int *off, size_t dlen
   if ((size > SERIAL_MAX_CHAR_SIZE) || !serial_in_bounds(*off, size, dlen))
     return false;
 
-  *c = MUTT_MEM_MALLOC(size, char);
+  *c = mutt_mem_malloc_T(size, char);
   memcpy(*c, d + *off, size);
   if (convert && !mutt_str_is_ascii(*c, size))
   {

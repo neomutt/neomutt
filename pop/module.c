@@ -41,7 +41,7 @@ extern struct ConfigDef PopVars[];
  */
 static bool pop_init(struct NeoMutt *n)
 {
-  struct PopModuleData *mod_data = MUTT_MEM_CALLOC(1, struct PopModuleData);
+  struct PopModuleData *mod_data = mutt_mem_calloc_T(1, struct PopModuleData);
   neomutt_set_module_data(n, MODULE_ID_POP, mod_data);
 
   mod_data->notify = notify_new();

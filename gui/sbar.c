@@ -193,7 +193,7 @@ static void sbar_wdata_free(struct MuttWindow *win, void **ptr)
  */
 static struct SBarPrivateData *sbar_data_new(void)
 {
-  return MUTT_MEM_CALLOC(1, struct SBarPrivateData);
+  return mutt_mem_calloc_T(1, struct SBarPrivateData);
 }
 
 /**

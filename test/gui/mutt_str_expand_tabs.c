@@ -42,7 +42,7 @@ void test_mutt_str_expand_tabs(void)
   /* Explicit test for null-termination */
   {
     size_t len = 8;
-    char *buf = MUTT_MEM_CALLOC(len, char);
+    char *buf = mutt_mem_calloc_T(len, char);
     buf[0] = '\t';
     mutt_str_expand_tabs(&buf, &len, 8);
     TEST_CHECK_STR_EQ(buf, "        ");

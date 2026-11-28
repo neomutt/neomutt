@@ -72,7 +72,7 @@ void zstd_cdata_free(struct ZstdComprData **ptr)
  */
 static struct ZstdComprData *zstd_cdata_new(void)
 {
-  return MUTT_MEM_CALLOC(1, struct ZstdComprData);
+  return mutt_mem_calloc_T(1, struct ZstdComprData);
 }
 
 /**

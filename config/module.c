@@ -52,7 +52,7 @@ extern const struct ConfigSetType CstString;
  */
 static bool config_init(struct NeoMutt *n)
 {
-  struct ConfigModuleData *mod_data = MUTT_MEM_CALLOC(1, struct ConfigModuleData);
+  struct ConfigModuleData *mod_data = mutt_mem_calloc_T(1, struct ConfigModuleData);
   neomutt_set_module_data(n, MODULE_ID_CONFIG, mod_data);
 
   mod_data->notify = notify_new();

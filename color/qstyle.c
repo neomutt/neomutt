@@ -75,7 +75,7 @@ void qstyle_free_tree(struct QuoteStyle **quote_list)
  */
 static struct QuoteStyle *qstyle_new(void)
 {
-  return MUTT_MEM_CALLOC(1, struct QuoteStyle);
+  return mutt_mem_calloc_T(1, struct QuoteStyle);
 }
 
 /**

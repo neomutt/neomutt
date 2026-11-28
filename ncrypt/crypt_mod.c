@@ -41,7 +41,7 @@
 void crypto_module_register(const struct CryptModuleSpecs *specs)
 {
   struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
-  struct CryptModule *module = MUTT_MEM_CALLOC(1, struct CryptModule);
+  struct CryptModule *module = mutt_mem_calloc_T(1, struct CryptModule);
   module->specs = specs;
   STAILQ_INSERT_HEAD(&mod_data->crypt_modules, module, entries);
 }

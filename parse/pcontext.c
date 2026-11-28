@@ -36,7 +36,7 @@
  */
 struct ParseContext *parse_context_new(void)
 {
-  struct ParseContext *pc = MUTT_MEM_CALLOC(1, struct ParseContext);
+  struct ParseContext *pc = mutt_mem_calloc_T(1, struct ParseContext);
 
   return pc;
 }

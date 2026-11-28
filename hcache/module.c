@@ -42,7 +42,7 @@ extern struct ConfigDef HcacheVarsComp[];
  */
 static bool hcache_init(struct NeoMutt *n)
 {
-  struct HcacheModuleData *mod_data = MUTT_MEM_CALLOC(1, struct HcacheModuleData);
+  struct HcacheModuleData *mod_data = mutt_mem_calloc_T(1, struct HcacheModuleData);
   neomutt_set_module_data(n, MODULE_ID_HCACHE, mod_data);
 
   mod_data->notify = notify_new();

@@ -127,7 +127,7 @@ void menu_free(struct Menu **ptr)
 struct Menu *menu_new(const struct MenuDefinition *md, struct MuttWindow *win,
                       struct ConfigSubset *sub)
 {
-  struct Menu *menu = MUTT_MEM_CALLOC(1, struct Menu);
+  struct Menu *menu = mutt_mem_calloc_T(1, struct Menu);
 
   menu->md = md;
   menu->redraw = MENU_REDRAW_FULL;

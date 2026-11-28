@@ -38,7 +38,7 @@
  */
 static bool store_init(struct NeoMutt *n)
 {
-  struct StoreModuleData *mod_data = MUTT_MEM_CALLOC(1, struct StoreModuleData);
+  struct StoreModuleData *mod_data = mutt_mem_calloc_T(1, struct StoreModuleData);
   neomutt_set_module_data(n, MODULE_ID_STORE, mod_data);
 
   mod_data->notify = notify_new();

@@ -55,7 +55,7 @@ void imap_edata_free(void **ptr)
  */
 struct ImapEmailData *imap_edata_new(void)
 {
-  return MUTT_MEM_CALLOC(1, struct ImapEmailData);
+  return mutt_mem_calloc_T(1, struct ImapEmailData);
 }
 
 /**
